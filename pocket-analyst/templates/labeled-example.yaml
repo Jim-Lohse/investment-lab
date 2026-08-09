@@ -1,0 +1,43 @@
+# Labeled example — one graded Pocket Analyst run.
+# Append-only: corrections are NEW examples referencing supersedes_id.
+# The accumulated set is the eval corpus and the eventual fine-tuning
+# corpus for a lab-tuned analyst model (§19: process metrics are the
+# near-term currency; these labels ARE the process metrics).
+
+example_id: <run-dir-name>
+supersedes_id: null
+graded: <date>
+grader: human            # never the model — see /pocket-feedback hard rules
+run:
+  dir: <lab/runs/...>
+  tier: 1 | 2
+  masked_first_pass: true | false
+  independence_label: architecturally-independent | single-context-analysis
+  outcome: judgment | blocked
+
+# Human verdicts on the memo sections (§14.5: process, not outcome)
+labels:
+  thesis:        {verdict: agree | partial | disagree, note: ""}
+  variant_view:  {verdict: agree | partial | disagree, note: ""}
+  catalyst:      {verdict: agree | partial | disagree, note: ""}
+  valuation:     {verdict: agree | partial | disagree, note: ""}
+  risks:         {verdict: agree | partial | disagree, note: ""}
+
+most_doubted_claim: ""        # next falsification target
+
+# §17 baseline comparison — the Simplicity Auditor's raw material
+baseline_delta:
+  loop_changed_conclusion: true | false
+  value_added: rejected-false-positive | hidden-beneficiary | better-expression |
+               decisive-risk | calibration | earlier-discovery | none
+  note: ""
+
+process_violations: []        # e.g. contamination, missing genealogy, vibes-scoring
+
+# Filled in later as the run's forecasts resolve (never edited, only appended)
+forecast_resolutions: []
+#  - forecast: ""
+#    p: 0.70
+#    outcome: 1 | 0
+#    brier: 0.09
+#    resolved: <date>
