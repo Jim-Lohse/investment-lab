@@ -1,0 +1,50 @@
+# Driver map — the maintained, human-confirmed mapping of holdings to
+# economic drivers, factor tilts, and environment sensitivities.
+# Copy to lab/portfolio/driver-map.yaml and edit.
+#
+# This file is DATA, not model output. /pocket-portfolio may PROPOSE
+# entries (confirmed: false); only a human sets confirmed: true. Every
+# report discloses what fraction of the decomposition rests on
+# unconfirmed entries. Drivers are judgments — that is exactly why they
+# are version-controlled, human-owned, and auditable (§15.2).
+
+meta:
+  updated: <date>
+  price_move_threshold_pct: 8      # observations brief delta trigger
+  drivers: [growth, inflation, real_rates, credit, usd, commodities,
+            liquidity_vol, idiosyncratic]
+  factors: [value, quality, momentum, size, low_vol]
+  quadrants: [g_up_i_up, g_up_i_down, g_down_i_up, g_down_i_down]
+
+# Named caps — the "tobacco factor cap" pattern (§15.2). A cap names a
+# shared driver that several holdings express, and a ceiling on combined
+# look-through weight. Breach remedy is consolidation or trim, decided by
+# the human.
+named_caps:
+  - name: <e.g. ai-capex-complex>
+    description: <what the shared driver actually is>
+    limit_pct: <ceiling on combined look-through weight>
+    members: [<tickers, including ETF look-through names>]
+
+holdings:
+  - ticker: <TICKER>
+    confirmed: false
+    account: <roth | taxable | ...>       # checked against placement rule
+    driver_split:                          # fractions of THIS holding, sum 1.0
+      growth: 0.0
+      inflation: 0.0
+      real_rates: 0.0
+      credit: 0.0
+      usd: 0.0
+      commodities: 0.0
+      liquidity_vol: 0.0
+      idiosyncratic: 0.0
+    factor_tilts: [<subset of meta.factors>]
+    quadrant_sensitivity:                  # helped | hurt | neutral, per quadrant
+      g_up_i_up: neutral
+      g_up_i_down: neutral
+      g_down_i_up: neutral
+      g_down_i_down: neutral
+    scenario_notes: <anything the standard grid arithmetic would miss>
+    kill_lines: []                         # mirrors of §13.1 lines, for the watch
+    rationale: <one sentence on why this mapping, with its main source>
