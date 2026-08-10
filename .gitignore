@@ -8,3 +8,7 @@ data/
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# secrets — API keys live in env vars or ~/.nasdaq, never the repo
+.env
+.env.*
