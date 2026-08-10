@@ -1,0 +1,10 @@
+# local data stores — never commit market data
+data/
+*.duckdb
+*.duckdb.wal
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/

@@ -1,0 +1,5 @@
+nasdaq-data-link>=1.0.4
+duckdb>=1.0
+
+# dev
+pytest>=8.0
