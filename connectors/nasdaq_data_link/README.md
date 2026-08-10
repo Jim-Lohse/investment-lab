@@ -89,3 +89,12 @@ Presets: `fundamentals` (the SF1 product's tables), `bundle` (everything).
   rows hold NULL for them until re-stamped.
 - Sync history lands in `sharadar._sync_state` (append-only), current
   freshness in `status`.
+
+## Documentation
+
+- [Data Access Tools](https://data.nasdaq.com/accesstools) — Nasdaq Data
+  Link's current docs hub (the old docs.data.nasdaq.com site is being retired)
+- [data-link-python](https://github.com/Nasdaq/data-link-python) — the
+  official Python client used here; its README covers API-key configuration
+  (env var, `~/.nasdaq/data_link_apikey`) and retry options
+
