@@ -19,6 +19,18 @@ from .config import DEFAULT_DB_PATH, STATE_TABLE, TableSpec
 log = logging.getLogger("nasdaq_data_link")
 
 
+def ensure_ca_bundle() -> None:
+    """Give urllib a CA bundle on Pythons that ship without default cert
+    paths (notably python.org macOS builds), using certifi's Mozilla bundle
+    (already installed as a requests dependency). An existing SSL_CERT_FILE
+    is respected."""
+    try:
+        import certifi
+    except ImportError:
+        return
+    os.environ.setdefault("SSL_CERT_FILE", certifi.where())
+
+
 def configure_api_key() -> None:
     """Point the client at the API key from env or the standard key file."""
     import nasdaqdatalink
@@ -187,6 +199,7 @@ def sync(specs: list[TableSpec], db_path: str = DEFAULT_DB_PATH, full: bool = Fa
     """Sync several tables, isolating entitlement/API failures per table."""
     from nasdaqdatalink import AuthenticationError, ForbiddenError
 
+    ensure_ca_bundle()
     configure_api_key()
     con = connect(db_path)
     results = {}

@@ -7,6 +7,7 @@ schema drift, replace-strategy tables, and status all run without a key.
 
 import csv
 import io
+import os
 import zipfile
 
 import duckdb
@@ -179,3 +180,15 @@ def test_resolve_tables_presets_and_errors():
     assert [s.name for s in resolve_tables("sf1, sep")] == ["sf1", "sep"]
     with pytest.raises(ValueError, match="Unknown table"):
         resolve_tables("sf1,nope")
+
+
+def test_ensure_ca_bundle_sets_and_respects_env(monkeypatch):
+    import certifi
+
+    monkeypatch.delenv("SSL_CERT_FILE", raising=False)
+    connector.ensure_ca_bundle()
+    assert os.environ["SSL_CERT_FILE"] == certifi.where()
+
+    monkeypatch.setenv("SSL_CERT_FILE", "/corp/custom-ca.pem")
+    connector.ensure_ca_bundle()
+    assert os.environ["SSL_CERT_FILE"] == "/corp/custom-ca.pem"
