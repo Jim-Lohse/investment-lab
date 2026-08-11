@@ -1,0 +1,47 @@
+{
+  "_comment": [
+    "Korea Customs Service open-API endpoints (data.go.kr). All require a free",
+    "service key: register at https://www.data.go.kr (instant, no cost), request",
+    "use of each dataset, then set the env var DATA_GO_KR_API_KEY (use the",
+    "'decoded' key). The monthly item-trade endpoint below is stable and",
+    "documented. The 10/20-day flash endpoints publish on the 11th, 21st and",
+    "1st; their operation paths are set from the dataset's API doc page —",
+    "if KCS revises them, update 'url' here, nothing else changes.",
+    "Exports flash dataset: search data.go.kr for '수출 주요품목별 10일 단위 잠정치'.",
+    "Imports flash dataset: https://www.data.go.kr/data/15157901/openapi.do",
+    "Portal view of the same numbers: https://tradedata.go.kr"
+  ],
+  "monthly_item_trade": {
+    "url": "https://apis.data.go.kr/1220000/Itemtrade/getItemtradeList",
+    "params": {
+      "serviceKey": "{service_key}",
+      "strtYymm": "{start_yyyymm}",
+      "endYymm": "{end_yyyymm}",
+      "hsSgn": "{hs_code}"
+    }
+  },
+  "flash_exports_10day": {
+    "url": "",
+    "params": {
+      "serviceKey": "{service_key}",
+      "aggrgtDtStrt": "{period_start_yyyymmdd}",
+      "aggrgtDtEnd": "{period_end_yyyymmdd}"
+    },
+    "_setup": "Paste the request URL from the dataset's API doc page into 'url' and align param names; until then this feed is skipped with a notice."
+  },
+  "flash_imports_10day": {
+    "url": "",
+    "params": {
+      "serviceKey": "{service_key}",
+      "aggrgtDtStrt": "{period_start_yyyymmdd}",
+      "aggrgtDtEnd": "{period_end_yyyymmdd}"
+    },
+    "_setup": "Dataset 15157901; paste the request URL from its API doc page into 'url'."
+  },
+  "hs_codes": {
+    "85": "Electrical machinery and electronics (chapter)",
+    "8542": "Semiconductors - electronic integrated circuits",
+    "8486": "Semiconductor manufacturing equipment",
+    "8479": "Machines with individual functions (incl. industrial robots ex 8479.50)"
+  }
+}
