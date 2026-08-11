@@ -14,7 +14,7 @@ import zipfile
 
 import duckdb
 
-from .config import DEFAULT_DB_PATH, SCHEMA, STATE_TABLE, TableSpec
+from .config import DEFAULT_DB_PATH, STATE_TABLE, TableSpec
 
 log = logging.getLogger("nasdaq_data_link")
 
@@ -61,9 +61,8 @@ def connect(db_path: str = DEFAULT_DB_PATH) -> duckdb.DuckDBPyConnection:
     if dirname:
         os.makedirs(dirname, exist_ok=True)
     con = duckdb.connect(db_path)
-    con.execute(f'CREATE SCHEMA IF NOT EXISTS "{SCHEMA}"')
     con.execute(
-        f'CREATE TABLE IF NOT EXISTS "{SCHEMA}"."{STATE_TABLE}" ('
+        f'CREATE TABLE IF NOT EXISTS "{STATE_TABLE}" ('
         "  table_name VARCHAR, synced_at TIMESTAMP DEFAULT current_timestamp,"
         "  mode VARCHAR, rows BIGINT, watermark VARCHAR)"
     )
@@ -71,14 +70,14 @@ def connect(db_path: str = DEFAULT_DB_PATH) -> duckdb.DuckDBPyConnection:
 
 
 def _qualified(spec: TableSpec) -> str:
-    return f'"{SCHEMA}"."{spec.name}"'
+    return f'"main"."{spec.name}"'
 
 
 def _table_exists(con, spec: TableSpec) -> bool:
     return bool(
         con.execute(
             "SELECT 1 FROM information_schema.tables WHERE table_schema = ? AND table_name = ?",
-            [SCHEMA, spec.name],
+            ["main", spec.name],
         ).fetchone()
     )
 
@@ -116,7 +115,7 @@ def _upsert(con, spec: TableSpec, csv_paths: list[str]) -> int:
         con.execute(
             "SELECT column_name, data_type FROM information_schema.columns "
             "WHERE table_schema = ? AND table_name = ? ORDER BY ordinal_position",
-            [SCHEMA, spec.name],
+            ["main", spec.name],
         ).fetchall()
     )
     incoming_cols = {
@@ -156,7 +155,7 @@ def _upsert(con, spec: TableSpec, csv_paths: list[str]) -> int:
 
 def _record(con, spec: TableSpec, mode: str, rows: int) -> None:
     con.execute(
-        f'INSERT INTO "{SCHEMA}"."{STATE_TABLE}" (table_name, mode, rows, watermark) '
+        f'INSERT INTO "{STATE_TABLE}" (table_name, mode, rows, watermark) '
         "VALUES (?, ?, ?, ?)",
         [spec.name, mode, rows, _watermark(con, spec)],
     )
@@ -226,7 +225,7 @@ def status(db_path: str = DEFAULT_DB_PATH) -> list[dict]:
                 continue
             rows = con.execute(f"SELECT count(*) FROM {_qualified(spec)}").fetchone()[0]
             last = con.execute(
-                f'SELECT synced_at, mode, rows FROM "{SCHEMA}"."{STATE_TABLE}" '
+                f'SELECT synced_at, mode, rows FROM "{STATE_TABLE}" '
                 "WHERE table_name = ? ORDER BY synced_at DESC LIMIT 1",
                 [spec.name],
             ).fetchone()

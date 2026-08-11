@@ -1,7 +1,8 @@
 # Nasdaq Data Link (Sharadar) connector
 
 Pulls Sharadar tables from Nasdaq Data Link into a local DuckDB file
-(`data/sharadar.duckdb`, schema `sharadar`). First run per table is a bulk
+(`data/sharadar.duckdb`; tables live at the top level: `sf1`, `sep`, …).
+First run per table is a bulk
 export — the whole table as a zipped CSV, a few hundred MB for SF1. Every run
 after that is incremental: Sharadar stamps each row with `lastupdated`, so the
 connector exports only rows at or past the newest stamp already stored and
@@ -53,7 +54,7 @@ Querying:
 ```python
 import duckdb
 con = duckdb.connect("data/sharadar.duckdb", read_only=True)
-con.sql("SELECT ticker, datekey, revenue FROM sharadar.sf1 WHERE ticker = 'AAPL' AND dimension = 'ARQ'")
+con.sql("SELECT ticker, datekey, revenue FROM sf1 WHERE ticker = 'AAPL' AND dimension = 'ARQ'")
 ```
 
 ## Tables
@@ -87,7 +88,7 @@ Presets: `fundamentals` (the SF1 product's tables), `bundle` (everything).
   vendor view.
 - New vendor columns are added to the local table automatically; existing
   rows hold NULL for them until re-stamped.
-- Sync history lands in `sharadar._sync_state` (append-only), current
+- Sync history lands in `_sync_state` (append-only), current
   freshness in `status`.
 
 ## Documentation

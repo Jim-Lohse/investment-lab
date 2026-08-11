@@ -14,7 +14,6 @@ sync moves on to the next table.
 from dataclasses import dataclass
 
 DEFAULT_DB_PATH = "data/sharadar.duckdb"
-SCHEMA = "sharadar"
 STATE_TABLE = "_sync_state"
 
 

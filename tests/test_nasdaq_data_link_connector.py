@@ -65,7 +65,10 @@ class FakeExporter:
 
 @pytest.fixture
 def db_path(tmp_path):
-    return str(tmp_path / "test.duckdb")
+    # Named to match the default DB file: catalog "sharadar" must never
+    # collide with table references (regression for the schema/catalog
+    # ambiguity DuckDB raised when a schema shared the catalog's name).
+    return str(tmp_path / "sharadar.duckdb")
 
 
 def install_exporter(monkeypatch, rows_by_code):
@@ -93,10 +96,10 @@ def test_bulk_then_incremental_upsert(monkeypatch, db_path):
     assert rows == 2
 
     data = dict(
-        con.execute('SELECT ticker, revenue FROM "sharadar"."sf1"').fetchall()
+        con.execute('SELECT ticker, revenue FROM sf1').fetchall()
     )
     assert data == {"AAPL": 110, "MSFT": 200, "DLST": 50, "NVDA": 300}
-    assert con.execute('SELECT count(*) FROM "sharadar"."sf1"').fetchone()[0] == 4
+    assert con.execute('SELECT count(*) FROM sf1').fetchone()[0] == 4
     con.close()
 
 
@@ -110,7 +113,7 @@ def test_incremental_with_no_changes(monkeypatch, db_path):
     ]
     mode, rows = connector.sync_table(con, SF1)
     assert (mode, rows) == ("incremental", 0)
-    assert con.execute('SELECT count(*) FROM "sharadar"."sf1"').fetchone()[0] == 3
+    assert con.execute('SELECT count(*) FROM sf1').fetchone()[0] == 3
     con.close()
 
 
@@ -125,7 +128,7 @@ def test_incremental_handles_new_vendor_column(monkeypatch, db_path):
     )
     connector.sync_table(con, SF1)
 
-    rows = dict(con.execute('SELECT ticker, fxusd FROM "sharadar"."sf1"').fetchall())
+    rows = dict(con.execute('SELECT ticker, fxusd FROM sf1').fetchall())
     assert rows["NVDA"] == 1.0
     assert rows["MSFT"] is None  # pre-existing rows null for the new column
     con.close()
