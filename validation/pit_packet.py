@@ -371,7 +371,11 @@ def main() -> int:
     with open(key_path, "w") as f:
         f.write(keytext)
 
-    print(f"Packet:  {packet_path}   <- attach THIS to a fresh chat")
+    if masked:
+        print(f"Packet:  {packet_path}   <- attach THIS to a fresh chat")
+    else:
+        print(f"Packet:  {packet_path}   <- unmasked: for the post-reveal "
+              "rescore, attach to the SAME chat that scored the masked packet")
     print(f"Key:     {key_path}   <- keep local; never attach")
     return 0
 
