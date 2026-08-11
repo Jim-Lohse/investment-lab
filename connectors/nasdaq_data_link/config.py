@@ -62,12 +62,20 @@ TABLES = {
         TableSpec("sf2", "SHARADAR/SF2", "incremental",
                   key=("ticker", "filingdate", "ownername"),
                   watermark="filingdate"),
+        # Institutional 13F holdings (also in the bundle). Quarterly data
+        # whose past quarters get amended, so these are full refreshes —
+        # sync them with `--tables institutional` after each 13F season
+        # rather than on the daily cadence.
+        TableSpec("sf3", "SHARADAR/SF3", "replace"),
+        TableSpec("sf3a", "SHARADAR/SF3A", "replace"),
+        TableSpec("sf3b", "SHARADAR/SF3B", "replace"),
     ]
 }
 
 PRESETS = {
     "fundamentals": ["sf1", "daily", "tickers", "indicators", "actions", "events", "sp500"],
     "bundle": ["sf1", "daily", "tickers", "indicators", "actions", "events", "sp500", "sep", "sf2"],
+    "institutional": ["sf3", "sf3a", "sf3b"],
 }
 
 

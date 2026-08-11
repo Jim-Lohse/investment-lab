@@ -65,13 +65,21 @@ con.sql("SELECT ticker, datekey, revenue FROM sf1 WHERE ticker = 'AAPL' AND dime
 | `sep` | SHARADAR/SEP | incremental | ticker, date |
 | `daily` | SHARADAR/DAILY | incremental | ticker, date |
 | `sf2` | SHARADAR/SF2 | incremental | ticker, filingdate, ownername |
+| `sf3` | SHARADAR/SF3 | replace | — |
+| `sf3a` | SHARADAR/SF3A | replace | — |
+| `sf3b` | SHARADAR/SF3B | replace | — |
 | `tickers` | SHARADAR/TICKERS | replace | — |
 | `indicators` | SHARADAR/INDICATORS | replace | — |
 | `actions` | SHARADAR/ACTIONS | replace | — |
 | `events` | SHARADAR/EVENTS | replace | — |
 | `sp500` | SHARADAR/SP500 | replace | — |
 
-Presets: `fundamentals` (the SF1 product's tables), `bundle` (everything).
+Presets: `fundamentals` (the SF1 product's tables), `bundle` (adds SEP
+prices and SF2 insiders), `institutional` (the SF3 13F holdings tables,
+also included in the bundle subscription). The institutional tables are
+quarterly data whose past quarters get amended, so they always fully
+refresh — sync them occasionally (after each 13F filing season), not on
+the daily cadence.
 
 ## Mechanics worth knowing
 
