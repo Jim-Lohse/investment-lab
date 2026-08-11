@@ -192,3 +192,21 @@ def test_ensure_ca_bundle_sets_and_respects_env(monkeypatch):
     monkeypatch.setenv("SSL_CERT_FILE", "/corp/custom-ca.pem")
     connector.ensure_ca_bundle()
     assert os.environ["SSL_CERT_FILE"] == "/corp/custom-ca.pem"
+
+
+def test_missing_watermark_column_disables_incremental(monkeypatch, db_path):
+    # Stored table lacks the watermark column (the SF2 lastupdated case):
+    # the sync must fall back to a full re-export, not raise.
+    rows = [dict(r) for r in BULK_ROWS]
+    for r in rows:
+        del r["lastupdated"]
+    exporter = install_exporter(monkeypatch, {"SHARADAR/SF1": rows})
+    con = connector.connect(db_path)
+    assert connector.sync_table(con, SF1) == ("full", 3)
+    assert connector.sync_table(con, SF1) == ("full", 3)  # no incremental possible
+    assert all(filters == {} for _, filters in exporter.calls)
+    con.close()
+
+
+def test_sf2_watermarks_on_filingdate():
+    assert TABLES["sf2"].watermark == "filingdate"

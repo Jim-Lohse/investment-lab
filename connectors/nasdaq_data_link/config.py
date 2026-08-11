@@ -56,10 +56,12 @@ TABLES = {
         # --- added by the Core US Equities Bundle ---
         TableSpec("sep", "SHARADAR/SEP", "incremental",
                   key=("ticker", "date")),
-        # A refiled Form 4 re-stamps every row of the filing, so the filing
+        # SF2 has no lastupdated column; new and amended filings arrive with
+        # fresh filingdates, so filingdate is the watermark and the filing
         # (ticker, filingdate, ownername) is the safe deletion scope.
         TableSpec("sf2", "SHARADAR/SF2", "incremental",
-                  key=("ticker", "filingdate", "ownername")),
+                  key=("ticker", "filingdate", "ownername"),
+                  watermark="filingdate"),
     ]
 }
 

@@ -97,9 +97,19 @@ def _table_exists(con, spec: TableSpec) -> bool:
 def _watermark(con, spec: TableSpec) -> str | None:
     if spec.strategy != "incremental" or not _table_exists(con, spec):
         return None
-    value = con.execute(
-        f'SELECT max("{spec.watermark}") FROM {_qualified(spec)}'
-    ).fetchone()[0]
+    try:
+        value = con.execute(
+            f'SELECT max("{spec.watermark}") FROM {_qualified(spec)}'
+        ).fetchone()[0]
+    except duckdb.BinderException:
+        # Watermark column absent from the stored table (vendor schema
+        # surprise): fall back to full refreshes rather than failing after
+        # data has already loaded.
+        log.warning(
+            "%s: no %s column in stored table; incremental refresh disabled",
+            spec.name, spec.watermark,
+        )
+        return None
     return None if value is None else str(value)
 
 
