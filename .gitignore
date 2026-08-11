@@ -3,6 +3,9 @@ data/
 *.duckdb
 *.duckdb.wal
 
+# PIT evidence packets: licensed data + case identities stay local
+packets/
+
 # python
 .venv/
 __pycache__/

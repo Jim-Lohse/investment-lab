@@ -29,6 +29,7 @@ Worked case files will be added to this repository as their redaction passes com
 ## Structure
 
 - `connectors/nasdaq_data_link/` — data connector pulling Sharadar tables (fundamentals, prices, corporate actions, insiders) from Nasdaq Data Link into a local DuckDB file; bulk export on first run, incremental `lastupdated`-based refresh thereafter. See its README for subscription options and usage.
+- `validation/` — point-in-time evidence-packet builder for the Section 18 validation protocol: freezes cutoff-dated, masked, evidence-only packets from the local database for blind reruns in separated contexts. See its README for the workflow.
 - `investment-lab-constitution.md` — the full constitution: purpose and authority, tiered rigor, research controls (independence, masking, evidence genealogy, base rates), scorecard and value-capture waterfall, decision and risk discipline (exit rules, calibration, committee), and the validation program (synthetic gates, baselines, point-in-time and forward tracks), with the seeded case roster as Appendix A.
 
 ## License
