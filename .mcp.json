@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "polygon": {
+      "command": "uvx",
+      "args": [
+        "--with",
+        "mcp<2",
+        "--from",
+        "mcp_massive @ git+https://github.com/massive-com/mcp_massive@v0.10.0",
+        "mcp_massive"
+      ],
+      "env": {
+        "MASSIVE_API_KEY": "${MASSIVE_API_KEY:-}",
+        "POLYGON_API_KEY": "${POLYGON_API_KEY:-}"
+      }
+    }
+  }
+}
