@@ -35,8 +35,8 @@ TAIWAN_SIGNAL_HEADER = [
     "rev_sum_year_ago_twd_k", "agg_yoy_pct", "median_yoy_pct", "breadth_pct",
 ]
 KOREA_SIGNAL_HEADER = [
-    "period_end", "period_type", "item", "export_usd_k",
-    "export_usd_k_year_ago", "yoy_pct",
+    "period", "period_type", "item", "value_usd_k",
+    "value_usd_k_year_ago", "yoy_pct",
 ]
 
 
@@ -92,22 +92,20 @@ def korea_signals() -> list[list]:
     out: list[list] = []
 
     if path.exists():
-        rows = read_csv_dicts(path)
         by_key: dict[tuple, float] = {}
-        for row in rows:
-            exp = _f(row["export_usd_k"])
-            if exp is None:
+        for row in read_csv_dicts(path):
+            value = _f(row["value_usd_k"])
+            if value is None or not row["yyyymm"]:
                 continue
-            by_key[(row["period_end"][:10], row["period_type"],
-                    row["item_name"] or row["item_code"])] = exp
-        for (end, ptype, item), exp in sorted(by_key.items()):
-            try:
-                ago_end = end.replace(end[:4], str(int(end[:4]) - 1), 1)
-            except ValueError:
-                ago_end = ""
-            ago = by_key.get((ago_end, ptype, item))
-            yoy = f"{(exp / ago - 1.0) * 100.0:.2f}" if ago else ""
-            out.append([end, ptype, item, f"{exp:.0f}",
+            prefix = "exp" if "export" in row["feed"] else "imp"
+            item = f"{prefix}:{row['item_name'] or row['period_label']}"
+            # Same month-of-year and window a year earlier is the comparable.
+            by_key[(row["yyyymm"], row["period_type"] or row["period_label"], item)] = value
+        for (yyyymm, ptype, item), value in sorted(by_key.items()):
+            ago_yyyymm = f"{int(yyyymm[:4]) - 1}{yyyymm[4:]}"
+            ago = by_key.get((ago_yyyymm, ptype, item))
+            yoy = f"{(value / ago - 1.0) * 100.0:.2f}" if ago else ""
+            out.append([yyyymm, ptype, item, f"{value:.0f}",
                         f"{ago:.0f}" if ago else "", yoy])
 
     if monthly_path.exists():
@@ -156,8 +154,8 @@ def render_report(tw: list[list], kr: list[list]) -> str:
         lines += ["## Taiwan monthly revenue", "", "_No data stored yet — run "
                   "`python -m signals.taiwan_mops current`._", ""]
     if kr:
-        lines += ["## Korea exports (KCS)", "",
-                  "| Period end | Type | Item | Exports USD k | YoY % |",
+        lines += ["## Korea trade (KCS)", "",
+                  "| Period | Window | Item | USD k | YoY % |",
                   "|---|---|---|---:|---:|"]
         for row in kr[-25:]:
             lines.append(f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} | {row[5]} |")

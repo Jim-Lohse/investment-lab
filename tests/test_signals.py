@@ -48,8 +48,8 @@ KOREA_MONTHLY_XML = b"""<?xml version="1.0" encoding="UTF-8"?>
 
 KOREA_FLASH_XML = b"""<?xml version="1.0" encoding="UTF-8"?>
 <response><header><resultCode>00</resultCode></header><body><items>
-<item><itemNm>\xeb\xb0\x98\xeb\x8f\x84\xec\xb2\xb4</itemNm><expDlr>11000000</expDlr></item>
-<item><itemNm>\xec\xa0\x84\xec\xb2\xb4</itemNm><expDlr>19800000</expDlr></item>
+<item><priodTitle>2026.08.01 ~ 2026.08.10</priodTitle><korePrlstNm>\xeb\xb0\x98\xeb\x8f\x84\xec\xb2\xb4</korePrlstNm><expDlr>11000000</expDlr></item>
+<item><priodTitle>2026.08.01 ~ 2026.08.10</priodTitle><korePrlstNm>\xec\xa0\x84\xec\xb2\xb4</korePrlstNm><expDlr>19800000</expDlr></item>
 </items></body></response>
 """
 
@@ -117,10 +117,44 @@ class TestKorea(unittest.TestCase):
 
     def test_flash_xml(self):
         rows = korea_customs.parse_flash_xml(
-            KOREA_FLASH_XML, "2026-08-01", "2026-08-10", "D10", "2026-08-11")
+            KOREA_FLASH_XML, "flash_exports_10day", "2026-08-11")
         self.assertEqual(len(rows), 2)
         self.assertEqual(rows[0]["item_name"], "반도체")
-        self.assertEqual(rows[0]["export_usd_k"], "11000000")
+        self.assertEqual(rows[0]["value_usd_k"], "11000000")
+        self.assertEqual(rows[0]["yyyymm"], "2026-08")
+        self.assertEqual(rows[0]["period_type"], "D10")
+        self.assertIn("priodTitle", rows[0]["extra_json"])  # nothing dropped
+
+    def test_classify_period(self):
+        cases = {
+            "2026.08.01 ~ 2026.08.10": "D10",
+            "2026.08.01~2026.08.20": "D20",
+            "2026.07.01 ~ 2026.07.31": "FULL",
+            "1일~10일": "D10",
+            "2026.08": "",
+        }
+        for label, expected in cases.items():
+            self.assertEqual(korea_customs.classify_period(label), expected, label)
+
+    def test_flash_yoy_math(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            flash = Path(tmp) / "exports_flash.csv"
+            common.write_csv(flash, korea_customs.FLASH_HEADER, [
+                ["2025-08", "2025.08.01 ~ 2025.08.10", "D10", "flash_exports_10day",
+                 "반도체", "10000000", "{}", "2025-08-11"],
+                ["2026-08", "2026.08.01 ~ 2026.08.10", "D10", "flash_exports_10day",
+                 "반도체", "11000000", "{}", "2026-08-11"],
+            ])
+            orig = compute_signals.KOREA_DIR
+            compute_signals.KOREA_DIR = Path(tmp)
+            try:
+                out = compute_signals.korea_signals()
+            finally:
+                compute_signals.KOREA_DIR = orig
+            latest = [r for r in out if r[0] == "2026-08"][0]
+            self.assertEqual(latest[2], "exp:반도체")
+            self.assertEqual(latest[5], "10.00")  # 11.0/10.0 - 1
 
     def test_api_error_raises(self):
         with self.assertRaises(RuntimeError):
