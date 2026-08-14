@@ -66,6 +66,18 @@ python -m signals.compute_signals
    `extra_json` column — if the first live payload uses unexpected names, no
    data is lost and the parser gets a one-line update.
 
+**Korea without any registration — tradedata.go.kr fallback.** The workflow
+also scrapes the KCS statistics portal's public English dashboard
+([tradedata.go.kr](https://tradedata.go.kr/cts/index_eng.do), no login) every
+run via `signals/korea_tradedata.py`: total exports and imports for the latest
+10/20-day or full-month window, with YoY rates as published (USD million;
+`data/korea/tradedata_flash.csv`). This runs regardless of whether the API key
+exists, so headline Korea flash prints flow with zero registration. Totals
+only — the by-item semiconductor breakout needs either the data.go.kr API key
+(preferred) or a parser extension against the portal's item page, whose raw
+HTML the workflow's `capture_pages` input snapshots into
+`data/korea/raw/pages/` for that purpose.
+
 **Automation.** `.github/workflows/update-signals.yml` runs daily at 07:30 UTC
 (after Taipei/Seoul publish times), fetches whatever is newly published,
 recomputes `data/derived/`, and commits only when data changed. Manual runs

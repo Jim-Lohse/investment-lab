@@ -15,7 +15,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from signals import common, compute_signals, korea_customs, taiwan_mops
+import datetime as dt
+
+from signals import (common, compute_signals, korea_customs, korea_tradedata,
+                     taiwan_mops)
 
 OPEN_CSV = """出表日期,資料年月,公司代號,公司名稱,產業別,營業收入-當月營收,營業收入-上月營收,營業收入-去年當月營收,營業收入-上月比較增減(%),營業收入-去年同月增減(%),累計營業收入-當月累計營收,累計營業收入-去年累計營收,累計營業收入-前期比較增減(%),備註
 1150810,11507,2330,台積電,半導體業,320000000,290000000,256000000,10.34,25.00,2100000000,1600000000,31.25,-
@@ -159,6 +162,49 @@ class TestKorea(unittest.TestCase):
     def test_api_error_raises(self):
         with self.assertRaises(RuntimeError):
             korea_customs.parse_monthly_xml(KOREA_ERROR_XML, "2026-08-11")
+
+
+TRADEDATA_HTML = """
+<html><body>
+<table>
+<thead><tr><th rowspan="2">Sort</th><th colspan="2">Previous month(Jan.~Jul.)</th>
+<th colspan="2">Current month(Aug.1~Aug.10)</th>
+<th colspan="2">Annual Record(Jan.1~Aug.10)</th></tr>
+<tr><th>Cumulative Total</th><th>Year-on-year Rate</th><th>Total</th>
+<th>Year-on-year Rate</th><th>Cumulative Total</th><th>Year-on-year Rate</th></tr></thead>
+<tbody>
+<tr><td>Export</td><td>493,463</td><td>44.9</td><td>18,653</td><td>15.3</td><td>512,116</td><td>43.6</td></tr>
+<tr><td>Import</td><td>358,391</td><td>16.6</td><td>15,046</td><td>△2.1</td><td>373,437</td><td>15.7</td></tr>
+</tbody></table>
+<table><tr><td>Export</td><td>18,653</td><td>15.3</td></tr></table>
+</body></html>
+"""
+
+
+class TestTradedata(unittest.TestCase):
+    RETRIEVED = dt.date(2026, 8, 14)
+
+    def test_parse_window(self):
+        self.assertEqual(korea_tradedata.parse_window("Aug.1~Aug.10", self.RETRIEVED),
+                         ("2026-08", "D10"))
+        self.assertEqual(korea_tradedata.parse_window("Jun.1 ~ Jun.30", self.RETRIEVED),
+                         ("2026-06", "FULL"))
+        self.assertEqual(korea_tradedata.parse_window("Aug.1~Aug.20", self.RETRIEVED),
+                         ("2026-08", "D20"))
+        # December window read in early January belongs to the prior year.
+        self.assertEqual(korea_tradedata.parse_window("Dec.1~Dec.31", dt.date(2027, 1, 2)),
+                         ("2026-12", "FULL"))
+
+    def test_parse_dashboard(self):
+        rows = korea_tradedata.parse_dashboard(TRADEDATA_HTML, self.RETRIEVED)
+        self.assertEqual(len(rows), 2)  # 3-cell mobile duplicate table ignored
+        exp = rows[0]
+        self.assertEqual((exp["metric"], exp["yyyymm"], exp["period_type"]),
+                         ("Export", "2026-08", "D10"))
+        self.assertEqual(exp["value_usd_m"], "18653")
+        self.assertEqual(exp["yoy_pct"], "15.30")
+        imp = rows[1]
+        self.assertEqual(imp["yoy_pct"], "-2.10")  # △ notation -> negative
 
 
 class TestSignals(unittest.TestCase):

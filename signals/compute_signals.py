@@ -108,6 +108,17 @@ def korea_signals() -> list[list]:
             out.append([yyyymm, ptype, item, f"{value:.0f}",
                         f"{ago:.0f}" if ago else "", yoy])
 
+    tradedata_path = KOREA_DIR / "tradedata_flash.csv"
+    if tradedata_path.exists():
+        for row in read_csv_dicts(tradedata_path):
+            value = _f(row["value_usd_m"])
+            if value is None or not row["yyyymm"]:
+                continue
+            prefix = "exp" if row["metric"] == "Export" else "imp"
+            out.append([row["yyyymm"], row["period_type"],
+                        f"{prefix}:TOTAL (tradedata)", f"{value * 1000.0:.0f}",
+                        "", row["yoy_pct"]])
+
     if monthly_path.exists():
         by_ym: dict[tuple, float] = {}
         names: dict[str, str] = {}
