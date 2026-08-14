@@ -1,1 +1,6 @@
 report_month,group,n_members_reporting,rev_sum_twd_k,rev_sum_year_ago_twd_k,agg_yoy_pct,median_yoy_pct,breadth_pct
+2026-07,ai_compute,5,530781818,372027864,42.67,97.59,100.0
+2026-07,ai_server_odm,5,1828881678,1102881639,65.83,60.76,100.0
+2026-07,power_cooling,5,93598131,62791829,49.06,47.75,80.0
+2026-07,robotics_motion,3,6987746,4908701,42.35,33.94,100.0
+2026-07,all_listed,1967,5935152162,4185798690,41.79,16.14,73.8

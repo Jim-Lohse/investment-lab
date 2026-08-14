@@ -1,11 +1,17 @@
 # Demand-signal snapshot: Taiwan monthly revenue + Korea exports
 
-_Generated 2026-08-11 by `signals/compute_signals.py`._
+_Generated 2026-08-14 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
-## Taiwan monthly revenue
+## Taiwan monthly revenue — 2026-07
 
-_No data stored yet — run `python -m signals.taiwan_mops current`._
+| Group | n | Agg YoY % | Median YoY % | Breadth % |
+|---|---:|---:|---:|---:|
+| ai_compute | 5 | 42.67 | 97.59 | 100.0 |
+| ai_server_odm | 5 | 65.83 | 60.76 | 100.0 |
+| power_cooling | 5 | 49.06 | 47.75 | 80.0 |
+| robotics_motion | 3 | 42.35 | 33.94 | 100.0 |
+| all_listed | 1967 | 41.79 | 16.14 | 73.8 |
 
 ## Korea exports (KCS)
 
