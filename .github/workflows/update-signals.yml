@@ -101,4 +101,9 @@ jobs:
           git config user.name "signals-bot"
           git config user.email "actions@users.noreply.github.com"
           git commit -m "signals: data update $(date -u +%F)"
-          git push
+          for delay in 2 4 8 16 0; do
+            git push && exit 0
+            [ "$delay" = "0" ] && exit 1
+            sleep "$delay"
+            git pull --rebase --no-autostash || true
+          done
