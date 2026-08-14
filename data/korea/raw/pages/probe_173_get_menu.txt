@@ -1,0 +1,278 @@
+HTTP 200 text/html; charset=utf-8
+
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<script type="text/javascript" src="/cts/js/ets/hmpg/trade/ETS0100173Q.js"></script>
+
+<body>
+	<h2 class="visually-hidden">10일 단위 잠정치 통계</h2>
+	<div class="wrap">
+		<div class="con_container">
+			<div class="left-col">
+				<div class="filter_area" id="filterArea">
+					<div class="filter_tit">
+						<h3 id="filterTit"></h3>
+					</div>
+					<button class="left_close" aria-label="조회 필터 닫기"></button>
+					<div class="filter_con" id="filterCon">
+						<div class="filter_box">
+							<h4>통계항목</h4>
+							<ul class="radiolst" id="radioListType">
+								<li onclick="f_radioCheck('radioTypePc', 'P')"><input type="radio" id="ETS_MNK_1050000A" name="radioTypePc" value="P" checked="checked"><label for="ETS_MNK_1050000A">품목</label></li>
+								<li onclick="f_radioCheck('radioTypePc', 'N')"><input type="radio" id="ETS_MNK_1050000B" name="radioTypePc" value="N"><label for="ETS_MNK_1050000B">국가</label></li>
+							</ul>
+						</div>
+						<div class="filter_box">
+							<h4>수출입구분</h4>
+							<ul class="radiolst">
+								<li onclick="f_radioCheck('radioImexPc', 'E')"><input type="radio" id="exp" name="radioImexPc" value="E" checked="checked"><label for="exp">수출</label></li>
+								<li onclick="f_radioCheck('radioImexPc', 'I')"><input type="radio" id="imp" name="radioImexPc" value="I"><label for="imp">수입</label></li>
+							</ul>
+						</div>
+						<div class="filter_box">
+							<div class="filterTop">
+								<div>
+									<h4>조회기간</h4>
+								</div>
+							</div>
+							
+							<div class="date_box" id="yearDivPc" style="display: none;">
+								<label for="ETS0100173Q_formYearPc" class="visually-hidden">시작연도 선택</label>
+								<select name="formYearPc" id="ETS0100173Q_formYearPc" class="date" onchange="f_pcToMobile()">
+								</select>
+								<span>~</span>
+								<label for="ETS0100173Q_toYearPc" class="visually-hidden">종료연도 선택</label>
+								<select name="toYearPc" id="ETS0100173Q_toYearPc" class="date" onchange="f_pcToMobile()">
+								</select>
+							</div>
+							<div class="date_box" id="yearMonthDivPc">
+								<label for="ETS0100173Q_formYearMonthPc" class="visually-hidden">시작연월 선택</label>
+								<select name="formYearMonthPc" id="ETS0100173Q_formYearMonthPc" class="date" onchange="f_pcToMobile()">
+								</select>
+								<span>~</span>
+								<label for="ETS0100173Q_toYearMonthPc" class="visually-hidden">종료연월 선택</label>
+								<select name="toYearMonthPc" id="ETS0100173Q_toYearMonthPc" class="date" onchange="f_pcToMobile()">
+								</select>
+							</div>
+
+							<div style="margin-top:10px">
+								<ul class="radiolst5">
+									<li onclick="f_radioCheck('radioDatePc', '')"><input type="radio" id="dateall" name="radioDatePc" value="" checked="checked"><label for="dateall">전체</label></li>
+									<li onclick="f_radioCheck('radioDatePc', '1')"><input type="radio" id="date110" name="radioDatePc" value="1"><label for="date110">1~10일</label></li>
+									<li onclick="f_radioCheck('radioDatePc', '2')"><input type="radio" id="datea120" name="radioDatePc" value="2"><label for="datea120">1~20일</label></li>
+									<li onclick="f_radioCheck('radioDatePc', '3')"><input type="radio" id="datea131" name="radioDatePc" value="3"><label for="datea131">1~말일</label></li>
+								</ul>
+							</div>
+						</div>
+						<div class="filter_end">
+							<button onclick="f_resetData()" class="btnReset2 w50p mr8"><img src="images/history_black.png" alt=""/> 초기화</button>
+							<button onclick="f_retrieveData()" class="btnSearch w50p"><img src="images/search.svg" alt="" />조회</button>
+						</div>
+					</div>
+				</div>
+				<div class="filter_mobile">
+					<div class="filter_mtxt">
+						
+						<div class="loc_mtit">
+							<span class="search_cate">
+							</span>
+							<button type="button" class="s_btn ml10" id="ETS0100173Q_statsBtn_mobile" onclick="f_statsPopup()">통계설명</button>
+						</div>
+					</div>
+					<div class="search_area">
+					<div class="search_mbox">
+					<div class="search_mbox_in" id="searchMboxIn">
+						<button class="filter_btn" id="ETS0100173Q_btnTypeMobile" >통계항목</button>
+						<button class="filter_btn" id="ETS0100173Q_btnImexMobile" >수출입구분</button>
+						<button class="filter_btn" id="ETS0100173Q_btnYearMobile">조회기간</button>
+					</div>
+					</div>
+					<button class="optionChange">조회조건</button>
+					</div>
+				</div>
+			</div>
+			<div class="right-col">
+				<div class="location">
+					<div class="location_nav">
+						<div class="loc_nav">
+							<ul>
+								<li><a href="/cts/index.do" class="hm" id="home_btn"><span class="visually-hidden">관세청 수출입무역통계 홈으로</span></a></li>
+								<li><a>무역통계조회  <p></p> 수출입화물통계</a></li> 
+								<li><a href="javascript:void(0)">적재항별 수출실적       <i></i></a>
+									<ul>
+										
+												<li><a href="javascript:ets_f_prccMenuLoad('hmpg/retrieveImexOvrlInfoLst_T2.do',{menuId: 'ETS_MNU_00000102'});">수출입총괄</a></li>
+											
+												<li><a href="javascript:ets_f_prccMenuLoad('/hmpg/retrievePrlstPrImexAcrsLst_T2.do',{menuId: 'ETS_MNU_00000103'});">품목별 수출입실적</a></li>
+											
+												<li><a href="javascript:ets_f_prccMenuLoad('/hmpg/retrieveCntyPrImexAcrsLst_T2.do',{menuId: 'ETS_MNU_00000104'});">국가별 수출입실적</a></li>
+											
+												<li><a href="javascript:ets_f_prccMenuLoad('/hmpg/retrieveTmprPrImexAcrsLst_T2.do',{menuId: 'ETS_MNU_00000105'});">성질별 수출입실적        </a></li>
+											
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="location_in">
+						<div class="loc_tit">
+							<h3 id="subTitle">품목</h3>
+							<button type="button" class="s_btn ml10" id="ETS0100173Q_statsBtn" onclick="f_statsPopup()">통계설명</button>
+						</div>
+					</div>
+				</div>
+				<div class="table_tit">
+					<p id="tableTitle"></p>
+					<div class="table_btnlst">
+						<button type="button" class="table_btn" id="ETS0100173Q_btnTable" onclick="f_tableView()"><span>데이터</span></button>
+						<button type="button" class="chart_btn" id="ETS0100173Q_btnChartColumn" data-chart-type="column" onclick="f_viewChart('column', 'AMT')"><span>막대</span></button>
+						<button type="button" class="print_btn" onclick="return cf_printPage()" aria-label="인쇄"></button>
+						
+						<div class="downBtnBox">
+							<button type="button" class="down_btn"aria-label="저장"></button>
+							<div class=" downPopst  " id="downPopup">
+								<div class="downPopHeader">
+									<h2>다운로드</h2>
+									<button class="layer-close" aria-label="창닫기"></button>
+								</div>
+								<div class="downPopBody ">
+									<div class="downBtnLst">
+										<button class="downItem btnXls" id="ETS0100173Q_btnXls" onclick="f_saveExl('10일 단위 잠정치 통계.xls')">xlsx</button>
+										<button class="downItem btnJson" id="ETS0100173Q_btnJson" onclick="f_saveJson()">json</button>
+										<button class="downItem btnCsv" id="ETS0100173Q_btnCsv" onclick="f_saveCsv()">csv</button>
+									</div>
+								</div>
+							</div>
+							<div class="m-black-down-bg"></div>
+						</div>
+						<label for="ETS0100173Q_showPagingLine" class="visually-hidden">목록 개수</label>
+						<select name="showPagingLine" id="ETS0100173Q_showPagingLine" onchange="f_pagiongLineChange()">
+							<option value="15">15개</option>
+							<option value="30">30개</option>
+							<option value="50">50개</option>
+							<option value="100">100개</option>
+						</select>
+					</div>
+				</div>
+				<div class="board_area"  id="boardArea">
+					<div class="board_scroll">
+						<table class="board_type1" id="trade_table">
+							<colgroup></colgroup>
+						</table>
+						<div class="screenTouch">
+							<button class="screenTouchBtn">좌우로 스크롤하여 확인하세요.</button>
+						</div>
+					</div>
+					<div class="pagination_area">
+						<div class="pagination_wrap"id="paginationList">
+						
+						</div>
+					</div>
+				</div>
+				<!-- 차트영역 시작 -->
+				<div id="chartArea">
+					<div id="chartHScrollArea">
+						<div id="chartViewArea"></div>
+					</div>
+				</div>
+				<!-- 차트영역 끝 -->
+				<div class="info_area">
+					<div class="satisfaction_wrap">
+						<div class="satis_box">
+							<div class="satis_survey">
+								<p>이 페이지에서 제공하는 정보에 만족하셨습니까?</p>
+								<ul>
+									<li><input type="radio" id="ETS0100173Q_custStdgScrCd1" name="custStdgScrCd" value="1"><label for="ETS0100173Q_custStdgScrCd1">매우 만족</label></li>
+									<li><input type="radio" id="ETS0100173Q_custStdgScrCd2" name="custStdgScrCd" value="2"><label for="ETS0100173Q_custStdgScrCd2">만족</label></li>
+									<li><input type="radio" id="ETS0100173Q_custStdgScrCd3" name="custStdgScrCd" value="3"><label for="ETS0100173Q_custStdgScrCd3">보통</label></li>
+									<li><input type="radio" id="ETS0100173Q_custStdgScrCd4" name="custStdgScrCd" value="4"><label for="ETS0100173Q_custStdgScrCd4">불만족</label></li>
+									<li><input type="radio" id="ETS0100173Q_custStdgScrCd5" name="custStdgScrCd" value="5"><label for="ETS0100173Q_custStdgScrCd5">매우 불만족</label></li>
+								</ul>
+							</div>
+							<div class="satis_opinion">
+								<input type="text" id="ETS0100173Q_custStdgOpinCn" name="custStdgOpinCn" maxlength="1000" placeholder="개선의견을 입력해주세요. (최대 1000자까지 가능)">
+								<label class="visually-hidden" for="ETS0100173Q_custStdgOpinCn">개선의견을 입력해주세요.</label>
+								<button class="survey_btn" onclick="cf_saveOpinion('ETS_MNK_10500000')">평가하기</button>
+							</div>
+						</div>
+					</div>
+					<div class="info_img">
+						<p>본 저작물은 '공공누리' 제1유형:
+							<br>
+							<span class="font_red">출처 표시후 자유롭게 이용</span> 
+							하실 수 있습니다.
+						</p>
+						<img src="images/info.png" alt="" >
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 모바일 팝업: 조건변경 -->
+		<div class="optionChangeLayer">
+			<div class="optionHeader">
+				<div class="optiontit">조회조건 설정</div>
+				<button class="optionLayerClose"></button>
+			</div>
+			<div class="filter_area" id="optionBody">
+			</div>
+		</div>
+		
+
+<!DOCTYPE html>
+<html lang="ko">
+<script type="text/javascript" src="/cts/js/ets/hmpg/popup/ETS0100226Q.js"></script>
+
+<body>
+
+		<div class="productPop w800" id="statsPopup">
+			<div class="popHeader">
+				<h2>통계설명</h2>
+				<button class="layer-close" aria-label="창닫기"></button>
+			</div>
+			<div class="popBody">
+				<h3 class="visually-hidden">10일단위 잠정치 실적 통계설명</h3>
+				<div class="pop_container">
+					<div class="flexBox">
+						<div class="yScroll w100p">
+							<div class="MiVi_box mt0 mb0">
+								<div class="inner psc_box">
+									<div class="mivi_top txt_left cntBetween">
+										<p><img src="images/mivi_img.png" alt="통계"><span class="mivi_s">10일단위 잠정치 실적</span></p>
+										<i class="mivi_mark"></i>
+									</div>
+									<div class="tit1 font_navy">개요</div>
+									<h4 class="tit2 mt12">수출입 통관자료를 10일 단위로 주요품목 및 국가 기준에 따라 집계하여 국민, 기업, 공공기관 등이 쉽고 편리하게 조회할 수 있도록 서비스 제공</h4>
+									<div class="tit1 font_navy">공표 주기와 제공범위</div>
+									<h4 class="tit2 mt12"><strong>주기 :</strong> 10일</h4>
+									<h4 class="tit2 mt12"><strong>범위와 시기 :</strong> 1일~10일 통계는 11일에 제공, 1일~20일 통계는 21일에 제공, 1일~말일 통계는 익월 1일에 제공</h4>
+									<p class="cntP ml20">
+										※ 수출입 신고의 정정, 취하 등 변경내역을 반영하여 전월까지의 자료를 현행화하되, 당월통계는 잠정치 기준으로 작성
+									</p>
+									<div class="tit1 font_navy">통계제공 기준</div>
+									<h4 class="tit2 mt12"><strong>기준일 :</strong> 수리일 (신고수리일 기준으로 수출입 통계를 집계)</h4>
+									<h4 class="tit2 mt12"><strong>품목 :</strong> 상위 10대 성질별 수출입 기준으로 집계</h4>
+									<h4 class="tit2 mt12"><strong>국가 :</strong> 상위 10대 국가 수출입 기준으로 집계</h4>
+									<h4 class="tit2 mt12"><strong>금액 :</strong> 수입(과세가격미화금액), 수출(신고미화금액)</h4>
+									<div class="tit1 font_navy">통계작성기관 및 담당부서</div>
+									<h4 class="tit2 mt12">관세청 정보데이터정책관 데이터담당관</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+</body>
+</html><!-- 통계설명 --><!-- 품목검색 팝업 include  -->
+				<input type="hidden" id="ETS0100173Q_menuId" name="menuId" value="ETS_MNU_00000134"><!-- 메뉴 ID--><!-- <div class="black-bg"></div> -->
+		<div class="p-black-bg"></div>
+		<form id="ETS0100173Q_excel_download_form" method="post">
+		   <input type="hidden" id="ETS0100173Q_xlsFileNm" name="xlsFileNm">
+		</form>
+	</div>
+</body>
+</html>

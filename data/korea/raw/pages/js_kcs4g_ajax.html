@@ -1,0 +1,650 @@
+/**
+ * @Project : 4세대 국가관세종합정보망 구축사업
+ * @Class : kcs4g_ajax.js
+ * @Package : 
+ * @Description : ajax 관련 JS 라이브러리
+ * @author : SWA
+ * @since : 2014.11.19.
+ * @version : 1.00011
+ *
+ * @Copyright (c) 4세대 국가관세종합정보망 구축사업
+ *
+ *------------------------------------------------------------------------
+ * Modification Information
+ *------------------------------------------------------------------------   
+ *    날짜         수정자       변경사유
+ * 2014.11.19.    서대현      최초생성
+ * 2014.12.09.    진원정      ajax setup, ajaxFilter 부분 include.jsp에서 이전. 메세지 부분 cf_message로 변경. kcs4g_ajaxform.js 병합
+ * 2014.12.12.    4gt374     ajaxPreFilter 삭제 : ajaxFormSubmit인 경우 블럭 해제 및 메세지 처리
+ * 2014.12.30.    4gt374     ajaxformsubmit 시 변경된 값 success 이후 원복 (예 : 20141230 ->2014-12-30)
+ * 2014.12.31.    4gt606     중복전송 방지처리
+ * 2015.01.07.    4gt606     공통 메세지 번들 처리
+ * 2015.01.13.    4gt374     ajaxformsubmit 시 변경된 값 원복 시점 변경 : complete시로 변경(error 인경우 적용되지 않아서)
+ * 2015.01.26.    4gt374     success, error, complete시 화면단의 해당 callback 호출시 ajax객체 메서드로 랩핑되도록 수정
+ * 2015.02.26.    진원정       kcs4gAjaxFormSubmit 전송 후 callback함수에 kcs4gAjaxFormSubmit를 호출시 특정 값 삭제 되는 문제 수정
+ * 2015.03.04.    진원정       $.fn.kcs4gAjaxForm 함수 추가
+ * 2015.03.10.    4gt717     CORS를 위한 option 추가
+ * 2015.03.20.    4gt717     비동기 호출시에만 CORS 통신되도록 수정. header 추가 (X-Requested-With)
+ * 2015.03.24.    박상인     화면접근제어 Security Filter에서 화면접근 이외의 AJAX 처리를 위한  js 변경 요청
+ * 2015.03.27.    진원정     blockUI 변경(jQgrid와 통일함)
+ * 2015.04.07     진원정     세션종료시 로그인페이지 이동처리
+ * 2015.04.20     진원정     error발생시 error콜백함수호출 처리
+ * 2015.05.14     진원정     webService 호출시 서버error대응
+ * 2015.05.21     진원정     개발자가 정의한 beforeSubmit()을 먼저 실행후, input의 포맷은 후처리
+ * 2015.06.09     진원정     타임아웃체크 추가
+ * 2015.06.15     진원정     ajaxSubmit.beforeSerialize()삭제후, "-" 포맷이 없어지지않는 버그 대응
+ * 2015.06.16     진원정     ajaxSubmit.beforeSubmit() 중복되는 엘리먼트 오버라이드 되는 버그 수정
+ * 2015.07.24     진원정     ajaxSubmit일경우 에러발생시 callback 또는 success를 호출 하는 버그 수정
+ * 2015.11.24     김미라		 IE8 호환성보기 체크시 대응
+ * 2016.01.11     김미라		 nextUrl 옵션사용시 f_contentRightLoad() f_mainContentLoad() 함수 미존재시 대응
+ */
+ 
+(function() {
+	
+	$.AJAX_NEXT_TARGET_ID = {
+		  LEFT  :'content_left'
+		, RIGHT :'content_right'
+	};
+	$.AJAX_MSG_TYPE = {
+		  DEFAULT : 'alert_default'
+		, INFO    : 'alert_info'
+		, WARN    : 'alert_warn'
+		, DEL     : 'alert_del'
+		, SAVE    : 'alert_save'
+	};
+	
+	$.fn.kcs4gAjaxOptions = function(options) {
+		
+		var _this = this;
+		var progressBlock = '';
+		if(window["contextRoot"]) {
+			progressBlock = $('<img src="'+contextRoot+'/images/loading.gif" alt="' + COMMON_MSG.lab_all_00006 + '" />'); // 처리중
+		} else {
+			progressBlock = $('<span>Loading...</span>').css({color: '#804405', 'font-size': '15px'});
+		}
+		
+		// 사용자(개발자)정의한 success, complete, error 옵션 백업
+		var orgSuccess = options.success,
+			orgComplete = options.complete,
+			orgError = options.error;
+		
+		var userAgent = navigator.userAgent.toLowerCase();
+		
+		if(userAgent.indexOf('msie 9.') > -1 || userAgent.indexOf('msie 8.') > -1 || userAgent.indexOf('msie 7.') > -1 ) {
+		} else {
+			//CORS 통신은 async만..
+			// 2015-08-06 CORS통신에서만 아래 옵션 처리하도록 로직 변경
+			if(typeof options.async == 'undefined' || options.async) {
+				options = $.extend(true, {
+					crossDomain : true						  // 타대기능호출시, 세션유지를 위한 옵션1 (세션유지가 되지않은 문제가 있었음) 
+					, xhrFields : {withCredentials : true} // 타대기능호출시, 세션유지를 위한 옵션2
+				}, options);
+			}
+		}
+		
+		options = $.extend(true, {
+			  url:''
+			, cache: false
+			, type:'POST'
+			, headers:{isAjax:true, "X-Requested-With":"XMLHttpRequest"}
+			, dataType:'json'
+			, traditional:true	//array data처리를 위해 선언
+			, data:{}
+			, timeout:190000
+			, iframe:false
+			, isBlock:false
+			, blockId:'#content'
+			, msgType:$.AJAX_MSG_TYPE.DEFAULT
+			, msgConfirm:null
+			, nextUrl:null
+			, nextParams:{}
+			, scrnId : undefined
+			, menuId : undefined
+			, nextTargetId : $.AJAX_NEXT_TARGET_ID.LEFT
+			, nextPopupUrl:null
+			, nextPopupParams:{}
+			, refreshJqgrids:[]
+			, savedTokenKey : null	// 2014-12-30 중복전송 방지처리
+			, beforeSend:function(jqXHR, settings) {
+				return $(_this).kcs4gAjaxBeforeSend(jqXHR, settings, options);
+			}
+			, getDialogMessageBox : function() {
+				var dialogMessageBox = $('#dialog_message_alert');
+				if (!dialogMessageBox.length) {
+					dialogMessageBox = $('<div id="dialog_message_alert"></div>');
+					$(dialogMessageBox).hide();
+					$(dialogMessageBox).appendTo(document.body);
+				}
+				return dialogMessageBox;
+			}
+			, blockUiOpt: {
+				  message: $('<div>').addClass('pop_loading').append('<p>' + COMMON_MSG.lab_all_00006 + '</p>')
+				, centerX:true
+				, centerY:true
+				, css:{
+						'border':'none'
+				}
+				, overlayCSS:{
+					backgroundColor:	'#ffffff'
+					//opacity:			0.6,
+					//cursor:				'wait'
+				}
+			}
+			/*
+			, blockUiOpt: {
+				  message:
+					  $('<div>').css({height:'70px', width:'30px', 'text-align':'center'})
+				          .append(progressBlock)
+				, centerX:true
+				, encterY:true
+				, css:{
+					  height:'120px'
+					, width:'60px'
+					, backgroundColor:'#ffffff'
+					, padding:'30px'
+				}
+			}
+			*/
+		}, options, {
+			success : function(result, status, jqXHR, form) {
+				
+		    	try {
+		    		result = $.parseJSON(result);
+		    	} catch (err) {console.warn('예외발생. 확인바랍니다.');
+		    	}
+
+		    	// 2014-12-30 중복전송 방지
+		    	if(!options.iframe && options.savedTokenKey) {
+		    		var savedToken = jqXHR.getResponseHeader("savedToken");
+		    		if(savedToken) {
+			    		var savedTokens = savedToken.split(":");
+			    		if(options.savedTokenKey == savedTokens[0]) {
+			    			$("input[name=" + options.savedTokenKey + "]").val(savedTokens[1]);
+			    		}
+		    		}
+		    	}
+
+		    	if(result && typeof result === "object") {
+			    	if (result.error == 'true') {
+			    		if(result.message) {
+			    			alert(result.message);
+			    		}
+			    		
+			    		jqXHR.status = 500;
+			    		orgError && orgError.apply(this, [jqXHR]);
+			        	return undefined;
+			    	}
+		    	}
+		    	
+		    	// options.iframe == ajaxSubmit() 한경우
+	    		if (options.iframe) {
+	    			try {
+	    				result = $.parseJSON(jqXHR.responseText);
+
+	    				// 2014-12-30 중복전송 방지
+		    			if(options.savedTokenKey) {
+		    				var savedTokenVal = result[options.savedTokenKey];
+		    				delete result[options.savedTokenKey];
+				    		$("input[name=" + options.savedTokenKey + "]").val(savedTokenVal);
+//				    		result = (result.result) ? result.result : result;
+		    			}
+	    			} catch(e) {
+	    				// result가 error jsp : html
+	    				var $result = $('<div>').html(jqXHR.responseText);
+	    				var $form = $result.find("form[name=errorResultForm]");
+		    			var savedTokenVal = $("input[name=errorSavedToken]", $form).val(),
+		    				errorMessage = $("input[name=message]", $form).val();
+		    			
+		    			if(options.savedTokenKey) {
+				    		$("input[name=" + options.savedTokenKey + "]").val(savedTokenVal);
+		    			}
+		    			
+		    			if(errorMessage) {
+		    				alert(errorMessage);	// error message
+		    			}
+		    			orgError && orgError.apply(this, [jqXHR]);
+		    			// 2014-07-24 ajaxSubmit일경우 에러발생시 callback 또는 success를 호출 하는 버그 수정
+		    			return undefined;
+	    			}
+				}
+		
+				if ($("body").kcs4gAjaxSuccess(result, status, jqXHR, options)) {
+					orgSuccess && orgSuccess.apply(this, [result, status, jqXHR, form]);
+					options.callback && options.callback(result, status, jqXHR, form);
+				}
+			}, 
+			error: function(jqXHR, status, err) {
+				// 세션종료시 로그인페이지 이동처리
+				var isTimeout = jqXHR.getResponseHeader('AjaxSessionTimeout') || '';
+				if(jqXHR.status == 403 && isTimeout == 'true') {
+					var message = COMMON_MSG.sys_all_00017 || '세션이 유효하지 않습니다. 다시 로그인해 주시기 바랍니다.';
+					cf_alertMessage(message);
+					window.location = contextRoot + '/login.do?flag=timeout';
+					
+				// 2015-06-09 타임아웃체크 추가
+				} else if (err == 'timeout') {
+					cf_alertMessage( COMMON_MSG.err_all_00371);  // 조회 시간이 경과했습니다. 나중에 재조회하시기 바랍니다.
+					
+					// 화면접근권한 체크시 메시지 
+				} else if (jqXHR.status == 401) {
+				       cf_alertMessage( COMMON_MSG.err_all_00254,'화면접근');  //{0} 권한이 없습니다.
+				       
+				} else if(jqXHR.status == 500 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
+				    // 2015-05-13 webService 호출시 서버error대응
+			 		if(options.savedTokenKey) {
+			 			if(!options.iframe) {
+			 				// header에서 취득
+				    		var savedToken = jqXHR.getResponseHeader("savedToken");
+				    		if(savedToken) {
+					    		var savedTokens = savedToken.split(":");
+					    		if(options.savedTokenKey == savedTokens[0]) {
+					    			$("input[name=" + options.savedTokenKey + "]").val(savedTokens[1]);
+					    		}
+				    		}
+				    		if (jqXHR.responseJSON.error == 'true') {
+					    		if(jqXHR.responseJSON.message) {
+					    			alert(jqXHR.responseJSON.message);
+					    		}
+				    		}
+			 			} else {
+					    	// result가 error jsp : html
+			 				var $result = $('<div>').html(jqXHR.responseText);
+		    				var $form = $result.find("form[name=errorResultForm]");
+			    			var savedTokenVal = $("input[name=errorSavedToken]", $form).val(),
+			    				errorMessage = $("input[name=message]", $form).val();
+					    	$("input[name=" + options.savedTokenKey + "]").val(savedTokenVal);
+			    			if(errorMessage) {
+			    				alert(errorMessage);	// error message
+			    			}
+			 			}
+			 		}
+			 		
+					orgError && orgError.apply(this, [jqXHR]);
+				} else {
+					orgError && orgError.apply(this, [jqXHR]);
+				}
+			},
+			complete : function(jqXHR, status, form) {
+				if (options.isBlock) {
+					var userAgent = navigator.userAgent.toLowerCase();
+					if(userAgent.indexOf('msie 8.') > -1 || userAgent.indexOf('msie 7.') > -1 ) {
+						$('body').unblock();
+					}else{
+						$(options.blockId).unblock();
+					}
+				}
+				
+				if(this.frmId) {
+					if($(this.frmId).is("*")) {	// kcs4gAjaxFormSubmit의 beforeSerialize에서 치환된 데이타 되돌리기
+			    		$('.date, .brno, .jrno, .telno, .time, .timehhmm', this.frmId).each(function(){
+							var orgData= $(this).data("orgData");
+							if(orgData) {
+								$(this).removeData("orgData")
+									.val(orgData);
+							}
+						});
+			    	}
+				}
+				
+				orgComplete && orgComplete.apply(this, arguments);
+			}
+		});
+
+		return options;
+	};
+	
+	$.fn.kcs4gAjax = function(options) {
+
+		options = $(this).kcs4gAjaxOptions(options);
+		
+		// 2014-12-30 중복전송 방지
+		if(options.savedTokenKey) { 
+			var _url = options.url;
+			var _token = options.savedTokenKey;
+			if(_url.indexOf('?') > -1) {
+				options.url = _url + '&savedToken=' + _token + '&' + _token + '=' + $("input[name=" + _token + "]").val();	
+			} else {
+				options.url = _url + '?savedToken=' + _token + '&' + _token + '=' + $("input[name=" + _token + "]").val();	
+			}
+		}
+		/*
+		// 2015-02-26 get방식으로 토큰처리시 formsubmit시 중복전송이 발생함
+		// 비슷한 케이스가 발생하면 주석 풀어 테스트해볼것
+		if(options.savedTokenKey) { 
+			var _token = options.savedTokenKey;
+
+			var isAddToken = true;
+			if(typeof options.data === 'string') {
+				if(options.data.indexOf(_token) > -1) {
+					isAddToken = false;
+				}
+			} else if(typeof options.data === 'object') {
+				if(options.data[_token] !== undefined) {
+					isAddToken = false;
+				}
+			} 
+			
+			if(isAddToken) {
+				var q = 'savedToken=' + _token + '&' + _token + '=' + $("input[name=" + _token + "]").val();
+				options.url += (options.url.indexOf('?') >= 0 ? '&' : '?') + q;
+			}
+		}
+		*/
+		// 2014-12-04 diaglog창->cf_confirmMessage함수로 대체 처리
+		if (options.msgConfirm && options.msgConfirm != '') {
+			if(cf_confirmMessage(options.msgConfirm)) {
+				$.ajax(options);
+			}
+		} else {
+			$.ajax(options);
+		}
+		/*
+	    // 비동기통신 결과 나올때까지 주석처리
+		var _callAjax = function(options) {
+			// 2014-12-04 diaglog창->cf_confirmMessage함수로 대체 처리
+			if (options.msgConfirm && options.msgConfirm != '') {
+				if(cf_confirmMessage(options.msgConfirm)) {
+					$.ajax(options);
+				}
+			} else {
+				$.ajax(options);
+			}
+		};
+		// 2015-04-22 async=false일경우 blockUI처리
+		if (typeof options.async !== 'undefined' && !options.async && options.isBlock) {
+			$(options.blockId).block(options.blockUiOpt);
+			setTimeout(function(){
+				_callAjax(options);
+			}, 300);
+		} else {
+			_callAjax(options);
+		}
+	  */
+	};
+	
+	$.fn.kcs4gAjaxValidateResult = function(jqXHR, result, options) {
+		if (jqXHR.getResponseHeader('auth_error') == true) {
+			//애러메세지 처리
+			$(options.getDialogMessageBox()).kcs4gAjaxMessage($.AJAX_MSG_TYPE.INFO, result.msg);
+			
+			document.location.href = jqXHR.getResponseHeader('auth_error_nexturl');
+			return false;
+		}
+		return true;
+	};
+	
+	$.fn.kcs4gAjaxMessage = function(msgType, msg) {
+		// 2014-12-04 메세지박스 alert로 대체로인한 주석처리
+		alert(msg);
+	};
+	
+	$.fn.kcs4gAjaxBeforeSend = function(jqXHR, settings, options) {
+		// 블로킹설정	
+		if (options.isBlock) {
+			var userAgent = navigator.userAgent.toLowerCase();
+			
+			if(userAgent.indexOf('msie 8.') > -1 || userAgent.indexOf('msie 7.') > -1 ) {
+				$('body').css('height',$(window).height());
+				$('body').block(options.blockUiOpt);
+			}else{
+				$(options.blockId).block(options.blockUiOpt);
+			}
+		}
+		
+		return true;
+	};
+	
+	$.fn.kcs4gAjaxSuccess = function(result, status, jqXHR, options) {
+		
+		// 응답해더(RequestHeader)애러처리
+		if (!$(this).kcs4gAjaxValidateResult(jqXHR, result, options)) {
+			return false;
+		}
+
+		// 메세지처리
+		var msg = '';
+		var errMsg = '';
+
+		if (result && result.msg) {
+			msg = result.msg;
+		}
+		if (result.errors && result.errors.length > 0) {
+			$(result.errors).each(function(idx){
+				errMsg += '\n' + (idx + 1) + '.' + this.defaultMessage;
+			});
+		}
+		if (msg != '') {
+			var msgType = $.AJAX_MSG_TYPE.INFO;
+			switch(result.resultCode) {
+				case 'S' :
+					msgType = $.AJAX_MSG_TYPE.INFO;
+					if (options.msgType == $.AJAX_MSG_TYPE.SAVE) {
+						msgType = $.AJAX_MSG_TYPE.INFO;
+					}
+					break;
+				default :
+			}
+
+			 alert(msg + (errMsg != '' ? errMsg : ''));
+		}
+		
+		// 성공이외는 여기서 종료
+		if (result.resultCode && result.resultCode != 'S') {
+			return false;
+		}
+		
+		// jqGrid초기화
+		$(options.refreshJqgrids).each(function(){
+			$('#' + this).jqGrid().trigger("reloadGrid");
+		});
+		
+		if (window.opener) {
+			if (options.nexturl && options.nexturl != '') {
+				document.location.href = options.nexturl;
+			}
+			var nextPopupUrl = options.nextPopupUrl;
+			if (nextPopupUrl && nextPopupUrl != '') {
+				if (options.PopupnextParams && options.nextParams.length > 0) {
+					nextUrl += "?";
+					var idx = 0;
+					$.each(options.nextPopupParams, function(k, v){
+						if (idx > 0) {
+							nextUrl += "&";
+						}
+						nextUrl += k + "=" + v;
+						idx++;
+					});
+				}
+				document.location.href = nextPopupUrl;
+			}
+		} else {
+			var nextUrl = options.nextUrl;
+			if (nextUrl && nextUrl != '') {
+				if (options.nextParams && options.nextParams.length > 0) {
+					nextUrl += "?";
+					var idx = 0;
+					$.each(options.nextParams, function(k, v){
+						if (idx > 0) {
+							nextUrl += "&";
+						}
+						nextUrl += k + "=" + v;
+						idx++;
+					});
+				}
+
+				if (options.nextTargetId == $.AJAX_NEXT_TARGET_ID.LEFT) {
+					
+					if ( typeof f_mainContentLoad == 'function' ) {
+						f_mainContentLoad(nextUrl);
+					} else {
+						cf_contentLoad(nextUrl, {'scrnId': options.scrnId, 'menuId': options.menuId, 'menuLnkLoctTpcd':'LL'}, null, options);
+					}
+					
+				} else if (options.nextTargetId == $.AJAX_NEXT_TARGET_ID.RIGHT) {
+					
+					if ( typeof f_contentRightLoad == 'function' ) {
+						f_contentRightLoad(nextUrl);
+					} else {
+						cf_contentLoad(nextUrl, {'scrnId': options.scrnId, 'menuId': options.menuId, 'menuLnkLoctTpcd':'LR'}, null, options);
+					}
+
+				} else {
+					
+					if ( typeof f_mainContentLoad == 'function' ) {
+						f_mainContentLoad(nextUrl);
+					} else {
+						cf_contentLoad(nextUrl, {'scrnId': options.scrnId, 'menuId': options.menuId, 'menuLnkLoctTpcd':'LL'}, null, options);
+					}
+				}
+			}
+		}
+		
+		return true;
+	};
+/*	
+	$.fn.kcs4gAjaxError = function(jqXHR, status, error, options) {
+
+		if (options.isBlock) {
+			$(options.blockId).unblock();
+		}
+		
+		$(options.getDialogMessageBox()).kcs4gAjaxMessage($.AJAX_MSG_TYPE.INFO, error);
+		
+	};
+*/		
+	// 2014-12-08 kcs4g_ajaxform.js와 소스 병합 ========================시작
+	$.fn.jqueryFormExtends = function(options) {
+		var _this = this,
+			orgBeforeSubmit = options.beforeSubmit;
+		delete options['beforeSubmit'];
+		
+		options = $.extend(true, {
+			isBlock : true,
+			beforeSerialize : function(jqForm, options) {
+				if(!orgBeforeSubmit) {
+					$('.date', jqForm).each(function(){
+						var txt= $(this).val(),
+						orgData = $(this).data("orgData");
+						if(!orgData) {
+							$(this).data("orgData", txt)
+							.val(txt.replace(/-/g,''));
+						}
+					});
+					$('.brno', jqForm).each(function(){
+						var txt= $(this).val(),
+						orgData = $(this).data("orgData");
+						if(!orgData) {
+							$(this).data("orgData", txt)
+							.val(txt.replace(/-/g,''));
+						}
+					});
+					$('.jrno', jqForm).each(function(){
+						var txt= $(this).val(),
+						orgData = $(this).data("orgData");
+						if(!orgData) {
+							$(this).data("orgData", txt)
+							.val(txt.replace(/-/g,''));
+						}
+					});
+					$('.telno', jqForm).each(function(){
+						var txt= $(this).val(),
+						orgData = $(this).data("orgData");
+						if(!orgData) {
+							$(this).data("orgData", txt)
+							.val(txt.replace(/-/g,''));
+						}
+					});
+					$('.time', jqForm).each(function(){
+						var txt= $(this).val(),
+						orgData = $(this).data("orgData");
+						if(!orgData) {
+							$(this).data("orgData", txt)
+							.val(txt.replace(/:/g,''));
+						}
+					});
+					$('.timehhmm', jqForm).each(function(){
+						var txt= $(this).val(),
+						orgData = $(this).data("orgData");
+						if(!orgData) {
+							$(this).data("orgData", txt)
+							.val(txt.replace(/:/g,''));
+						}
+					});
+				}
+			},
+			beforeSubmit : function(formData, jqForm, options) {
+				var ret = undefined	;
+				if(orgBeforeSubmit) {
+					ret = orgBeforeSubmit.apply(this, [formData, jqForm, options]);
+				}
+				// 2015-06-15 ajaxSubmit.beforeSerialize()삭제후, "-" 포맷이 없어지지않는 버그 대응
+				if(!orgBeforeSubmit || ret || typeof(ret) === 'undefined') {
+					orgBeforeSubmit = false;
+					options.beforeSerialize.apply(this, [jqForm, options]);
+					var _tmpForm = $(jqForm).formToArray(false, []); 
+					// 2015-06-16 ajaxSubmit.beforeSubmit() 중복되는 엘리먼트 오버라이드 되는 버그 수정
+					$.each(formData, function(idx){
+						var oriForm = this;
+						$.each(_tmpForm, function(jdx){
+							var tmpForm = this;
+							if(oriForm.name == tmpForm.name && idx == jdx) {
+								oriForm.value = tmpForm.value;
+								return false;
+							}
+						});
+					});
+					return true;
+				}
+				return false;
+			}
+		}, options);
+		
+		options = $(this).kcs4gAjaxOptions(options);
+		
+		var mp = 'multipart/form-data';
+		var multipart = ($(_this).attr('enctype') == mp || $(_this).attr('encoding') == mp);
+		if (options.iframe || multipart) {
+			options.dataType = 'html';
+		}
+	
+		var frmId = $(this).attr("id");
+		options.frmId = "#" + frmId;
+		return options;
+	};
+		
+	$.fn.kcs4gAjaxFormSubmit = function(options) {
+		options = $(this).jqueryFormExtends(options);
+		if (options.msgConfirm && options.msgConfirm != '') {
+			if(cf_confirmMessage(options.msgConfirm)) {
+				$(options.frmId).ajaxSubmit(options);
+			}
+		} else {	
+			$(options.frmId).ajaxSubmit(options);
+		}
+	};
+	
+	$.fn.kcs4gAjaxForm = function(options) {
+		$(this).kcs4gAajaxForm(options);
+	};
+		
+	$.fn.kcs4gAajaxForm = function(options) {
+		options = $(this).jqueryFormExtends(options);
+		if (options.msgConfirm && options.msgConfirm != '') {
+			if(cf_confirmMessage(options.msgConfirm)) {
+				$(options.frmId).ajaxForm(options);
+			}
+		} else {	
+			$(options.frmId).ajaxForm(options);
+		}
+	};
+	// 2014-12-08 kcs4g_ajaxform.js와 소스 병합 ========================종료
+	
+})();
+
+// 2014-12-05 include.jsp에서 이관처리됨
+$(document).ready(function() {
+    
+	$.ajaxSetup({
+		cache: false
+	});
+});
