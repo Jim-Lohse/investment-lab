@@ -47,6 +47,8 @@ CAPTURE_URLS = {
     "js_index_main": "https://tradedata.go.kr/cts/js/ets/cmmn/indexMain.js",
     "js_menu": "https://tradedata.go.kr/cts/js/menu.js",
     "js_kcs4g_ajax": "https://tradedata.go.kr/cts/js/kcs4g/kcs4g_ajax.js",
+    # The 10-day provisional screen's own controller: names its grid-data call.
+    "js_ets173": "https://tradedata.go.kr/cts/js/ets/hmpg/trade/ETS0100173Q.js",
 }
 
 OUT_DIR = DATA_DIR / "korea"
