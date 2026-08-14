@@ -1,0 +1,336 @@
+
+/*
+    공통 com 자바스크립트
+*/
+
+/*****************************************************
+* Function 명 : com_cf_Popup
+* Function 기능설명 : 확인필요
+* 작성자 : 4gt170
+* 작성일 : 2015-03-04
+* 변경로그 : 
+* 2014-08-31-4gt170-최초생성
+******************************************************/
+function ets_cf_comPopup(url, title, w, h) {
+    var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+    
+    var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+    var height =  window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.width;
+    
+    var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+    var top = ((height / 2) - (h / 2)) + dualScreenTop;
+    
+    var comWindow = window.open(url, title, 'resizable=yes, scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+    // 
+    //var openPopup = window.open('about:blank','title', 'width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+    //openPopup.location.href = url;
+    
+    if(window.focus) {
+    	comWindow.focus();
+    }
+    
+    /*
+     * var openPopup = window.open('about:blank','title', 'width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+    openPopup.location.href = url;
+   // var comWindow = window.open( url, 'win' ,'resizable=yes, menubar=yes, toolbar=yes,location=yes, status=yes, scrollbars=yes');
+    if(window.focus) {
+        openPopup.focus();
+    }*/
+}
+
+
+/******************************************************
+* Function 명 : ets_cf_dwnlExlCommon
+* Function 기능설명 : 엑셀 다운로드 공통 기본 함수
+* 셀렉트 박스 값 변경시 실행되는 함수
+* 작성자 : 4gt379
+* 작성일 : 2015-06-23
+* 변경로그 : 
+* 2013-09-24-4gt324-최초생성
+******************************************************/
+function ets_cf_dwnlExlCommon(contextPath, actionUrl, frmId, eHeader) {
+	 
+	var form = $("#"+frmId);
+	$('input[name="excelHeader"]').val(eHeader);	
+	form.attr("target", "_self");
+	form.attr("action", contextPath + actionUrl);
+	form.submit();
+}
+
+
+
+/******************************************************
+* Function 명 : ets_cf_setDispUnit
+* Function 기능설명 : 중량단위 변경시 설정
+* 셀렉트 박스 값 변경시 실행되는 함수
+* 작성자 : 4gt324
+* 작성일 : 2014-09-24
+* 변경로그 : 
+* 2013-09-24-4gt324-최초생성
+******************************************************/
+function ets_cf_setDispUnit(dispTpcd){
+	var dispUnit = '톤(TON)' ;
+	
+	if ( $('select[name=ttwgTpcd] option:selected').val() == 1)
+		dispUnit = ' Kg ' ;
+
+	//컨테이너일경우 TEU
+	if ( dispTpcd == 'CNTR')
+		dispUnit = dispUnit+ ',TEU ';
+	else if ( dispTpcd == 'TON')  
+		dispUnit;
+	else 
+		dispUnit = '천 달러(USD 1,000),' + dispUnit;
+
+	$('span[name=dispUnit]').text( dispUnit );		
+}
+
+
+/*********************************************
+* Function 명 : cf_autoCntyNm
+* Function 기능설명 : selectBox에 inputbox에 입력된 품목이 선택되도록 함
+* 작성자 : 4gt379
+* 작성일 : 2015-05-07
+* 변경로그 :
+* 2015-05-07 4gt379 최초생성
+**********************************************/
+function ets_cf_autoCntyNm(type, cdId, nmId, paramCd, paramLen, retFunc){
+	 
+	//ID에 .이 들어가는 객체에 대한 처리를 위해 다음과 같이 수정
+    var cdIdObj = $('[id="'+cdId+'"]');
+    var nmIdObj = $('[id="'+nmId+'"]'); 
+    //var nmIdObj = $('td[id="'+nmId+'"]');
+
+    var cdLen = 0;
+    var cdLenMin = 0;
+    var jsonData = {};
+    var url = '';
+    
+    //console.log(cdIdObj.attr('maxlength'));
+    //ID,NM id가 없을경우 return
+    if(cdIdObj.attr('id') == undefined || nmIdObj.attr('id') == undefined){	    	
+    	return;
+    }
+    
+    cdIdObj.keyup(function(event){
+		//console.log(event.which);
+		//명칭도 하려면 
+		if(event.which >= 65 && event.which <= 90){ //영문자
+		}else if(event.which >= 46 && event.which <= 57){ //Delete, 숫자
+		}else if(event.which >= 96 && event.which <= 105){ //숫자패드
+		}else if(event.which == 173 || event.which == 8){ //_ , Backspace
+		}else{
+			return;
+		}
+		
+	    if(cdIdObj.val().length == cdLen && cdLen > 0 || cdIdObj.val().length >= cdLenMin){
+    	    
+        	// 국가코드, 국가명
+    		jsonData['cntyCd'] = cdIdObj.val();
+    		jsonData['cntyNm'] = '%';
+    		//jsonData['cntyNm'] = cdIdObj.val();        		
+    		
+    		url = contextRoot+'/hmpg/retrieveCntyQry.do';
+    		
+			var opts = 
+		   	{
+				url : url,
+				data : jsonData,
+      	        callback : 
+      		    function(response){
+      	            
+      	    	    if(response.cntyitem != null){
+      	    	    	 if(response.cntyitem[0] != null){
+      	    	    		 
+      	    	    	 	 nmIdObj.val(response.cntyitem[0].cntyCd);
+	      	    	      	 $('input[name=cntyCdList]').val("");
+	      	    	    	 $('input[name=cntyCdListNm]').val("");
+	      	    	    	 $('input[name=cntyCdListNm]').attr("title","");    			      	    			 
+    				    	try{
+    			        		retFunc.call(null, "OK");
+    			        		}catch(E){console.warn('예외발생. 확인바랍니다.');} 	
+      	    	    	 }
+      	    	    	 else{
+      	    	    		 nmIdObj.val(""); 
+	      	    	      	 $('input[name=cntyCdList]').val("");
+	      	    	    	 $('input[name=cntyCdListNm]').val("");
+	      	    	    	 $('input[name=cntyCdListNm]').attr("title","");    			      	    			 
+	      	    	    	
+	      	    	    } 
+      	    	    }else{
+      	    	    	 nmIdObj.val("");
+      	    	      	 $('input[name=cntyCdList]').val("");
+      	    	    	 $('input[name=cntyCdListNm]').val("");
+      	    	    	 $('input[name=cntyCdListNm]').attr("title","");    			      	    			 
+      	    	    }
+      	   	    }
+		   	};				
+			$.fn.kcs4gAjax(opts);	        	
+		}else if(cdIdObj.val().length != cdLen){
+			nmIdObj.val("");
+    		try{
+        		retFunc.call(null, "NOTOK");
+        		}catch(E){console.warn('예외발생. 확인바랍니다.');}			
+		}
+        
+     });
+}
+
+
+/*********************************************
+* Function 명 : ets_f_setSelectBox
+* Function 기능설명 : selectBox에 년도,월  입력함수
+* 작성자 : 4gt379
+* 작성일 : 2015-03-12
+* 변경로그 :
+* 2014-12-02 4gt379 최초생성
+**********************************************/
+function ets_f_setSelectBox(priodkind) {
+
+	var now = new Date();
+	var nyear = now.getFullYear();
+	var nmon = (now.getMonth()+1)>9?'+(now.getMonth()+1)':(now.getMonth()+1);
+	var cmon ="";
+	var cmonVal ="";	
+	var optString = "";
+	var optFrString = "";
+	var optToString = "";
+	
+	if (priodkind == "MON")
+	{
+		for (var sy =2000; sy <=nyear;sy++){
+			for (var sm=1; sm<= 12 ;sm++) {
+				if (sm <= 9 ) {
+					cmon = sy+'.0'+sm;
+					cmonVal = sy+'0'+sm;
+				}					
+				else { 
+					cmon    = sy+'.'+sm;
+					cmonVal = sy+''+sm;
+				}
+						
+				//console.log (">>>>>>>>>"+cmon);
+				if ((sy == nyear ) && (sm ==1 )) {
+					optFrString = '<option value="'+cmonVal + '" selected="'+'selected'+'" >'+cmon +'</option>' +  optFrString;
+				}
+				else { 
+					optFrString = '<option value="'+cmonVal + ' ">'+cmon +'</option>' +  optFrString;
+				}
+				
+				optToString = '<option value="'+cmonVal + ' ">'+cmon +'</option>' +  optToString;
+				
+				if ((sy == nyear ) && ( nmon == sm) ) break; 
+			}
+		}
+		
+		$('select[name=priodFr]').html(optFrString);		
+		//$('select[name=priodFr]').val(nyear+"01");
+		
+		$('select[name=priodTo]').html(optToString);			
+		//$('select[name=priodTo]').val(cmonVal);
+		
+	}
+	else  // start of YEAR  ##########################################
+	{
+		for (var sy =2000; sy <=nyear;sy++){
+			optString = '<option value="'+sy +'">'+sy+'년 </option>' + optString;
+		}
+		
+		$('select[name=priodFr]').html(optString);			
+		$('select[name=priodFr]').val(nyear);
+		
+		$('select[name=priodTo]').html(optString);			
+		$('select[name=priodTo]').val(nyear);
+	}
+	
+} // end of function
+
+
+    /*********************************************
+	* Function 명 : f_initSortColumns
+	* Function 기능설명 : 테이블 컬럼 sort 초기화
+	* 작성자 : 4gt379
+	* 작성일 : 2015-10-28
+	* 변경로그 :
+	* 2015-10-28 4gt379 최초생성
+	**********************************************/	
+	function f_initSortColumns(table, columns) {
+		var $header = $(table).children("thead").children(".header");
+		//console.log("header"+$header.html());
+		$("th[data-sort]", $header).each(function() {		  
+			//$(this).children("a").removeClass("up down");
+			$(this).children("div").children("div").removeClass("up down");
+		});
+	}
+	
+    /*********************************************
+	* Function 명 : ets_cf_openCntyMltSlctPpup
+	* Function 기능설명 : 국가다중선택 조회팝업 호출
+	* 작성자 : 권도혁
+	* 작성일 : 2016-02-26
+	* 변경로그 :
+	* 2016-02-26 권도혁 최초생성
+	**********************************************/
+	function ets_cf_openCntyMltSlctPpup(){
+		ets_cf_comPopup(contextRoot+'/hmpg/openTRS0107002Q.do','국가조회',1120,550);
+	}
+	
+	function ets_cf_openCntyMltSlctLimitPpup(){ 
+		ets_cf_comPopup(contextRoot+'/hmpg/openTRS0107004Q.do','국가조회',1120,550);
+	}
+	
+/* 웹 접근성 수정 - 탭 위치 복구 */
+(function($){
+	var lastFocusedElement = null;
+	
+	$(document).on('focusin', function(e){
+		if(e.target !== document.body){
+			lastFocusedElement = e.target;
+		}
+	});
+	
+	$(document).on('keydown', function(e){
+		if(e.keyCode === 9 || e.key === 'Tab'){
+			if(document.activeElement === document.body &&
+				lastFocusedElement && document.body.contains(lastFocusedElement)) {
+					setTimeout(function(){
+						var isCustomArea = $(lastFocusedElement).closest('[data-custom-tab]').length > 0;
+						
+						if(isCustomArea){
+							e.preventDefault();
+							$(lastFocusedElement).focus();
+						}
+						else {
+							$(lastFocusedElement).focus();
+						}
+					},300);
+				}
+		}
+	});
+	
+	$(document).on('mousedown', function(e){
+		if(!$(e.target).closest('#topMenuArea').length > 0){
+			if($('#topMenuArea').find(':focus').length > 0){
+				setTimeout(function(){
+					$('#topMenuArea .menuBox').css({
+						'display' : 'none',
+						'opacity' : '0'
+					});
+					
+					$('#topMenuArea .menuBox').removeClass('on');
+					
+					$('#nav').css({
+						'height': '50px',
+						'border-bottom': 'none'
+					});
+					
+					document.activeElement.blur();
+					
+					lastFocusedElement = null;
+				},300);
+			}
+		}
+	});
+})(jQuery);
+/* 탭 위치 복구 끝 */

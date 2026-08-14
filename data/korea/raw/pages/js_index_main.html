@@ -1,0 +1,777 @@
+/*****************************************************
+* Function 명 : 
+* Function 기능설명 : 화면시작
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 :  
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+/*****************************************************
+ * 기타
+ *****************************************************/
+var $vtltMainArea = $("#mainarea");		// 활성메인영역
+
+/* 관세환율정보 국가 변동시 수정 필수 */
+var gTrifFxrtIdx = 1;
+
+ 
+$(document).ready(function() {
+	
+	$('#TRS0106001Q_dtlStats').on('click',function(e){
+		/* 메인화면 통관실적 옆 '세부통계+' 클릭 시  */
+		e.preventDefault();
+		$('[data-menuid=ETS_MNU_00000214] a span','#topmenu').eq(0).click();
+	});
+	//로딩되면서 메뉴생성 
+	//myc_f_createLeftMenuLst(menuId, "Y", openParam);
+	//console.log("ipAddress"+ipAddress);
+});
+
+/*****************************************************
+* Function 명 : ets_f_refresh
+* Function 기능설명 : controller 직접 호출
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_refresh(href) {
+	var base = '/cts';
+	var url = base + href;
+	
+	$('#mainarea').empty().load(url, function(response, status, xhr) {
+		if(status=="success") {
+			$vtltMainArea = $("#mainarea");			// 활성메인영역
+			$('#maindetailarea').empty().hide();	// 서브영역 숨김
+			
+			$(this).attr("menuId", "").show();		// 메뉴ID 설정
+		} else {
+			$(this).html("Page Not Found");
+		}
+	});
+}
+
+/*****************************************************
+* Function 명 : ets_f_popupUrl
+* Function 기능설명 : 팝업화면 오픈
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_popupUrl(url, width, height,isOtherUrl){
+	var features =  'width=' + width + ', height=' + height + ', toolbar=0, resizable=1, status=0, menubar=0, argument=0,';
+	var base = '/cts';
+	if (isOtherUrl =='Y') {
+		base ='';
+	}
+	
+	//alert(base + url);
+	var popup = window.open(base + url,'_popUp', features);
+
+	if(popup != null) {
+		popup.focus();
+	}
+} 
+
+/*****************************************************
+* Function 명 : ets_f_openMenuDrt
+* Function 기능설명 : 메뉴직접Open
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_openMenuDrt(menuId, openUrl) {
+	
+	$(".mainheader nav > ul > li > a.current").trigger("click");
+	
+	ets_f_createLeftMenuLst(menuId, openUrl);
+}
+
+/*****************************************************
+* Function 명 : ets_f_createLeftMenuLst
+* Function 기능설명 : Left메뉴목록생성
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_createLeftMenuLst(menuId, openUrl, openParam,isMain) {
+	  //url이 있는 경우
+	 if(openUrl!="") {
+		//console.log("in ets_f_createLeftMenuLst1");
+		// 선택된 메뉴  : 대메뉴 선택시 2LVL 첫번째메뉴가 실행되도록		
+        if (menuId =="ETS_MNU_00000002") {
+        	menuId ="ETS_MNU_00000003";
+        	} 
+        
+        if (menuId =="ETS_MNU_00000100") {
+        	menuId ="ETS_MNU_00000101";
+        	}
+        
+        if (menuId =="ETS_MNU_00000200") {
+        	menuId ="ETS_MNU_00000201";
+        	}        
+    
+        if (menuId =="ETS_MNU_00000207") {
+        	menuId ="ETS_MNU_00000208";
+        	}        
+                        
+        if (menuId =="ETS_MNU_00000211") {
+        	menuId ="ETS_MNU_00000212";
+        	}        
+                
+        if (menuId =="ETS_MNU_00000215") {
+        	menuId ="ETS_MNU_00000216";
+        	}
+        
+		var menuInfo = ets_f_getMenuInfo(menuId);
+		
+		var $selA = $(menuInfo.selA);
+		
+		$selA.parents("ul").parent().siblings().children("a").removeClass("current");
+		$selA.parents("ul").parent().children("a").addClass("current");
+		$selA.parent().siblings().children("a").removeClass("current");
+		$selA.addClass("current");			// 선택된 메뉴 표시
+		
+		var $liLst;
+		
+		if (menuInfo.leftMenuDepth == 3)
+		{	
+			// 무역통계 조회일때만
+			if ( menuInfo.menuLvlVal == 2)
+				$liLst =  $selA.parents("ul").find("[data-menuid='" + menuId + "']").eq(0).children("ul") ;
+			else
+				$liLst =  $selA.parents("ul").find("[data-menuid='" + menuInfo.uprMenuId + "']").eq(0).children("ul") ;
+			
+			$liLst.parent("li").children("a").eq(0).addClass("current");	
+		}		 
+		else {
+			$liLst  = $selA.parents("ul").eq($selA.parents("ul").length -2);
+			//$bbbb = $liLst.find("li").next("li").next("li").children("ul"); 
+			//처음을 제외한 나머지 메뉴가 접히도록한다.
+			//2015.09.10 하위메뉴가 접히지 않아 적용함
+			//메뉴추가시 변경필요
+			$liLst.find("li").next("li").next("li").children("ul").addClass("displaynone");
+			
+		}
+		
+		
+		$(".left_top").html("<h1>"+menuInfo.menuHeader+"</h2>");
+		// display style 삭제
+		var $liLst2 = $liLst.html().replace(/ets_f_createLeftMenuLst/g, "ets_f_prccMenu");
+		var $liLst3 = $liLst2.replace(/style="display: none;"/g, " ");
+		var $liLst4 = $liLst3.replace(/style="display: block;"/g, " ");
+		
+		$("#left > nav > ul").html("<li>"+$liLst4+"</li>");
+			
+		// 5Depth 메뉴 open
+		if($selA.next("ul").children('li').length>0) 
+			$("#left > nav > ul > li > ul > li > a.current").removeClass('current').trigger("click");
+		
+		// Left menu view
+		if($("#content").hasClass("displaynone")) {
+			$("#mainbody").css("background", "white");
+			$("#main").addClass("displaynone");
+			$("#content").removeClass("displaynone");
+		}
+		
+		// 1Lv menu close, openUrl
+		$(".mainheader nav > ul > li > a.current").trigger("click");
+		
+		// exec menu
+		$('#maincont').empty();
+		
+		//직접접근일때 url제공
+		ets_f_prccMenu(menuId, openUrl, openParam);
+	}
+}
+
+/*****************************************************
+* Function 명 : ets_f_PrccDtlScrn
+* Function 기능설명 : 상세화면 실행
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_PrccDtlScrn(prccUrl, paramData) {
+	$('#maindetailarea').load(prccUrl, paramData, function(response, status, xhr) {
+		if(status=="success") {
+			// 취소버튼 클릭 bind
+			$(".btn_total [id*=cnclBtn]", $(this)).on("click", function() {	
+				$('#maindetailarea').hide();
+				$('#mainarea').show();
+			});
+			
+			$vtltMainArea = $("#maindetailarea");				// 활성메인영역
+			$('#mainarea').hide();								// 메인영역 숨김
+			$(this).attr("menuId", paramData.menuId).show();	// 메뉴ID 설정
+			
+			ets_f_menuOpenPrcc(paramData.menuId);		// 메뉴 오픈 후 처리
+		} else {
+			$('#mainarea').html("Page Not Found");
+		}
+	});
+}
+
+/*****************************************************
+* Function 명 : ets_f_createRcntUseMenuLst
+* Function 기능설명 : 최근사용메뉴목록생성
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_createRcntUseMenuLst(menuInfo) {
+	var $rcntMenuUl = $("#recentMenu > dd > ul");
+	$rcntMenuUl.children("li").has("a[href*='" + menuInfo.menuId + "']").remove();	// 중복 메뉴 삭제
+	$rcntMenuLis = $rcntMenuUl.children("li:lt(6)");
+	var menuNm = menuInfo.menuNm;
+	if(menuNm.length>17) menuNm = $.trim(menuNm.substr(0, 17)) + "...";
+	$rcntMenuUl.empty().append("<li><a href=\"javascript:ets_f_openMenuDrt('" + menuInfo.menuId + "');\">" + menuNm + "</a></li>").append($rcntMenuLis);
+	$.cookie(CKEY_ets_RCNT_MENU, $rcntMenuUl.html());
+	
+	$("#recentMenu > dt > a").addClass("current").parent().siblings("dd").show(); // 최근사용메뉴목록OPEN
+}
+
+
+/*****************************************************
+* Function 명 : ets_f_processLgn
+* Function 기능설명 : 로그인처리
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_processLgn() {
+	/* SSO-LOGIN */
+	if($.trim($(":input[name=loginId]").val())=="") {
+		cf_alertMessage(INDEXMAIN_MSG.err_all_00015, "아이디(ID)");
+		$(":input[name=loginId]").focus();
+		return false;
+	} else if($(":input[name=loginPwd]").val()=="") {
+		cf_alertMessage(INDEXMAIN_MSG.err_all_00015, "비밀번호(PW)");
+		$(":input[name=loginPwd]").focus();
+		return false;
+	}
+
+	// 아이디 쿠키 저장
+	$("#rememberID").trigger("save");
+	
+	$("#loginForm").attr("action", $(":input[name=cspLoginUrl]").val());
+	$("#loginForm").closest("form").get(0).submit();
+}
+
+/*****************************************************
+* Function 명 : ets_f_stupMyMenu
+* Function 기능설명 : My메뉴설정
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_stupMyMenu(menuId) {
+	// My Menu 여부
+	var $favIcon = $("header:first > a", $vtltMainArea);
+	
+	// My menu에 존재하면, 즐겨찾기 활성화
+	if($(".fav_icons .icon_menu a[href*='" + menuId + "']").length) 
+		$favIcon.addClass("current");
+	
+	// Favorite icon click (add/remove my menu)
+	$favIcon.on("click", function() {
+		var current = $(this).hasClass("current");
+		if(!current && $(".fav_icons .icon_menu > li").length > 35) {
+			cf_alertMessage(INDEXMAIN_MSG.err_all_00268, "나의 메뉴|36");		// {0}은(는) 최대 {1}건까지 등록 가능합니다.
+		} else {
+			var jsonData = [{"menuId":menuId, "menuOrdr":current ? -1 : 0}];
+			ets_f_saveMyMenuLst(jsonData);
+		}
+	});
+}
+
+/*****************************************************
+* Function 명 : ets_f_deleteMyMenu
+* Function 기능설명 : My메뉴삭제
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_deleteMyMenu(menuId) {
+	var $myMenuLi = $(".fav_icons .icon_menu a[href*='" + menuId + "']").parent();
+	if($myMenuLi.children("label").length)
+		$myMenuLi.children("label").remove();
+	else
+		$myMenuLi.append("<label>X</label>");
+}
+
+/*****************************************************
+* Function 명 : ets_f_updateMyMenu
+* Function 기능설명 : My메뉴수정
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_updateMyMenu(bReset) {
+	var $delList = $(".fav_icons .icon_menu label");
+	if(bReset) {
+		if(!cf_confirmMessage(INDEXMAIN_MSG.cfm_all_00005, "전체 나의메뉴")) return;		// {0} 을(를) 삭제하시겠습니까?
+		
+		$(".fav_icons .icon_menu > li").append("<label>X</label>");
+	} else {
+		if($delList.length) {
+			if(!cf_confirmMessage(INDEXMAIN_MSG.cfm_all_00005, "선택된 " + $delList.length + "건의, 나의메뉴")) return;	// {0} 을(를) 삭제하시겠습니까?
+		} else {
+			cf_alertMessage(INDEXMAIN_MSG.err_all_00031);	// 삭제가능한 자료가 존재하지 않습니다.
+			return;
+		}
+	}
+	
+	//-----------------------------------------------------------------------------
+	// 삭제 대상 목록 생성(json array)
+	var jsonData = [];
+	$delList.each(function() {
+		var menuId = $(this).siblings("a").attr("href");
+		jsonData.push({"menuId":menuId.substr(menuId.indexOf("ets_MNU_"), 16), 
+					   "menuOrdr":-1});
+	});
+	//-----------------------------------------------------------------------------
+	
+	ets_f_saveMyMenuLst(jsonData);	// My메뉴저장
+}
+
+/*****************************************************
+* Function 명 : ets_f_saveMyMenuLst
+* Function 기능설명 : My메뉴저장
+ * 작성자 : 4gt379
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt379-최초생성
+******************************************************/
+function ets_f_saveMyMenuLst(jsonData) {
+	$.ajax({
+		type:"post",
+		url:"/csp/myc/mainmt/MainMtCtr/saveMyMenuList.do",
+		dataType:"json",
+		data:JSON.stringify(jsonData),
+		contentType: 'application/json; charset=utf-8',
+		success:function(result) {
+			if(result.myMenuList!=null) {
+				//----------------------------------------------------------------
+				// My메뉴 새로고침
+				var $iconMenus;
+				for(var ii=0; ii<3; ii++) {
+					$iconMenus = $(".fav_icons .icon_menu").eq(ii).empty();
+					for(var jj=(ii*12); jj<((ii+1)*12); jj++) {
+						if(jj<result.myMenuList.length) {
+							$iconMenus.append(
+								"<li><a href=\"javascript:ets_f_openMenuDrt('" + result.myMenuList[jj].menuId + "');\" class=\"" + result.myMenuList[jj].menuImgeNm + "\"><span>" + result.myMenuList[jj].menuNm + "</span></a></li>"
+							);
+						}
+					}
+				}
+				//----------------------------------------------------------------
+				
+				// 현재 메뉴가 My menu에 존재
+				if($(".fav_icons .icon_menu a[href*='" + $vtltMainArea.attr("menuId") + "']").length) 
+					$("header:first > a", $vtltMainArea).addClass("current");
+				else
+					$("header:first > a", $vtltMainArea).removeClass("current");
+				
+				// My메뉴 추가면, 첫 페이지로 이동
+				if(jsonData[0].menuOrdr==0) $(".fav_icons .area_01 > a").trigger("click");
+			}
+		},
+		error: function(xhr, status, error) {
+			alert(error);
+		}
+	});
+}
+
+/*****************************************************
+* Function 명 : ets_f_getMenuInfo
+* Function 기능설명 : 메뉴정보 취득
+ * 작성자 : 4gt379
+ * 작성일 : 2015-04-06
+ * 변경로그 : 
+ * 2015-04-06-4gt379-최초생성
+******************************************************/
+function ets_f_getMenuInfo(menuId) {
+	var $selLi = null;
+	if(typeof menuId == "undefined") {
+		$selLi = $("#left > nav > ul").find("a.current:last").parent("li");
+	} else {
+		$selLi = $(".mainheader > nav > ").find("[data-menuid='" + menuId + "']").eq(0);
+		//$selLi = $(".mainheader > nav > ul > li > div ").find("[menuid='" + menuId + "']").eq(0);
+	}
+	
+	var arrMenuPath = $selLi.attr("data-menuAlPath").split("|");
+	var leftMenuDepth = $selLi.attr("data-leftMenuDepth");
+			
+	var menuInfo = {"menuId":$selLi.attr("data-menuid"),
+					"menuNm":$selLi.children("a").children("span").text(), 
+					"menuHeader":arrMenuPath[leftMenuDepth - 1], 
+					"uprMenuId":$selLi.attr("data-uprMenuId"),
+					"leftMenuDepth":$selLi.attr("data-leftMenuDepth"),
+					"menuLvlVal":$selLi.attr("data-menuLvlVal"),
+					"selA":$selLi.children("a")
+					};
+	
+	
+	return menuInfo;
+}
+
+/*****************************************************
+* Function 명 : ets_f_menuOpenPrcc
+* Function 기능설명 : 메뉴 오픈 후 처리
+ * 작성자 : 4gt379
+ * 작성일 : 2015-04-06
+ * 변경로그 : 
+ * 2015-04-06-4gt379-최초생성
+******************************************************/
+function ets_f_menuOpenPrcc(menuId) {
+	
+	if(menuId==undefined) return;
+
+	// 메뉴정보 취득
+	var menuInfo = ets_f_getMenuInfo(menuId);
+
+	// 헤더설정
+	var $contentHeader = $("header:first", $vtltMainArea);
+	
+	// My menu 설정
+	if($(".fav_icons .icon_menu").length) {		// 로그인 상태면
+		ets_f_stupMyMenu(menuInfo.menuId);
+	} else {
+		$("a", $contentHeader).remove();		// 비로그인 상태면, 즐겨찾기 버튼 제거
+	}
+	
+	// 메뉴명 설정
+	var menuNm = menuInfo.menuNm.replace(/ /g, "");
+	$("h1", $contentHeader).text(menuNm);
+	
+	// 메뉴경로 설정
+	//var arrMenuPath = menuInfo.menuAlPath.split("|");
+	var arrMenuPath = ''; // 임시
+	var newMenuPath = "<li>Home</li>";
+	for(var ii=1; ii<arrMenuPath.length; ii++) {
+		newMenuPath += "<li" + (ii==arrMenuPath.length-1 ? " class='current'>" : ">") + arrMenuPath[ii] + "</li>";
+	}
+	$("ul", $contentHeader).html(newMenuPath);
+		
+	// 최근사용메뉴 추가
+//	ets_f_createRcntUseMenuLst(menuInfo);
+}
+
+/*****************************************************
+* Function 명: ets_f_prccMenu
+* Function 설명 : 
+* 작성자 : 4gt374
+* 작성일 : 2014-11-21
+* 변경로그 :
+ * 2014-10-08-4gt379 최초생성
+******************************************************/
+//사용안함
+function ets_f_prccMenu(menuId, openUrl, openParam) {
+	
+	var base = '';
+	var url = base + openUrl;
+	//alert("in ets_f_prccMenu1");
+	//$('#maincont').empty();
+	//alert("in ets_f_prccMenu2");
+	$('#mainarea').load(url);
+	
+}
+
+
+/*****************************************************
+* Function 명 : ets_f_engMenu
+* Function 기능설명 : 영문 메인
+ * 작성자 : 4gt379
+ * 작성일 : 2015-05-04
+ * 변경로그 : 
+ * 2015-05-04-4gt379-최초생성
+******************************************************/
+
+function ets_f_engMenu() {
+	//
+	//alert("prccMenu"+openUrl);
+	var base = '';
+	var url = base + 'index_eng.do';
+//	url ='js/ets/hmpg/intro/m02_0101.html';
+	
+	$('#mainbody').empty();
+	$('#mainbody').load(url);
+	
+	////console.log(">>>>"+url);	
+}
+
+/*****************************************************
+* Function 명 : myc_f_createEngLeftMenuLst
+* Function 기능설명 : Left메뉴목록생성(영문메뉴)
+ * 작성자 : 4gt115
+ * 작성일 : 2014-10-08
+ * 변경로그 : 
+ * 2014-10-08-4gt115-최초생성
+******************************************************/
+function myc_f_createEngLeftMenuLst(menuId, openUrl, openParam) {
+	if(openUrl!="") {
+		// 선택된 메뉴
+		var menuInfo = myc_f_getMenuInfo(menuId);
+		
+		var $selA = $(menuInfo.selA);
+		$selA.parents("ul").parent().siblings().children("a").removeClass("current");
+		$selA.parents("ul").parent().children("a").addClass("current");
+		$selA.parent().siblings().children("a").removeClass("current");
+		$selA.addClass("current");			// 선택된 메뉴 표시
+			
+		if($selA.parents("ul").length > 2) {	// 2Depth menu 이상 선택이면
+			// Left menu list create
+			var $liLst = $selA.parents("ul").eq($selA.parents("ul").length - 3);
+			$("#left > .left_top").html("<h1>"+$liLst.parent().children("a:eq(0)").text()+"</h1>").next().removeClass("displaynone");
+			$("#left > nav > ul").html($liLst.html().replace(/myc_f_createLeftMenuLst/g, "myc_f_prccMenu"));
+			
+			// 선택 메뉴 외 하위메뉴 표시 안함
+			$("#left > nav :not(a.current)").next("ul").addClass("displaynone");
+			$("#left > nav a.current").next("ul").removeClass("displaynone");
+			
+			// 5Depth 메뉴 open
+			if($selA.next("ul").children('li').length>0) 
+				$("#left > nav > ul > li > ul > li > a.current").removeClass('current').trigger("click");
+		} else {
+			$("#left > .left_top").html("<h1>" + menuInfo.menuNm + "</h1>");
+			$("#left > nav").not(".left_top").addClass("displaynone");		// 3Depth 이상 메뉴 출력 안함
+		}
+		
+		
+		// Left menu view
+		if($("#content").hasClass("displaynone")) {
+			$("#mainbody").css("background", "white");
+			$("#main").addClass("displaynone");
+			$("#content").removeClass("displaynone");
+		}
+		
+		// 1Lv menu close, openUrl
+		$(".mainheader nav > ul > li > a.current").trigger("click");
+
+		// exec menu
+		myc_f_prccMenu(menuId, openUrl, openParam);
+	}
+}
+
+
+/*****************************************************
+* Function 명 : myc_f_prccMenu
+* Function 기능설명 : 메뉴실행
+ * 작성자 : 4gt115
+ * 작성일 : 2014-10-08
+ * 변경로그 :
+ * 2014-10-08-4gt115-최초생성
+******************************************************/
+function myc_f_prccMenu(menuId, openUrl, openParam) {
+	$("#mainarea").empty();
+
+	if(openUrl!="") {
+		// if url exist
+		if(openUrl!="V") {
+			//markanyUnload();
+			//var url = contextRoot + "/myc/mainmt/MainMtCtr/menuExec.do";
+			//var param = {"selectedId" : menuId};
+			
+			//if(openParam) {
+			//    param = $.extend(param, openParam);
+		    //}
+
+			if(openUrl!="Y") {
+				url = openUrl;
+				param = "";
+			}
+
+			$('#mainarea').load(url, param, function(response, status, xhr) {
+				if(status=="success") {
+					$vtltMainArea = $("#mainarea");			// 활성메인영역
+					$('#maindetailarea').empty().hide();	// 서브영역 숨김
+					$(this).attr("menuId", menuId).show();	// 메뉴ID 설정
+
+					myc_f_menuOpenPrcc(menuId);				// 메뉴 오픈 후 처리
+				} else {
+					$(this).html("Page Not Found");
+				}
+			});
+		}
+	}
+}
+
+
+/*****************************************************
+* Function 명 : myc_f_menuOpenPrcc
+* Function 기능설명 : 메뉴 오픈 후 처리
+ * 작성자 : 4gt115
+ * 작성일 : 2015-01-13
+ * 변경로그 :
+ * 2015-01-13-4gt115-최초생성
+******************************************************/
+function myc_f_menuOpenPrcc(menuId) {
+	if(menuId==undefined) return;
+
+	// 메뉴정보 취득
+	var menuInfo = myc_f_getMenuInfo(menuId);
+
+	// 헤더설정
+	var $contentHeader = $("header:first", $vtltMainArea);
+
+	// My menu 설정
+//	if($(".fav_icons .icon_menu").length) {		// 로그인 상태면
+//		myc_f_stupMyMenu(menuInfo.menuId);
+//	} else {
+//		$("a", $contentHeader).remove();		// 비로그인 상태면, 즐겨찾기 버튼 제거
+//	}
+
+	// 메뉴명 설정
+	var menuNm = menuInfo.menuNm.replace(/ /g, "");
+	$("h1", $contentHeader).text(menuNm);
+
+	// 메뉴경로 설정
+	var arrMenuPath = menuInfo.menuAlPath.split("|");
+
+	var newMenuPath = "<li>Home</li>";
+	for(var ii=1; ii<arrMenuPath.length; ii++) {
+		newMenuPath += "<li" + (ii==arrMenuPath.length-1 ? " class='current'>" : ">") + arrMenuPath[ii] + "</li>";
+	}
+	$("ul", $contentHeader).html(newMenuPath);
+
+	// 최근사용메뉴 추가
+	//myc_f_createRcntUseMenuLst(menuInfo);
+}
+
+
+/*****************************************************
+* Function 명 : myc_f_createRcntUseMenuLst
+* Function 기능설명 : 최근사용메뉴목록생성
+ * 작성자 : 4gt115
+ * 작성일 : 2014-10-08
+ * 변경로그 :
+ * 2014-10-08-4gt115-최초생성
+******************************************************/
+function myc_f_createRcntUseMenuLst(menuInfo) {
+	var $rcntMenuUl = $("#recentMenu > dd > ul");
+	$rcntMenuUl.children("li").has("a[href*='" + menuInfo.menuId + "']").remove();	// 중복 메뉴 삭제
+	$rcntMenuLis = $rcntMenuUl.children("li:lt(6)");
+	var menuNm = menuInfo.menuNm;
+	if(menuNm.length>17) menuNm = $.trim(menuNm.substr(0, 17)) + "...";
+	$rcntMenuUl.empty().append("<li><a href=\"javascript:myc_f_openMenuDrt('" + menuInfo.menuId + "');\">" + menuNm + "</a></li>").append($rcntMenuLis);
+	$.cookie(CKEY_MYC_RCNT_MENU, $rcntMenuUl.html());
+
+	$("#recentMenu > dt > a").addClass("current").parent().siblings("dd").show(); // 최근사용메뉴목록OPEN
+}
+
+
+
+
+/*****************************************************
+* Function 명 :
+* Function 기능설명 : 주간환율
+ * 작성자 : 4gt115
+ * 작성일 : 2014-10-08
+ * 변경로그 :
+ * 2014-10-08-4gt115-최초생성
+ * 참고용 샘플
+    $('.exchange a.rank_lft, .exchange a.rank_rgt', $mainlist).unbind('click').click(function(e){
+        e.preventDefault();
+
+        //var $list = $('.exchange>div>ul', $mainlist);
+        var $list = $("#TrifFxrtData").html();
+        var exchangelst = $list.data('rowData');
+        var curexchangeidx = -1;
+        if(!exchangelst) {
+            $list.kcs4gAjax({
+                url : contextRoot + '/infocomn/retrieveTrifFxrt.do'
+              , data : {}
+              , isBlock : true
+              , async : false
+              , blockId : $list
+              , callback : function(data) {
+                  // 검색결과 셋팅
+                  $list.data('rowData', data.rTrifFxrt);
+                  $list.data('curexchangeidx', -1);
+
+                  $('.exchange span.today', $mainlist).html(data.curDate);
+
+                  data = null;
+               }
+            });
+        }
+
+        exchangelst = $list.data('rowData');
+        curexchangeidx = Number($list.data('curexchangeidx'));
+
+        if(exchangelst.length > 0) {
+            if($(this).hasClass('rank_lft')) {
+                curexchangeidx -= 1;
+                if(curexchangeidx < 0) {
+                    curexchangeidx = exchangelst.length - 1;
+                }
+            } else {
+                curexchangeidx = (curexchangeidx + 1) % exchangelst.length;
+            }
+
+            var $li = $('#ULS1201001Q_TrifFxrtList_tmplRowView').tmpl(exchangelst[curexchangeidx]);
+            $list.empty();
+            $li.appendTo($list);
+
+            $list.data('curexchangeidx', curexchangeidx);
+        }
+    });
+  ******************************************************/  
+	
+	// 관세환율 좌우 클릭시
+	function f_moveBtnClick(moveTpcd,langTpcd){	 
+		var $list = $('.tab02>div>ul', $vtltMainArea);
+		if ( moveTpcd =='PREV') {
+			//맨처음이 아니면 1개씩 줄어듬 
+			if (gTrifFxrtIdx > 1){
+				gTrifFxrtIdx = gTrifFxrtIdx - 1 ;
+			}
+			else {
+				gTrifFxrtIdx = 48;
+			}
+		}
+		else {
+		    //맨처음이 아니면 1개씩 늘어남 
+			if (gTrifFxrtIdx < 48){
+				gTrifFxrtIdx = gTrifFxrtIdx + 1 ;
+			}
+			else {
+				gTrifFxrtIdx = 1;
+			}
+		}						
+		
+		var dataString ='';	
+			$list.kcs4gAjax({ 
+				type:'POST',
+				url :'hmpg/retrieveAggtTrifFxrtInfo.do',
+				data: { randomNum : gTrifFxrtIdx  },
+				dataType : 'json',
+				success :function(result){
+						if (langTpcd =='ENG') {
+							dataString =   '<li><Strong>Currency</Strong> : <span>' +result.TrifFxrtItem.currEnglName +'</span></li>'
+						    	         + '<li><Strong>Export</Strong> : <span>' +result.TrifFxrtItem.expFxrt +'</span></li>'
+						        	     + '<li><Strong>Import</Strong> : <span>' +result.TrifFxrtItem.impFxrt +'</span></li>';
+						}
+						else {
+							dataString =  '<li><Strong>통화</Strong> : ' +result.TrifFxrtItem.currName +'</li>'
+						    	         + '<li><Strong>수출</Strong> : ' +result.TrifFxrtItem.expFxrt +'</li>'
+						        	     + '<li><Strong>수입</Strong> : ' +result.TrifFxrtItem.impFxrt +'</li>';
+						}
+    
+						$('#trifFxrtInfo').html(dataString);
+			    }
+		});
+		
+	} 
+	 
+		    

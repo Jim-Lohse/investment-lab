@@ -1,0 +1,2928 @@
+$(document).ready(function(){
+	
+	document.title = '관세청 수출입무역통계';
+	
+	var agent = navigator.userAgent.toLowerCase();
+	if ((navigator.appName == 'Netscape' && navigator.userAgent.search("Trident") != -1)
+			|| (agent.indexOf("msie") != -1)){
+		$('.browChk').css('display','inline-block');
+	}
+
+	$('.browChk > a').on('click',function(){
+		$('.browChk').css('display','none');
+	});
+
+	$('#op-Chrome').on('click',function(){
+		// 신뢰할수 있는 URL만 오픈하도록함
+		const trustedDomains = ['https://tradedata.go.kr/cts/index.do'];
+		
+		var url = window.location.href;
+		/* 20230705 웹취약점 조치 */
+		// URL 검증
+		var isValid = false;
+		
+		for (var i = 0; i < trustedDomains.length; i++) {
+			if (url === trustedDomains[i]) {
+				isValid = true;
+				break;
+			};
+		};
+		// URL 검증 결과 확인
+		if (isValid) {
+			/* 20230706 웹취약점 조치  URL 고정*/
+			// 신뢰할수 있는 URL인 경우 리다이렉트
+			window.location.href = 'microsoft-edge:https://tradedata.go.kr/cts/index.do';
+		};
+	});
+
+	// 개인정보처리방침
+	$("#personalInfoBtn").click(function(){
+		$('#personalInfoPopBody').html('<object data="/cts/openETS0100223Q.do" width="100%" type="text/html" style="height:calc(100vh - 158px)"></object>');
+		$("#personalInfoPop").css('display','block');
+		$(".black-bg").css('display','block');
+		document.body.style.overflow = "hidden";
+	});
+
+	// 저작권보호정책
+	$("#copyrightProBtn").click(function(){
+		$('#copyrightProPopBody').html('<object data="/cts/openETS0100224Q.do" width="100%" type="text/html" style="height:calc(100vh - 158px)"></object>');
+		$("#copyrightProPop").css('display','block');
+		$(".black-bg").css('display','block');
+		document.body.style.overflow = "hidden";
+	});
+
+	// 찾아오시는 길
+	$("#wayHereBtn").click(function(){
+		$('#wayHerePopBody').html('<object data="/cts/openETS0100225Q.do" width="100%" type="text/html" style="height:calc(100vh - 158px)"></object>');
+		$("#wayHerePop").css('display','block');
+		$(".black-bg").css('display','block');
+		document.body.style.overflow = "hidden";
+	});
+
+	$(".layer-close").click(function(){
+		$("#personalInfoPop").css('display','none');
+		$("#copyrightProPop").css('display','none');
+		$("#wayHerePop").css('display','none');
+		$(".black-bg").css('display','none');
+		document.body.style.overflow = "unset";
+	});
+	$(".black-bg").click(function(){
+		$("#personalInfoPop").css('display','none');
+		$("#copyrightProPop").css('display','none');
+		$("#wayHerePop").css('display','none');
+		$(".black-bg").css('display','none');
+		document.body.style.overflow = "unset";
+	});
+	
+	$('.productPop').css('display','none');
+	
+	/* 웹 접근성 수정 - 메인 통계요약(확정통계,잠정통계) */
+	$('.provisStat').on('keydown', function(e) {
+		if( e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			$('.definitStat').find('a').focus();
+			$('.definitStat').find('a').find('strong').trigger('click');
+		}
+	});
+	
+	$('.pdfDown').on('keydown', 'a', function(e) {
+		if( !e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+				
+			var currTab =  $('.topTab ul li.on');
+			if( currTab.hasClass('definitStat')) {
+				$('.provisStat').find('a').focus();
+				$('.provisStat').find('a').find('strong').trigger('click');
+			}
+			if( currTab.hasClass('provisStat')) {
+				$('.art1').find('a').focus();
+			}
+		}
+	});
+	
+	$('.art1').on('keydown', 'a', function(e) {
+		if( e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			
+			$('.provisStat').find('a').focus();
+			$('.provisStat a strong').trigger('click');
+		}
+	});
+	/* 메인 통계요약(확정통계,잠정통계) 끝 */
+	
+	/* 웹 접근성 수정 - 메인 차트 */
+	$('.chartHeader').on('focusin', 'div.tabHead', function(e) {
+		var curr =  $('.chartHeader.on').find('div.tabBody');
+		
+		if(curr.find('div.ex_imTab3').hasClass(('ex_imTab3'))) {
+			curr.find('div.ex_imTab3').find('ul').find('li').first().trigger('click');
+		}
+	});
+	
+	
+	$('.chartHeader').on('keydown', 'div.tabHead', function(e) {
+		if( !e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+		
+			var currTab =  $('.chartHeader.on');
+			var currBody = currTab.find('div.tabBody');
+
+			if(currTab.find('div.tabHead').attr('id') === 'chartHeader1') {				
+				$("li.prev").eq(0).attr("tabindex","-1").focus();
+			}
+			else{
+				if(currBody.find('div.ex_imTabX').length > 0) {
+					currBody.find('div.ex_imTabX').find('ul').find('li.on').attr('tabindex', '0').focus();
+				}
+				else if(currBody.find('div.ex_imTab3').length > 0) {
+					currBody.find('div.ex_imTab3').find('ul').find('li').first().attr('tabindex', '0').focus();
+					currBody.find('div.ex_imTab3').find('ul').find('li').first().trigger('click');
+				}
+				else {
+					currBody.find('div.moreInfo').find('a').focus();	
+				}
+			}
+		}
+		if( e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+				
+			var currTab =  $('.chartHeader.on');
+			var prevTab = currTab.prev('li');
+			
+			if(currTab.find('div.tabHead').attr('id') !== 'chartHeader1') {
+				prevTab.find('div.tabHead').find('a').focus();
+				prevTab.find('div.tabHead').find('a').trigger('click');
+			}
+			else {
+				$('.art6').find('a').focus();
+			}
+		}
+	});
+	
+	$("li.prev").on('keydown', function(e) {
+		var currTab =  $('.chartHeader.on');
+		var parent = $(this).parent().parent().parent();
+		var firstParent = parent.hasClass("swiper-slide-active");
+
+		if( !e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			$(this).siblings().attr("tabindex","-1").focus();
+		}
+		if( e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			
+			if(firstParent){
+				currTab.find('div.tabHead').find('a').focus();
+			}
+			else {
+				$("li.next").eq(0).attr("tabindex","-1").focus();
+			}	
+		}
+		
+		if(e.keyCode === 13 || e.key === 'Enter' ) {
+			e.preventDefault();
+			$(this).trigger("click");
+		}
+	});
+	
+	$("li.next").on('keydown', function(e) {
+		var currTab =  $('.chartHeader.on');
+		var currBody = currTab.find('div.tabBody');
+		var parent = $(this).parent().parent().parent();
+		var firstParent = parent.hasClass("swiper-slide-active");
+		
+		if( !e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+
+			if(firstParent){
+				$("li.prev").eq(1).attr("tabindex","-1").focus();
+			}
+			else {
+				currBody.find('div.moreInfo').find('a').focus();
+			}
+		}
+		if( e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+				
+			$(this).siblings().attr("tabindex","-1").focus();
+		}
+		
+		if(e.keyCode === 13 || e.key === 'Enter' ) {
+			e.preventDefault();
+			$(this).trigger("click");
+		}
+	});
+	
+	$('.ex_imTab3').on('keydown', 'ul li.on', function(e) {
+		if( !e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			
+			if($(this).next('li').length > 0){
+				$(this).next('li').attr('tabindex', '0').focus();
+				$(this).next('li').trigger('click');
+			}
+			else {
+				$('.chartHeader.on').find('div.tabBody').find('div.moreInfo').find('a').focus();
+			}
+		}
+		
+		if( e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			
+			if($(this).prev('li').length > 0){
+				$(this).prev('li').attr('tabindex', '0').focus();
+				$(this).prev('li').trigger('click');
+			}
+			else {
+				$('.chartHeader.on').find('div.tabHead').find('a').focus();
+			}
+		}
+	});
+	
+	$('.moreInfo').on('keydown', 'a', function(e) {
+		var currTab =  $('.chartHeader.on');
+		
+		if( !e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			var nextTab = currTab.next('li');
+			
+			if(currTab.find('div.tabHead').attr('id') !== 'chartHeader4') {
+				nextTab.find('div.tabHead').find('a').focus();
+				nextTab.find('div.tabHead').find('a').trigger('click');
+			}
+			else {
+				$('.bdTab ul li').first().find('a').focus();
+			}
+		}
+		if( e.shiftKey && (e.keyCode === 9 || e.key === 'Tab' )){
+			e.preventDefault();
+			var currBody = currTab.find('div.tabBody');
+			
+			if(currBody.find('div.ex_imTabX').length > 0) {
+				currBody.find('div.ex_imTabX').find('ul').find('li.on').attr('tabindex', '0').focus();
+			}
+			else if(currBody.find('div.ex_imTab3').length > 0) {
+				currBody.find('div.ex_imTab3').find('ul').find('li.on').attr('tabindex', '0').focus();
+			}
+			else {
+				if(currTab.find('div.tabHead').attr('id') === 'chartHeader1') {				
+					$("li.next").eq(1).attr("tabindex","-1").focus();
+				}
+				else{
+					currTab.find('div.tabHead').find('a').focus();
+				}
+			}
+		}
+	});
+	/* 메인 차트 끝 */
+	
+	/* 웹 접근성 수정 - 게시판 미리보기(Tab-Contents 이동) */
+	$('.bdTab ul').on('keydown', 'li.on a', function(e) {
+		var currTab =  $('.bdTab ul li.on');
+			
+		if( !e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			var nextTab = currTab.next('li');
+
+			var firstContents = $('#mainBoardArea li a').first().next();
+			if(firstContents.length > 0 ){
+				firstContents.focus();
+			}
+			else{
+				if(!currTab.hasClass('all') && !nextTab.hasClass('more-empty')){
+					$('#boardMore').focus();
+				}
+			}
+		}
+		if(e.shiftKey && (e.keyCode === 9 || e.key === 'Tab')){
+			if( !currTab.hasClass('all') ) {
+				e.preventDefault();
+				
+				var prevTab = currTab.prev('li');
+				prevTab.find('a').focus();
+				prevTab.find('a').trigger('click');
+			}
+			if( currTab.hasClass('all') ) {
+				e.preventDefault();
+				$('#chartHeader4').find('a').focus();
+				$('#chartHeader4').find('a').trigger('click');
+			}
+		}
+	});
+	/* 게시판 미리보기(Tab-Contents 이동) 끝 */
+	
+	/* 웹 접근성 수정 - 게시판 미리보기(Contents-Tab 이동) */
+	$('.bdBox').on('keydown', 'a', function(e) {
+		var currTab =  $('.bdTab ul li.on');
+		var nextTab = currTab.next('li');
+		var contents = $('#mainBoardArea li a');
+		
+		if( $(this).is(contents.last()) && !e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			if(!currTab.hasClass('all')){
+				$('#boardMore').focus();
+			}
+			else {
+				nextTab.find('a').focus();
+				nextTab.find('a').trigger('click');
+			}
+		}
+		if( $(this).is(contents.first().next()) && e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			$('.bdTab ul li.on a').focus();
+		}
+	});
+	/* 게시판 미리보기(Contents-Tab 이동) 끝 */
+	
+	/* 웹 접근성 수정 - 게시판 더보기 */
+	$('#boardMore').on('keydown', function(e) {
+		if( !e.shiftKey && (e.keyCode === 9 || e.key === 'Tab') ) {
+			e.preventDefault();
+			
+			var currTab =  $('.bdTab ul li.on');
+			var nextTab = currTab.next('li');
+			
+			if(!nextTab.hasClass('more-empty')){
+				nextTab.find('a').focus();
+				nextTab.find('a').trigger('click');
+			}
+			else {
+				$('.moreExchangeInfo').find('a').focus();
+			}
+		}
+	});
+	/* 게시판 더보기 끝 */
+});
+	
+// ESC 팝업닫기
+$(document).on('keydown', function(e) {
+	if( e.keyCode === 27 || e.keyCode === 'esc' ) {
+		$('.layer-close').trigger('click');
+	}
+});
+
+// 이미지 다운로드 시 수출, 수입 구분
+var imgDownTpcd;
+
+$(window).on('load',function(){
+
+	if($("#ETS0100001Q_adminUrl").val() != null && $("#ETS0100001Q_adminUrl").val() != ""){
+		ets_f_prccMenuLoad($("#ETS0100001Q_adminUrl").val(), {menuId: $("#ETS0100001Q_menuId").val()});
+	}
+	
+    $('body').addClass('started');
+
+    var topEximTab1 = $('.ex_imTab1 ul > li');
+    var eximTab1 = $('.ex_imTabBox1 > li');
+
+    topEximTab1.on('click',function(){
+        topEximTab1.removeClass('on');
+        eximTab1.removeClass('on');
+        $(this).addClass('on');
+        eximTab1.eq($(this).index()).addClass('on');
+
+    });
+
+
+    var topEximTab3 = $('.ex_imTab3 ul > li');
+    var eximTab3 = $('.ex_imTabBox3 > li');
+    var eximTxt3 = $('.ex_im3 > p')
+
+    topEximTab3.on('click',function(){
+        topEximTab3.removeClass('on');
+        eximTab3.removeClass('on');
+        eximTxt3.removeClass('on');
+        $(this).addClass('on');
+        eximTab3.eq($(this).index()).addClass('on');
+        eximTxt3.eq($(this).index()).addClass('on');
+
+    });
+
+    var topEximTab4 = $('.ex_imTab4 ul > li');
+    var eximTab4 = $('.ex_imTabBox4 > li');
+    var eximTxt4 = $('.ex_im4 > p')
+
+    topEximTab4.on('click',function(){
+        topEximTab4.removeClass('on');
+        eximTab4.removeClass('on');
+        eximTxt4.removeClass('on');
+        $(this).addClass('on');
+        eximTab4.eq($(this).index()).addClass('on');
+        eximTxt4.eq($(this).index()).addClass('on');
+
+    });
+
+
+
+    /* quickMenu motion*/
+    var quickLi = $('.quickTab ul li');
+    quickLi.on('mouseover',function(){
+        $(this).addClass('on');
+
+    }).on('mouseout',function(){
+        quickLi.removeClass('on');
+    });
+
+    /* topTab motion */
+    var topTabLi = $('.topTab > ul > li > a');
+    topTabLi.on('click',function(){
+		$('.ccpPop').removeClass('on');
+        topTabLi.parent('li').removeClass('on');
+        $(this).parent('li').addClass('on');
+
+        if($(this).parent('li').index() == 0){
+            $('.mainTop').removeClass('scndon');
+            $('.mainTop').addClass('fston');
+        } else if($(this).parent('li').index() == 1) {
+            $('.mainTop').removeClass('fston');
+            $('.mainTop').addClass('scndon');
+        }
+    })
+
+    /* midTab motion */
+    var midTabLi = $('.midTab ul li');
+    midTabLi.on('mouseover',function(){
+        $(this).addClass('on');
+    }).on('mouseout',function(){
+        midTabLi.removeClass('on');
+    });
+
+    /* chartTab motion */
+    var chartTabLi = $('.chartTab > ul > li');
+    chartTabLi.on('click',function(){
+        chartTabLi.removeClass('on');
+        $(this).addClass('on');
+    });
+
+    var responTabLi = $('.chartTab > .responWrap > ul > li');
+    responTabLi.on('click',function(){
+        chartTabLi.removeClass('on');
+        responTabLi.removeClass('on');
+
+        var idx = $(this).index();
+        chartTabLi.eq(idx).addClass('on');
+
+        $(this).addClass('on');
+    });
+
+    /* boardTab motion */
+    var bdTabLi = $('.bdTab ul li');
+    bdTabLi.on('click',function(){
+        bdTabLi.removeClass('on');
+        $(this).addClass('on');
+    });
+
+
+    /* Swiper slide */
+    var noneDtop = 1023;
+
+    swiper3 = new Swiper('.bigchart3.swiper',{
+            slidesPerView : '1',
+            spaceBetween : 0,
+            pagination: {
+				el:'.swiper-pagination.bigchart3',
+				type: 'bullets'
+			},
+            breakpoints: {
+                521:{
+                    slidesPerView : '1',
+                    spaceBetween:24
+                },
+                1024 : {
+                    slidesPerView : '2',
+                    spaceBetween:24
+                }
+            }
+    });
+
+    swiper3b = new Swiper('.bigchart3_b.swiper',{
+        slidesPerView : '1',
+        spaceBetween : 0,
+        pagination: {
+            el:'.swiper-pagination.bigchart3_b',
+            type: 'bullets'
+        },
+        breakpoints: {
+            521:{
+                slidesPerView : '1',
+                spaceBetween:24
+            },
+            1024 : {
+                slidesPerView : '2',
+                spaceBetween:24
+            }
+        }
+});
+
+    $('.chartTab .respon').addClass('swiper');
+    $('.chartTab .respon .chartBox').addClass('swiper-wrapper');
+    $('.chartTab .respon .chartBox > figure').addClass('swiper-slide');
+
+
+
+
+
+    swiper1 = new Swiper('.bigchart1.swiper',{
+        slidesPerView : '1',
+        spaceBetween: 0,
+        navigation: {
+            nextEl :'.arrwBox.bigchart1 .next',
+            prevEl :'.arrwBox.bigchart1 .prev'
+        },
+        pagination: {
+            el:'.swiper-pagination.bigchart1',
+            type: 'bullets'
+        },
+        breakpoints: {
+            521:{
+                slidesPerView : '1',
+                spaceBetween:24
+            },
+            1024 : {
+                slidesPerView : '2',
+                spaceBetween:24
+            }
+        }
+        
+    });
+    $('.big1arrw li').on('click',function(){
+        if($(this).hasClass('prev')){
+            $(this).parents('.big1arrw').siblings('.big1SlideWrap').children('.big1Slide').removeClass('next');
+        } else {
+            $(this).parents('.big1arrw').siblings('.big1SlideWrap').children('.big1Slide').addClass('next');
+
+        }
+    });
+
+
+    swiper2 = new Swiper('.bigchart2.swiper',{
+        slidesPerView : '1',
+        spaceBetween: 0,
+        navigation: {
+            nextEl :'.arrwBox.bigchart2 .next',
+            prevEl :'.arrwBox.bigchart2 .prev'
+        },
+        pagination: {
+            el:'.swiper-pagination.bigchart2',
+            type: 'bullets'
+        },
+        breakpoints: {
+            521:{
+                slidesPerView : '1',
+                spaceBetween:24
+            },
+            1024 : {
+                slidesPerView : '2',
+                spaceBetween:24
+            }
+        }
+        
+    });
+    swiper4 = new Swiper('.bigchart4.swiper',{
+        slidesPerView : '1',
+        spaceBetween: 0,
+        navigation: {
+            nextEl :'.arrwBox.bigchart4 .next',
+            prevEl :'.arrwBox.bigchart4 .prev'
+        },
+        pagination: {
+            el:'.swiper-pagination.bigchart4',
+            type: 'bullets'
+        },
+        breakpoints: {
+            521:{
+                slidesPerView : '1',
+                spaceBetween:24
+            },
+            1024 : {
+                slidesPerView : '2',
+                spaceBetween:24
+            }
+        }
+        
+    });
+
+
+    /* swiper Responsive */
+    if(window.outerWidth <= noneDtop){
+
+    }
+
+    // 최근본 메뉴가 있을경우 화면 이동 url 설정
+    if (cf_getCookie('CKEY_RCNT_MENU1') != '') {
+    	// 메뉴명 취득
+    	f_quickLinkMenuNm(JSON.parse(cf_getCookie('CKEY_RCNT_MENU_DATA1')).menuId , '1')
+    	// 최근본 메뉴 링크 설정
+    	$('#rcntMenu1').attr('href', "javascript:ets_f_prccMenuLoad('"+cf_getCookie('CKEY_RCNT_MENU1')+"',"+cf_getCookie('CKEY_RCNT_MENU_DATA1')+")" );
+    	$('#rcntMenu1').show();
+    } else {
+    	$('#rcntMenu1').hide();
+    }
+    // 최근본 메뉴가 있을경우 화면 이동 url 설정
+    if (cf_getCookie('CKEY_RCNT_MENU2') != '') {
+    	// 메뉴명 취득
+    	f_quickLinkMenuNm(JSON.parse(cf_getCookie('CKEY_RCNT_MENU_DATA2')).menuId, '2')
+    	// 최근본 메뉴 링크 설정
+    	$('#rcntMenu2').attr('href', "javascript:ets_f_prccMenuLoad('"+cf_getCookie('CKEY_RCNT_MENU2')+"',"+cf_getCookie('CKEY_RCNT_MENU_DATA2')+")" );
+    	$('#rcntMenu2').show();
+    } else {
+    	$('#rcntMenu2').hide();
+    }
+    // 최근본 메뉴가 있을경우 화면 이동 url 설정
+    if (cf_getCookie('CKEY_RCNT_MENU3') != '') {
+    	// 메뉴명 취득
+    	f_quickLinkMenuNm(JSON.parse(cf_getCookie('CKEY_RCNT_MENU_DATA3')).menuId, '3')
+    	// 최근본 메뉴 링크 설정
+    	$('#rcntMenu3').attr('href', "javascript:ets_f_prccMenuLoad('"+cf_getCookie('CKEY_RCNT_MENU3')+"',"+cf_getCookie('CKEY_RCNT_MENU_DATA3')+")" );
+    	$('#rcntMenu3').show();
+    } else {
+    	$('#rcntMenu3').hide();
+    }
+
+    // 기본값 설정 
+	imgDownTpcd = 'exp'
+	// 수출, 수입 버튼 클릭하면 data 정보를 가져온다
+	$('#expBtn').on('click', function(){
+		imgDownTpcd = $(this).attr('data-imex-tpcd');
+	});
+	$('#impBtn').on('click', function(){
+		imgDownTpcd = $(this).attr('data-imex-tpcd');
+	})
+	
+	
+	
+	// 잠정치,확정치 파일 다운로드
+	$(".pdfDown").off("click").on("click",function(e){
+		e.preventDefault();
+		
+		var fileId = $(this).attr('data-attch-file-id');
+		//location.href = "/cts/framework/filedownload/kcs4gDownload.do?attchFileId="+ fileId;
+		location.href = "/cts/filedownload/cubeFiledownload.do?attchFileId="+ fileId;
+	});
+});
+
+ /*****************************************************
+  * Function 명 : f_quickLinkMenuNm
+  * Function 기능설명 : 퀵메뉴 메뉴명 취득
+  * 작성자 : 김태일
+  * 작성일 : 2023-02-22
+  * 변경로그 : 
+  * 2023-02-22-김태일-최초생성
+  ******************************************************/
+function f_quickLinkMenuNm(menuId, menuRank) {
+	// 초기화면 테이블 데이터 취득
+	var callUrl = "/cts/hmpg/retrieveMainQuickMenuNm.do";
+	
+	// 선택한 페이지 (초기 페이지는 1)
+	var params = {
+			'menuId' : menuId
+	};
+
+	var opts = {
+		type:"POST",
+		url: callUrl,
+		data: params,
+		callback : function(result){
+			// 검색한 메뉴명을 설정한다.
+			var resultMenuNm = result.menuNm;
+			// 검색한 메뉴명이없을경우 통합검색을 설정한다.
+			if (resultMenuNm == undefined) {
+				resultMenuNm = '통합검색';
+			}
+			// 최근본 메뉴 랭크에 맞게 메뉴명을 설정한다.
+			if (menuRank == '1') {
+				$('#rcntMenu1').html('<span>'+resultMenuNm+'</span>');
+			} else if (menuRank == '2') {
+				$('#rcntMenu2').html('<span>'+resultMenuNm+'</span>');
+			} else {
+				$('#rcntMenu3').html('<span>'+resultMenuNm+'</span>');
+			}
+		}
+	};
+	$.fn.kcs4gAjax(opts);
+	
+};
+
+
+ /*****************************************************
+  * Function 명 : f_quickLinkClick
+  * Function 기능설명 : 최근본메뉴 클릭시 발생 이벤트
+  * 작성자 : 김태일
+  * 작성일 : 2023-02-22
+  * 변경로그 : 
+  * 2023-02-22-김태일-최초생성
+  ******************************************************/
+function f_quickLinkClick() {
+	if ($('#quickLinkDiv').hasClass('on')) {
+		$('#quickLinkDiv').removeClass('on');
+	} else {
+		$('#quickLinkDiv').addClass('on');
+	}
+}
+
+
+ /*****************************************************
+  * Function 명 : f_mainBoard
+  * Function 기능설명 : 메인화면 사용자 지원 데이터 취득
+  * 작성자 : 김태일
+  * 작성일 : 2023-02-22
+  * 변경로그 : 
+  * 2023-02-22-김태일-최초생성
+  ******************************************************/
+function f_mainBoard(blbrTpcdNm) {
+	// 초기화면 테이블 데이터 취득
+	var callUrl = "/cts/hmpg/retrieveMainBoardList.do";
+	
+	// 선택한 페이지 (초기 페이지는 1)
+	var params = {
+			'blbrTpcdNm' : blbrTpcdNm
+	};
+
+	var opts = {
+		type:"POST",
+		url: callUrl,
+		data: params,
+		callback : function(result){
+			$('#mainBoardArea').empty();
+			
+			var boardHtml = '';
+			var tabName = '';
+			$.each(result.mainBoardResult, function(i, item){
+				if (item.blbrTpcdNm == '공지사항') {
+					boardHtml+='<li class="ntic">'; 
+					boardHtml+='<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100211Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50200000\'});">'+item.blbrTpcdNm+'</a>';
+					boardHtml+='<a href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100211Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50200000\'});">'+item.ntarTtle+'</a>';
+					
+					// 더보기 URL변경
+					$('#boardMore').prop('href', "javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100130Q.do',{menuId: 'ETS_MNK_50200000', blbrTpcd:'10'});");
+					tabName = '공지사항';
+				}
+				if (item.blbrTpcdNm == '자료실') {
+					boardHtml+='<li class="prio">'; 
+					if(item.blbrTpcd == '31') {
+						boardHtml+='<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50301000\'});">'+item.blbrTpcdNm+'</a>';
+						boardHtml+='<a href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50301000\'});">'+item.ntarTtle+'</a>';
+					} else if(item.blbrTpcd == '32'){
+						boardHtml+='<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50302000\'});">'+item.blbrTpcdNm+'</a>';
+						boardHtml+='<a href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50302000\'});">'+item.ntarTtle+'</a>';
+					} else if(item.blbrTpcd == '33'){
+						boardHtml+='<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50303000\'});">'+item.blbrTpcdNm+'</a>';
+						boardHtml+='<a href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50303000\'});">'+item.ntarTtle+'</a>';
+					} else if(item.blbrTpcd == '34'){
+						boardHtml+='<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50304000\'});">'+item.blbrTpcdNm+'</a>';
+						boardHtml+='<a href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50304000\'});">'+item.ntarTtle+'</a>';
+					} // SCR364318 자료실 구분코드 추가 
+					  else if(item.blbrTpcd == '35'){
+						boardHtml+='<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50305000\'});">'+item.blbrTpcdNm+'</a>';
+						boardHtml+='<a href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100212Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50305000\'});">'+item.ntarTtle+'</a>';
+					}
+					
+					// 더보기 URL변경
+					$('#boardMore').prop('href', "javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100131Q.do',{menuId: 'ETS_MNK_50301000', blbrTpcd:'31'});");
+					tabName = '자료실';
+				}
+				if (item.blbrTpcdNm == '보도자료') {
+					boardHtml+='<li class="rept">'; 
+					boardHtml+='<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100210Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50100000\'});">'+item.blbrTpcdNm+'</a>';
+					boardHtml+='<a href="javascript:ets_f_prccMenuAdmin(\'/cts/hmpg/openETS0100210Q.do\',{blbrTpcd:\''+item.blbrTpcd+'\', ntarSrno:\''+item.ntarSrno+'\', menuId:\'ETS_MNK_50100000\'});">'+item.ntarTtle+'</a>';
+					// 더보기 URL변경
+					$('#boardMore').prop('href', "javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100129Q.do',{menuId: 'ETS_MNK_50100000', blbrTpcd:'all'});");
+					tabName = '보도자료';
+				}
+				boardHtml+='<span>'+item.frstRgsrDtlDttm+'</span>';
+				boardHtml+='</li>';
+			});
+			$('#mainBoardArea').html(boardHtml);
+	
+			/* 웹 접근성 수정 - 게시판 더보기 */
+			if(blbrTpcdNm.indexOf('all') === 0){
+				$('#boardMore').attr({'tabindex': '-1', 'aria-hidden': 'true'});
+				$('#boardMore').removeAttr('href');
+				$('#boardMore').removeAttr('aria-label');
+			}
+			else {
+				$('#boardMore').attr({'tabindex': '0', 'aria-hidden': 'false', 'aria-label': tabName+' 더보기'});
+			}
+			/* 게시판 더보기 끝 */
+		}
+	};
+	
+	$.fn.kcs4gAjax(opts);
+};
+
+
+ /*****************************************************
+  * Function 명 : f_downImg
+  * Function 기능설명 : 잠정통계 이미지 다운로드 
+  * 작성자 : 김태일
+  * 작성일 : 2023-02-22
+  * 변경로그 : 
+  * 2023-02-22-김태일-최초생성
+  ******************************************************/
+function f_downImg(divId, fileName) {
+	// 로딩화면 표시
+	/*$('.loadingWrap').show();*/
+	// 이미지 다운 레이어 숨기기
+	$('#imgDownDiv').hide();
+	f_downImgChart().then(function(){ //ajax보내서 차트만드는 function
+		// 이미지 다운 레이어 표시
+		setTimeout(function(){
+			$('#imgDownDiv').show();
+			html2canvas(document.getElementById(divId),{
+					scrollX:0,
+					scrollY:-window.scrollY,
+					windowWidth: document.documentElement.offsetWidth,
+					windowHeight:document.documentElement.offsetHeight,
+				}).then(function(canvas){
+				var mainDownLink = document.createElement("a");
+				mainDownLink.href = canvas.toDataURL("image/png");
+				mainDownLink.download = fileName + '_' + fileNowDate +".png";
+				mainDownLink.click();
+				// 로딩이미지 hide
+				/*$('.loadingWrap').hide();*/
+			
+				// imgDownDiv 비우기
+				$('#imgDownDiv').empty();
+			});
+
+		}, 2000);
+	});
+};
+
+
+ /*****************************************************
+  * Function 명 : f_downImgChart
+  * Function 기능설명 : 잠정통계 차트 만들기
+  * 작성자 : 김태일
+  * 작성일 : 2023-02-22
+  * 변경로그 : 
+  * 2023-02-22-김태일-최초생성
+  ******************************************************/
+function f_downImgChart() {
+	return new Promise(function(resolve){
+	// imgDownDiv 비우기
+	$('#imgDownDiv').empty();
+
+	var opts = {
+		type:"POST",
+		url: "/cts/hmpg/downloadMainImg.do",
+		data: null,
+		callback : function(result){
+			//다운로드할 이미지를 만든다
+			f_downImgData(result).then(function(){ 
+				// Promise리턴
+				resolve();
+			});
+		}
+	};
+	$.fn.kcs4gAjax(opts);
+	
+	
+	 /*****************************************************
+	 * Function 명 : f_downImgData
+	 * Function 기능설명 : imgDownDiv에 차트 추가하기
+	 * 작성자 : 김태일
+	 * 작성일 : 2023-02-22
+	 * 변경로그 : 
+	 * 2023-02-22-김태일-최초생성
+	 ******************************************************/
+	function f_downImgData(items) {
+		return new Promise(function(resolve){
+		
+		var innerHtml = '';
+		var tentativeOverall = items.tentativeOverall;
+		
+		innerHtml += '<p>';
+		innerHtml += '<b>'+tentativeOverall.priodTitle+'</b>';
+		innerHtml += '</p>';
+        
+        innerHtml += '<ul class="topWrap provisStat">';
+
+            innerHtml += '<li class="im">';
+                innerHtml += '<div class="illuBox"></div>';
+                innerHtml += '<div class="txtBox">';
+                    if(tentativeOverall.expIcdcSgn == '+') {
+                        innerHtml += '<strong>수출 '+tentativeOverall.expUsdAmt+'억 달러</strong><p> 전년 동기대비 <i class="imColor">'+tentativeOverall.expIcdcRt+'%('+tentativeOverall.expIcdcAmt+'억 달러) 증가</i></p>';	
+                    }
+                    if(tentativeOverall.expIcdcSgn == '-') {
+                        innerHtml += '<strong>수출 '+tentativeOverall.expUsdAmt+'억 달러</strong><p> 전년 동기대비 <i class="exColor">'+tentativeOverall.expIcdcRt+'%('+tentativeOverall.expIcdcAmt+'억 달러) 감소</i></p>';	
+                    }
+                innerHtml += '</div>';
+            innerHtml += '</li>';
+
+            innerHtml += '<li class="ex">';
+                innerHtml += '<div class="illuBox"></div>';
+                innerHtml += '<div class="txtBox">';
+                    if(tentativeOverall.impIcdcSgn == '+') {
+                        innerHtml += '<strong>수입 '+tentativeOverall.impUsdAmt+'억 달러</strong><p> 전년 동기대비 <i class="imColor">'+tentativeOverall.impIcdcRt+'%('+tentativeOverall.impIcdcAmt+'억 달러) 증가</i></p>';
+                    }
+                    if(tentativeOverall.impIcdcSgn == '-') {
+                        innerHtml += '<strong>수입 '+tentativeOverall.impUsdAmt+'억 달러</strong><p> 전년 동기대비 <i class="exColor">'+tentativeOverall.impIcdcRt+'%('+tentativeOverall.impIcdcAmt+'억 달러) 감소</i></p>';
+                    }
+                innerHtml += '</div>';
+            innerHtml += '</li>';
+
+		innerHtml += '</ul>';
+				
+		//
+        innerHtml += '<div class="ex_imTabBox1">';
+
+            innerHtml += '<div class="exTab">';
+				innerHtml += '<ul class="chartGrp fst">';
+					innerHtml += '<li class="">';
+						innerHtml += '<figure id="iDV" class="highcharts-figure">';
+						innerHtml += '<h5>주요 수출 실적</h5>';
+						innerHtml += '<p class="twoColor t2">';
+						innerHtml += '<span class="gray1">'+tentativeOverall.pryy+'년</span><span class="exColor">'+tentativeOverall.cnyy+'년</span>';
+						innerHtml += '</p>';
+						innerHtml += '<div id="container19"></div>';
+						innerHtml += '<div id="container20"></div>';
+						innerHtml += '<div id="container21"></div>';
+						innerHtml += '</figure>';
+					innerHtml += '</li>';
+					innerHtml += '<li class="">';
+					innerHtml += '<figure id="iDV" class="highcharts-figure">';
+						innerHtml += '<h5>주요 수입 실적</h5>';
+						innerHtml += '<p class="twoColor t2">';
+						innerHtml += '<span class="gray2">'+tentativeOverall.pryy+'년</span><span class="imColor">'+tentativeOverall.cnyy+'년</span>';
+						innerHtml += '</p>';
+						innerHtml += '<div id="container20_b"></div>';
+						innerHtml += '<div id="container21_b"></div>';
+					innerHtml += '</figure>';
+					innerHtml += '</li>';
+				innerHtml += '</ul>';
+            innerHtml += '</div>';
+			
+
+        innerHtml += '</div>';
+
+		$('#imgDownDiv').append(innerHtml);
+		
+		// 차트를 만든다
+
+		// 주요수출실적 
+		// x축 기준
+		var acptMmChart = [];
+		// 전년도 수출가격
+		var pryyUsdAmtChart = [];
+		// 당해년도 수출가격
+		var cnyyUsdAmtChart = [];
+		// 차트 색상
+		var chartColot = '';
+
+		// 수출 (월)
+		acptMmChart = [];
+		pryyUsdAmtChart = [];
+		cnyyUsdAmtChart = [];
+		$.each(items.tentativeExpMonthList, function(i, item){
+			acptMmChart.push(item.acptMm);
+			pryyUsdAmtChart.push(Number(item.pryyUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+			cnyyUsdAmtChart.push(Number(item.cnyyUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+		});
+		chartColor = '#2358e2';
+		chartColor2 = '#c6d0fc';
+
+		Highcharts.chart('container19', {
+			chart: {
+				type:'column',
+				backgroundColor:''
+			},
+			title: {
+				text:''
+			},
+			xAxis: {
+				title:{
+					text:'월',
+					useHTML: 'true',
+					style:{
+						color:'#fff',
+						'padding':'2px 12px',
+						'background-color': '#707070',
+						'border-radius':'4px'
+					}
+				},
+				lineColor:'#191919',
+				categories: acptMmChart,
+				labels:{
+					style: {
+						color:'#191919',
+						fontSize: 14
+					}
+				}
+			},
+			yAxis:{
+				title: {
+					text:''
+				},
+				visible: false
+			},
+			legend: {
+				enabled: false
+			},
+			series: [{
+				name: tentativeOverall.pryy,
+				data: pryyUsdAmtChart,
+				color: '#c6d0fc',
+				dataLabels:{
+					enabled: false
+				}
+			},{
+				name: tentativeOverall.cnyy,
+				data: cnyyUsdAmtChart,
+				color: '#2358e2',
+				dataLabels: {
+					color: '#2358e2'
+				}
+
+			}],
+			responsive: {
+//					rules: [{
+//					condition: {
+//						maxWidth: 300
+//					},
+//					series:{
+//						
+//					}
+//					
+//				}]
+			},
+			plotOptions:{
+				column:{
+					dataLabels:{
+						enabled: true,
+						align: 'center',
+						crop:false,
+						overflow:'allow',
+						style: {
+							fontSize: 16,
+							fontWeight: 400
+						},
+						y: 0
+					}
+				},
+				series:{
+					pointWidth: 40,
+					borderRadiusTopLeft:20,
+					borderRadiusTopRight:20,
+					borderColor:''
+				}
+			},
+			exporting: {
+				enabled: false
+			},
+			credits: {
+				enabled: false
+			}
+		});
+		Highcharts.chart('container20', {
+			chart: {
+				type:'column',
+				backgroundColor:''
+			},
+			title: {
+				text:''
+			},
+			xAxis: {
+				title:{
+					text:'월',
+					useHTML: 'true',
+					style:{
+						color:'#fff',
+						'padding':'2px 12px',
+						'background-color': '#707070',
+						'border-radius':'4px'
+					}
+				},
+				lineColor:'#191919',
+				categories: acptMmChart,
+				labels:{
+					style: {
+						color:'#191919',
+						fontSize: 14
+					}
+				}
+			},
+			yAxis:{
+				title: {
+					text:''
+				},
+				visible: false
+			},
+			legend: {
+				enabled: false
+			},
+			series: [{
+				name: tentativeOverall.pryy,
+				data: pryyUsdAmtChart,
+				color: '#c6d0fc',
+				dataLabels:{
+					enabled: false
+				}
+			},{
+				name: tentativeOverall.cnyy,
+				data: cnyyUsdAmtChart,
+				color: '#2358e2',
+				dataLabels: {
+					color: '#2358e2'
+				}
+
+			}],
+			responsive: {
+//					rules: [{
+//					condition: {
+//						maxWidth: 300
+//					},
+//					series:{
+//						
+//					}
+//					
+//				}]
+			},
+			plotOptions:{
+				column:{
+					dataLabels:{
+						enabled: true,
+						align: 'center',
+						crop:false,
+						overflow:'allow',
+						style: {
+							fontSize: 16,
+							fontWeight: 400
+						},
+						y: 0
+					}
+				},
+				series:{
+					pointWidth: 40,
+					borderRadiusTopLeft:20,
+					borderRadiusTopRight:20,
+					borderColor:''
+				}
+			},
+			exporting: {
+				enabled: false
+			},
+			credits: {
+				enabled: false
+			}
+		});
+
+		// 수입 (월)
+		acptMmChart = [];
+		pryyUsdAmtChart = [];
+		cnyyUsdAmtChart = [];
+		$.each(items.tentativeImpMonthList, function(i, item){
+			acptMmChart.push(item.acptMm);
+			pryyUsdAmtChart.push(Number(item.pryyUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+			cnyyUsdAmtChart.push(Number(item.cnyyUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+		});
+		chartColor = '#db2929';
+		chartColor2 = '#ffb6c1';
+
+		Highcharts.chart('container20_b', {
+			chart: {
+				type:'column',
+				backgroundColor:''
+			},
+			title: {
+				text:''
+			},
+			xAxis: {
+				title:{
+					text:'월',
+					useHTML: 'true',
+					style:{
+						color:'#fff',
+						'padding':'2px 12px',
+						'background-color': '#707070',
+						'border-radius':'4px'
+					}
+				},
+				lineColor:'#191919',
+				categories: acptMmChart,
+				labels:{
+					style: {
+						color:'#191919',
+						fontSize: 14
+					}
+				}
+			},
+			yAxis:{
+				title: {
+					text:''
+				},
+				visible: false
+			},
+			legend: {
+				enabled: false
+			},
+			series: [{
+				name: tentativeOverall.pryy,
+				data: pryyUsdAmtChart,
+				color: '#ffb6c1',
+				dataLabels:{
+					enabled: false
+				}
+			},{
+				name: tentativeOverall.cnyy,
+				data: cnyyUsdAmtChart,
+				color: '#db2929',
+				dataLabels: {
+					color: '#db2929'
+				}
+
+			}],
+			responsive: {
+//					rules: [{
+//					condition: {
+//						maxWidth: 300
+//					},
+//					series:{
+//						
+//					}
+//					
+//				}]
+			},
+			plotOptions:{
+				column:{
+					dataLabels:{
+						enabled: true,
+						align: 'center',
+						crop:false,
+						overflow:'allow',
+						style: {
+							fontSize: 16,
+							fontWeight: 400
+						},
+						y: 0
+					}
+				},
+				series:{
+					pointWidth: 40,
+					borderRadiusTopLeft:20,
+					borderRadiusTopRight:20,
+					borderColor:''
+				}
+			},
+			exporting: {
+				enabled: false
+			},
+			credits: {
+				enabled: false
+			}
+		});
+
+		// 수출 (연)
+		acptMmChart = [];
+		pryyUsdAmtChart = [];
+		cnyyUsdAmtChart = [];
+		$.each(items.tentativeExpYearList, function(i, item){
+			acptMmChart.push(item.acptMm);
+			pryyUsdAmtChart.push(Number(item.pryyUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+			cnyyUsdAmtChart.push(Number(item.cnyyUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+		});
+		chartColor = '#2358e2';
+		chartColor2 = '#c6d0fc';
+
+		Highcharts.chart('container21', {
+			chart: {
+				type:'column',
+				backgroundColor:''
+			},
+			title: {
+				text:''
+			},
+			xAxis: {
+				title:{
+					text:'연 누계',
+					useHTML: 'true',
+					style:{
+						color:'#fff',
+						'padding':'2px 12px',
+						'background-color': '#707070',
+						'border-radius':'4px'
+					}
+				},
+				lineColor:'#191919',
+				categories: acptMmChart,
+				labels:{
+					style: {
+						color:'#191919',
+						fontSize: 14
+					}
+				}
+			},
+			yAxis:{
+				title: {
+					text:''
+				},
+				visible: false
+			},
+			legend: {
+				enabled: false
+			},
+			series: [{
+				name: tentativeOverall.pryy,
+				data: pryyUsdAmtChart,
+				color: '#c6d0fc',
+				dataLabels:{
+					enabled: false
+				}
+			},{
+				name: tentativeOverall.cnyy,
+				data: cnyyUsdAmtChart,
+				color: '#2358e2',
+				dataLabels:{
+					color: '#2358e2'
+				}
+			}],
+			responsive: {
+				/*	rules: [{
+					condition: {
+						maxWidth: 300
+					},
+					chartOptions: {
+						legend: {
+							layout: 'horizontal',
+							align: 'center',
+							verticalAlign: 'bottom'
+						}
+					}
+				}] */
+			},
+			plotOptions:{
+				column:{
+					dataLabels:{
+						crop:false,
+						overflow:'allow',
+						enabled: true,
+						align: 'center',
+						style: {
+							fontSize: 16,
+							fontWeight: 500
+						},
+						y: 0
+					}
+				},
+				series:{
+					pointWidth: 40,
+					borderRadiusTopLeft:20,
+					borderRadiusTopRight:20,
+					borderColor:''
+				}
+			},
+			exporting: {
+				enabled: false
+			},
+			credits: {
+				enabled: false
+			}
+		});
+
+		// 수입 (연)
+		acptMmChart = [];
+		pryyUsdAmtChart = [];
+		cnyyUsdAmtChart = [];
+		$.each(items.tentativeImpYearList, function(i, item){
+			acptMmChart.push(item.acptMm);
+			pryyUsdAmtChart.push(Number(item.pryyUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+			cnyyUsdAmtChart.push(Number(item.cnyyUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+		});
+		chartColor = '#db2929';
+		chartColor2 = '#ffb6c1';
+
+		Highcharts.chart('container21_b', {
+			chart: {
+				type:'column',
+				backgroundColor:''
+			},
+			title: {
+				text:''
+			},
+			xAxis: {
+				title:{
+					text:'연 누계',
+					useHTML: 'true',
+					style:{
+						color:'#fff',
+						'padding':'2px 12px',
+						'background-color': '#707070',
+						'border-radius':'4px'
+					}
+				},
+				lineColor:'#191919',
+				categories: acptMmChart,
+				labels:{
+					style: {
+						color:'#191919',
+						fontSize: 14
+					}
+				}
+			},
+			yAxis:{
+				title: {
+					text:''
+				},
+				visible: false
+			},
+			legend: {
+				enabled: false
+			},
+			series: [{
+				name: tentativeOverall.pryy,
+				data: pryyUsdAmtChart,
+				color: '#ffb6c1',
+				dataLabels:{
+					enabled: false
+				}
+			},{
+				name: tentativeOverall.cnyy,
+				data: cnyyUsdAmtChart,
+				color: '#db2929',
+				dataLabels:{
+					color: '#db2929'
+				}
+			}],
+			responsive: {
+				/*	rules: [{
+					condition: {
+						maxWidth: 300
+					},
+					chartOptions: {
+						legend: {
+							layout: 'horizontal',
+							align: 'center',
+							verticalAlign: 'bottom'
+						}
+					}
+				}] */
+			},
+			plotOptions:{
+				column:{
+					dataLabels:{
+						crop:false,
+						overflow:'allow',
+						enabled: true,
+						align: 'center',
+						style: {
+							fontSize: 16,
+							fontWeight: 500
+						},
+						y: 0
+					}
+				},
+				series:{
+					pointWidth: 40,
+					borderRadiusTopLeft:20,
+					borderRadiusTopRight:20,
+					borderColor:''
+				}
+			},
+			exporting: {
+				enabled: false
+			},
+			credits: {
+				enabled: false
+			}
+		});		
+
+		/*// 주요수출품목
+		var chartItems = [];
+		var chartData = [];
+		var colors = [
+			'#3e67cf', '#673ab7', '#9c27b0', '#e91e63', '#ff5722', '#ffc107', '#8bc34a', '#0d8f34', '#00bcd4', '#083a72'
+		];
+		
+		// 수출
+		if(imgDownTpcd == 'exp') {
+			$.each(items.tentativeExpProductListOnly10, function(i, item){
+				// acptMmChart.push(item.acptMm);
+				// pryyUsdAmtChart.push(item.pryyUsdAmt);
+				// cnyyUsdAmtChart.push(item.cnyyUsdAmt);
+	
+				if(item.icdcSgn == "+") {
+					chartItems.push('<div style="width:125px;text-align:right;padding-right:5px"><span style="font-size:14px;color:#191919">['+item.prlstNm+'] <span style="font-size:8pt;color:#fc3f27">▲'+item.icdcRt+'%</span></span></div>');
+				} else {
+					chartItems.push('<div style="width:125px;text-align:right;padding-right:5px"><span style="font-size:14px;color:#191919">['+item.prlstNm+'] <span style="font-size:8pt;color:#3e67cf">▼'+item.icdcRt+'%</span></span></div>');
+				}
+				chartData.push({
+					'name': item.prlstNm
+					,'y': Number(item.thmmUsdAmt.replace(/,/g, "").replace(/ /g, ""))
+					,'color': colors[i]
+				});
+			});
+		}
+		// 수입
+		if(imgDownTpcd == 'imp') {
+			$.each(items.tentativeImpProductListOnly10, function(i, item){
+				// acptMmChart.push(item.acptMm);
+				// pryyUsdAmtChart.push(item.pryyUsdAmt);
+				// cnyyUsdAmtChart.push(item.cnyyUsdAmt);
+	
+				if(item.icdcSgn == "+") {
+					chartItems.push('<div style="width:125px;text-align:right;padding-right:5px"><span style="font-size:14px;color:#191919">['+item.prlstNm+'] <span style="font-size:8pt;color:#fc3f27">▲'+item.icdcRt+'%</span></span></div>');
+				} else {
+					chartItems.push('<div style="width:125px;text-align:right;padding-right:5px"><span style="font-size:14px;color:#191919">['+item.prlstNm+'] <span style="font-size:8pt;color:#3e67cf">▼'+item.icdcRt+'%</span></span></div>');
+				}
+				chartData.push({
+					'name': item.prlstNm
+					,'y': Number(item.thmmUsdAmt.replace(/,/g, "").replace(/ /g, ""))
+					,'color': colors[i]
+				});
+			});
+		}
+
+		
+																
+		Highcharts.chart('container22', {
+			title: {
+				style: {
+					display: 'none'
+				}
+			},
+			chart: {
+				type: 'bar',
+				backgroundColor:''
+			},
+			subtitle: {
+				enabled: false
+			},
+			legend: {
+				verticalAlign: 'bottom',
+				enabled: false
+			},
+			credits: {
+				enabled: false
+			},
+			xAxis: [{
+				categories: chartItems,
+				reversed: true,
+				lineColor: '',
+				labels: {
+					step: 1,
+					useHTML: true,
+					style: {
+						whiteSpace: 'nowrap'
+					}
+				}
+			}],
+			yAxis: {
+				title: {
+					text:''
+				},
+				visible: false
+			},
+			plotOptions: {
+				series: {
+					pointWidth: 30,
+					borderRadiusTopRight: 15,
+					borderRadiusTopLeft: 15,
+					borderColor:''
+				}
+			},
+			tooltip: {
+				headerFormat: '',
+				pointFormat: '<span style="color:{point.color}">{point.category}</span>: <b>{point.y}</b>'
+			},
+			series: [{
+				dataSorting:{
+					enabled: true
+				},
+				data: chartData,
+				dataLabels: {
+					crop:false,
+					overflow:'allow',
+					enabled: true,
+					align:'right',
+					x: -7,
+					color:'#fff',
+					style:{
+						fontSize:14,
+						fontWeight: 400
+					}
+				}
+			}],
+			responsive: {
+				rules: [{
+					condition: {
+						maxWidth: 300
+					},
+					chartOptions: {
+						legend: {
+							layout: 'horizontal',
+							align: 'center',
+							verticalAlign: 'bottom'
+						}
+					}
+				}] 
+			},
+			exporting: {
+				enabled: false
+			},
+			credits: {
+				enabled: false
+			}
+		});
+*/
+		// Promise리턴
+		resolve();
+		});
+
+	}
+	});
+};
+// 잠정 이미지 끝
+
+
+
+ /*****************************************************
+  * Function 명 : f_downImg2
+  * Function 기능설명 : 확정통계 이미지 다운로드 
+  * 작성자 : 김태일
+  * 작성일 : 2023-02-22
+  * 변경로그 : 
+  * 2023-02-22-김태일-최초생성
+  ******************************************************/
+function f_downImg2(divId, fileName) {
+	// 로딩화면 표시
+	/*$('.loadingWrap').show();*/
+	// 이미지 다운 레이어 숨기기
+	$('#imgDownDiv').hide();
+	f_downImgChart2().then(function(){ //ajax보내서 차트만드는 function
+		// 이미지 다운 레이어 표시
+		setTimeout(function(){
+			$('#imgDownDiv').show();
+			html2canvas(document.getElementById(divId),{
+					scrollX:0,
+					scrollY:-window.scrollY,
+					windowWidth: document.documentElement.offsetWidth,
+					windowHeight:document.documentElement.offsetHeight,
+				}).then(function(canvas){
+				var mainDownLink = document.createElement("a");
+				mainDownLink.href = canvas.toDataURL("image/png");
+				mainDownLink.download = fileName + '_' + fileNowDate+".png";
+				mainDownLink.click();
+				// 로딩이미지 hide
+				/*$('.loadingWrap').hide();*/
+			
+				// imgDownDiv 비우기
+				$('#imgDownDiv').empty();
+			});
+
+		}, 2000);
+	});
+};
+
+
+
+ /*****************************************************
+  * Function 명 : f_downImgChart2
+  * Function 기능설명 : 확정통계 차트 만들기
+  * 작성자 : 김태일
+  * 작성일 : 2023-02-22
+  * 변경로그 : 
+  * 2023-02-22-김태일-최초생성
+  ******************************************************/
+function f_downImgChart2() {
+	return new Promise(function(resolve){
+	// imgDownDiv 비우기
+	$('#imgDownDiv').empty();
+
+	var opts = {
+		type:"POST",
+		url: "/cts/hmpg/downloadMainImg.do",
+		callback : function(result){
+			//다운로드할 이미지를 만든다
+			f_downImgData2(result).then(function(){ 
+				// Promise리턴
+				resolve();
+			});
+		}
+	};
+	$.fn.kcs4gAjax(opts);
+		
+	 /*****************************************************
+	 * Function 명 : f_downImgData2
+	 * Function 기능설명 : imgDownDiv에 차트 추가하기
+	 * 작성자 : 김태일
+	 * 작성일 : 2023-02-22
+	 * 변경로그 : 
+	 * 2023-02-22-김태일-최초생성
+	 ******************************************************/
+	function f_downImgData2(items) {
+		return new Promise(function(resolve){
+		
+		var innerHtml = '';
+		var definitiveOverall = items.definitiveOverall;
+		
+        innerHtml += '<p>';
+		innerHtml += '<b>'+definitiveOverall.priodTitle+'</b>';
+		innerHtml += '</p>';
+        
+        innerHtml += '<ul class="topWrap definitStat">';
+
+            innerHtml += '<li class="im">';
+                innerHtml += '<div class="illuBox"></div>';
+                innerHtml += '<div class="txtBox">';
+                    if(definitiveOverall.expIcdcSgn == '+') {
+                        innerHtml += '<strong>수출'+definitiveOverall.expUsdAmt+'억 달러</strong><p> 전년 동기대비 <i class="imColor">'+definitiveOverall.expIcdcRt+'%('+definitiveOverall.expIcdcAmt+'억 달러) 증가</i></p>';	
+                    }
+                    if(definitiveOverall.expIcdcSgn == '-') {
+                        innerHtml += '<strong>수출'+definitiveOverall.expUsdAmt+'억 달러</strong><p> 전년 동기대비 <i class="exColor">'+definitiveOverall.expIcdcRt+'%('+definitiveOverall.expIcdcAmt+'억 달러) 감소</i></p>';	
+                    }
+                innerHtml += '</div>';
+            innerHtml += '</li>';
+
+            innerHtml += '<li class="ex">';
+                innerHtml += '<div class="illuBox"></div>';
+                innerHtml += '<div class="txtBox">';
+                    if(definitiveOverall.impIcdcSgn == '+') {
+                        innerHtml += '<strong>수입'+definitiveOverall.impUsdAmt+'억 달러</strong><p> 전년 동기대비 <i class="imColor">'+definitiveOverall.impIcdcRt+'%('+definitiveOverall.impIcdcAmt+'억 달러) 증가</i></p>';
+                    }
+                    if(definitiveOverall.impIcdcSgn == '-') {
+                        innerHtml += '<strong>수입'+definitiveOverall.impUsdAmt+'억 달러</strong><p> 전년 동기대비 <i class="exColor">'+definitiveOverall.impIcdcRt+'%('+definitiveOverall.impIcdcAmt+'억 달러) 감소</i></p>';
+                    }
+                innerHtml += '</div>';
+            innerHtml += '</li>';
+
+		innerHtml += '</ul>';
+				
+		innerHtml += '<ul class="chartGrp scnd">';
+		innerHtml += '<li class="">';
+		innerHtml += '<figure class="highcharts-figure">';
+		innerHtml += '<h5>수출입 연도별 실적 <span>[ 단위 : 백만 달러 ]</span></h5>';
+		
+		innerHtml += '<p class="twoColor t1">';
+		innerHtml += '<span class="exColor">수출</span> ';
+		innerHtml += '<span class="imColor">수입</span>';
+		innerHtml += '</p>';
+
+		innerHtml += '<ul class="dollar">';
+		innerHtml += '<li><span class="exColor">(수출)</span> <strong id="expUsdAmtdollar">'+definitiveOverall.expUsdAmtActt+'</strong></li>';
+		innerHtml += '<li><span class="imColor">(수입)</span> <strong id="impUsdAmtdollar">'+definitiveOverall.impUsdAmtActt+'</strong></li>';
+		innerHtml += '</ul>';
+		innerHtml += '<div id="container24"></div>';
+		innerHtml += '</figure>';
+		innerHtml += '</li>';
+
+		innerHtml += '<li class="">';
+		innerHtml += '<figure id="iDV" class="highcharts-figure">';
+		innerHtml += '<h5>주요 국가별 실적<span> [ 단위 : 백만 달러 ]</span></h5>';
+		innerHtml += '<p class="twoColor t2">';
+		innerHtml += '<span class="exColor">수출</span> ';
+		innerHtml += '<span class="imColor">수입</span>';
+		innerHtml += '</p>';
+
+		innerHtml += '<div id="container25"></div>';
+
+		innerHtml += '</figure>';
+		innerHtml += '</li>';
+		innerHtml += '</ul>';	
+	
+		$('#imgDownDiv').append(innerHtml);
+
+
+		// 차트를 만든다
+
+		// 수출입 연도별 실적 
+		// 서브 타이틀
+		var subTitTradeAll = '';
+		//X축 연별
+		var acptYymmChart = [];
+		// 수출금액
+		var expUsdAmtChart = [];
+		// 수입금액
+		var impUsdAmtChart = [];
+		// 최근 수출금액
+		var expUsdAmtMax = 0;
+		// 최근 수입금액
+		var expUsdAmtMax = 0;
+		
+		
+		$.each(items.mainTradeYearList, function(i, item){
+			acptYymmChart.push(item.acptYymm);
+			expUsdAmtChart.push(Number(item.expUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+			impUsdAmtChart.push(Number(item.impUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+			subTitTrade = item.acptYymm;
+			expUsdAmtMax = item.expUsdAmt;
+			impUsdAmtMax = item.impUsdAmt;
+		});
+
+		//세자리마다 콤마
+		expUsdAmtMax = expUsdAmtMax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		impUsdAmtMax = impUsdAmtMax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		
+		
+		Highcharts.chart('container24', {
+			chart: {
+				backgroundColor:''
+			},
+			title: {
+				text:''
+			},
+			xAxis: {
+				lineColor: '#191919',
+				categories: acptYymmChart,
+				labels:{
+					style: {
+						color:'#191919',
+						fontSize: 14
+					}
+				}
+			},
+			yAxis:{
+				title: {
+					text:''
+				},
+				visible: false
+			},
+			legend: {
+				enabled: false
+			},
+			series: [{
+				name: '수출',
+				data: expUsdAmtChart,
+				color: '#3e67cf'
+			
+			},{
+				name: '수입',
+				data: impUsdAmtChart,
+				color: '#fc3f27'
+			}],
+			plotOptions:{
+				series: {
+					label:{
+						enabled: false
+					},
+					marker: {
+						fillColor: '#ffffff',
+						lineWidth: 3,
+						lineColor: null,
+						symbol: 'circle',
+						radius: 6
+					},
+					dashStyle: 'shortdot'
+					
+				},
+				fontSize: 20
+			},
+			responsive: {
+				/*	rules: [{
+				condition: {
+					maxWidth: 300
+				},
+				chartOptions: {
+					legend: {
+						layout: 'horizontal',
+						align: 'center',
+						verticalAlign: 'bottom'
+					}
+				}
+			}] */
+			},
+			exporting: {
+				enabled: false
+			},
+			credits: {
+				enabled: false
+			}
+		});
+	
+
+	// 주요 국가별 실적
+	
+		//X축 연별
+		//var acptYymmChart = [];
+		// 수출금액
+		var expUsdAmtChart = [];
+		// 수입금액
+		var impUsdAmtChart = [];
+		// X축 국가명
+		var cntyNmChart = [];
+		// 최근 월
+		var priodTitleChart = 0;
+		
+		
+		$.each(items.mainTradeCountryList, function(i, item){	
+			cntyNmChart.push(item.cntyNm);
+			expUsdAmtChart.push(Number(item.expUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+			impUsdAmtChart.push(Number(item.impUsdAmt.replace(/,/g, "").replace(/ /g, "")));
+			priodTitleChart = item.priodTitle;
+		
+		});
+		
+
+		Highcharts.chart('container25', {
+			chart: {
+				backgroundColor:''
+			},
+			title: {
+				text:''
+			},
+			xAxis: {
+				lineColor: '#191919',
+				categories: cntyNmChart,
+				labels:{
+					style: {
+						color:'#191919',
+						fontSize: 14
+					}
+				}
+			},
+			yAxis:{
+				title: {
+					text:''
+				},
+				visible: false
+			},
+			legend: {
+				enabled: false
+			},
+			series: [{
+				type: 'column',
+				name: '수출',
+				data: expUsdAmtChart,
+				color: '#3e67cf'
+			},{
+				type: 'column',
+				name: '수입',
+				data: impUsdAmtChart,
+				color: '#fc3f27'
+			}],
+			plotOptions: {
+				series:{
+					pointWidth: 15,
+					borderColor:'',
+					borderRadiusTopLeft:10,
+					borderRadiusTopRight:10,
+					dataLabels:{
+						color: '',
+						crop:false,
+						overflow:'allow',
+						align: 'center',
+						style:{
+							fontSize:14,
+							fontWeight: 500
+						},
+						enabled: true
+					}
+				}
+			},
+			responsive: {
+				/*	rules: [{
+				condition: {
+					maxWidth: 300
+				},
+				chartOptions: {
+					legend: {
+						layout: 'horizontal',
+						align: 'center',
+						verticalAlign: 'bottom'
+					}
+				}
+			}] */
+			},
+			exporting: {
+				enabled: false
+			},
+			credits: {
+				enabled: false
+			}
+		});
+
+		// Promise리턴
+		resolve();
+		});
+
+	}
+
+
+	
+	});
+};
+ // 확정 이미지 끝
+
+$(document).ready(function(){
+	//이미지,보도자료 다운시 메세지창
+	$('.imgDown a').on('click',function(){
+		$(this).next('.waitPlz').addClass('on');
+		setTimeout(function(){
+			$('.waitPlz').removeClass('on');
+		},4000);
+	});
+	$('.pdfDown a').on('click',function(){
+		$(this).next('.waitPlz').addClass('on');
+		setTimeout(function(){
+			$('.waitPlz').removeClass('on');
+		},4000);
+	});
+});
+
+
+/*****************************************************
+ * Function 명 : f_ccpPop
+ * Function 기능설명 : 통관실적 팝업 열기
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_ccpPop(){
+	$('.ccpPop').addClass('on');
+}
+
+/*****************************************************
+ * Function 명 : f_ccpPopClose
+ * Function 기능설명 : 통관실적 팝업 닫기
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_ccpPopClose(){
+	$('.ccpPop').removeClass('on');
+}
+
+// 현재 슬라이드 번호
+var currentSlide = 0;
+var ppznSlides;
+$(document).ready(function(){
+	// 팝업존 슬라이드 변수
+	var topPopDocument =  document.getElementById("topPopWrap");
+	ppznSlides = topPopDocument.getElementsByClassName("ppznList");
+});
+/*****************************************************
+ * Function 명 : f_ppznLeft
+ * Function 기능설명 : 팝업존 왼쪽으로 넘기기
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_ppznLeft(){
+	// 현재 슬라이드를 비활성화
+	ppznSlides[currentSlide].classList.remove('ppznShow');
+	ppznSlides[currentSlide].classList.add('ppznHide');
+	
+	// 다음 슬라이드를 활성화
+	if (currentSlide == 0) {
+		currentSlide = ppznSlides.length-1;
+	} else {
+		currentSlide -= 1;
+	}
+	ppznSlides[currentSlide].classList.remove('ppznHide');
+	ppznSlides[currentSlide].classList.add('ppznShow');
+}
+
+/*****************************************************
+ * Function 명 : f_ppznRight
+ * Function 기능설명 : 팝업존 오른쪽으로 넘기기
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_ppznRight(){
+	// 현재 슬라이드를 비활성화
+	ppznSlides[currentSlide].classList.remove('ppznShow');
+	ppznSlides[currentSlide].classList.add('ppznHide');
+	
+	// 다음 슬라이드를 활성화
+	currentSlide = (currentSlide + 1) % ppznSlides.length;
+	ppznSlides[currentSlide].classList.remove('ppznHide');
+	ppznSlides[currentSlide].classList.add('ppznShow');
+}
+
+
+/*****************************************************
+* Function 명 : f_retrieveTradePprc
+* Function 기능설명 : 메인 잠정통계
+* 작성자 : 김윤수
+* 작성일 : 2023-09-24
+* 변경로그 : 
+* 2023-09-24-김윤수-최초생성
+******************************************************/
+var isPprcLoaded = false;
+function f_retrieveTradePprc() {
+	f_ccpPopClose();
+
+	if (isPprcLoaded == true) {
+		return;
+	} else {
+		isPprcLoaded = true;
+	}
+
+	// 초기화면 테이블 데이터 취득
+	var callUrl = "/cts/hmpg/retrieveTradePprc.do";
+	var opts = 
+	{
+		url: callUrl,
+		callback : function (result) {
+			var innerHtml = '';
+			
+			/* 통관실적 */
+			var aggtCsclAcrsQryResult = result.aggtCsclAcrsQryResult;
+			
+			$('#pprcAggtCsclAcrsMm').empty();
+			innerHtml = '<span>당월<br>(' + aggtCsclAcrsQryResult.tradeMTitle + ')</span>'
+				+ '<ul>'
+				+ '<li class="ex"><span>수출</span>'
+				+ '<p>' + aggtCsclAcrsQryResult.expAmt + '</p>'
+				+ '<strong>' + aggtCsclAcrsQryResult.expIcdcRt + '</strong>'
+				+ '</li>'
+				+ '<li class="im"><span>수입</span>'
+				+ '<p>' + aggtCsclAcrsQryResult.impAmt + '</p>'
+				+ '<strong>' + aggtCsclAcrsQryResult.impIcdcRt + '</strong>'
+				+ '</li>'
+				+ '</ul>';
+			$('#pprcAggtCsclAcrsMm').html(innerHtml);
+
+			$('#pprcAggtCsclAcrsYy').empty();
+			innerHtml = '<span>연간<br>(' + aggtCsclAcrsQryResult.tradeYTitle + ')</span>'
+				+ '<ul>'
+				+ '<li class="ex"><span>수출</span>'
+				+ '<p>' + aggtCsclAcrsQryResult.fyyExpAmt + '</p>'
+				+ '<strong>' + aggtCsclAcrsQryResult.fyyExpIcdcRt + '</strong>'
+				+ '</li>'
+				+ '<li class="im"><span>수입</span>'
+				+ '<p>' + aggtCsclAcrsQryResult.fyyImpAmt + '</p>'
+				+ '<strong>' + aggtCsclAcrsQryResult.fyyImpIcdcRt + '</strong>'
+				+ '</li>'
+				+ '</ul>';Html = '<li>증감율: 전년동기대비 증감율</li>'
+				+ '<li>' + aggtCsclAcrsQryResult.rmrkCn + '</li>'
+				+ '<li>수출(출항일 기준) 연간 누계: ' + aggtCsclAcrsQryResult.tkofExpAccAmt + '백만 달러</li>';
+			$('#pprcAggtCsclAcrsYy').html(innerHtml);
+
+			$('#pprcAggtCsclAcrsEtc').empty();
+			innerHtml = '<li>증감율: 전년동기대비 증감율</li>'
+				+ '<li>' + aggtCsclAcrsQryResult.rmrkCn + '</li>'
+				+ '<li>수출(출항일 기준) 연간 누계: ' + aggtCsclAcrsQryResult.tkofExpAccAmt + '백만 달러</li>';
+			$('#pprcAggtCsclAcrsEtc').html(innerHtml);
+
+			/* 잠정통계 */
+			var pprcOverall = result.pprcOverall;
+
+			$('#pprcTitle').empty();
+			innerHtml = '<b>' + pprcOverall.priodTitle + '</b>';
+			$('#pprcTitle').html(innerHtml);
+
+			$('#pprcOvrlExp').empty();
+			innerHtml = '<strong>수출 ' + pprcOverall.expUsdAmt + '억 달러</strong><p>';
+			if (pprcOverall.expIcdcSgn == "+") {
+				innerHtml += '전년 동기대비 <i class="imColor">' + pprcOverall.expIcdcRt + '%(' + pprcOverall.expIcdcAmt + '억 달러) 증가</i>';
+			} else if (pprcOverall.expIcdcSgn == "-") {
+				innerHtml += '전년 동기대비 <i class="exColor">' + pprcOverall.expIcdcRt + '%(' + pprcOverall.expIcdcAmt + '억 달러) 감소</i>';
+			}
+			innerHtml += '</p>';
+			$('#pprcOvrlExp').html(innerHtml);
+
+			$('#pprcOvrlImp').empty();
+			innerHtml = '<strong>수입 ' + pprcOverall.impUsdAmt + '억 달러</strong><p>';
+			if (pprcOverall.impIcdcSgn == "+") {
+				innerHtml += '전년 동기대비 <i class="imColor">' + pprcOverall.impIcdcRt + '%(' + pprcOverall.impIcdcAmt + '억 달러) 증가</i>';
+			} else if (pprcOverall.impIcdcSgn == "-") {
+				innerHtml += '전년 동기대비 <i class="exColor">' + pprcOverall.impIcdcRt + '%(' + pprcOverall.impIcdcAmt + '억 달러) 감소</i>';
+			}
+			innerHtml += '</p>';
+			$('#pprcOvrlImp').html(innerHtml);
+
+			// x축 기준
+			var acptMmChart = [];
+			// 전년도 수출가격
+			var pryyUsdAmtChart = [];
+			// 당해년도 수출가격
+			var cnyyUsdAmtChart = [];
+			// 일단위
+			var dtUnit = pprcOverall.priodTitle.substring(8,10) + '~' + pprcOverall.priodTitle.substring(16,18);
+
+			$('#pprcOvrlExp2').empty();
+			innerHtml = '<span class="gray1">' + pprcOverall.pryy + '년</span><span class="exColor">' + pprcOverall.cnyy + '년</span>';
+			$('#pprcOvrlExp2').html(innerHtml);
+
+			acptMmChart = [];
+			pryyUsdAmtChart = [];
+			cnyyUsdAmtChart = [];
+			
+			var checkPrYear = pprcOverall.pryy;
+			
+			$.each(result.pprcExpMonthList, function(i, item) {
+				acptMmChart.push(item.acptMm);
+				pryyUsdAmtChart.push({
+					'name': item.acptMm,
+					'yearCheck': item.yearCheck,
+					'dtUnit': dtUnit,
+					'y': Number(item.pryyUsdAmt),
+					'icdcSgn': 'N/A'
+				});
+				cnyyUsdAmtChart.push({
+					'name': item.acptMm,
+					'yearCheck': item.yearCheck,
+					'dtUnit': dtUnit,
+					'y': Number(item.cnyyUsdAmt),
+					'icdcSgn': item.icdcSgn,
+					'icdcRt': item.icdcRt
+				});
+			});
+
+			Highcharts.chart('container3', {
+				chart: {
+					type:'column',
+					backgroundColor:''
+				},
+				title: {
+					text:''
+				},
+				xAxis: {
+					title:{
+						text:'월',
+						useHTML: 'true',
+						style:{
+							color:'#fff',
+							'padding':'2px 12px',
+							'background-color': '#707070',
+							'border-radius':'4px',
+							'margin':'12px 0 0'
+						}
+					},
+					marginTop: 6,
+					lineColor:'#191919',
+					categories: acptMmChart,
+					labels:{
+						style: {
+							color:'#191919',
+							fontSize: 13
+						}
+					}
+				},
+				yAxis:{
+					title: {
+						text:''
+					},
+					visible: false
+				},
+				legend: {
+					enabled: false
+				},
+				series: [{
+					name: pprcOverall.pryy,
+					data: pryyUsdAmtChart,
+					color: '#c6d0fc',
+					dataLabels:{
+						color: '#c6d0fc',
+						enabled: false
+					}
+				},{
+					name: pprcOverall.cnyy,
+					data: cnyyUsdAmtChart,
+					color:'#3e67cf',
+					dataLabels: {
+						color: '#3e67cf'
+					}
+				}],
+				responsive: {
+					/*	rules: [{
+					condition: {
+						maxWidth: 300
+					},
+					chartOptions: {
+						legend: {
+							layout: 'horizontal',
+							align: 'center',
+							verticalAlign: 'bottom'
+						}
+					}
+				}] */
+				},
+				plotOptions:{
+					column:{
+						dataLabels:{
+							enabled: true,
+							align: 'center',
+							style: {
+								fontSize: 14,
+								fontWeight: 400
+							},
+							y: 0
+						}
+					},
+					series:{
+						pointWidth: 20,
+						borderRadiusTopLeft:10,
+						borderRadiusTopRight:10,
+						borderColor:''
+					}
+				},
+				exporting: {
+					enabled: false
+				},
+				credits: {
+					enabled: false
+				},
+				tooltip: {
+					enabled: true,
+					formatter: function() {
+						if (this.point.icdcSgn == '+') {
+						    if(this.point.name.replace("월", "") == '12' && checkPrYear == this.point.yearCheck) {
+						    	return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+								+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+						    } else {
+						    	return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+								+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+						    }
+						} else if (this.point.icdcSgn == '-') {
+							if(this.point.name.replace("월", "") == '12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+									+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+								+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							}
+						} else {
+							if(this.point.name.replace("월", "") == '12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+							}
+						}
+					}
+				}
+			});
+
+			acptMmChart = [];
+			pryyUsdAmtChart = [];
+			cnyyUsdAmtChart = [];
+
+			$.each(result.pprcExpYearList, function(i, item) {
+				acptMmChart.push(item.acptMm);
+				pryyUsdAmtChart.push({
+					'name': item.acptMm,
+					'yearCheck': item.yearCheck,
+					'dtUnit': dtUnit,
+					'y': Number(item.pryyUsdAmt),
+					'icdcSgn': 'N/A'
+				});
+				cnyyUsdAmtChart.push({
+					'name': item.acptMm,
+					'yearCheck': item.yearCheck,
+					'dtUnit': dtUnit,
+					'y': Number(item.cnyyUsdAmt),
+					'icdcSgn': item.icdcSgn,
+					'icdcRt': item.icdcRt
+				});
+			});
+
+			Highcharts.chart('container4', {
+				chart: {
+					type:'column',
+					backgroundColor:''
+				},
+				title: {
+					text:''
+				},
+				xAxis: {
+					title:{
+						text:'연 누계',
+						useHTML: 'true',
+						style:{
+							color:'#fff',
+							'padding':'2px 12px',
+							'background-color': '#707070',
+							'border-radius':'4px'
+						}
+					},
+					lineColor:'#191919',
+					categories: acptMmChart,
+					labels:{
+						style: {
+							color:'#191919',
+							fontSize: 13
+						}
+					}
+				},
+				yAxis:{
+					title: {
+						text:''
+					},
+					visible: false
+				},
+				legend: {
+					enabled: false
+				},
+				series: [{
+					name: pprcOverall.pryy,
+					data: pryyUsdAmtChart,
+					color: '#c6d0fc',
+					dataLabels:{
+						color: '#c6d0fc',
+						enabled: false
+					}
+				},{
+					name: pprcOverall.cnyy,
+					data: cnyyUsdAmtChart,
+					color:'#3e67cf',
+					dataLabels:{
+						color: '#3e67cf'
+					}
+				}],
+				responsive: {
+					/*	rules: [{
+						condition: {
+							maxWidth: 300
+						},
+						chartOptions: {
+							legend: {
+								layout: 'horizontal',
+								align: 'center',
+								verticalAlign: 'bottom'
+							}
+						}
+					}] */
+				},
+				plotOptions:{
+					column:{
+						dataLabels:{
+							enabled: true,
+							align: 'center',
+							style: {
+								fontSize: 14,
+								fontWeight: 500
+							},
+							y: 0
+						}
+					},
+					series:{
+						pointWidth: 20,
+						borderRadiusTopLeft:10,
+						borderRadiusTopRight:10,
+						borderColor:''
+					}
+				},
+				exporting: {
+					enabled: false
+				},
+				credits: {
+					enabled: false
+				},
+				tooltip: {
+					enabled: true,
+					formatter: function() {
+					    if (this.point.icdcSgn == '+') {
+							if(this.point.name.replace("월", "") == '01~12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+									+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+								+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							}
+						} else if (this.point.icdcSgn == '-') {
+							if(this.point.name.replace("월", "") == '01~12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+									+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+								+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							}
+						} else {
+							if(this.point.name.replace("월", "") == '01~12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수출액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+							}
+						}
+					}
+				}
+			});
+
+			$('#pprcOvrlImp2').empty();
+			innerHtml = '<span class="gray2">' + pprcOverall.pryy + '년</span><span class="imColor">' + pprcOverall.cnyy + '년</span>';
+			$('#pprcOvrlImp2').html(innerHtml);
+
+			acptMmChart = [];
+			pryyUsdAmtChart = [];
+			cnyyUsdAmtChart = [];
+
+			$.each(result.pprcImpMonthList, function(i, item) {
+				acptMmChart.push(item.acptMm);
+				pryyUsdAmtChart.push({
+					'name': item.acptMm,
+					'yearCheck': item.yearCheck,
+					'dtUnit': dtUnit,
+					'y': Number(item.pryyUsdAmt),
+					'icdcSgn': 'N/A'
+				});
+				cnyyUsdAmtChart.push({
+					'name': item.acptMm,
+					'yearCheck': item.yearCheck,
+					'dtUnit': dtUnit,
+					'y': Number(item.cnyyUsdAmt),
+					'icdcSgn': item.icdcSgn,
+					'icdcRt': item.icdcRt
+				});
+			});
+
+			Highcharts.chart('container3_b', {
+				chart: {
+					type:'column',
+					backgroundColor:''
+				},
+				title: {
+					text:''
+				},
+				xAxis: {
+					title:{
+						text:'월',
+						useHTML: 'true',
+						style:{
+							color:'#fff',
+							'padding':'2px 12px',
+							'background-color': '#707070',
+							'border-radius':'4px'
+						}
+					},
+					lineColor:'#191919',
+					categories: acptMmChart,
+					labels:{
+						style: {
+							color:'#191919',
+							fontSize: 13
+						}
+					}
+				},
+				yAxis:{
+					title: {
+						text:''
+					},
+					visible: false
+				},
+				legend: {
+					enabled: false
+				},
+				series: [{
+					name: pprcOverall.pryy,
+					data: pryyUsdAmtChart,
+					color: '#ffb6c1',
+					dataLabels:{
+						enabled: false
+					}
+				},{
+					name: pprcOverall.cnyy,
+					data: cnyyUsdAmtChart,
+					color:'#db2929',
+					dataLabels:{
+						color: '#db2929'
+					}
+				}],
+				responsive: {
+					/*	rules: [{
+						condition: {
+							maxWidth: 300
+						},
+						chartOptions: {
+							legend: {
+								layout: 'horizontal',
+								align: 'center',
+								verticalAlign: 'bottom'
+							}
+						}
+					}] */
+				},
+				plotOptions:{
+					column:{
+						dataLabels:{
+							enabled: true,
+							align: 'center',
+							style: {
+								fontSize: 14,
+								fontWeight: 400
+							},
+							y: 0
+						}
+					},
+					series:{
+						pointWidth: 20,
+						borderRadiusTopLeft:10,
+						borderRadiusTopRight:10,
+						borderColor:''
+					}
+				},
+				exporting: {
+					enabled: false
+				},
+				credits: {
+					enabled: false
+				},
+				tooltip: {
+					enabled: true,
+					formatter: function() {
+						if (this.point.icdcSgn == '+') {
+							if(this.point.name.replace("월", "") == '12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+									+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+									+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							}
+						} else if (this.point.icdcSgn == '-') {
+							if(this.point.name.replace("월", "") == '12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+									+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+								+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							}
+						} else {
+							if(this.point.name.replace("월", "") == '12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+							}
+						}
+					}
+				}
+			});
+
+			acptMmChart = [];
+			pryyUsdAmtChart = [];
+			cnyyUsdAmtChart = [];
+
+			$.each(result.pprcImpYearList, function(i, item) {
+				acptMmChart.push(item.acptMm);
+				pryyUsdAmtChart.push({
+					'name': item.acptMm,
+					'yearCheck': item.yearCheck,
+					'dtUnit': dtUnit,
+					'y': Number(item.pryyUsdAmt),
+					'icdcSgn': 'N/A'
+				});
+				cnyyUsdAmtChart.push({
+					'name': item.acptMm,
+					'yearCheck': item.yearCheck,
+					'dtUnit': dtUnit,
+					'y': Number(item.cnyyUsdAmt),
+					'icdcSgn': item.icdcSgn,
+					'icdcRt': item.icdcRt
+				});
+			});
+
+			Highcharts.chart('container4_b', {
+				chart: {
+					type:'column',
+					backgroundColor:''
+				},
+				title: {
+					text:''
+				},
+				xAxis: {
+					title:{
+						text:'연 누계',
+						useHTML: 'true',
+						style:{
+							color:'#fff',
+							'padding':'2px 12px',
+							'background-color': '#707070',
+							'border-radius':'4px'
+						}
+					},
+					lineColor:'#191919',
+					categories: acptMmChart,
+					labels:{
+						style: {
+							color:'#191919',
+							fontSize: 13
+						}
+					}
+				},
+				yAxis:{
+					title: {
+						text:''
+					},
+					visible: false
+				},
+				legend: {
+					enabled: false
+				},
+				series: [{
+					name: pprcOverall.pryy,
+					data: pryyUsdAmtChart,
+					color: '#ffb6c1',
+					dataLabels:{
+						enabled: false
+					}
+				},{
+					name: pprcOverall.cnyy,
+					data: cnyyUsdAmtChart,
+					color:'#db2929',
+					dataLabels:{
+						color: '#db2929'
+					}
+				}],
+				responsive: {
+					/*	rules: [{
+						condition: {
+							maxWidth: 300
+						},
+						chartOptions: {
+							legend: {
+								layout: 'horizontal',
+								align: 'center',
+								verticalAlign: 'bottom'
+							}
+						}
+					}] */
+				},
+				plotOptions:{
+					column:{
+						dataLabels:{
+							enabled: true,
+							align: 'center',
+							style: {
+								fontSize: 14,
+								fontWeight: 400
+							},
+							y: 0
+						}
+					},
+					series:{
+						pointWidth: 20,
+						borderRadiusTopLeft:10,
+						borderRadiusTopRight:10,
+						borderColor:''
+					}
+				},
+				exporting: {
+					enabled: false
+				},
+				credits: {
+					enabled: false
+				},
+				tooltip: {
+					enabled: true,
+					formatter: function() {
+						if (this.point.icdcSgn == '+') {
+							if(this.point.name.replace("월", "") == '01~12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+									+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+								+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							}
+						} else if (this.point.icdcSgn == '-') {
+							if(this.point.name.replace("월", "") == '01~12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+									+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+								+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+							}
+						} else {
+							if(this.point.name.replace("월", "") == '01~12' && checkPrYear == this.point.yearCheck) {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + (this.series.name - 1) + '.' + this.point.name.replace("월", "") + '<br>'
+									+ '일단위: ' + this.point.dtUnit + '<br>'
+									+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+							} else {
+								return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.series.name + '.' + this.point.name.replace("월", "") + '<br>'
+								+ '일단위: ' + this.point.dtUnit + '<br>'
+								+ '수입액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+							}
+						}
+					}
+				}
+			});
+		}
+	};
+
+	$.fn.kcs4gAjax(opts);
+
+	/*****************************************************
+	* Function 명 : f_tableData
+	* Function 기능설명 : 검색결과 출력
+	* 작성자 : 김태일
+	* 작성일 : 2023-02-22
+	* 변경로그 : 
+	* 2023-02-22-김태일-최초생성
+	******************************************************/
+	function f_tableData(count, items) {
+		// 데이터
+		$('#trade_table').empty();
+		var innerHtml = '';
+
+		innerHtml += '<colgroup>';
+		innerHtml += '<col style="width:48px;">';
+		innerHtml += '<col style="width:60px;">';
+		innerHtml += '<col>';
+		innerHtml += '<col>';
+		innerHtml += '<col>';
+		innerHtml += '<col>';
+		innerHtml += '<col>';
+		innerHtml += '<col>';
+		innerHtml += '<col>';
+		innerHtml += '</colgroup>';
+
+		innerHtml += '<thead>';
+		innerHtml += '<tr>';
+		innerHtml += '<th scope="col" rowspan="2" class="borderL_0 "><input type="checkbox" id="listItemAll" name="listItemAll" onclick ="cf_listItemAll()"><label class="visually-hidden" for="listItemAll">전체 선택</label></th>';
+		innerHtml += '<th scope="col" aria-sort="none" rowspan="2" class="">기간<a class="sort" href="#" data-sort="PRIOD_TITLE" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden">기간 정렬하기</span></a></th>';
+		if (priodKind != "YEAR") {
+			innerHtml += '<th scope="col" aria-sort="none" rowspan="2" class="">조업일수<a class="sort" href="#" data-sort="FSOP_DCNT" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden">조업일수 정렬하기</span></a></th>';
+		}
+		innerHtml += '<th scope="colgroup" colspan="3" aria-sort="none">수출</th>';
+		innerHtml += '<th scope="colgroup" colspan="3" aria-sort="none">수입</th>';
+		innerHtml += '<th scope="col" aria-sort="none" rowspan="2">무역수지<a class="sort" href="#" data-sort="CMTR_BLNC_AMT" data-sort-order="down" onclick="f_tableSort(this)" ><span class="visually-hidden">무역수지 정렬하기</span></a></th>';
+		innerHtml += '</tr>';
+		innerHtml += '<tr>';
+		innerHtml += '<th scope="col" aria-sort="none">건수<a class="sort" href="#" data-sort="EXP_CNT" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden">건수 정렬하기</span></a></th>';
+		innerHtml += '<th scope="col" aria-sort="none">중량<a class="sort" href="#" data-sort="EXP_WGHT" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden">중량 정렬하기</span></a></th>';
+		innerHtml += '<th scope="col" aria-sort="none">금액<a class="sort" href="#" data-sort="EXP_USD_AMT" data-sort-order="down" onclick="f_tableSort(this)" ><span class="visually-hidden">금액 정렬하기</span></a></th>';
+		innerHtml += '<th scope="col" aria-sort="none">건수<a class="sort" href="#" data-sort="IMP_CNT" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden">건수 정렬하기</span></a></th>';
+		innerHtml += '<th scope="col" aria-sort="none">중량<a class="sort" href="#" data-sort="IMEX_TTWG" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden">중량 정렬하기</span></a></th>';
+		innerHtml += '<th scope="col" aria-sort="none">금액<a class="sort" href="#" data-sort="IMP_USD_AMT" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden">금액 정렬하기</span></a></th>';
+		innerHtml += '</tr>';
+		innerHtml += '</thead>';
+		innerHtml += '<tbody id="tradeTableTbody">';
+
+		// 테이블 데이터
+		// 조회결과가 있을경우
+		if (count > 0) {
+			$.each(items, function(i, item){
+				if (item.priodTitle != '총계') {
+					innerHtml +='<tr>';
+					innerHtml +='<td class="txt_center"><input type="checkbox" id="listItem'+i+'" name="listItem" onclick="cf_itemCheck()"><label class="visually-hidden" for="listItem'+i+'">선택</label></td>';
+					innerHtml +='<td class="txt_center">'+item.priodTitle+'</td>';
+				} else {
+					innerHtml +='<tr class="sum">';
+					innerHtml +='<td colspan="2" class="txt_center">'+item.priodTitle+'</td>';
+				}
+				if (priodKind != "YEAR") {
+					innerHtml +='<td class="txt_center">'+item.fsopDcnt+'</td>';
+				}
+				innerHtml +='<td>'+item.expCnt+'</td>';
+				innerHtml +='<td>'+item.expTtwg+'</td>';
+				innerHtml +='<td>'+item.expUsdAmt+'</td>';
+				innerHtml +='<td>'+item.impCnt+'</td>';
+				innerHtml +='<td>'+item.impTtwg+'</td>';
+				innerHtml +='<td>'+item.impUsdAmt+'</td>';
+				innerHtml +='<td>'+item.cmtrBlncAmt+'</td>';
+				innerHtml +='</tr>';
+			});
+		} else {
+			// 조회결과가 없을경우
+			innerHtml +='<tr>';
+			if (priodKind != "YEAR") {
+				innerHtml +='<td colspan="10" class="txt_center noResult">조회결과가 존재하지 않습니다.</td>';
+			} else {
+				innerHtml +='<td colspan="9" class="txt_center noResult">조회결과가 존재하지 않습니다.</td>';
+			}
+			innerHtml +='</tr>';
+		}
+		innerHtml +='</tbody>';
+
+		$('#trade_table').html(innerHtml);
+		
+		/* 웹 접근성 추가 - 테이블 헤더 정렬 버튼 */
+		$('.sort').attr("role","button");
+	}
+}
