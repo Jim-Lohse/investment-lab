@@ -67,7 +67,9 @@ jobs:
       - name: Capture tradedata pages for parser development (manual runs only)
         if: ${{ github.event.inputs.capture_pages != '' }}
         continue-on-error: true
-        run: python -m signals.korea_tradedata capture
+        run: |
+          python -m signals.korea_tradedata capture
+          python -m signals.korea_tradedata probe
 
       - name: Fetch Korea Customs data
         env:

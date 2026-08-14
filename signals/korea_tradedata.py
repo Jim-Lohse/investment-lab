@@ -45,6 +45,8 @@ CAPTURE_URLS = {
     "js_main": "https://tradedata.go.kr/cts/js/ets/hmpg/main/main.js",
     "js_ets_common": "https://tradedata.go.kr/cts/js/ets/cmmn/ets_common.js",
     "js_index_main": "https://tradedata.go.kr/cts/js/ets/cmmn/indexMain.js",
+    "js_menu": "https://tradedata.go.kr/cts/js/menu.js",
+    "js_kcs4g_ajax": "https://tradedata.go.kr/cts/js/kcs4g/kcs4g_ajax.js",
 }
 
 OUT_DIR = DATA_DIR / "korea"
@@ -161,6 +163,47 @@ def capture() -> None:
             print(f"capture {name} failed: {err}")
 
 
+def probe() -> None:
+    """Exercise candidate data endpoints from CI and save every response.
+
+    Read-only requests against the portal's own widget endpoints; results
+    land in data/korea/raw/pages/ for parser development.
+    """
+    import requests
+
+    from .common import USER_AGENT
+
+    base = "https://tradedata.go.kr"
+    session = requests.Session()
+    session.headers.update({"User-Agent": USER_AGENT})
+    session.get(f"{base}/cts/index.do", timeout=60)  # establish session cookie
+    xhr = {"X-Requested-With": "XMLHttpRequest",
+           "Referer": f"{base}/cts/index.do",
+           "Accept": "application/json, text/javascript, */*; q=0.01"}
+
+    attempts = [
+        ("probe_pprc_get", "GET", f"{base}/cts/hmpg/retrieveTradePprc.do", None),
+        ("probe_pprc_post", "POST", f"{base}/cts/hmpg/retrieveTradePprc.do", {}),
+        ("probe_173_post", "POST", f"{base}/cts/hmpg/openETS0100173Q.do",
+         {"menuId": "ETS_MNU_00000134"}),
+        ("probe_173_get_menu", "GET",
+         f"{base}/cts/hmpg/openETS0100173Q.do?menuId=ETS_MNU_00000134", None),
+    ]
+    PAGES_DIR.mkdir(parents=True, exist_ok=True)
+    for name, method, url, data in attempts:
+        try:
+            resp = session.request(method, url, data=data, headers=xhr, timeout=60)
+            body = resp.content[:400_000]
+            (PAGES_DIR / f"{name}.txt").write_bytes(
+                f"HTTP {resp.status_code} {resp.headers.get('Content-Type','')}\n"
+                .encode() + body)
+            print(f"{name}: HTTP {resp.status_code}, {len(resp.content)} bytes, "
+                  f"{resp.headers.get('Content-Type','')}")
+        except requests.RequestException as err:
+            (PAGES_DIR / f"{name}.txt").write_text(f"ERROR {err}", "utf-8")
+            print(f"{name}: {err}")
+
+
 def main(argv: list[str]) -> int:
     if not argv:
         print(__doc__)
@@ -169,6 +212,8 @@ def main(argv: list[str]) -> int:
         fetch_dashboard()
     elif argv[0] == "capture":
         capture()
+    elif argv[0] == "probe":
+        probe()
     else:
         print(__doc__)
         return 2
