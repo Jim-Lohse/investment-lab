@@ -41,6 +41,10 @@ CAPTURE_URLS = {
     # The provisional-stats (잠정통계) screen fragment behind the dashboard
     # widget; candidate source for the by-item 10-day breakout.
     "provisional_stats_kr": "https://tradedata.go.kr/cts/hmpg/openETS0100173Q.do",
+    # Site JS defining the screen loaders and widget data calls.
+    "js_main": "https://tradedata.go.kr/cts/js/ets/hmpg/main/main.js",
+    "js_ets_common": "https://tradedata.go.kr/cts/js/ets/cmmn/ets_common.js",
+    "js_index_main": "https://tradedata.go.kr/cts/js/ets/cmmn/indexMain.js",
 }
 
 OUT_DIR = DATA_DIR / "korea"
