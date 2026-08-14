@@ -47,17 +47,24 @@ python -m signals.compute_signals
    these is automatic.
 2. Put the **decoded** service key in the env var `DATA_GO_KR_API_KEY`
    (for Actions: repo → Settings → Secrets → `DATA_GO_KR_API_KEY`).
-3. Monthly item-level trade works out of the box:
-   `python -m signals.korea_customs monthly 2024-01 2026-07`
-4. **Flash 10/20-day feeds — one 5-minute calibration.** The exact operation
-   paths for the 10-day provisional datasets (exports twin of dataset
-   [15157901](https://www.data.go.kr/data/15157901/openapi.do)) are printed on
-   each dataset's API doc page after you request use. Paste the request URL
-   into `signals/config/korea_endpoints.json` (`flash_exports_10day.url`,
-   `flash_imports_10day.url`) and align the param names shown there. Until
-   configured, the flash fetch skips with a notice — the rest of the pipeline
-   is unaffected. The same numbers are viewable at
-   [tradedata.go.kr](https://tradedata.go.kr) for cross-checking.
+3. Request use of these three datasets (all auto-approved, instant):
+   [15157908](https://www.data.go.kr/en/data/15157908/openapi.do) — 10-day
+   provisional exports by major item;
+   [15157901](https://www.data.go.kr/en/data/15157901/openapi.do) — 10-day
+   provisional imports;
+   [15101609](https://www.data.go.kr/en/data/15101609/openapi.do) — monthly
+   trade by item/HS code.
+4. Everything is pre-wired in `signals/config/korea_endpoints.json` (endpoints
+   verified against the dataset pages 2026-08-14). Flash history reaches back
+   to 2016-01 — after the key works, run
+   `python -m signals.korea_customs flash-backfill 2016-01 <current month>`
+   once (or use the workflow input) so every new print grades against a decade
+   of same-window comparables. The same numbers are viewable at
+   [tradedata.go.kr](https://tradedata.go.kr) for cross-checking. One caveat:
+   the datasets don't document their per-record XML field names, so the flash
+   parser extracts defensively and stores every record's full field set in an
+   `extra_json` column — if the first live payload uses unexpected names, no
+   data is lost and the parser gets a one-line update.
 
 **Automation.** `.github/workflows/update-signals.yml` runs daily at 07:30 UTC
 (after Taipei/Seoul publish times), fetches whatever is newly published,

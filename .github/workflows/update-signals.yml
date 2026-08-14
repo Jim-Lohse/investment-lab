@@ -23,6 +23,10 @@ on:
         description: "Korea monthly range, e.g. 2024-01:2026-07"
         required: false
         default: ""
+      korea_flash_backfill:
+        description: "Backfill Korea flash windows, e.g. 2016-01:2026-08 (one-time)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -56,7 +60,12 @@ jobs:
         env:
           DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
         run: |
-          python -m signals.korea_customs flash
+          if [ -n "${{ github.event.inputs.korea_flash_backfill }}" ]; then
+            RANGE="${{ github.event.inputs.korea_flash_backfill }}"
+            python -m signals.korea_customs flash-backfill "${RANGE%%:*}" "${RANGE##*:}"
+          else
+            python -m signals.korea_customs flash
+          fi
           if [ -n "${{ github.event.inputs.korea_monthly_range }}" ]; then
             RANGE="${{ github.event.inputs.korea_monthly_range }}"
             python -m signals.korea_customs monthly "${RANGE%%:*}" "${RANGE##*:}"

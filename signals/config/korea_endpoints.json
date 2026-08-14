@@ -2,13 +2,15 @@
   "_comment": [
     "Korea Customs Service open-API endpoints (data.go.kr). All require a free",
     "service key: register at https://www.data.go.kr (instant, no cost), request",
-    "use of each dataset, then set the env var DATA_GO_KR_API_KEY (use the",
-    "'decoded' key). The monthly item-trade endpoint below is stable and",
-    "documented. The 10/20-day flash endpoints publish on the 11th, 21st and",
-    "1st; their operation paths are set from the dataset's API doc page —",
-    "if KCS revises them, update 'url' here, nothing else changes.",
-    "Exports flash dataset: search data.go.kr for '수출 주요품목별 10일 단위 잠정치'.",
-    "Imports flash dataset: https://www.data.go.kr/data/15157901/openapi.do",
+    "use of each dataset (auto-approved), then set env var DATA_GO_KR_API_KEY",
+    "(use the 'decoded' key).",
+    "Flash 10-day datasets (verified 2026-08-14 from the English dataset pages):",
+    "  exports: https://www.data.go.kr/en/data/15157908/openapi.do",
+    "  imports: https://www.data.go.kr/en/data/15157901/openapi.do",
+    "Both: XML, unit thousand USD, history from 2016-01, published on the 11th",
+    "(days 1-10), 21st (days 1-20) and 1st (full month). Export breakout:",
+    "semiconductors, steel, cars, petroleum products, wireless devices, ships,",
+    "auto parts, computer peripherals, precision instruments, home appliances.",
     "Portal view of the same numbers: https://tradedata.go.kr"
   ],
   "monthly_item_trade": {
@@ -21,22 +23,20 @@
     }
   },
   "flash_exports_10day": {
-    "url": "",
+    "url": "https://apis.data.go.kr/1220000/prlstMmUtPrviExpAcrs/getPrlstMmUtPrviExpAcrs",
     "params": {
       "serviceKey": "{service_key}",
-      "aggrgtDtStrt": "{period_start_yyyymmdd}",
-      "aggrgtDtEnd": "{period_end_yyyymmdd}"
-    },
-    "_setup": "Paste the request URL from the dataset's API doc page into 'url' and align param names; until then this feed is skipped with a notice."
+      "strtYymm": "{start_yyyymm}",
+      "endYymm": "{end_yyyymm}"
+    }
   },
   "flash_imports_10day": {
-    "url": "",
+    "url": "https://apis.data.go.kr/1220000/prlstMmUtPrviImpAcrs/getPrlstMmUtPrviImpAcrs",
     "params": {
       "serviceKey": "{service_key}",
-      "aggrgtDtStrt": "{period_start_yyyymmdd}",
-      "aggrgtDtEnd": "{period_end_yyyymmdd}"
-    },
-    "_setup": "Dataset 15157901; paste the request URL from its API doc page into 'url'."
+      "strtYymm": "{start_yyyymm}",
+      "endYymm": "{end_yyyymm}"
+    }
   },
   "hs_codes": {
     "85": "Electrical machinery and electronics (chapter)",
