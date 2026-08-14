@@ -38,6 +38,9 @@ CAPTURE_URLS = {
     "dashboard_eng": DASHBOARD_URL,
     "ten_day_stats_kr": "https://tradedata.go.kr/cts/index.do?menuId=ETS_MNU_00000134",
     "main_kr": "https://tradedata.go.kr/cts/index.do",
+    # The provisional-stats (잠정통계) screen fragment behind the dashboard
+    # widget; candidate source for the by-item 10-day breakout.
+    "provisional_stats_kr": "https://tradedata.go.kr/cts/hmpg/openETS0100173Q.do",
 }
 
 OUT_DIR = DATA_DIR / "korea"
