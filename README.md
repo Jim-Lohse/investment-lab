@@ -28,7 +28,6 @@ Worked case files will be added to this repository as their redaction passes com
 
 ## Structure
 
-- `.mcp.json` — project-scoped MCP server config: registers the Polygon.io market-data server (now Massive.com, `mcp_massive`) for Claude Code sessions in this repo. Requires a `MASSIVE_API_KEY` (or legacy `POLYGON_API_KEY`) environment variable.
 - `investment-lab-constitution.md` — the full constitution: purpose and authority, tiered rigor, research controls (independence, masking, evidence genealogy, base rates), scorecard and value-capture waterfall, decision and risk discipline (exit rules, calibration, committee), and the validation program (synthetic gates, baselines, point-in-time and forward tracks), with the seeded case roster as Appendix A.
 
 ## License
