@@ -7,7 +7,9 @@ and anywhere else with Python 3.10+ and outbound HTTPS.
 from __future__ import annotations
 
 import csv
+import re
 import time
+from html.parser import HTMLParser
 from pathlib import Path
 
 import requests
@@ -90,6 +92,8 @@ def parse_number(text: str | None) -> float | None:
         return None
     if cleaned.startswith("(") and cleaned.endswith(")"):  # accounting negatives
         cleaned = "-" + cleaned[1:-1]
+    if cleaned[:1] in ("△", "▲"):  # Korean statistical notation for negative
+        cleaned = "-" + cleaned[1:]
     try:
         return float(cleaned)
     except ValueError:
@@ -102,6 +106,48 @@ def fmt(value: float | None) -> str:
     if float(value).is_integer():
         return str(int(value))
     return f"{value:.2f}"
+
+
+# --- HTML tables ------------------------------------------------------------
+
+class TableParser(HTMLParser):
+    """Collect all table rows (as text cells) from an HTML document.
+
+    Also remembers the last-seen Taiwanese industry label (產業別: X) so MOPS
+    archive rows can carry their section header; harmless elsewhere.
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.rows: list[tuple[str, list[str]]] = []  # (industry, cells)
+        self._cells: list[str] | None = None
+        self._buf: list[str] = []
+        self._in_cell = False
+        self._industry = ""
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "tr":
+            self._cells = []
+        elif tag in ("td", "th") and self._cells is not None:
+            self._in_cell = True
+            self._buf = []
+
+    def handle_endtag(self, tag):
+        if tag in ("td", "th") and self._in_cell:
+            self._in_cell = False
+            assert self._cells is not None
+            self._cells.append("".join(self._buf).strip())
+        elif tag == "tr" and self._cells is not None:
+            text = " ".join(self._cells)
+            match = re.search(r"產業別[:：]\s*(\S+)", text)
+            if match:
+                self._industry = match.group(1)
+            self.rows.append((self._industry, self._cells))
+            self._cells = None
+
+    def handle_data(self, data):
+        if self._in_cell:
+            self._buf.append(data)
 
 
 # --- CSV I/O ----------------------------------------------------------------

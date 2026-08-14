@@ -28,11 +28,10 @@ import io
 import re
 import sys
 import time
-from html.parser import HTMLParser
 from pathlib import Path
 
-from .common import (DATA_DIR, fmt, http_get, iso_to_roc, month_range,
-                     parse_number, roc_to_iso_month)
+from .common import (DATA_DIR, TableParser, fmt, http_get, iso_to_roc,
+                     month_range, parse_number, roc_to_iso_month)
 
 OPEN_CSV_URLS = {
     "sii": "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv",
@@ -115,45 +114,9 @@ def parse_open_csv(text: str, market: str) -> tuple[str, list[list]]:
     return report_month, rows
 
 
-class _TableParser(HTMLParser):
-    """Collect table rows and remember the last-seen industry label."""
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.rows: list[tuple[str, list[str]]] = []  # (industry, cells)
-        self._cells: list[str] | None = None
-        self._buf: list[str] = []
-        self._in_cell = False
-        self._industry = ""
-
-    def handle_starttag(self, tag, attrs):
-        if tag == "tr":
-            self._cells = []
-        elif tag in ("td", "th") and self._cells is not None:
-            self._in_cell = True
-            self._buf = []
-
-    def handle_endtag(self, tag):
-        if tag in ("td", "th") and self._in_cell:
-            self._in_cell = False
-            assert self._cells is not None
-            self._cells.append("".join(self._buf).strip())
-        elif tag == "tr" and self._cells is not None:
-            text = " ".join(self._cells)
-            match = re.search(r"產業別[:：]\s*(\S+)", text)
-            if match:
-                self._industry = match.group(1)
-            self.rows.append((self._industry, self._cells))
-            self._cells = None
-
-    def handle_data(self, data):
-        if self._in_cell:
-            self._buf.append(data)
-
-
 def parse_archive_html(html: str, market: str, report_month: str) -> list[list]:
     """Parse a nas/t21 archive page (already decoded from Big5)."""
-    parser = _TableParser()
+    parser = TableParser()
     parser.feed(html)
     rows: list[list] = []
     for industry, cells in parser.rows:

@@ -27,6 +27,10 @@ on:
         description: "Backfill Korea flash windows, e.g. 2016-01:2026-08 (one-time)"
         required: false
         default: ""
+      capture_pages:
+        description: "Set to any value to snapshot tradedata.go.kr pages into data/korea/raw/pages/"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -55,6 +59,15 @@ jobs:
         run: |
           RANGE="${{ github.event.inputs.taiwan_backfill }}"
           python -m signals.taiwan_mops backfill "${RANGE%%:*}" "${RANGE##*:}"
+
+      - name: Fetch Korea tradedata.go.kr dashboard (no key required)
+        continue-on-error: true
+        run: python -m signals.korea_tradedata dashboard
+
+      - name: Capture tradedata pages for parser development (manual runs only)
+        if: ${{ github.event.inputs.capture_pages != '' }}
+        continue-on-error: true
+        run: python -m signals.korea_tradedata capture
 
       - name: Fetch Korea Customs data
         env:
