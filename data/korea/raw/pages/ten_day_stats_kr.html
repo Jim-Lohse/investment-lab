@@ -1,0 +1,4635 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>관세청 수출입무역통계</title>
+	
+<meta charset="utf-8" />
+<!-- <meta http-equiv="Pragma" content="no-cache"/>  -->
+<!-- <meta http-equiv="Expires" content="0"/>  -->
+<!-- <meta http-equiv="Cache-Control" content="no-cache"/>  -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="keywords" content="관세청 수출입무역통계, 관세청, 수출입무역통계, 관세청 수출입 무역통계, 수출입 무역통계, 무역통계, tradedata, data, customs">
+<meta name="description" content="수출입 현황, 물류통계 등 관세청 무역통계정보를 종합적으로 제공">
+<meta property="og:type" content="website">
+<meta property="og:title" content="관세청 수출입무역통계">
+<meta property="og:description" content="수출입 현황, 물류통계 등 관세청 무역통계정보를 종합적으로 제공">
+<meta property="og:url" content="https://tradedata.go.kr">
+<meta property="og:image" content="https://tradedata.go.kr/cts/images/logo.png">
+ 
+
+<script type="text/JavaScript">
+var COMMON_MSG = {
+        lab_all_00001 : "상단영역",  //상단영역
+        lab_all_00002 : "전체보기",  //전체보기/모두보기
+        lab_all_00003 : "더보기",  //더보기
+        lab_all_00004 : "전체접기",  //전체접기/모두접기
+        lab_all_00005 : "접기",  //접기
+        lab_all_00006 : "처리중",  //처리중
+        lab_all_00007 : "관련정보",  //관련정보
+        lab_all_00008 : "첫",  //첫
+        lab_all_00009 : "마지막",  //마지막
+        lab_all_00010 : "페이지",  //페이지
+        lab_all_00011 : "다음",  //다음
+        lab_all_00012 : "이전",  //이전
+        inf_all_00037 : "조회조건을 선택하십시오.",  //조회조건을 선택해 주세요
+        inf_all_00038 : "There were no results found.",  //조회결과가 존재하지 않습니다.
+        inf_all_00085 : "최상단입니다.",  //최상단입니다.
+        inf_all_00086 : "최하단입니다.",  //최하단입니다.
+        inf_all_00096 : "엑셀 다운로드 시 {0}건까지 표시됩니다.",   //엑셀 다운로드 시 10,000건까지 표시됩니다.
+        sys_all_00003 : "오류가 발생하였습니다. 관리자에게 문의하십시오.",   //오류가 발생하였습니다. 관리자에게 문의하십시오.
+        
+        
+        inf_all_00001 : "로그인 되었습니다.",  //로그인 되었습니다.
+        inf_all_00002 : "로그아웃 되었습니다.",  //로그아웃 되었습니다.
+        err_all_00018 : "아이디 혹은 비밀빈호를 확인 하세요.",  //아이디 혹은 비밀빈호를 확인하십시오.
+        err_all_00020 : "로그인해 주세요.",  //로그인해 주십시오.
+        err_all_00030 : "이미 로그아웃 되었습니다.",  //이미 로그아웃 되었습니다.
+		
+        err_all_00062 : "저장된 파일이 존재하지 않습니다.",	// 저장된 파일이 존재하지 않습니다.
+        err_all_00396 : "요청하신 URL은 정상적인 접근이 아닙니다.",  //요청하신 URL은 정상적인 접근이 아닙니다.
+        err_all_00397 : "{0}서버에 장애가 발생하였습니다.\n관리자에게 문의하십시오.",  //{0}서버에 장애가 발생하였습니다.\n관리자에게 문의하십시오.
+        err_all_00398 : "{0}서버에 알 수 없는 에러가 발생하였습니다.\n관리자에게 문의하십시오.",  //{0}서버에 알 수 없는 에러가 발생하였습니다.\n관리자에게 문의하십시오.
+        err_all_00399 : "비정상적으로 접근하였습니다.",  //비정상적으로 접근하였습니다.
+        err_all_00400 : "서비스 연계에 실패하였습니다.\n관리자에게 문의하십시오.\n(비상로그인 시 타 대기능 화면/팝업은 지원하지 않습니다.)",  //SSO 사용자인증에 실패하였습니다.\n관리자에게 문의하십시오.\n(비상로그인 시 타 대기능 화면/팝업은 지원하지 않습니다.)
+        err_all_00139 : "{0}을(를) 입력하십시오.",  //{0} 을(를) 입력하십시오.
+        err_all_00254 : "{0} 권한이 없습니다.",  //{0} 권한이 없습니다.
+        
+        err_all_00251 : "등록된 {0}이(가) 존재하지 않습니다.",  //등록된 {0}이(가) 존재하지 않습니다.
+        err_all_00253 : "{0}은(는) 저장할 수 없습니다.",  //{0}은(는) 저장할 수 없습니다.
+        inf_all_00098 : "multiselect 옵션을 true로 설정하여야 합니다.",  //multiselect 옵션을 true로 설정하여야 합니다.
+        inf_all_00099 : "브라우저에 팝업 차단 설정이 되어있습니다.",  //브라우저에 팝업 차단 설정이 되어있습니다.
+        
+        err_all_00091 : "날짜를 잘못 입력하였습니다. 다시 입력해 주십시오.",  // 날짜를 잘못 입력하였습니다. 다시 입력해 주십시오.
+		err_aeo_00024 : "업로드할 수 없는 파일 형식입니다.\n업로드 허용 파일 [{0}]",  // 업로드할 수 없는 파일 형식입니다.\n업로드 허용 파일 [{0}]
+	    err_all_00352 : "{0}을(를) 처리 중 오류가 발생하였습니다. 관리자에게 문의하십시오.",  // {0}을(를) 처리 중 오류가 발생하였습니다. 관리자에게 문의하십시오.
+		err_all_00023 : "{0} 입력이 잘못되었습니다. 다시 확인 후 저장하십시오.",  // {0} 입력이 잘못되었습니다. 다시 확인 후 저장하십시오.
+		err_all_00371 : "조회 시간이 경과했습니다. 나중에 재조회하시기 바랍니다.",  // 조회 시간이 경과했습니다. 나중에 재조회하시기 바랍니다.
+		
+		cfm_all_00002 : "{0}을(를) 저장하시겠습니까?",  // {0} 을(를) 저장하시겠습니까?
+		cfm_all_00005 : "{0}을(를) 삭제하시겠습니까?",  // {0} 을(를) 삭제하시겠습니까?
+		
+		err_all_00469 : "검색어를 입력하십시오.",  // 검색어를 입력하십시오.
+		err_all_00470 : "연결할 URL정보가 없습니다.",  // 연결할 URL정보가 없습니다.
+		err_all_00471 : "연결할 서버정보를 확인할 수 없습니다.",  // 연결할 서버정보를 확인할 수 없습니다.
+		err_all_00472 : "링크 준비중 입니다.",  // 링크 준비중 입니다.
+				
+
+	    inf_all_00119 : "최근 접속IP : {0}\n최근 로그인 : {1}",  // 최근 접속IP  : {0}\n최근 로그인 : {1}
+	    inf_all_00120 : "최초 접속IP : {0}\n최초 로그인 : {1}",  // 최초 접속IP  : {0}\n최초 로그인 : {1}
+	    err_all_00473 : "화면정보를 확인할 수 없습니다.",  // 화면정보를 확인할 수 없습니다.
+	    
+	    cfm_all_00004 : "삭제하시겠습니까?",  // 삭제하시겠습니까?
+        inf_all_00008 : "정상적으로 삭제되었습니다.",  // 정상적으로 삭제되었습니다.
+        inf_all_00003 : "정상적으로 저장되었습니다.",  // 정상적으로 저장되었습니다.
+        sys_all_00002 : "삭제되지 않았습니다. 관리자에게 문의하십시오.",  // 삭제되지 않았습니다. 관리자에게 문의 하세요.
+        sys_all_00001 : "저장되지 않았습니다. 관리자에게 문의하십시오.",  // 저장되지 않았습니다. 관리자에게
+				
+        kcs4gTable : {
+			ko : {
+				lab_all_00002 : "전체보기",
+				lab_all_00003 : "더보기",	 //더보기
+				lab_all_00004 : "전체접기",	 //전체접기/모두접기
+				lab_all_00005 : "접기",	 //접기
+				lab_all_00007 : "관련정보",	 //관련정보
+				lab_all_00008 : "첫",	 //첫
+				lab_all_00009 : "마지막",	 //마지막
+				lab_all_00010 : "페이지",	 //페이지
+				lab_all_00011 : "다음",	 //다음
+				lab_all_00012 : "이전",	 //이전
+				inf_all_00037 : "조회조건을 선택하십시오.",		//조회조건을 선택해 주세요
+				inf_all_00038 : "조회결과가 존재하지 않습니다."		//조회결과가 존재하지 않습니다.
+			},
+			en : {
+				lab_all_00002 : "전체보기",	 //전체보기/모두보기
+				lab_all_00003 : "더보기",	 //더보기
+				lab_all_00004 : "전체접기",	 //전체접기/모두접기
+				lab_all_00005 : "접기",	 //접기
+				lab_all_00007 : "관련정보",	 //관련정보
+				lab_all_00008 : "첫",	 //첫
+				lab_all_00009 : "마지막",	 //마지막
+				lab_all_00010 : "페이지",	 //페이지
+				lab_all_00011 : "다음",	 //다음
+				lab_all_00012 : "이전",	 //이전
+				inf_all_00037 : "조회조건을 선택하십시오.",		//조회조건을 선택해 주세요
+				inf_all_00038 : "There were no results found."		//조회결과가 존재하지 않습니다.
+			}
+		}
+     };
+</script><!-- ECL - PDF뷰어 URL -->
+<link rel="shortcut icon" href="/cts/images/favicon.ico" />
+
+<!-- 사용자화면화면 CSS  -->
+<link rel="stylesheet" type="text/css" href="/cts/css/common.css" />
+<link rel="stylesheet" type="text/css" href="/cts/css/style.css" />
+
+
+
+<script type="text/javascript">
+var ETS_MSG = {
+		/* 확인 메시지 *************************************************************************/
+		/* CRUD 확인 메시지 */
+		
+			cfm_all_00001 : '저장하시겠습니까?' /* 저장하시겠습니까? */
+		,	cfm_all_00002 : '{0}을(를) 저장하시겠습니까?' /* {0} 을(를) 저장하시겠습니까? */
+		,	cfm_all_00004 : '삭제하시겠습니까?' /* 삭제하시겠습니까? */
+		,	cfm_all_00005 : '{0}을(를) 삭제하시겠습니까?' /* 삭제하시겠습니까? */
+		,	cfm_all_00023 : '{0} 처리하시겠습니까?' /* {0} 처리하시겠습니까? */
+		,   cfm_all_00021 : '{0}을(를) 취소하시겠습니까?' /* {0}을(를) 취소하시겠습니까? */
+		,   cfm_all_00034 : '비밀번호를 초기화하시겠습니까?' /* 비밀번호를 초기화하시겠습니까? */
+	    			
+		/* 정보&안내 메시지 *************************************************************************/
+		/* CRUD 결과 메시지 */
+		
+		,	inf_all_00003 : '정상적으로 저장되었습니다.' /* 정상적으로 저장되었습니다. */
+		,	inf_all_00008 : '정상적으로 삭제되었습니다.' /* 정상적으로 삭제되었습니다. */
+		,	inf_all_00027 : '정상적으로 처리되었습니다.' /* 정상적으로 처리되었습니다. */
+	    ,	inf_all_00004 : '수정사항이 저장되었습니다.' /* 수정사항이 저장되었습니다. */
+	    ,	inf_itr_00009 : '{0}이(가) {1}인 것은 삭제하실 수 없습니다.' /* {0}이(가) {1}인 것은 삭제하실 수 없습니다. */
+	    
+		,	inf_all_00031 : '{0}이(가) 저장되었습니다.' /* {0}이(가) 저장되었습니다. */
+		,   inf_all_00044 : '비밀번호가 성공적으로 초기화되었습니다.' /* 비밀번호가 성공적으로 초기화되었습니다. */
+		,	inf_all_00055 : '{0}이(가) 취소되었습니다.' /* {0}이(가) 취소되었습니다. */
+		
+		/* 기타 메시지 */
+		,   inf_all_00026 : '{0}이(가) 정상적으로 완료되었습니다.' /* {0}이(가) 정상적으로 완료되었습니다. */
+		,	inf_all_00037 : '조회조건을 선택하십시오.' /* 조회조건을 선택하십시오. */
+		,   inf_all_00038 : 'There were no results found.' /* 조회결과가 존재하지 않습니다. */
+		,   inf_all_00126 : '잠시 후 다시 시도해 주십시오.' /* 잠시 후 다시 시도해 주십시오. */
+		,   err_all_00467 : '{0}을(를) 확인할 수 없습니다.' /* {0}을(를) 확인할 수 없습니다. */
+		,   err_all_00465 : '{0}이(가) 실패하였습니다.' /* {0}이(가) 실패하였습니다. */
+		,   inf_itr_00014 : '비밀번호 {0}회 실패로 계정이 잠깁니다. {1}에게 문의하십시오.' /* 비밀번호 {0}회 실패로 계정이 잠깁니다. {1}에게 문의하십시오. */
+		,   inf_itr_00015 : '{0}회 비밀번호 실패했습니다. {1}회 실패시 계정이 잠깁니다.' /* {0}회 비밀번호 실패했습니다. {1}회 실패시 계정이 잠깁니다. */
+		,   err_all_00018 : '아이디 혹은 비밀빈호를 확인 하세요.' /* 아이디 혹은 비밀빈호를 확인 하세요. */
+		
+		/* 오류 메시지 *************************************************************************/
+		/* empty, 형식 체크 */
+		,	err_all_00015 : '{0} is Mandatory' /* {0} 은(는) 필수 입력값입니다. */
+		,	err_all_00139 : '{0}을(를) 입력하십시오.' /* {0}을(를) 입력하십시오. */
+		,	err_cag_00012 : '{0}을(를) 확인하십시오.' /* {0}을(를) 확인하십시오. */
+
+		,	err_all_00175 : '수정 시 한건만 선택하십시오.' /* 수정 시 한건만 선택하십시오. */
+		,	err_all_00176 : '삭제할 행이 없습니다.' /* 삭제할 행이 없습니다. */
+		,	err_all_00034 : '삭제할 항목을 선택하십시오.' /* 삭제할 항목을 선택하십시오. */
+		,	err_all_00160 : '{0} 정보가 존재하지 않습니다.' /* {0} 정보가 존재하지 않습니다. */
+		,	err_all_00046 : '{0}할 대상을 선택하십시오.' /* {0}할 대상을 선택하십시오. */
+		,	err_all_00052 : '{0} 개만 선택 가능합니다.' /* {0}개만 선택 가능합니다. */
+			
+		,	err_all_00187 : '{0} 형식이 올바르지 않습니다.' /* {0} 형식이 올바르지 않습니다. */
+		,   err_all_00204 : '{0}은(는) {1} 자리로 입력하셔야 합니다.' /* {0}은(는) {1}자리로 입력하셔야 합니다. */
+		,   err_all_00106 : '{0} 번호는 {1}자리로 정확히 입력하십시오.' /* {0} 번호는 {1}자리로 정확히 입력하십시오. */
+		,   err_all_00250 : '{0}은(는) 존재하지 않습니다.' /* {0}은(는) 존재하지 않습니다. */
+		,   err_all_00251 : '등록된 {0}이(가) 존재하지 않습니다.' /* 등록된 {0}이(가) 존재하지 않습니다. */
+		,   err_all_00238 : '첨부할 파일 확장자를 확인하십시오.' /* 첨부할 파일 확장자를 확인하십시오. */
+		,   err_all_00299 : '첨부된 파일은 {0}만 허용됩니다.' /* 첨부된 파일은 {0}만 허용됩니다. */
+		,   err_all_00055 : '엑셀 파일만 등록 가능합니다.' /* 엑셀 파일만 등록 가능합니다. */
+		
+		/* 날짜 */
+		,   err_all_00191 : '{0} 시작날짜를 입력하십시오.' /* {0} 시작 날짜를 입력하십시오. */
+		,   err_all_00192 : '{0} 종료날짜를 입력하십시오.' /* {0} 종료 날짜를 입력하십시오. */
+		,	err_all_00003 : '{0}은(는) 날짜 유형이 아닙니다.' /* {0} 은(는) 날짜 유형이 아닙니다. */
+		,	err_all_00097 : '{0} 날짜는 현재일 이전 날짜만 가능합니다.' /* {0} 날짜는 현재일 이전 날짜만 가능합니다. */
+		,	err_all_00101 : '{0} 시작일이 종료일보다 미래입니다. 확인 바랍니다.' /* {0} 시작일이 종료일보다 미래입니다. 확인 바랍니다. */
+		
+		,	err_all_00217 : '{0} 기간은 1주일 이내로 입력하십시오.' /* {0} 기간은 1주일 이내로 입력하십시오. */
+		,   err_all_00221 : '{0}은(는) {1}개월 이내 기간이어야 합니다.' /* {0}은(는) {1}개월 이내 기간이어야 합니다.*/
+		,	err_all_00216 : '{0} 기간은 1년 이내로 입력하십시오.' /* {0} 기간은 1년 이내로 입력하십시오.*/
+		,	err_all_00461 : '{0} 기간은 {1}년 이내로 입력하십시오.' /* {0} 기간은 {1}년 이내로 입력하십시오.*/
+
+		/* 비교, max, min */
+		,	err_all_00271 : '{0}와(과) {1} 정보는 동일할 수 없습니다.' /* {0}와(과) {1} 정보는 동일할 수 없습니다. */
+		,	err_all_00220 : '{0}은(는) {1}보다 이전이어야 합니다.' /* {0}은(는) {1}보다 이전이어야 합니다. */
+		,	err_all_00263 : '{0}은(는) {1}보다 이후이어야 합니다.' /* {0}은(는) {1}보다 이후이어야 합니다. */
+		,	err_all_00188 : '{0} 합계가 맞지 않습니다.' /* {0} 합계가 맞지않습니다. */
+		,	err_all_00110 : '{0}은(는) {1}보다 커야 합니다.' /* {0}은(는) {1}보다 커야 합니다. */
+		,	err_all_00269 : '{0} need at least one' /* {0}은(는) 최소 {1}건 이상이어야 합니다. */
+		,	err_all_00270 : '{0}은(는) {1}와(과) 같거나 커야 합니다.' /* {0}은(는) {1}와(과) 같거나 커야 합니다. */
+		,	err_all_00210 : '{0}은(는) 최대 {1} 명까지 등록가능합니다.' /* {0}은(는) 최대 {1}명까지 등록 가능합니다. */
+		,	err_all_00268 : '{0} exceeds maximum {1}' /* {0}은(는) 최대 {1}건까지 등록 가능합니다. */
+        ,   err_all_00014 : '{0}은(는) {1}과 {2} 사이의 값이어야 합니다.' /* {0}은(는) {1}과 {2} 사이의 값이어야 합니다. */
+        ,   err_all_00026 : '{0}은(는) {1}자 이상 입력해야 합니다.' /* {0}은(는) {1}자 이상 입력해야 합니다. */
+        ,   err_all_00202 : '{0}은(는) {1}자 이하로 입력하셔야 합니다.' /* {0}은(는) {1}자 이하로 입력하셔야 합니다. */
+        ,   err_all_00114 : '{0}의 범위는 {1} 이상이고 {2} 이하만 유효합니다.' /* {0}의 범위는 {1} 이상이고 {2} 이하만 유효합니다. */
+        ,   err_all_00304 : '{0}은(는) {1} 초과하여 입력하실 수 없습니다.' /* {0}은(는) {1} 초과하여 입력하실 수 없습니다. */
+		,   err_all_00360 : '{0}의 범위는 {1} 이하만 유효합니다.' /* {0}의 범위는 {1} 이하만 유효합니다. */
+        ,   sys_all_00010 : '{0}은(는) {1}byte를 초과 할 수 없습니다.' /* {0}은(는) {1}byte를 초과 할 수 없습니다. */
+        ,   err_all_00226 : '비밀번호가 일치하지 않습니다.' /* 비밀번호가 일치하지 않습니다. */
+		
+		/* 기타 */
+		,	err_ahs_00001 : '점검하지 않은 점검항목이 존재합니다.' /* 점검하지 않은 점검항목이 존재합니다. */
+		,   err_all_00103 : '{0} 번호가 중복 입력되었습니다.' /* {0} 번호가 중복입력 되었습니다. */
+		,   err_all_00142 : '{0}은(는) 중복 입력되었습니다.' /* {0}은(는) 중복 입력되었습니다. */
+		,   err_all_00020 : '로그인해 주세요.' /* 로그인해 주십시오. */
+		,   err_all_00171 : '수정 가능한 자료가 존재하지 않습니다.' /* 변경된 자료가 존재하지 않습니다. */
+		,   err_all_00015 : '{0} is Mandatory' /* {0} 은(는) 필수 입력값입니다. */
+		,   err_all_00033 : '{0} 은(는) 삭제할 수 없습니다.' /* {0} 은(는) 삭제할 수 없습니다. */
+		,	err_all_00336 : '{0}에 {1}을(를) 입력하십시오.' /* {0}에 {1}을(를) 입력하십시오.*/
+		,	err_all_00248 : '{0}은(는) 영문과 숫자만 허용됩니다.' /* {0}은(는) 영문과 숫자만 허용됩니다.*/
+
+		/* 시스템 메시지 *************************************************************************/
+		,   sys_all_00001 : '저장되지 않았습니다. 관리자에게 문의하십시오.' /* 저장되지 않았습니다. 관리자에게 문의하십시오. */
+		,   sys_all_00002 : '삭제되지 않았습니다. 관리자에게 문의하십시오.' /* 삭제되지 않았습니다. 관리자에게 문의하십시오. */
+		,   sys_all_00003 : '오류가 발생하였습니다. 관리자에게 문의하십시오.' /* 오류가 발생하였습니다. 관리자에게 문의하십시오. */
+		,   sys_all_00004 : '조회 중 오류가 발생하였습니다.' /* 조회 중 오류가 발생하였습니다. */
+			
+		/* 검토대상 */
+		,	err_all_00208 : '{0} 개 이상의 {1}을(를) 추가하셔야 합니다.' /* {0}개 이상의 {1}을(를) 추가하셔야 합니다. */
+		,   err_all_00045 : '{0}을(를) 선택하십시오.' /* {0} 을(를) 선택하십시오. */
+		,   err_all_00031 : '{0}은 중복 선택 할 수 없습니다.' /* {0}은 중복 선택 할 수 없습니다. */
+		/* 심사항목을(를) 선택하십시오.(err_all_00045) => 심사할 대상을 선택하십시오.(err_all_00046) */
+		
+		/* 기타 */
+		,   inf_all_00028 : '타 기능 연계 건으로 미개발됨. 추후 개발 예정( 단위테스트케이스 제외 처리 건 )' /* 타 기능 연계 건으로 미개발됨. 추후 개발 예정( 단위테스트케이스 제외 처리 건 ) */
+		,   inf_all_00078 : '조회 후 엑셀다운로드를 하십시오.' /* //조회 후 엑셀다운로드를 하십시오. */
+		,   err_all_00232 : '인쇄할 데이터가 존재하지 않습니다.' /* //인쇄할 데이터가 존재하지 않습니다. */
+		,   err_all_00101 : '{0} 시작일이 종료일보다 미래입니다. 확인 바랍니다.' /* //{0} 시작일이 종료일보다 미래입니다. 확인 바랍니다. */
+		,   inf_trs_00001 : '1건 이상 데이터를 선택해야 챠트를 열수 있습니다.' /* 1건 이상 데이터를 선택해야 챠트를 열수 있습니다. */
+		,   err_all_00051 : '{0} 개 이하를 선택 가능합니다.' /* {0} 개 이하를 선택 가능합니다. */
+		,   err_all_00202 : '{0}은(는) {1}자 이하로 입력하셔야 합니다.' /* {0}은(는) {1}자 이하로 입력하셔야 합니다. 내용은 1500자 이하로 입력하여야합니다.*/
+		,   err_all_00376 : '첫 번째 페이지 입니다.' /* {0}은(는) {1}자 이하로 입력하셔야 합니다. 내용은 1500자 이하로 입력하여야합니다.*/
+		,   err_all_00377 : '마지막 페이지 입니다.' /* {0}은(는) {1}자 이하로 입력하셔야 합니다. 내용은 1500자 이하로 입력하여야합니다.*/
+		
+		/* 국문 추가 */
+		,   err_trs_00001 : '{0} length dose not match previously selected {1}' /* {0}가 기존에 선택한 {1}와 일치하지 않습니다. */
+		,   err_trs_00002 : 'This code is already registered.' /* 기존에 등록되어 있는 코드입니다. */
+		,   inf_trs_00002 : 'You can participate once per day.' /* 하루에 1회만 참여할 수 있습니다. */
+		,   inf_trs_00003 : 'The search period is incorrect.' /* 조회기간이 올바르지 않습니다. */
+		,   inf_trs_00004 : 'Please select Inquiry Filter.' /* 조회조건을 선택해주세요 */
+		,   inf_trs_00005 : 'Please select at least {0} data' /* 데이터를 {0}건이상 선택해주세요. */
+		,   inf_trs_00006 : 'Please select no more than {0} data.' /* 데이터를 {0}건이하로 선택해주세요. */
+		,   inf_trs_00007 : 'Please select a satisfaction level.' /* 만족도 항목을 선택해주세요. */
+		,   inf_trs_00008 : 'satisfaction Completed.' /* 만족도 참여를 완료하였습니다. */
+		,   inf_trs_00009 : '{0} are only available within {1}\nPlease change the Inquiry Filter and download it.' /*{0}는 {1} 이내만 가능합니다. \n조회조건을 변경후 다운로드 받으십시오. */
+
+		/* 영문 */
+		,   errors_required_en : '{0} is a required value.' /* {0} is required.   한국어 -> {0}은(는) 필수 입력값입니다.*/
+		,   err_trs_00001_en : '{0} length dose not match previously selected {1}' /* {0} length dose not match previously selected {1} */
+		,   err_trs_00002_en : 'This code is already registered.' /* This code is already registered. */
+		,   inf_trs_00002_en : 'You can participate once per day.' /* You can participate once per day. */
+		,   inf_trs_00003_en : 'The search period is incorrect.' /* The search period is incorrect. */
+		,   inf_trs_00004_en : 'Please select Inquiry Filter.' /* Please select Inquiry Filter. */
+		,   inf_trs_00005_en : 'Please select at least {0} data' /* Please select at least {0} data */
+		,   inf_trs_00006_en : 'Please select no more than {0} data.' /* Please select no more than {0} data. */
+		,   inf_trs_00007_en : 'Please select a satisfaction level.' /* Please select a satisfaction level. */
+		,   inf_trs_00008_en : 'satisfaction Completed.' /* satisfaction Completed. */
+		,   inf_trs_00009_en : '{0} are only available within {1}\nPlease change the Inquiry Filter and download it.' /* {0} are only available within {1}\nPlease change the Inquiry Filter and download it. */
+		,   err_all_00009_en : '{0} is not a valid value.' /* {0}은(는) 유효하지 않은 값입니다.    {0} is invalid. */
+		,   inf_all_00038_en : 'There were no results found.' /* There were no results found. */
+		,   err_trs_00003_en : 'Please select the Inquiry Period within {0} years.' /* Please enter the Inquiry Period within {0}years. */
+};
+
+</script>
+
+<script type="text/javascript" src="/cts/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/cts/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/cts/js/jquery.min-v.js"></script>
+<script type="text/javascript" src="/cts/js/common/jquery-plugins/jquery.validate.js"></script>
+
+<script type="text/javascript" src="/cts/js/kcs4g/kcs4g_js_common.js"></script>
+
+<!-- 뒤로가기 기능 막기  -->
+<script type="text/javascript" src="/cts/js/kcs4g/kcs4g_history.js"></script> 
+<script type="text/javascript" src="/cts/js/kcs4g/kcs4g_ajax.js"></script>
+
+<!-- pdf템플릿  -->
+<script type="text/javascript" src="/cts/js/kcs4g/template_ets.js"></script>
+
+<script type="text/javascript" src="/cts/js/ets/cmmn/ets_common.js"></script>
+<script type="text/javascript" src="/cts/js/ets/cmmn/indexMain.js"></script>
+
+<script type="text/javascript" src="/cts/js/common/common.js"></script>
+
+<!-- 맵  -->
+<script type="text/javascript" src="/cts/Highcharts-Maps-10.1.0/code/highmaps.js"></script>
+<script type="text/javascript" src="/cts/Highcharts-Maps-10.1.0/code/modules/data.js"></script>
+<script type="text/javascript" src="/cts/Highcharts-Maps-10.1.0/code/modules/exporting.js"></script>
+<script type="text/javascript" src="/cts/Highcharts-Maps-10.1.0/code/modules/offline-exporting.js"></script>
+<script type="text/javascript" src="/cts/Highcharts-Maps-10.1.0/code/modules/accessibility.js"></script>
+<script type="text/javascript" src="/cts/Highcharts-10.1.0/code/highcharts-3d.js"></script>
+<script type="text/javascript" src="/cts/Highcharts-10.1.0/code/modules/series-label.js"></script>
+<script type="text/javascript" src="/cts/Highcharts-10.1.0/code/modules/export-data.js"></script>
+<script type="text/javascript" src="/cts/Highcharts-10.1.0/code/modules/drilldown.js"></script>
+<script type="text/javascript" src="/cts/Highcharts-10.1.0/code/lib/jspdf.js"></script>
+
+<!-- DIV 이미지 변환툴 -->
+<script type="text/javascript" src="/cts/js/bluebird.js"></script>
+<script type="text/javascript" src="/cts/js/html2canvas.js"></script>
+
+<script type="text/javascript" src="/cts/js/common/chartCommon.js"></script>
+
+<script type="text/JavaScript">
+	var contextRoot = '/cts';
+
+	// PDF뷰어 URL
+	var PDF_VWER_URL_1 = 'https://unipass.customs.go.kr/pdf/link';	// 대민
+	var PDF_VWER_URL_2 = 'http://10.232.1.50:8102/pdf/link';	// 관세행정
+	var PDF_VWER_URL_3 = 'https://kcsp.customs.go.kr:48061/teledox/link';	// 관세지원1
+	var PDF_VWER_URL_4 = 'https://kcsp.customs.go.kr:48062/teledox/link';	// 관세지원2
+	var PDF_VWER_URL_5 = 'https://kcsp.customs.go.kr:48063/teledox/link';	// 정보분석
+	var PDF_VWER_URL_6 = 'https://tis.customs.go.kr:48060/teledox/link';	// 여행자
+	var PDF_VWER_URL_7 = 'http://172.168.170.200:18060/teledox/link';	// 여행자민원
+	
+	var corsUserName = '';
+	
+	var domainGubun = 'out';
+
+	$(document).ready(function() {
+		
+	// jquery validator global setting
+	$.validator.setDefaults({
+			debug: true,
+			onkeyup: false,
+			onclick: false,
+			onfocusout: false,
+			focusInvalid: true,
+			focusCleanup: true,
+			ignoreTitle: true,
+			showErrors: function(errorMap, errorList) {
+				if(this.numberOfInvalids()) {
+					var error = errorList[0];
+					var errorElement = errorList[0].element;
+					alert(error.message);
+					$(errorElement).focus();
+					this.defaultShowErrors();
+				}
+			},
+			highlight: function(element) {
+				// 입력항목 오류시 입력폼을 붉은색으로 표시
+				// $(element).addClass("error");
+			},
+			errorPlacement: function(error, element) {
+			}
+		});
+	});
+</script>
+
+<!-- 프로그램ID가 잘못 매핑되는 현상을 방지 --> 
+	<link rel="stylesheet" type="text/css" href="/cts/css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="/cts/css/main_responsive.css"/>
+	<link rel="stylesheet" type="text/css" href="/cts/css/swiper-bundle.min.css"/>
+    <script type="text/javascript" src="/cts/js/ets/hmpg/main/main.js"></script>
+    <script type="text/javascript" src="/cts/js/ets/hmpg/main/swiper-bundle.min.js"></script>
+    <script type="text/javascript" src="/cts/js/ets/hmpg/main/rounded-corners.js"></script>
+</head>
+
+<body id="mainbody" class="ets main">
+<a class="skip-link" href="#mainarea">본문바로가기</a>
+<div class="browChk" style="display:none;">
+	<span>
+		웹 브라우저 '인터넷 익스플로러(Internet Explorer, 이하 'IE')에 대한<br>'
+		마이크로소프트사(이하 'MS')'의 기술지원이 2022년 6월 15일에 종료됨에 따라<br>
+		<br>
+		크롬, 엣지 등 빠르고 안전한 최신 웹 브라우저를 통해<br> 
+		수출입 무역통계홈페이지를 이용하여 주시기 바랍니다.<br>
+		
+		<button id="op-Chrome">엣지 브라우저로 열기</button>
+	</span>
+	<a href="javascript:void(0)">닫기</a>
+</div>
+
+<div class="eg_info">
+	<p><img src="images/flag/header_flag.png" alt="태극기">이 누리집은 대한민국 공식 전자정부 누리집입니다.</p>
+</div>
+
+<!-- 팝업존  -->
+	<div class="topPop">
+		<div class="topPopWrap" id="topPopWrap">
+			
+			<div id="topPoptxt">
+				
+					<span class="ppznList ppznShow" onclick="f_noticePpznYn('10','2106')">다양한 수출·수주정보 제공 및 온라인 해소를 위한 「수출 플러스 지원단」 출범</span>
+				
+					<span class="ppznList ppznHide" onclick="f_noticePpznYn('10','2099')">무역통계 A~Z 까지 (무역통계의 모든 것을 알려드립니다)</span>
+				
+			</div>
+			
+			<div class="mob-set">
+				<ul>
+					<li><button class="prev" onclick="f_ppznLeft()">왼쪽</button></li>
+					<li><button class="next" onclick="f_ppznRight()">오른쪽</button></li>
+				</ul>
+				
+				<a class="clse" href="javascript:void(0)" onclick="f_mainPopupClose()">닫기</a>
+			</div>
+			
+		</div>
+	</div>
+
+<div class="bodywrapper">
+	
+
+
+<script type="text/javascript">
+function ets_f_engMenu() {
+	//confirm("새창을 여시겠습니까?");
+	window.open("/cts/index_eng.do");
+}
+</script>
+
+
+<script type="text/javascript" src="/cts/js/menu.js"></script><!-- 메뉴 -->
+
+<div class="header_top">
+	<div class="util">
+		<h1 class="logo">
+			<a href="/cts/index.do" class="mainLogo" aria-label="관세청 수출입무역통계 홈으로">수출입무역통계 홈으로 이동</a>
+			<a href="/cts/index.do" class="homeBtn" aria-label="관세청 수출입무역통계 홈으로">수출입무역통계 홈으로 이동</a>
+		</h1>
+		<div class="subTitle">수출입통계</div>
+		<div class="util_wrap">
+			<div class="headerbtnlst">
+				
+				<div class="srchBar">
+					<!-- <div class="srchTab lft">
+						<button class="mn">메뉴</button>
+						<button class="cntnt">게시물</button>
+					</div> -->
+					<div class="barArea">
+						<label for="totalSearchWord" class="visually-hidden">검색어 입력</label>
+						<input type="text" id="totalSearchWord" aria-label="검색어 입력" placeholder="검색어를 입력해주세요.">
+						<button type="button" class="btnClear" aria-label="검색어 삭제"></button>
+						<button type="button" class="btnSearch" onclick="f_totalSearch()" aria-label="검색"></button>
+					</div>
+					<div class="srchClose"><a href="javascript:void(0)" aria-label="검색메뉴 닫기">닫기</a></div>
+				</div>
+			<ul>
+				<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100148Q.do',{menuId:'ETS_MNK_70000000'});">한눈에 보는 무역통계</a></li>
+			</ul>
+				<button type="button" id="en_btn" class="" onclick="ets_f_engMenu()" aria-label="영문홈페이지(새창)">ENG</button>
+				<button type="button" id="search_btn" aria-label="검색메뉴 열기" class=""></button>
+				<button type="button" id="menu_btn" aria-label="전체메뉴"></button>
+            </div>
+		</div>
+		
+	</div>
+	
+	<div id="header">
+		<div class="headerWrap">
+			<div id="nav" >
+				<div id="blind"></div>
+				<div id="gnb">
+					<ul class="group" id="topMenuArea" data-custom-tab><!--  TODO MenuUrl이있을경우 class에 menuClick추가하기 (메뉴 닫는 처리) -->
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="all_menu" data-custom-tab>
+	<div id="m_gnb">
+		<div>
+			<strong>전체메뉴</strong>
+			<a class="close" href="javascript:void(0)">모바일메뉴 닫기</a>
+		</div>
+		<div class="etc">
+			<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100148Q.do',{menuId:'ETS_MNK_70000000'});">한눈에 보는 무역통계</a>
+			<button type="button" id="en_btn2" class="" onclick="ets_f_engMenu()">ENG</button>
+		</div>
+		<ul class="group" id="topMenuAreaMobile">
+			<li class="menu1 num1"><a href="javascript:void(0)" target="_self" class=""><span>수출입 통계</span></a>
+				<ul class="menuBox group">
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100018Q.do');" class=""><strong>수출입 총괄</strong></a></li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100019Q.do');" target="_self" class=""><strong>수출입 실적</strong></a></li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100026Q.do');" target="_self" class=""><strong>지역별 총괄</strong></a></li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100027Q.do');" target="_self" class=""><strong>지역별 실적</strong></a></li>
+				</ul>
+			</li>
+			<li class="menu2 num2"><a href="javascript:void(0)" target="_self"  class=""><span>테마별 무역통계</span></a>
+				<ul class="menuBox group">
+					<li class="dep"><a href="javascript:void(0)" target="_self"  class=""><strong>10대 수출입통계</strong></a>
+						<ul class="group">
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100037Q.do');" target="_self"  class=" "><strong>10대 수출입 품목/국가</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100039Q.do');" target="_self"  class=" "><strong>10대 수출입 무역수지</strong></a></li>
+						</ul>
+					</li>
+					<li class="dep"><a href="javascript:void(0)" target="_self" class=""><strong>FTA무역통계</strong></a>
+						<ul class="group">
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100041Q.do');" target="_self" class=" "><strong>FTA무역통계 총괄</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100044Q.do');" target="_self" class=" "><strong>FTA 무역통계 활용률</strong></a></li>
+						</ul>
+					</li>
+					<li class="dep"><a href="javascript:void(0)" target="_self" class=""><strong>기업특성별무역통계</strong></a>
+						<ul class="group">
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100062Q.do');" target="_self" class=" "><strong>총괄</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100066Q.do');" target="_self"  class=" "><strong>종사자규모별 실적</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100072Q.do');" target="_self"  class=" "><strong>기업규모별 실적</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100078Q.do');" target="_self" class=" "><strong>산업별 실적</strong></a></li>
+						</ul>
+					</li>
+					<li class="dep"><a href="javascript:void(0)" target="_self"  class=""><strong>기업무역활동통계</strong></a>
+						<ul class="group">
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100087Q.do');" target="_self"  class=" "><strong>총괄</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100092Q.do');" target="_self"  class=" "><strong>생존/존속률</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100096Q.do');" target="_self"  class=" "><strong>고성장/가젤기업</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100099Q.do');" target="_self"  class=" "><strong>수출지표</strong></a></li>
+						</ul>
+					</li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/viewSubject.do');" target="_self"  class=""><strong>무역경기확산지수</strong></a>
+					</li>
+					<li class="dep"><a href="javascript:void(0)" target="_self" class=""><strong>남북교역통계</strong></a>
+						<ul class="group">
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100124Q.do');" target="_self"  class=" "><strong>총괄</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100125Q.do');" target="_self"  class=" "><strong>실적</strong></a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li class="menu3 num3"><a href="javascript:void(0)" target="_self"  class=""><span>수출입물류통계</span></a>
+				<ul class="menuBox group">
+					<li><a href="javascript:void(0)" target="_self" class=" "><strong>총괄</strong></a>
+					</li>
+					<li><a href="javascript:void(0)" target="_self" class=" "><strong>입항 물동량 실적</strong></a>
+					</li>
+					<li><a href="javascript:void(0)" target="_self"  class=" "><strong>출항 물동량 실적</strong></a>
+					</li>
+					<li class="dep"><a href="javascript:void(0)" target="_self" class=""><strong>수출입운임통계</strong></a>
+						<ul class="group">
+							<li><a href="javascript:void(0)" target="_self" class=" "><strong>해상컨테이너운임</strong></a></li>
+							<li><a href="javascript:void(0)" target="_self"  class=" "><strong>항공수입운임</strong></a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li class="menu4 num4"><a href="javascript:void(0)" target="_self"  class=""><span>관세행정통계</span></a>
+				<ul class="menuBox group">
+					<li class="dep"><a href="javascript:void(0)" target="_self" class=""><strong>세수통계</strong></a>
+						<ul class="group">
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100108Q.do');" target="_self"  class=" "><strong>총괄</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100109Q.do');" target="_self" class=" "><strong>세수실적</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100112Q.do');" target="_self"  class=" "><strong>세목별 세수통계</strong></a></li>
+							<li><a href="javascript:void(0)" target="_self" class=" "><strong>관세교실</strong></a></li>
+						</ul>
+					</li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100047Q.do');" target="_self"  class=""><strong>AEO MRA체결국 수출입현황</strong></a>
+					<li class="dep"><a href="javascript:void(0)" target="_self" class=""><strong>수입가격공개</strong></a>
+						<ul class="group"> 
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/viewRetrieveImpPrcOppbAmlp.do');" target="_self"  class=" "><strong>농축수산물가격</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/viewOilImpPrice.do');" target="_self"  class=" "><strong>원유평균수입가격</strong></a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li class="menu5 num5"><a href="javascript:void(0)" target="_self"  class=""><span>사용자지원</span></a>
+				<ul class="menuBox group">
+					<li class="dep"><a href="javascript:void(0)" target="_self"  class=""><strong>보도자료</strong></a>
+						<ul class="group">
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100129Q.do',{menuGb:'gnrl'});" target="_self"  class=""><strong>일반</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100129Q.do',{menuGb:'curstat'});" target="_self"  class=" "><strong>수입가격현황</strong></a></li>
+						</ul>
+					</li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100130Q.do');" target="_self" class=" "><strong>공지사항</strong></a>
+					</li>
+					<li class="dep"><a href="javascript:void(0)" target="_self" title="조직 및 직원안내" class="depth"><strong>자료실</strong></a>
+						<ul class="group">
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100131Q.do',{menuGb:'book'});" target="_self"  class=""><strong>수출입동향책자</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100131Q.do',{menuGb:'bulletin'});" target="_self" class=""><strong>연보</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100131Q.do',{menuGb:'paint'});" target="_self"  class=" "><strong>그림무역통계</strong></a></li>
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/retrieveCmtrDfs.do',{menuGb:'cmtrDfs'});" target="_self" class=""><strong>무역경기확산지수</strong></a></li>
+						</ul>
+					</li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100136Q.do');" target="_self" class=" "><strong>자주하는질문</strong></a>
+					</li>
+					<li class="dep"><a href="javascript:void(0)" target="_self" class=""><strong>업무지원정보</strong></a>
+						<ul class="group">
+							<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100141Q.do');" target="_self"  class=" "><strong>관세환율정보</strong></a></li>
+							<li><a target="_blank" href="https://unipass.customs.go.kr/clip/index.do?opnurl=/hsinfosrch/openULS0201005Q.do&searchVal=0101" class="depth"><strong>HS부호</strong></a></li>
+							<li><a target="_blank" href="https://unipass.customs.go.kr/clip/index.do?opnurl=/hsinfosrch/openULS0201013Q.do" class="depth"><strong>통계부호</strong></a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li class="menu6 num6"><a href="javascript:void(0)" target="_self"  class=""><span>무역통계소개</span></a>
+				<ul class="menuBox group">
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100144Q.do');" target="_self"  class=" "><strong>무역통계란?</strong></a>
+					</li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100145Q.do');" target="_self"  class=" "><strong>국제적기준</strong></a>
+					</li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100146Q.do');" target="_self" class=" "><strong>작성기준 및 방법</strong></a>
+					</li>
+					<li><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100147Q.do');" target="_self"  class=" "><strong>무역통계상오류</strong></a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		
+	</div>
+</div>
+<div class="dim"></div>
+
+	<main>
+		<section id="content" class="displaynone">
+		<div id="mainarea" class="contents">
+		<!--main con s-->
+		<div class="con_container main">
+			<div class="mainTop">
+				<div class="mainWrapper">
+					<div class="topTab" data-custom-tab>
+						<ul>
+							<li class="on definitStat">
+								<a href="javascript:void(0)"><strong onclick="f_ccpPopClose()" aria-label="수출입 확정통계 보기">수출입 확정통계</strong></a>
+								<div class="topBox">
+									<div class="upArea">
+										<p>
+											<b>2026.06.01 ~ 06.30</b>
+										</p>
+		
+										<div class="btnGrp">			
+											<div class="imgDown" onclick="f_downImg2('imgDownDiv','수출입 확정통계')">
+												<a href="javascript:void(0)" aria-label="수출입 확정통계 이미지 다운로드">
+													확정통계
+												</a>
+												<div class="waitPlz">잠시후 다운로드가 시작됩니다.</div>
+											</div>
+											
+												<div class="pdfDown"  data-attch-file-id="De5izxmI1ZuzwcxudF0URXWQQ5%2BUL%2FQY2t%2FwK6JcH%2Fk%3D">
+													<a href="javascript:void(0)" aria-label="수출입 확정통계 보도자료 다운로드">
+														보도자료
+													</a>
+													<div class="waitPlz">잠시후 다운로드가 시작됩니다.</div>
+												</div>
+											
+										</div>
+									</div>
+									<ul>
+										<li class="im">
+											<div class="illuBox"></div>
+											<div class="txtBox">
+												
+													<strong>수출 1,020억 달러</strong>
+													<p>
+														전년 동기대비 <i class="imColor">              70.4%(421.2억 달러) 증가</i>
+													</p>
+												 
+											</div>
+										</li>
+										<li class="ex">
+											<div class="illuBox"></div>
+											<div class="txtBox">
+												
+													<strong>수입 661억 달러</strong>
+													<p>
+														전년 동기대비 <i class="imColor">              30.0%(152.3억 달러) 증가</i>
+													</p>
+												 
+											</div>
+										</li>
+									</ul>
+									<div class="responWrap">
+										<div class="respon" id="mainImg1">
+											<ul class="chartGrp scnd">
+												<li class="">
+													<figure class="highcharts-figure">
+														<h1></h1><h2></h2><h3></h3><h4></h4>
+														<h5>수출입 연도별 실적</h5>
+														<span>단위: 백만 달러</span>
+														<p class="twoColor t1">
+															<span class="exColor">수출</span> 
+															<span class="imColor">수입</span>
+														</p>
+														<ul class="dollar">
+															<li><span class="exColor">(수출)</span> <strong id="expUsdAmtdollar">496,104</strong></li>
+															<li><span class="imColor">(수입)</span> <strong id="impUsdAmtdollar">358,736</strong></li>
+														</ul>
+														<div id="container2"></div>
+														<script type="text/javascript">
+			
+															// 서브 타이틀
+															var subTitTradeAll = '';
+															//X축 연별
+															var acptYyChart = [];
+															// 수출금액
+															var expUsdAmtChart = [];
+															// 수입금액
+															var impUsdAmtChart = [];
+	
+															
+																acptYyChart.push("2022");
+																
+																	expUsdAmtChart.push({priodTitle: '2022', y: 683585});
+																	impUsdAmtChart.push({priodTitle: '2022', y: 731370});
+																
+																subTitTrade = 2022;
+															
+																acptYyChart.push("2023");
+																
+																	expUsdAmtChart.push({priodTitle: '2023', y: 632226});
+																	impUsdAmtChart.push({priodTitle: '2023', y: 642572});
+																
+																subTitTrade = 2023;
+															
+																acptYyChart.push("2024");
+																
+																	expUsdAmtChart.push({priodTitle: '2024', y: 683609});
+																	impUsdAmtChart.push({priodTitle: '2024', y: 631767});
+																
+																subTitTrade = 2024;
+															
+																acptYyChart.push("2025");
+																
+																	expUsdAmtChart.push({priodTitle: '2025', y: 709330});
+																	impUsdAmtChart.push({priodTitle: '2025', y: 631895});
+																
+																subTitTrade = 2025;
+															
+																acptYyChart.push("2026");
+																
+																		expUsdAmtChart.push({priodTitle: '2026.01~06', y: 496104});
+																		impUsdAmtChart.push({priodTitle: '2026.01~06', y: 358736});
+																	
+																subTitTrade = 2026;
+															
+															
+															Highcharts.chart('container2', {
+																chart: {
+																	backgroundColor:''
+																},
+																title: {
+																	text:''
+																},
+																xAxis: {
+																	lineColor: '#191919',
+																	categories: acptYyChart,
+																	labels:{
+																		style: {
+																			color:'#191919',
+																			fontSize: 14
+																		}
+																	}
+																},
+																yAxis:{
+																	title: {
+																		text:''
+																	},
+																	visible: false
+																},
+																legend: {
+																	enabled: false
+																},
+																series: [{
+																	name: '수출',
+																	data: expUsdAmtChart,
+																	color: '#3e67cf'
+																},{
+																	name: '수입',
+																	data: impUsdAmtChart,
+																	color: '#fc3f27'
+																}],
+																plotOptions:{
+																	series: {
+																		label:{
+																			enabled: false
+																		},
+																		marker: {
+																			fillColor: '#ffffff',
+																			lineWidth: 3,
+																			lineColor: null,
+																			symbol: 'circle',
+																			radius: 6
+																		},
+																		dashStyle: 'shortdot'
+																	},
+																	fontSize: 20
+																},
+																responsive: {
+																	/*rules: [{
+																		condition: {
+																			maxWidth: 300
+																		},
+																		chartOptions: {
+																			legend: {
+																				layout: 'horizontal',
+																				align: 'center',
+																				verticalAlign: 'bottom'
+																			}
+																		}
+																	}] */
+																},
+																exporting: {
+																	enabled: false
+																},
+																credits: {
+																	enabled: false
+																},
+																tooltip: {
+																	enabled: true,
+																	formatter: function() {
+																		return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																			+ this.series.name + '액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																	}
+																}
+															});
+														</script>
+													</figure>
+												</li>
+												<li class="">
+													<figure class="highcharts-figure">
+														<h1></h1><h2></h2><h3></h3><h4></h4>
+														<h5>주요 국가별 실적</h5>
+														<span>단위: 백만 달러</span>
+														<p class="twoColor t2">
+															<span class="exColor">수출</span> 
+															<span class="imColor">수입</span>
+														</p>
+														<div id="container1"></div>
+														<script type="text/javascript">
+														
+															//X축 연별
+															//var acptYymmChart = [];
+															// 수출금액
+															var expUsdAmtChart = [];
+															// 수입금액
+															var impUsdAmtChart = [];
+															// X축 국가명
+															var cntyNmChart = [];
+															// 최근 월
+															var priodTitleChart = 0;
+														
+															
+																cntyNmChart.push("중국");
+																expUsdAmtChart.push({priodTitle: '2026.06', y: 20002});
+																impUsdAmtChart.push({priodTitle: '2026.06', y: 16423});
+																priodTitleChart = '2026.06';
+															
+																cntyNmChart.push("미국");
+																expUsdAmtChart.push({priodTitle: '2026.06', y: 20002});
+																impUsdAmtChart.push({priodTitle: '2026.06', y: 7910});
+																priodTitleChart = '2026.06';
+															
+																cntyNmChart.push("유럽");
+																expUsdAmtChart.push({priodTitle: '2026.06', y: 10166});
+																impUsdAmtChart.push({priodTitle: '2026.06', y: 8679});
+																priodTitleChart = '2026.06';
+															
+																cntyNmChart.push("ASEAN");
+																expUsdAmtChart.push({priodTitle: '2026.06', y: 18196});
+																impUsdAmtChart.push({priodTitle: '2026.06', y: 8724});
+																priodTitleChart = '2026.06';
+															
+																cntyNmChart.push("일본");
+																expUsdAmtChart.push({priodTitle: '2026.06', y: 2798});
+																impUsdAmtChart.push({priodTitle: '2026.06', y: 4988});
+																priodTitleChart = '2026.06';
+															
+														
+															Highcharts.chart('container1', {
+																chart: {
+																	backgroundColor:''
+																},
+																title: {
+																	text:''
+																},
+																xAxis: {
+																	lineColor: '#191919',
+																	categories: cntyNmChart,
+																	labels:{
+																		style: {
+																			color:'#191919',
+																			fontSize: 14
+																		}
+																	}
+																},
+																yAxis:{
+																	title: {
+																		text:''
+																	},
+																	visible: false
+																},
+																legend: {
+																	enabled: false
+																},
+																series: [{
+																	type: 'column',
+																	name: '수출',
+																	data: expUsdAmtChart,
+																	color: '#3e67cf'
+																},{
+																	type: 'column',
+																	name: '수입',
+																	data: impUsdAmtChart,
+																	color: '#fc3f27'
+																}],
+																plotOptions: {
+																	series:{
+																		pointWidth: 15,
+																		borderColor:'',
+																		borderRadiusTopLeft:10,
+																		borderRadiusTopRight:10,
+																		dataLabels:{
+																			color: '#fff',
+																			align: 'center',
+																			style:{
+																				fontSize:14,
+																				fontWeight: 500,
+																				textOutline: false
+																			},
+																			enabled: true
+																			
+																		}
+																	}
+																},
+																responsive: {
+																	/*	rules: [{
+																	condition: {
+																		maxWidth: 300
+																	},
+																	chartOptions: {
+																		legend: {
+																			layout: 'horizontal',
+																			align: 'center',
+																			verticalAlign: 'bottom'
+																		}
+																	}
+																}] */
+																},
+																exporting: {
+																	enabled: false
+																},
+																credits: {
+																	enabled: false
+																},
+																tooltip: {
+																	enabled: true,
+																	formatter: function() {
+																		return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																			+ '국가: ' + this.point.category + '<br>'
+																			+ this.series.name + '액: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																	}
+																}
+															});
+														</script>
+													</figure>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</li>
+							
+							<li class="provisStat">
+								<a href="javascript:void(0)"><strong onclick="f_retrieveTradePprc()" aria-label="수출입 잠정통계 보기">수출입 잠정통계</strong></a>
+								<div class="topBox">
+									<div class="upArea">
+										<p id="pprcTitle">
+											<b>&nbsp;</b>
+										</p>
+										<div class="btnGrp">
+											<div class="ccpBtn">
+												<a href="javascript:void(0)" onclick="f_ccpPop()" aria-label="수출입 잠정통계 통관실적 요약 팝업 열기">
+													통관실적
+												</a>
+												<div class="ccpPop">
+													<div class="ccpTitle">
+														<span>통관실적</span>
+														<a href="javascript:void(0)" onclick="f_ccpPopClose()" aria-label="수출입 잠정통계 통관실적 요약 팝업 닫기">닫기</a>
+													</div>
+													<div class="ccpCntWrap">
+														<div class="ccpCnt">
+															<p>수리일 기준 [백만 달러, %(전년동기대비)]</p>
+															<ul class="values">
+																<li id="pprcAggtCsclAcrsMm">
+																	<span>당월</span>
+																	<ul>
+																		<li class="ex"></li>
+																		<li class="im"></li>
+																	</ul>
+																</li>
+																<li id="pprcAggtCsclAcrsYy">
+																	<span>연간</span>
+																	<ul>
+																		<li class="ex"></li>
+																		<li class="im"></li>
+																	</ul>
+																</li>
+															</ul>
+															<ul class="valEtc" id="pprcAggtCsclAcrsEtc">
+																<!-- 20230705 관세실적 팝업 띄어쓰기 조정 -->
+																<li>증감율: 전년동기대비 증감율</li>
+																<li></li>
+																<li>수출(출항일 기준) 연간 누계: 백만 달러</li>
+															</ul>
+															<div class="moreInfo"><a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100173Q.do', {menuId: 'ETS_MNK_10500000'});" aria-label="10일 단위 잠정치 통계로 이동">더보기</a></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="imgDown" onclick="f_downImg('imgDownDiv','수출입 잠정통계')" aria-label="수출입 잠정통계 이미지 다운로드">
+												<a href="javascript:void(0)">
+													잠정통계
+												</a>
+												<div class="waitPlz">잠시후 다운로드가 시작됩니다.</div>
+											</div>
+											
+												<div class="pdfDown"  data-attch-file-id="%2BCbtTVUat4lMqOqThMP%2FKK1zYq%2F%2FBpgFLIrsvCh%2FUso%3D">
+													<a href="javascript:void(0)" aria-label="수출입 잠정통계 보도자료 다운로드">
+														보도자료 
+													</a>
+													<div class="waitPlz">잠시후 다운로드가 시작됩니다.</div>
+												</div>
+											
+										</div>
+									</div>
+									<ul>
+										<li class="im">
+											<div class="illuBox"></div>
+											<div class="txtBox" id="pprcOvrlExp">
+												<strong>수출 억 달러</strong>
+												<p>전년 동기대비</p>
+											</div>
+										</li>
+										<li class="ex">
+											<div class="illuBox"></div>
+											<div class="txtBox" id="pprcOvrlImp">
+												<strong>수입 억 달러</strong>
+												<p>전년 동기대비</p>
+											</div>
+										</li>
+									</ul>
+									<!-- <div class="ex_imTab1">
+										<ul>
+											<li id="expBtn" data-imex-tpcd="exp" class="on">수출</li>
+											<li id="impBtn" data-imex-tpcd="imp">수입</li> 
+										</ul>
+									</div> -->
+	
+									<!-- <div class="unitWrap">
+										<span class="unit">단위: 백만 달러</span>
+									</div> -->
+									<div class="responWrap">	
+										<div class="respon" id="mainImg">
+											<ul class="ex_imTabBox1">
+												<li class="exTab on">
+													<ul class="chartGrp fst">
+														<li class="ex">
+															<figure class="highcharts-figure">
+																<h1></h1><h2></h2><h3></h3><h4></h4>
+																<h5>주요 수출 실적</h5>
+																<span>단위: 백만 달러</span>
+																<p class="twoColor t2" id="pprcOvrlExp2">
+																	<span class="gray1">년</span> 
+																	<span class="exColor">년</span>
+																</p>
+																<div id="container3"></div>
+																<div id="container4"></div>
+															</figure>
+														</li>
+														<li class="im">
+															<figure class="highcharts-figure">
+																<h1></h1><h2></h2><h3></h3><h4></h4>
+																<h5>주요 수입 실적</h5>
+																<span>단위: 백만 달러</span>
+																<p class="twoColor t2" id="pprcOvrlImp2">
+																	<span class="gray2">년</span> 
+																	<span class="imColor">년</span>
+																</p>
+																<div id="container3_b"></div>
+																<div id="container4_b"></div>
+															</figure>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</li>
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="mainMid">
+				<div class="mainWrapper">
+					<div class="midtabWrapper">
+						<div class="midTab ">
+							<ul class="">
+								<li class="art1">
+									<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100131Q.do',{menuId: 'ETS_MNK_50303000', blbrTpcd:'33'});">
+										<span>그림으로 보는<br> 무역통계</span>
+									</a>
+								</li>
+								<li class="art2">
+									<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100131Q.do',{menuId: 'ETS_MNK_50302000', blbrTpcd:'32'});">
+										<span>무역통계<br> 연보</span>
+									</a>
+								</li>
+								<li class="art3">
+									<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100131Q.do',{menuId: 'ETS_MNK_50301000', blbrTpcd:'31'});">
+										<span>수출입<br> 동향</span>
+									</a>
+								</li>
+								<li class="art4">
+									<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100129Q.do', {menuId: 'ETS_MNK_50100000', blbrTpcd:'26'});">
+										<span>기업무역<br> 활동통계</span>
+									</a>
+								</li>
+								<li class="art5">
+									<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100148Q.do',{menuId: 'ETS_MNK_70000000'});">
+										<span>한눈에 보는<br> 통계</span>
+									</a>
+								</li>
+								<li class="art6">
+									<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100148Q.do',{menuId: 'ETS_MNK_70000000',type:'map'});">
+										<span>지도로 보는<br> 통계</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="mainBttm">
+				<div class="mainWrapper">
+					<!-- Main Chart s -->
+					<div class="chartTab" data-custom-tab>
+						<div class="responWrap">
+							<ul class="respon">
+								<li class="on">
+									<div class="tabHead">
+										<a href="javascript:void(0)">
+											<div class="tabHeadWrap">
+												<span class="subTitLfp">
+													'22.6월 <b>농축수산물 수입</b>가격
+													<i class=""> </i>
+												</span>
+												<div class="objBox objBoxLfp">
+													<div class="artObj farm"></div>
+													<span class="costUp">128.6</span>
+													<span class="costTxt">전월대비 <i>1.6%</i></span>
+												</div>
+											</div>
+										</a>
+									</div>
+								</li>
+								<li>
+									<div class="tabHead">
+										<a href="javascript:void(0)">
+											<div class="tabHeadWrap">
+												<span class="subTitFlgh">
+													'22.6월 <b>항공 수입 운송</b>비용
+													<i class="CNTY_US">미국서부</i>
+												</span>
+												<div class="objBox objBoxFlgh">
+													<div class="artObj plane"></div>
+													<span class="costUp crrncy">5,154<b>원/kg</b></span>
+													<span class="costTxt">전월대비 <i>183원/kg</i></span>
+												</div>
+											</div>
+										</a>
+									</div>
+								</li>
+								<li>
+									<div class="tabHead">
+										<a href="javascript:void(0)">
+											<div class="tabHeadWrap">
+												<span class="subTitSea">
+													'22.6월 <b>해상 수출 운송</b> 비용
+													<i class="CNTY_CN">중국(수출)</i>
+												</span>
+												<div class="objBox objBoxSea">
+													
+													<div class="artObj ship"></div>
+													<span class="costDown crrncy">311<b>천원/2TEU</b></span>
+													<span class="costTxt">전월대비 <i>311천원/2TEU</i></span>
+												</div>
+											</div>
+										</a>
+									</div>
+								</li>
+								<li>
+									<div class="tabHead">
+										<a href="javascript:void(0)">
+											<div class="tabHeadWrap">
+												<span class="subTitOil">
+													'22.6월 <b>원유 평균</b>수입가격
+													<i class=""></i>
+												</span>
+												<div class="objBox objBoxOil">
+													
+													<div class="artObj oil"></div>
+													<span class="costUp">128.6</span>
+													<span class="costTxt">전월대비 <i>1.6%</i>상승</span>
+												</div>
+											</div>
+										</a>
+									</div>
+								</li>
+							</ul>
+						</div>
+						
+						<ul class="" id="chartTab">
+							<li class="chartHeader on">
+								<div class="tabHead" id="chartHeader1">
+									<a href="javascript:void(0)">
+										<div class="tabHeadWrap">
+											<span class="subTitLfp" id="subTitLfp">
+												'22.6월 <b>농축수산물 수입</b>가격
+												<i class="">(2015=100)</i>
+											</span>
+											<div class="objBox objBoxLfp" id="objBoxLfp">
+												<div class="artObj farm"></div>
+												<span class="costUp">128.6</span>
+												<span class="costTxt">전년동월대비 <i>1.6</i>%</span>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="tabBody">
+									<!-- <div class="tabinMid">
+										<p><span>[농축수산물 수입가격]</span> 농축수산물 전년동월대비 귀리, 식용유 등 57개 품목 상승, 생강, 마늘 등 10개 품목 하락</p>
+									</div> -->
+									<!-- <span class="gijun">[ 비교기준 : 전년동월대비 ]</span> -->
+									<div class="moreInfo">
+										<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100102Q.do', {menuId: 'ETS_MNK_40301000'});">더보기</a>
+									</div>
+									<!-- <div class="arrwBox bigchart1">
+										<a class="prev" href="javascript:void(0)">이전으로</a>
+										<a class="next" href="javascript:void(0)">다음으로</a>
+									</div> -->
+									<div class="responWrap">
+										<div class="respon bigchart1">
+											<div class="chartBox">
+												<figure class="highcharts-figure">
+													<strong>
+														농축수산물 평균 수입가격 현황 <span class="imColor">(상승)</span>
+													</strong>
+													<div class="big1arrw">
+														<ul>
+															<li class="prev">이전</li>
+															<li class="next">다음</li>
+														</ul>
+													</div>
+													<span class="floating">(단위 : 원/kg)</span>
+	
+													<div class="big1SlideWrap">
+														<ul class="big1Slide">
+															<li>
+																<div id="container7" class="chartThing"></div>
+																<script type="text/javascript">
+																
+																// x축 기준
+																var hs10SgnNmChart = [];
+																// 전년동월가격
+																var befPrcChart = [];
+																// 올해평균가격
+																var curPrcChart = [];
+																
+																
+																	hs10SgnNmChart.push("고등어(냉동)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '고등어(냉동)',
+																		'y': 3802
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '고등어(냉동)',
+																		'y': 7355,
+																		'icdcRt': 93.5
+																	});
+																
+																	hs10SgnNmChart.push("대게(산것,신선,냉장)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '대게(산것,신선,냉장)',
+																		'y': 24096
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '대게(산것,신선,냉장)',
+																		'y': 33214,
+																		'icdcRt': 37.8
+																	});
+																
+																	hs10SgnNmChart.push("대구(냉동)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '대구(냉동)',
+																		'y': 6440
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '대구(냉동)',
+																		'y': 11034,
+																		'icdcRt': 71.3
+																	});
+																
+																	hs10SgnNmChart.push("명태(냉동)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '명태(냉동)',
+																		'y': 1497
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '명태(냉동)',
+																		'y': 3246,
+																		'icdcRt': 116.8
+																	});
+																
+																	hs10SgnNmChart.push("명태(신선,냉장)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '명태(신선,냉장)',
+																		'y': 5130
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '명태(신선,냉장)',
+																		'y': 8248,
+																		'icdcRt': 60.8
+																	});
+																
+	
+																Highcharts.chart('container7', {
+																	chart: {
+																		type: 'column',
+																		backgroundColor: ''
+																	},
+																	title: {
+																		text: ''
+																	},
+																	xAxis: {
+																		categories: hs10SgnNmChart,
+																		tickmarkPlacement: 'on',
+																		labels: {
+																			style: {
+																				fontSize: 14
+																			}
+																		}
+																	},
+																	plotOptions: {
+																		column: {
+																			dataLabels: {
+																				enabled: true,
+																				align: 'center',
+																				style: {
+																					fontSize: 14,
+																					fontWeight: 500
+																				},
+																				enabled: true,
+																				y: 0
+																			}
+																		},
+																		series: {
+																			pointWidth: 30,
+																			borderColor: '',
+																			borderRadiusTopLeft: 15,
+																			borderRadiusTopRight: 15,
+																		}
+																	},
+																	yAxis:{
+																		title: {
+																			text: ''
+																		},
+																		labels: {
+																			style: {
+																				fontSize: 14
+																			},
+																			format: '{value:,1f}'
+																		}
+																	},
+																	legend: {
+																		layout: 'horizontal',
+																		align: 'right',
+																		verticalAlign: 'top',
+																		x: 0,
+																		y: 0,
+																		itemStyle: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		}
+																	},
+																	series: [{
+																		name: '전년동월',
+																		data: befPrcChart,
+																		color: '#ffb6c1',
+																		dataLabels: {
+																			color: '#ffb6c1',
+																			enabled: false
+																		}
+																	},{
+																		name: '당월',
+																		data: curPrcChart,
+																		color: '#db2929',
+																		dataLabels: {
+																			color: '#db2929'
+																		}
+																	}],
+																	responsive: {
+																		rules: [{
+																			condition: {
+																				maxWidth: 560
+																			},
+																			chartOptions: {
+																				series: [{
+																					pointWidth: 20
+																				},{
+																					pointWidth: 20
+																				}]
+																			}
+																		}]
+																	},
+																	exporting: {
+																		enabled: false
+																	},
+																	credits: {
+																		enabled: false
+																	},
+																	tooltip: {
+																		enabled: true,
+																		formatter: function() {
+																			if (this.point.icdcRt > 0) {
+																				return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																					+ '품목: ' + this.point.name + '<br>'
+																					+ '수입가격: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+																					+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+																			} else {
+																				return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																					+ '품목: ' + this.point.name + '<br>'
+																					+ '수입가격: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																			}
+																		}
+																	}
+																});
+																</script>
+															</li>
+															<li>
+																<div id="container7_b" class="chartThing"></div>
+																<script type="text/javascript">
+																// x축 기준
+																var hs10SgnNmChart = [];
+																// 전년동월가격
+																var befPrcChart = [];
+																// 올해평균가격
+																var curPrcChart = [];
+																
+																
+																	hs10SgnNmChart.push("무(신선,냉장)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '무(신선,냉장)',
+																		'y': 434
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '무(신선,냉장)',
+																		'y': 962,
+																		'icdcRt': 121.5
+																	});
+																
+																	hs10SgnNmChart.push("양고기(냉동)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '양고기(냉동)',
+																		'y': 11528
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '양고기(냉동)',
+																		'y': 16297,
+																		'icdcRt': 41.4
+																	});
+																
+																	hs10SgnNmChart.push("양배추(신선,냉장)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '양배추(신선,냉장)',
+																		'y': 323
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '양배추(신선,냉장)',
+																		'y': 491,
+																		'icdcRt': 51.9
+																	});
+																
+																	hs10SgnNmChart.push("양파(신선,냉장)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '양파(신선,냉장)',
+																		'y': 578
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '양파(신선,냉장)',
+																		'y': 1008,
+																		'icdcRt': 74.4
+																	});
+																
+																	hs10SgnNmChart.push("체리(신선)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '체리(신선)',
+																		'y': 8941
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '체리(신선)',
+																		'y': 13708,
+																		'icdcRt': 53.3
+																	});
+																
+															
+																Highcharts.chart('container7_b', {
+																	chart: {
+																		type: 'column',
+																		backgroundColor: ''
+																	},
+																	title: {
+																		text: ''
+																	},
+																	xAxis: {
+																		categories: hs10SgnNmChart,
+																		tickmarkPlacement: 'on',
+																		labels: {
+																			style: {
+																				fontSize: 14
+																			}
+																		}
+																	},
+																	plotOptions: {
+																		column:{
+																			dataLabels: {
+																				enabled: true,
+																				align: 'center',
+																				style: {
+																					fontSize: 14,
+																					fontWeight: 500
+																				},
+																				enabled: true,
+																				y: 0
+																			}
+																		},
+																		series: {
+																			pointWidth: 30,
+																			borderColor: '',
+																			borderRadiusTopLeft: 15,
+																			borderRadiusTopRight: 15,
+																		}
+																	},
+																	yAxis:{
+																		title: {
+																			text: ''
+																		},
+																		labels: {
+																			style: {
+																				fontSize: 14
+																			},
+																			format: '{value:,1f}'
+																		}
+																	},
+																	legend: {
+																		layout: 'horizontal',
+																		align: 'right',
+																		verticalAlign: 'top',
+																		x: 0,
+																		y: 0,
+																		itemStyle: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		}
+																	},
+																	series: [{
+																		name: '전년동월',
+																		data: befPrcChart,
+																		color: '#ffb6c1',
+																		dataLabels: {
+																			color: '#ffb6c1',
+																			enabled: false
+																		}
+																	},{
+																		name: '당월',
+																		data: curPrcChart,
+																		color:'#db2929',
+																		dataLabels: {
+																			color: '#db2929'
+																		}
+																	}],
+																	responsive: {
+																		rules: [{
+																			condition: {
+																				maxWidth: 560
+																			},
+																			chartOptions: {
+																				series: [{
+																					pointWidth: 20
+																				},{
+																					pointWidth: 20
+																				}]
+																			}
+																		}]
+																	},
+																	exporting: {
+																		enabled: false
+																	},
+																	credits: {
+																		enabled: false
+																	},
+																	tooltip: {
+																		enabled: true,
+																		formatter: function() {
+																			if (this.point.icdcRt > 0) {
+																				return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																					+ '품목: ' + this.point.name + '<br>'
+																					+ '수입가격: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+																					+ '증감률: <span style="font-size:13px">▲' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+																			} else {
+																				return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																					+ '품목: ' + this.point.name + '<br>'
+																					+ '수입가격: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																			}
+																		}
+																	}
+																});
+																</script>
+															</li>
+														</ul>
+													</div>
+													
+												</figure>
+												<figure class="highcharts-figure">
+													<strong>
+														농축수산물 평균 수입가격 현황 <span class="exColor">(하락)</span>
+													</strong>
+													<div class="big1arrw ">
+														<ul>
+															<li class="prev">이전</li>
+															<li class="next">다음</li>
+														</ul>
+													</div>
+													<span class="floating">(단위 : 원/kg)</span>
+	
+													<div class="big1SlideWrap">
+														<ul class="big1Slide">
+															<li>
+																<div id="container9" class="chartThing"></div>
+																<script type="text/javascript">
+																
+																	// 서브 타이틀
+																	var subTitLfp = '';
+																	var hs10SgnNm = '';
+																	var curPrc = 0;
+																	var icdcRt = 0;
+																
+																// x축 기준
+																var hs10SgnNmChart = [];
+																// 전년동월가격
+																var befPrcChart = [];
+																// 올해평균가격
+																var curPrcChart = [];
+																
+																
+																		subTitLfp = "2026.07".replace('년 0', '.').replace('년 ', '.').substr(2);
+																		hs10SgnNm = "가오리(냉동)";
+																		curPrc = 2556;
+																		icdcRt = 54.8;
+																	
+																	hs10SgnNmChart.push("가오리(냉동)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '가오리(냉동)',
+																		'y': 5659
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '가오리(냉동)',
+																		'y': 2556,
+																		'icdcRt': 54.8
+																	});
+																
+																	hs10SgnNmChart.push("당근(신선,냉장)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '당근(신선,냉장)',
+																		'y': 577
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '당근(신선,냉장)',
+																		'y': 534,
+																		'icdcRt': 7.4
+																	});
+																
+																	hs10SgnNmChart.push("라면");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '라면',
+																		'y': 9257
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '라면',
+																		'y': 8287,
+																		'icdcRt': 10.5
+																	});
+																
+																	hs10SgnNmChart.push("마늘(냉동)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '마늘(냉동)',
+																		'y': 2005
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '마늘(냉동)',
+																		'y': 1656,
+																		'icdcRt': 17.4
+																	});
+																
+																	hs10SgnNmChart.push("마늘(신선,냉장_무탈피)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '마늘(신선,냉장_무탈피)',
+																		'y': 5590
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '마늘(신선,냉장_무탈피)',
+																		'y': 4720,
+																		'icdcRt': 15.6
+																	});
+																
+																	//오늘이 홀수일인 경우 하락 차트 가격
+																	$('.subTitLfp').empty();
+																	$('.subTitLfp').html("'"+subTitLfp+'월 <b>농축수산물</b> 수입가격 <br/><i class="">'+hs10SgnNm+'</i>');
+	
+																	var objBoxLfpHtml = '<div class="artObj farm"></div>';
+																	objBoxLfpHtml += '<span class="costDown crrncy">' +curPrc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '<br><b>원/kg</b></span>';
+																	objBoxLfpHtml += '<span class="costTxt">전년동월대비 <i>'+icdcRt.toString()+'</i>%</span>';
+																	$('.objBoxLfp').empty();
+																	$('.objBoxLfp').html(objBoxLfpHtml);
+																
+	
+																Highcharts.chart('container9', {
+																	chart: {
+																		type: 'column',
+																		backgroundColor: ''
+																	},
+																	title: {
+																		text: ''
+																	},
+																	xAxis: {
+																		categories: hs10SgnNmChart,
+																		tickmarkPlacement: 'on',
+																		labels: {
+																			style: {
+																				fontSize: 14
+																			}
+																		}
+																	},
+																	plotOptions: {
+																		column: {
+																			dataLabels: {
+																				enabled: true,
+																				align: 'center',
+																				style: {
+																					fontSize: 14,
+																					fontWeight: 500
+																				},
+																				enabled: true,
+																				y: 0
+																			}
+																		},
+																		series: {
+																			pointWidth: 30,
+																			borderColor: '',
+																			borderRadiusTopLeft: 15,
+																			borderRadiusTopRight: 15,
+																		}
+																	},
+																	yAxis:{
+																		title: {
+																			text: ''
+																		},
+																		labels: {
+																			style: {
+																				fontSize: 14
+																			},
+																			format: '{value:,1f}'
+																		}
+																	},
+																	legend: {
+																		layout: 'horizontal',
+																		align: 'right',
+																		verticalAlign: 'top',
+																		x: 0,
+																		y: 0,
+																		itemStyle: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		}
+																	},
+																	series: [{
+																		name: '전년동월',
+																		data: befPrcChart,
+																		color: '#c6d0fc',
+																		dataLabels: {
+																			color: '#c6d0fc',
+																			enabled: false
+																		}
+																	},{
+																		name: '당월',
+																		data: curPrcChart,
+																		color: '#3e67cf',
+																		dataLabels: {
+																			color: '#3e67cf'
+																		}
+																	}],
+																	responsive: {
+																		rules: [{
+																			condition: {
+																				maxWidth: 560
+																			},
+																			chartOptions: {
+																				series: [{
+																					pointWidth: 20
+																				},{
+																					pointWidth: 20
+																				}]
+																			}
+																		}]
+																	},
+																	exporting: {
+																		enabled: false
+																	},
+																	credits: {
+																		enabled: false
+																	},
+																	tooltip: {
+																		enabled: true,
+																		formatter: function() {
+																			if (this.point.icdcRt > 0) {
+																				return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																					+ '품목: ' + this.point.name + '<br>'
+																					+ '수입가격: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+																					+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+																			} else {
+																				return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																					+ '품목: ' + this.point.name + '<br>'
+																					+ '수입가격: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																			}
+																		}
+																	}
+																});
+																</script>
+															</li>
+															<li>
+																<div id="container9_b" class="chartThing"></div>
+																<script type="text/javascript">
+																// x축 기준
+																var hs10SgnNmChart = [];
+																// 전년동월가격
+																var befPrcChart = [];
+																// 올해평균가격
+																var curPrcChart = [];
+																
+																
+																	hs10SgnNmChart.push("모차렐라 치즈");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '모차렐라 치즈',
+																		'y': 7685
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '모차렐라 치즈',
+																		'y': 6955,
+																		'icdcRt': 9.5
+																	});
+																
+																	hs10SgnNmChart.push("밤(신선,건조_무탈각)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '밤(신선,건조_무탈각)',
+																		'y': 3111
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '밤(신선,건조_무탈각)',
+																		'y': 2877,
+																		'icdcRt': 7.5
+																	});
+																
+																	hs10SgnNmChart.push("버터");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '버터',
+																		'y': 14359
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '버터',
+																		'y': 12891,
+																		'icdcRt': 10.2
+																	});
+																
+																	hs10SgnNmChart.push("오징어(냉동)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '오징어(냉동)',
+																		'y': 5557
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '오징어(냉동)',
+																		'y': 4403,
+																		'icdcRt': 20.8
+																	});
+																
+																	hs10SgnNmChart.push("호두(탈각)");
+																	befPrcChart.push({
+																		'priodTitle': '2025.07',
+																		'name': '호두(탈각)',
+																		'y': 11089
+																	});
+																	curPrcChart.push({
+																		'priodTitle': '2026.07',
+																		'name': '호두(탈각)',
+																		'y': 8562,
+																		'icdcRt': 22.8
+																	});
+																
+																
+																Highcharts.chart('container9_b', {
+																	chart: {
+																		type: 'column',
+																		backgroundColor: ''
+																	},
+																	title: {
+																		text: ''
+																	},
+																	xAxis: {
+																		categories: hs10SgnNmChart,
+																		tickmarkPlacement: 'on',
+																		labels: {
+																			style: {
+																				fontSize: 14
+																			}
+																		}
+																	},
+																	plotOptions: {
+																		column: {
+																			dataLabels: {
+																				enabled: true,
+																				align: 'center',
+																				style: {
+																					fontSize: 14,
+																					fontWeight: 500
+																				},
+																				enabled: true,
+																				y: 0
+																			}
+																		},
+																		series: {
+																			pointWidth: 30,
+																			borderColor: '',
+																			borderRadiusTopLeft: 15,
+																			borderRadiusTopRight: 15,
+																		}
+																	},
+																	yAxis:{
+																		title: {
+																			text: ''
+																		},
+																		labels: {
+																			style: {
+																				fontSize: 14
+																			},
+																			format: '{value:,1f}'
+																		}
+																	},
+																	legend: {
+																		layout: 'horizontal',
+																		align: 'right',
+																		verticalAlign: 'top',
+																		x: 0,
+																		y: 0,
+																		itemStyle: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		}
+																	},
+																	series: [{
+																		name: '전년동월',
+																		data: befPrcChart,
+																		color: '#c6d0fc',
+																		dataLabels: {
+																			color: '#c6d0fc',
+																			enabled: false
+																		}
+																	},{
+																		name: '당월',
+																		data: curPrcChart,
+																		color: '#3e67cf',
+																		dataLabels: {
+																			color: '#3e67cf'
+																		}
+																	}],
+																	responsive: {
+																		rules: [{
+																			condition: {
+																				maxWidth: 560
+																			},
+																			chartOptions: {
+																				series: [{
+																					pointWidth: 20
+																				},{
+																					pointWidth: 20
+																				}]
+																			}
+																		}]
+																	},
+																	exporting: {
+																		enabled: false
+																	},
+																	credits: {
+																		enabled: false
+																	},
+																	tooltip: {
+																		enabled: true,
+																		formatter: function() {
+																			if (this.point.icdcRt > 0) {
+																				return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																					+ '품목: ' + this.point.name + '<br>'
+																					+ '수입가격: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b><br>'
+																					+ '증감률: <span style="font-size:13px">▼' + Highcharts.numberFormat(this.point.icdcRt, 1) + '%</span>';
+																			} else {
+																				return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: ' + this.point.priodTitle + '<br>'
+																					+ '품목: ' + this.point.name + '<br>'
+																					+ '수입가격: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																			}
+																		}
+																	}
+																});
+																</script>
+															</li>
+														</ul>
+													</div>
+													
+												</figure>
+											</div>
+											
+	
+										</div>
+										<div class="swiper-pagination bigchart1"></div>
+									</div>
+								</div>
+							</li>
+							<li class="chartHeader">
+								<div class="tabHead" id="chartHeader2">
+									<a href="javascript:void(0)">
+										<div class="tabHeadWrap">
+											<span class="subTitFlgh" id="subTitFlgh">
+												'22.6월 <b>항공 수입 운송</b>비용
+												<i class="CNTY_US">미국서부</i>
+											</span>
+											<div class="objBox objBoxFlgh" id="objBoxFlgh">
+												<div class="artObj plane"></div>
+												<span class="costUp crrncy">5,154<b>원/kg</b></span>
+												<span class="costTxt">전월대비 <i>183원/kg</i></span>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="tabBody">
+									<!-- <div class="tabinMid">
+										<p>
+											<b>항공운송비용</b> <span>[원거리 항로]</span> <i id="objFlghLong">미국 6,033원(140.6% &uArr;), 유럽연합 6,696원(36.1% &uArr;)</i><br>
+											<b>항공운송비용</b> <span>[근거리 항로]</span> <i id="objFlghShrt">중국 4,932원(42.6% &uArr;), 일본 2,722원(37.8% &uArr;), 베트남 5,085원(37.8% &uArr;)</i>
+										</p>
+									</div> -->
+									<!-- <span class="gijun">[ 비교기준 : 전월대비 ]</span> -->
+									<div class="ex_imTabX">
+										<ul>
+											<li style="display:none;">수출</li>
+											<li class="on">수입</li>
+										</ul>
+									</div>
+									<div class="moreInfo">
+										<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100121Q.do', {menuId: 'ETS_MNK_30402000'});">더보기</a>
+									</div>
+									<!-- <div class="arrwBox bigchart2">
+										<a class="prev" href="javascript:void(0)">이전으로</a>
+										<a class="next" href="javascript:void(0)">다음으로</a>
+									</div> -->
+									<div class="responWrap">
+										<div class="respon bigchart2">
+											<div class="chartBox">
+												<figure class="highcharts-figure">
+													<strong>
+														항공 수입 운송비용 평균 월별 추이
+													</strong>
+													<div class="course long">
+														<strong>원거리항로</strong>
+														<p>운송비용 평균 월별추이 <span>미국 / 유럽연합</span></p>
+													</div>
+													<span class="floating">(단위 : 원/kg)</span>
+													<div id="container10" class="chartThing"></div>
+													<script type="text/javascript">
+														// 서브 타이틀
+														var subTitFlgh = '26.07';
+														var curCach = 0;
+														var befCach = 0;
+														var poNum = '';
+														
+															$('.subTitFlgh').html("'"+subTitFlgh+'월 <b>항공 수입 운송</b>비용<i class="CNTY_JP">일본</i>');
+															curCach = 2095;
+															befCach = 2392;
+														
+														
+														var objBoxFlghHtml = '<div class="artObj plane"></div>';
+														// 양수인지 음수인지 판정
+														if (befCach <= curCach) {
+															// 양수일경우
+															objBoxFlghHtml += '<span class="costUp crrncy">'+curCach.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'<br><b>원/kg</b></span>';
+															objBoxFlghHtml += '<span class="costTxt">전월대비 <i>'+(curCach-befCach).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</i>원/kg</span>';
+															poNum = '&uArr;';
+														} else {
+															// 음수일경우
+															objBoxFlghHtml += '<span class="costDown crrncy">'+curCach.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'<br><b>원/kg</b></span>';
+															objBoxFlghHtml += '<span class="costTxt">전월대비 <i>'+(befCach-curCach).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</i>원/kg</span>';
+															poNum = '&dArr;';
+														}
+														$('.objBoxFlgh').empty();
+														$('.objBoxFlgh').html(objBoxFlghHtml);
+												
+														/*
+														$('#objFlghLong').empty();
+														
+														if (Math.sign(euPrcDiff) == 1) {
+															neNum = '&uArr;';
+														}else{
+															neNum= '&dArr;';														
+														}
+														
+														$('#objFlghLong').html('미국 '+ usMaxCach +'원('+usPrcDiff+' 원  '+poNum+'), 유럽연합 '+ euMaxCach +'원('+euPrcDiff+' 원 '+neNum+')');
+														*/
+	
+														//X축 월별
+														var acptYymmChart = [];
+														//운송비용(미국)
+														var usCachChart = [];
+														//운송비용(유럽연합)
+														var euCachChart = [];
+														//최근 미국 비용
+														var usMaxCach = 0;
+														var usMaxCachMi = 0;
+														//최근 유럽 비용
+														var euMaxCach = 0;
+														var euMaxCachMi = 0;
+														
+														//전월대비 증감액
+														
+															acptYymmChart.push("'25.08");
+															usCachChart.push(6400);
+															euCachChart.push(4584);
+														
+															acptYymmChart.push("'25.09");
+															usCachChart.push(5363);
+															euCachChart.push(4803);
+														
+															acptYymmChart.push("'25.10");
+															usCachChart.push(5545);
+															euCachChart.push(4578);
+														
+															acptYymmChart.push("'25.11");
+															usCachChart.push(5705);
+															euCachChart.push(6635);
+														
+															acptYymmChart.push("'25.12");
+															usCachChart.push(5395);
+															euCachChart.push(4916);
+														
+															acptYymmChart.push("'26.01");
+															usCachChart.push(5568);
+															euCachChart.push(5868);
+														
+															acptYymmChart.push("'26.02");
+															usCachChart.push(4234);
+															euCachChart.push(5500);
+														
+															acptYymmChart.push("'26.03");
+															usCachChart.push(6365);
+															euCachChart.push(5709);
+														
+															acptYymmChart.push("'26.04");
+															usCachChart.push(6469);
+															euCachChart.push(7596);
+														
+															acptYymmChart.push("'26.05");
+															usCachChart.push(6179);
+															euCachChart.push(7121);
+														
+															acptYymmChart.push("'26.06");
+															usCachChart.push(6781);
+															euCachChart.push(5843);
+														
+															acptYymmChart.push("'26.07");
+															usCachChart.push(4960);
+															euCachChart.push(6895);
+														
+														
+														Highcharts.chart('container10', {
+															chart: {
+																type: 'line',
+																backgroundColor: ''
+															},
+															title: {
+																text: ''
+															},
+															xAxis: {
+																categories: acptYymmChart,
+																tickmarkPlacement : 'on',
+																labels: {
+																	style: {
+																		fontSize: 14
+																	}
+																}
+															},
+															plotOptions: {
+																series: {
+																	dataLabels: {
+																		enabled: true,
+																		align: 'center'
+																	},
+																	marker: {
+																		fillColor: '#ffffff',
+																		lineWidth: 3,
+																		lineColor: null,
+																		symbol: 'circle',
+																		radius: 6
+																	},
+																	dashStyle: 'ShortDot',
+																	dataLabels: {
+																		align: 'center',
+																		style: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		},
+																		enabled: true,
+																		y: -4
+																	}
+																}
+															},
+															yAxis: {
+																title: {
+																	text: ''
+																},
+																labels: {
+																	style: {
+																		fontSize: 14
+																	},
+																	format: '{value:,1f}'
+																}
+															},
+															legend: {
+																layout: 'horizontal',
+																align: 'right',
+																verticalAlign: 'top',
+																x: 0,
+																y: 0,
+																itemStyle: {
+																	fontSize: 14,
+																	fontWeight: 500
+																}
+															},
+															series: [{
+																name: '미국',
+																data: usCachChart,
+																color: '#1d4dcc',
+																dataLabels: {
+																	color: '#1d4dcc'
+																},
+																labels: {
+																	fontSize: 0,
+																	enabled: false
+																}
+															},{
+																name: '유럽연합',
+																data: euCachChart,
+																color: '#059567',
+																dataLabels: {
+																	color: '#059567'
+																},
+																labels: {
+																	fontSize: 0,
+																	enabled: false
+																}
+															}],
+															responsive: {
+															},
+															exporting: {
+																enabled: false
+															},
+															credits: {
+																enabled: false
+															},
+															tooltip: {
+																enabled: true,
+																formatter: function() {
+																	return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: 20' + this.point.category.substr(1) + '<br>'
+																		+ '국가: ' + this.series.name + '<br>'
+																		+ '운송비용: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																}
+															}
+														});
+													</script>
+												</figure>
+												<figure class="highcharts-figure">
+													<strong>
+														항공 수입 운송비용 평균 월별 추이
+													</strong>
+													<div class="course shrt">
+														<strong>근거리항로</strong>
+														<p>운송비용 평균 월별추이 <span>중국 / 일본 / 베트남</span></p>
+													</div>
+													<span class="floating">(단위 : 원/kg)</span>
+													<div id="container11" class="chartThing"></div>
+													<script type="text/javascript">
+														//X축 월별
+														var acptYymmChart = [];
+														//운송비용(중국)
+														var cnCachChart = [];
+														//운송비용(일본)
+														var jpCachChart = [];
+														//운송비용(베트남)
+														var vnCachChart = [];
+														//최근 중국 비용
+														var cnMaxCach = 0;
+														var cnMaxCachMi = 0;
+														//최근 일본 비용
+														var jpMaxCach = 0;
+														var jpMaxCachMi = 0;
+														//최근 베트남 비용
+														var vnMaxCach = 0;
+														var vnMaxCachMi = 0;
+														
+														
+															acptYymmChart.push("'25.08");
+															cnCachChart.push(3024);
+															jpCachChart.push(1734);
+															vnCachChart.push(4468);
+															cnMaxCach = 3024;
+															jpMaxCach = 1734;
+															vnMaxCach = 4468;
+														
+															acptYymmChart.push("'25.09");
+															cnCachChart.push(3036);
+															jpCachChart.push(1720);
+															vnCachChart.push(4770);
+															cnMaxCach = 3036;
+															jpMaxCach = 1720;
+															vnMaxCach = 4770;
+														
+															acptYymmChart.push("'25.10");
+															cnCachChart.push(3119);
+															jpCachChart.push(1728);
+															vnCachChart.push(4851);
+															cnMaxCach = 3119;
+															jpMaxCach = 1728;
+															vnMaxCach = 4851;
+														
+															acptYymmChart.push("'25.11");
+															cnCachChart.push(3488);
+															jpCachChart.push(1762);
+															vnCachChart.push(4797);
+															cnMaxCach = 3488;
+															jpMaxCach = 1762;
+															vnMaxCach = 4797;
+														
+															acptYymmChart.push("'25.12");
+															cnCachChart.push(4406);
+															jpCachChart.push(1775);
+															vnCachChart.push(4455);
+															cnMaxCach = 4406;
+															jpMaxCach = 1775;
+															vnMaxCach = 4455;
+														
+															acptYymmChart.push("'26.01");
+															cnCachChart.push(3371);
+															jpCachChart.push(1675);
+															vnCachChart.push(4301);
+															cnMaxCach = 3371;
+															jpMaxCach = 1675;
+															vnMaxCach = 4301;
+														
+															acptYymmChart.push("'26.02");
+															cnCachChart.push(3229);
+															jpCachChart.push(1665);
+															vnCachChart.push(4239);
+															cnMaxCach = 3229;
+															jpMaxCach = 1665;
+															vnMaxCach = 4239;
+														
+															acptYymmChart.push("'26.03");
+															cnCachChart.push(3441);
+															jpCachChart.push(1773);
+															vnCachChart.push(4774);
+															cnMaxCach = 3441;
+															jpMaxCach = 1773;
+															vnMaxCach = 4774;
+														
+															acptYymmChart.push("'26.04");
+															cnCachChart.push(3538);
+															jpCachChart.push(2192);
+															vnCachChart.push(5654);
+															cnMaxCach = 3538;
+															jpMaxCach = 2192;
+															vnMaxCach = 5654;
+														
+															acptYymmChart.push("'26.05");
+															cnCachChart.push(4693);
+															jpCachChart.push(2517);
+															vnCachChart.push(5911);
+															cnMaxCach = 4693;
+															jpMaxCach = 2517;
+															vnMaxCach = 5911;
+														
+															acptYymmChart.push("'26.06");
+															cnCachChart.push(3720);
+															jpCachChart.push(2392);
+															vnCachChart.push(5921);
+															cnMaxCach = 3720;
+															jpMaxCach = 2392;
+															vnMaxCach = 5921;
+														
+															acptYymmChart.push("'26.07");
+															cnCachChart.push(3685);
+															jpCachChart.push(2095);
+															vnCachChart.push(5677);
+															cnMaxCach = 3685;
+															jpMaxCach = 2095;
+															vnMaxCach = 5677;
+														
+														
+														cnMaxCachMi = cnCachChart[(cnCachChart.length) - 2];
+														var cnPrcDiff = (cnMaxCach-cnMaxCachMi);
+														
+														jpMaxCachMi = jpCachChart[(jpCachChart.length) - 2];
+														var jpPrcDiff = (jpMaxCach-jpMaxCachMi);
+														
+														vnMaxCachMi = vnCachChart[(vnCachChart.length) - 2];
+														var vnPrcDiff = (vnMaxCach-vnMaxCachMi);
+														
+														var poNum ='';
+														var pojNum ='';
+														var neNum ='';
+														
+														// 양수인지 음수인지 판정
+														if (Math.sign(cnPrcDiff) == 1) {
+															// 양수일경우
+															poNum= '&uArr;';
+														} else {
+															// 음수일경우
+															poNum= '&dArr;';
+														}
+														if (Math.sign(jpPrcDiff) == 1) {
+															// 양수일경우
+															pojNum= '&uArr;';
+														} else {
+															// 음수일경우
+															pojNum= '&dArr;';
+														}
+														if (Math.sign(vnPrcDiff) == 1) {
+															neNum = '&uArr;';
+														}else{
+															neNum= '&dArr;';														
+														}
+														
+														$('#objFlghShrt').empty();
+														
+														$('#objFlghShrt').html('중국 '+ cnMaxCach +'원('+cnPrcDiff+' 원  '+poNum+'), 일본 '+ jpMaxCach +'원('+jpPrcDiff+' 원 '+pojNum+'), 베트남 '+ vnMaxCach +'원('+vnPrcDiff+' 원 '+neNum+')');
+														
+														Highcharts.chart('container11', {
+															chart: {
+																type: 'line',
+																backgroundColor:''
+															},
+															title: {
+																text:''
+															},
+															xAxis: {
+																categories: acptYymmChart,
+																tickmarkPlacement : 'on',
+																labels:{
+																	style:{
+																		fontSize: 14
+																	}
+																}
+															},
+															plotOptions: {
+																series: {
+																	dataLabels: {
+																		enabled: true,
+																		align: 'center'
+																	},
+																	marker: {
+																		fillColor: '#ffffff',
+																		lineWidth: 3,
+																		lineColor: null,
+																		symbol: 'circle',
+																		radius: 6
+																	},
+																	dashStyle: 'ShortDot',
+																	dataLabels: {
+																		align: 'center',
+																		style: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		},
+																		enabled: true,
+																		y: -4
+																	}
+																}
+															},
+															yAxis:{
+																title: {
+																	text:''
+																},
+																labels:{
+																	style:{
+																		fontSize: 14
+																	},
+																	format: '{value:,1f}'
+																}
+															},
+															legend: {
+																	layout: 'horizontal',
+																	align: 'right',
+																	verticalAlign: 'top',
+																	x: 0,
+																	y: 0,
+																	itemStyle: {
+																		fontSize: 14,
+																		fontWeight: 500
+																	}
+															},
+															series: [{
+																name: '중국',
+																data: cnCachChart,
+																color:'#2a58cf',
+																dataLabels:{
+																	color:'#2a58cf'
+																}
+		
+															},{
+																name: '일본',
+																data: jpCachChart,
+																color:'#d7133a',
+																dataLabels:{
+																	color:'#d7133a'
+																}
+															},{
+																name: '베트남',
+																data: vnCachChart,
+																color:'#9312c1',
+																dataLabels:{
+																	color:'#9312c1'
+																}
+															}],
+															responsive: {
+															/*	rules: [{
+																	condition: {
+																		maxWidth: 300
+																	},
+																	chartOptions: {
+																		legend: {
+																			layout: 'horizontal',
+																			align: 'center',
+																			verticalAlign: 'bottom'
+																		}
+																	}
+																}] */
+															},
+															exporting: {
+																enabled: false
+															},
+															credits: {
+																enabled: false
+															},
+															tooltip: {
+																enabled: true,
+																formatter: function() {
+																	return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: 20' + this.point.category.substr(1) + '<br>'
+																		+ '국가: ' + this.series.name + '<br>'
+																		+ '운송비용: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																}
+															}
+														});
+													</script>
+												</figure>
+											</div>
+										</div>
+										<div class="swiper-pagination bigchart2"></div>
+									</div>
+								</div>
+							</li>
+							<li class="chartHeader" >
+								<div class="tabHead" id="chartHeader3">
+									<a href="javascript:void(0)">
+										<div class="tabHeadWrap">
+											<span class="subTitSea" id="subTitSea">
+												'22.6월 <b>해상 수출입 운송</b> 비용
+												<i class="CNTY_CN">중국 (수출)</i>
+											</span>
+											<div class="objBox objBoxSea" id="objBoxSea">
+												<div class="artObj ship"></div>
+												<span class="costDown crrncy">311<b>천원/2TEU</b></span>
+												<span class="costTxt">전월대비 <i>311천원/2TEU</i></span>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="tabBody">
+	
+									<!-- <div class="tabinMid ex_im3">
+										<p class="on">
+											<b>해상 운송비용</b> <i class="blue">수출</i> <span>[원거리 항로]</span> <i id="objSeaLongExp">미국 서부 14,309천원(32.3% &uArr;), 미국 동부 13,397천원(26.3% &uArr;), 유럽연합 12,632천원(38.5% &uArr;)</i><br>
+											<b>해상 운송비용</b> <i class="blue">수출</i> <span>[근거리 항로]</span> <i id="objSeaShrtExp">중국 1,404천원(27.4% &uArr;), 일본 1,170천원(0.5% &uArr;), 베트남 2,252천원(83.2% &uArr;)</i>
+										</p>
+										<p class="off">
+											<b>해상 운송비용</b> <i class="red">수입</i> <span>[원거리 항로]</span> <i id="objSeaLongImp">미국 서부 3,717천원(45.5% &uArr;), 미국 동부 2,494천원(20.7% &uArr;), 유럽연합 2,192천원(11.7% &uArr;)</i><br>
+											<b>해상 운송비용</b> <i class="red">수입</i> <span>[근거리 항로]</span> <i id="objSeaShrtImp">중국 2,784천원(27.0% &uArr;), 일본 1,649천원(31.7% &uArr;), 베트남 3,046천원(37.8% &uArr;)</i>
+										</p>
+									</div> -->
+									<!-- <span class="gijun">[ 비교기준 : 전월대비 ]</span> -->
+									<div class="ex_imTab3">
+										<ul>
+											<li class="on">수출</li>
+											<li class="">수입</li>
+										</ul>
+									</div>
+									<div class="moreInfo">
+										<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100122Q.do', {menuId: 'ETS_MNK_30401000'});">더보기</a>
+									</div>
+									<ul class="ex_imTabBox3">
+										<li class="responWrap on">
+											<div class="respon bigchart3 swiper">
+												<div class="chartBox swiper-wrapper">
+													<figure class="highcharts-figure swiper-slide">
+														<strong>
+															해상 수출 운송비용 평균 월별 추이
+														</strong>
+														<div class="course long">
+															<strong>원거리항로</strong>
+															<p>운송비용 평균 월별추이 <span>미국 / 유럽연합</span></p>
+														</div>
+														<span class="floating">(단위 : 천원/2TEU)</span>
+														<div id="container12" class="chartThing"></div>
+														<script type="text/javascript">
+														// 서브 타이틀
+														var subTitSea = '26.07';
+														var curCach = 0;
+														var befCach = 0;
+														var poNum = '';
+														
+															$('.subTitSea').html("'"+subTitSea+'월 <b>해상 수출입 운송</b>비용<i class="CNTY_US">미국서부 (수입)</i>');
+															curCach = 2533;
+															befCach = 2546;
+														
+														
+														var objBoxSeaHtml = '<div class="artObj plane"></div>';
+														// 양수인지 음수인지 판정
+														if (befCach <= curCach) {
+															// 양수일경우
+															objBoxSeaHtml += '<span class="costUp crrncy">'+curCach.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'<br><b>원/kg</b></span>';
+															objBoxSeaHtml += '<span class="costTxt">전월대비 <i>'+(curCach-befCach).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</i>원/kg</span>';
+															poNum = '&uArr;';
+														} else {
+															// 음수일경우
+															objBoxSeaHtml += '<span class="costDown crrncy">'+curCach.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'<br><b>원/kg</b></span>';
+															objBoxSeaHtml += '<span class="costTxt">전월대비 <i>'+(befCach-curCach).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</i>원/kg</span>';
+															poNum = '&dArr;';
+														}
+														$('.objBoxSea').empty();
+														$('.objBoxSea').html(objBoxSeaHtml);
+	
+														//X축 월별
+														var acptYymmChart = [];
+														//운송비용(미국동부)
+														var useCachChart = [];
+														//운송비용(미국서부)
+														var uswCachChart = [];
+														//운송비용(유럽연합)
+														var euCachChart = [];
+														//최근 미국동부 비용
+														var useMaxCach = 0;
+														var useMaxCachMi = 0;
+														//최근 미국서부 비용
+														var uswMaxCach = 0;
+														var uswMaxCachMi = 0;
+														//최근 유럽 비용
+														var euMaxCach = 0;
+														var euMaxCachMi = 0;
+														
+														//전월대비 증감액
+														
+														
+															acptYymmChart.push("'25.08");
+															useCachChart.push(5672);
+															uswCachChart.push(5388);
+															euCachChart.push(3680);
+															useMaxCach = 5672;
+															uswMaxCach = 5388;
+															euMaxCach = 3680;
+														
+															acptYymmChart.push("'25.09");
+															useCachChart.push(5416);
+															uswCachChart.push(5033);
+															euCachChart.push(3426);
+															useMaxCach = 5416;
+															uswMaxCach = 5033;
+															euMaxCach = 3426;
+														
+															acptYymmChart.push("'25.10");
+															useCachChart.push(5113);
+															uswCachChart.push(5145);
+															euCachChart.push(3084);
+															useMaxCach = 5113;
+															uswMaxCach = 5145;
+															euMaxCach = 3084;
+														
+															acptYymmChart.push("'25.11");
+															useCachChart.push(5247);
+															uswCachChart.push(5187);
+															euCachChart.push(3218);
+															useMaxCach = 5247;
+															uswMaxCach = 5187;
+															euMaxCach = 3218;
+														
+															acptYymmChart.push("'25.12");
+															useCachChart.push(5340);
+															uswCachChart.push(5077);
+															euCachChart.push(3557);
+															useMaxCach = 5340;
+															uswMaxCach = 5077;
+															euMaxCach = 3557;
+														
+															acptYymmChart.push("'26.01");
+															useCachChart.push(5396);
+															uswCachChart.push(4924);
+															euCachChart.push(3383);
+															useMaxCach = 5396;
+															uswMaxCach = 4924;
+															euMaxCach = 3383;
+														
+															acptYymmChart.push("'26.02");
+															useCachChart.push(5303);
+															uswCachChart.push(4699);
+															euCachChart.push(3155);
+															useMaxCach = 5303;
+															uswMaxCach = 4699;
+															euMaxCach = 3155;
+														
+															acptYymmChart.push("'26.03");
+															useCachChart.push(5256);
+															uswCachChart.push(5717);
+															euCachChart.push(3336);
+															useMaxCach = 5256;
+															uswMaxCach = 5717;
+															euMaxCach = 3336;
+														
+															acptYymmChart.push("'26.04");
+															useCachChart.push(5106);
+															uswCachChart.push(5046);
+															euCachChart.push(3618);
+															useMaxCach = 5106;
+															uswMaxCach = 5046;
+															euMaxCach = 3618;
+														
+															acptYymmChart.push("'26.05");
+															useCachChart.push(5604);
+															uswCachChart.push(5417);
+															euCachChart.push(3590);
+															useMaxCach = 5604;
+															uswMaxCach = 5417;
+															euMaxCach = 3590;
+														
+															acptYymmChart.push("'26.06");
+															useCachChart.push(7116);
+															uswCachChart.push(7705);
+															euCachChart.push(4164);
+															useMaxCach = 7116;
+															uswMaxCach = 7705;
+															euMaxCach = 4164;
+														
+															acptYymmChart.push("'26.07");
+															useCachChart.push(8143);
+															uswCachChart.push(8559);
+															euCachChart.push(5680);
+															useMaxCach = 8143;
+															uswMaxCach = 8559;
+															euMaxCach = 5680;
+														
+														
+														useMaxCachMi = useCachChart[(useCachChart.length) - 2];
+														var usePrcDiff = (useMaxCach-useMaxCachMi);
+														
+														uswMaxCachMi = uswCachChart[(uswCachChart.length) - 2];
+														var uswPrcDiff = (uswMaxCach-uswMaxCachMi);
+														
+														euMaxCachMi = euCachChart[(euCachChart.length) - 2];
+														var euPrcDiff = (euMaxCach-euMaxCachMi);
+														
+														// 서브타이틀 최신화
+														$('.subTitSea').html("'"+subTitSea+'월 <b>해상 수출입 운송</b>비용<i class="CNTY_CN">중국 (수출)</i>');
+														
+														var poeNum ='';
+														var powNum ='';
+														var neNum ='';
+														
+														$('#objSeaLongExp').empty();
+														
+														// 양수인지 음수인지 판정
+														if (Math.sign(usePrcDiff) == 1) {
+															// 양수일경우
+															poeNum= '&uArr;';
+														} else {
+															// 음수일경우
+															poeNum= '&dArr;';
+														}
+														
+														if (Math.sign(uswPrcDiff) == 1) {
+															// 양수일경우
+															powNum= '&uArr;';
+														} else {
+															// 음수일경우
+															powNum= '&dArr;';
+														}
+														
+														if (Math.sign(euPrcDiff) == 1) {
+															neNum = '&uArr;';
+														}else{
+															neNum= '&dArr;';														
+														}
+														
+														$('#objSeaLongExp').html('미국 서부 '+ uswMaxCach +'원('+uswPrcDiff+' 원  '+powNum+'), 미국 동부 '+ useMaxCach +'원('+usePrcDiff+' 원  '+poeNum+') 유럽연합 '+ euMaxCach +'원('+euPrcDiff+' 원 '+neNum+')');
+														
+														Highcharts.chart('container12', {
+															chart: {
+																type: 'line',
+																backgroundColor:''
+															},
+															title: {
+																text:''
+															},
+															xAxis: {
+																categories: acptYymmChart,
+																tickmarkPlacement : 'on',
+																labels:{
+																	style:{
+																		fontSize: 14
+																	}
+																}
+															},
+															plotOptions: {
+																series: {
+																	dataLabels: {
+																		enabled: true,
+																		align: 'center'
+																	},
+																	marker: {
+																		fillColor: '#ffffff',
+																		lineWidth: 3,
+																		lineColor: null,
+																		symbol: 'circle',
+																		radius: 6
+																	},
+																	dashStyle: 'ShortDot',
+																	dataLabels: {
+																		align: 'center',
+																		style: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		},
+																		enabled: true,
+																		y: -4
+																	}
+																}
+															},
+															yAxis:{
+																title: {
+																	text:''
+																},
+																labels:{
+																	style:{
+																		fontSize: 14
+																	},
+																	format: '{value:,1f}'
+																}
+															},
+															legend: {
+																	layout: 'horizontal',
+																	align: 'right',
+																	verticalAlign: 'top',
+																	x: 0,
+																	y: 0,
+																	itemStyle: {
+																		fontSize: 14,
+																		fontWeight: 500
+																	}
+															},
+															series: [{
+																name: '미국서부',
+																data: uswCachChart,
+																color:'#1d4dcc',
+																dataLabels: {
+																	color:'#1d4dcc'
+																}
+															},{
+																name: '미국동부',
+																data: useCachChart,
+																color:'#f5680a',
+																dataLabels: {
+																	color:'#f5680a'
+																}
+															},{
+																name: '유럽연합',
+																data: euCachChart,
+																color:'#059567',
+																dataLabels: {
+																	color:'#059567'
+																}
+															}],
+															responsive: {
+																/*	rules: [{
+																condition: {
+																	maxWidth: 300
+																},
+																chartOptions: {
+																	legend: {
+																		layout: 'horizontal',
+																		align: 'center',
+																		verticalAlign: 'bottom'
+																	}
+																}
+															}] */
+															},
+															exporting: {
+																enabled: false
+															},
+															credits: {
+																enabled: false
+															},
+															tooltip: {
+																enabled: true,
+																formatter: function() {
+																	return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: 20' + this.point.category.substr(1) + '<br>'
+																		+ '국가: ' + this.series.name + '<br>'
+																		+ '운송비용: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																}
+															}
+														});
+														</script>
+													</figure>
+													<figure class="highcharts-figure swiper-slide">
+														<strong>
+															해상 수출 운송비용 평균 월별 추이
+														</strong>
+														<div class="course shrt">
+															<strong>근거리항로</strong>
+															<p>운송비용 평균 월별추이 <span>중국 / 일본 / 베트남</span></p>
+														</div>
+														<span class="floating">(단위 : 천원/2TEU)</span>
+														<div id="container13" class="chartThing"></div>
+														<script type="text/javascript">
+			
+															//X축 월별
+															var acptYymmChart = [];
+															//운송비용(중국)
+															var cnCachChart = [];
+															//운송비용(일본)
+															var jpCachChart = [];
+															//운송비용(베트남)
+															var vnCachChart = [];
+															//최근 중국 비용
+															var cnMaxCach = 0;
+															var cnMaxCachMi = 0;
+															//최근 일본 비용
+															var jpMaxCach = 0;
+															var jpMaxCachMi = 0;
+															//최근 베트남 비용
+															var vnMaxCach = 0;
+															var vnMaxCachMi = 0;
+															
+															
+																acptYymmChart.push("'25.08");
+																cnCachChart.push(574);
+																jpCachChart.push(719);
+																vnCachChart.push(1557);
+																cnMaxCach = 574;
+																jpMaxCach = 719;
+																vnMaxCach = 1557;
+															
+																acptYymmChart.push("'25.09");
+																cnCachChart.push(703);
+																jpCachChart.push(718);
+																vnCachChart.push(1340);
+																cnMaxCach = 703;
+																jpMaxCach = 718;
+																vnMaxCach = 1340;
+															
+																acptYymmChart.push("'25.10");
+																cnCachChart.push(510);
+																jpCachChart.push(549);
+																vnCachChart.push(1478);
+																cnMaxCach = 510;
+																jpMaxCach = 549;
+																vnMaxCach = 1478;
+															
+																acptYymmChart.push("'25.11");
+																cnCachChart.push(495);
+																jpCachChart.push(564);
+																vnCachChart.push(1551);
+																cnMaxCach = 495;
+																jpMaxCach = 564;
+																vnMaxCach = 1551;
+															
+																acptYymmChart.push("'25.12");
+																cnCachChart.push(524);
+																jpCachChart.push(635);
+																vnCachChart.push(1450);
+																cnMaxCach = 524;
+																jpMaxCach = 635;
+																vnMaxCach = 1450;
+															
+																acptYymmChart.push("'26.01");
+																cnCachChart.push(603);
+																jpCachChart.push(767);
+																vnCachChart.push(1469);
+																cnMaxCach = 603;
+																jpMaxCach = 767;
+																vnMaxCach = 1469;
+															
+																acptYymmChart.push("'26.02");
+																cnCachChart.push(550);
+																jpCachChart.push(844);
+																vnCachChart.push(1315);
+																cnMaxCach = 550;
+																jpMaxCach = 844;
+																vnMaxCach = 1315;
+															
+																acptYymmChart.push("'26.03");
+																cnCachChart.push(497);
+																jpCachChart.push(789);
+																vnCachChart.push(1397);
+																cnMaxCach = 497;
+																jpMaxCach = 789;
+																vnMaxCach = 1397;
+															
+																acptYymmChart.push("'26.04");
+																cnCachChart.push(667);
+																jpCachChart.push(754);
+																vnCachChart.push(1775);
+																cnMaxCach = 667;
+																jpMaxCach = 754;
+																vnMaxCach = 1775;
+															
+																acptYymmChart.push("'26.05");
+																cnCachChart.push(593);
+																jpCachChart.push(737);
+																vnCachChart.push(1701);
+																cnMaxCach = 593;
+																jpMaxCach = 737;
+																vnMaxCach = 1701;
+															
+																acptYymmChart.push("'26.06");
+																cnCachChart.push(679);
+																jpCachChart.push(689);
+																vnCachChart.push(1645);
+																cnMaxCach = 679;
+																jpMaxCach = 689;
+																vnMaxCach = 1645;
+															
+																acptYymmChart.push("'26.07");
+																cnCachChart.push(859);
+																jpCachChart.push(694);
+																vnCachChart.push(1762);
+																cnMaxCach = 859;
+																jpMaxCach = 694;
+																vnMaxCach = 1762;
+															
+															
+															cnMaxCachMi = cnCachChart[(cnCachChart.length) - 2];
+															var cnPrcDiff = (cnMaxCach-cnMaxCachMi);
+															
+															jpMaxCachMi = jpCachChart[(jpCachChart.length) - 2];
+															var jpPrcDiff = (jpMaxCach-jpMaxCachMi);
+															
+															vnMaxCachMi = vnCachChart[(vnCachChart.length) - 2];
+															var vnPrcDiff = (vnMaxCach-vnMaxCachMi);
+															
+															var poNum ='';
+															var pojNum ='';
+															var neNum ='';
+															
+															var objBoxSeaHtml = '<div class="artObj ship"></div>';
+															
+															// 양수인지 음수인지 판정
+															if (Math.sign(cnPrcDiff) == 1) {
+																// 양수일경우
+																objBoxSeaHtml += '<span class="costUp crrncy">' +cnMaxCach.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '<br><b>천원/2TEU</b></span>';
+																objBoxSeaHtml += '<span class="costTxt">전월대비 <i>'+cnPrcDiff+'</i>천원/2TEU</span>';
+																poNum= '&uArr;';
+															} else {
+																// 음수일경우
+																objBoxSeaHtml += '<span class="costDown crrncy">' +cnMaxCach.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '<br><b>천원/2TEU</b></span>';
+																objBoxSeaHtml += '<span class="costTxt">전월대비 <i>'+(-cnPrcDiff)+'</i>천원/2TEU</span>';
+																poNum= '&dArr;';
+															}
+															if (Math.sign(jpPrcDiff) == 1) {
+																// 양수일경우
+																pojNum= '&uArr;';
+															} else {
+																// 음수일경우
+																pojNum= '&dArr;';
+															}
+															if (Math.sign(vnPrcDiff) == 1) {
+																neNum = '&uArr;';
+															}else{
+																neNum= '&dArr;';														
+															}
+															
+															$('.objBoxSea').empty();
+															$('.objBoxSea').html(objBoxSeaHtml);
+													
+															$('.objSeaShrtExp').empty();
+															$('.objSeaShrtExp').html('중국 '+ cnMaxCach +'원('+cnPrcDiff+' 원  '+poNum+'), 일본 '+ jpMaxCach +'원('+jpPrcDiff+' 원 '+pojNum+'), 베트남 '+ vnMaxCach +'원('+vnPrcDiff+' 원 '+neNum+')');
+															
+														
+															Highcharts.chart('container13', {
+																chart: {
+																	type: 'line',
+																	backgroundColor:''
+																},
+																title: {
+																	text:''
+																},
+																xAxis: {
+																	categories: acptYymmChart,
+																	tickmarkPlacement : 'on',
+																	labels:{
+																		style:{
+																			fontSize: 14
+																		}
+																	}
+																},
+																plotOptions: {
+																	series: {
+																		marker: {
+																			fillColor: '#ffffff',
+																			lineWidth: 3,
+																			lineColor: null,
+																			symbol: 'circle',
+																			radius: 6
+																		},
+																		dashStyle: 'ShortDot',
+																		dataLabels: {
+																			align: 'center',
+																			style: {
+																				fontSize: 14,
+																				fontWeight: 500
+																			},
+																			enabled: true,
+																			y: -4
+																		}
+																	}
+																},
+																yAxis:{
+																	title: {
+																		text:''
+																	},
+																	labels:{
+																		style:{
+																			fontSize: 14
+																		},
+																	format: '{value:,1f}'
+																	}
+																},
+																legend: {
+																		layout: 'horizontal',
+																		align: 'right',
+																		verticalAlign: 'top',
+																		x: 0,
+																		y: 0,
+																		itemStyle: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		}
+																},
+																series: [{
+																	name: '중국',
+																	data: cnCachChart,
+																	color:'#2a58cf',
+																	dataLabels:{
+																		color:'#2a58cf'
+																	}
+			
+																},{
+																	name: '일본',
+																	data: jpCachChart,
+																	color:'#d7133a',
+																	dataLabels:{
+																		color:'#d7133a'
+																	}
+																},{
+																	name: '베트남',
+																	data: vnCachChart,
+																	color:'#9312c1',
+																	dataLabels:{
+																		color:'#9312c1'
+																	}
+																}],
+																responsive: {
+																	/*	rules: [{
+																	condition: {
+																		maxWidth: 300
+																	},
+																	chartOptions: {
+																		legend: {
+																			layout: 'horizontal',
+																			align: 'center',
+																			verticalAlign: 'bottom'
+																		}
+																	}
+																}] */
+																},
+																exporting: {
+																	enabled: false
+																},
+																credits: {
+																	enabled: false
+																},
+																tooltip: {
+																	enabled: true,
+																	formatter: function() {
+																		return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: 20' + this.point.category.substr(1) + '<br>'
+																			+ '국가: ' + this.series.name + '<br>'
+																			+ '운송비용: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																	}
+																}
+															});
+														</script>
+													</figure>
+												</div>
+											</div>
+											<div class="swiper-pagination bigchart3"></div>
+										</li>
+										<li class="responWrap">
+											<div class="respon bigchart3_b swiper">
+												<div class="chartBox swiper-wrapper">
+													
+													<figure class="highcharts-figure swiper-slide">
+														<strong>
+															해상 수입 운송비용 평균 월별 추이
+														</strong>
+														<div class="course long">
+															<strong>원거리항로</strong>
+															<p>운송비용 평균 월별추이 <span>미국 / 유럽연합</span></p>
+														</div>
+														<span class="floating">(단위 : 천원/2TEU)</span>
+														<div id="container12_b" class="chartThing"></div>
+														<script type="text/javascript">
+				
+															//X축 월별
+															var acptYymmChart = [];
+															//운송비용(미국동부)
+															var useCachChart = [];
+															//운송비용(미국서부)
+															var uswCachChart = [];
+															//운송비용(유럽연합)
+															var euCachChart = [];
+															//최근 미국동부 비용
+															var useMaxCach = 0;
+															var useMaxCachMi = 0;
+															//최근 미국서부 비용
+															var uswMaxCach = 0;
+															var uswMaxCachMi = 0;
+															//최근 유럽 비용
+															var euMaxCach = 0;
+															var euMaxCachMi = 0;
+															
+															//전월대비 증감액
+															
+															
+																acptYymmChart.push("'25.08");
+																useCachChart.push(2438);
+																uswCachChart.push(2593);
+																euCachChart.push(1020);
+																useMaxCach = 2438;
+																uswMaxCach = 2593;
+																euMaxCach = 1020;
+															
+																acptYymmChart.push("'25.09");
+																useCachChart.push(1974);
+																uswCachChart.push(2760);
+																euCachChart.push(1012);
+																useMaxCach = 1974;
+																uswMaxCach = 2760;
+																euMaxCach = 1012;
+															
+																acptYymmChart.push("'25.10");
+																useCachChart.push(3166);
+																uswCachChart.push(4723);
+																euCachChart.push(954);
+																useMaxCach = 3166;
+																uswMaxCach = 4723;
+																euMaxCach = 954;
+															
+																acptYymmChart.push("'25.11");
+																useCachChart.push(1909);
+																uswCachChart.push(3071);
+																euCachChart.push(1097);
+																useMaxCach = 1909;
+																uswMaxCach = 3071;
+																euMaxCach = 1097;
+															
+																acptYymmChart.push("'25.12");
+																useCachChart.push(2107);
+																uswCachChart.push(3136);
+																euCachChart.push(1222);
+																useMaxCach = 2107;
+																uswMaxCach = 3136;
+																euMaxCach = 1222;
+															
+																acptYymmChart.push("'26.01");
+																useCachChart.push(2364);
+																uswCachChart.push(3098);
+																euCachChart.push(1271);
+																useMaxCach = 2364;
+																uswMaxCach = 3098;
+																euMaxCach = 1271;
+															
+																acptYymmChart.push("'26.02");
+																useCachChart.push(2246);
+																uswCachChart.push(2368);
+																euCachChart.push(1466);
+																useMaxCach = 2246;
+																uswMaxCach = 2368;
+																euMaxCach = 1466;
+															
+																acptYymmChart.push("'26.03");
+																useCachChart.push(1892);
+																uswCachChart.push(3108);
+																euCachChart.push(1293);
+																useMaxCach = 1892;
+																uswMaxCach = 3108;
+																euMaxCach = 1293;
+															
+																acptYymmChart.push("'26.04");
+																useCachChart.push(2386);
+																uswCachChart.push(3022);
+																euCachChart.push(1348);
+																useMaxCach = 2386;
+																uswMaxCach = 3022;
+																euMaxCach = 1348;
+															
+																acptYymmChart.push("'26.05");
+																useCachChart.push(1765);
+																uswCachChart.push(2965);
+																euCachChart.push(1113);
+																useMaxCach = 1765;
+																uswMaxCach = 2965;
+																euMaxCach = 1113;
+															
+																acptYymmChart.push("'26.06");
+																useCachChart.push(2097);
+																uswCachChart.push(2546);
+																euCachChart.push(1215);
+																useMaxCach = 2097;
+																uswMaxCach = 2546;
+																euMaxCach = 1215;
+															
+																acptYymmChart.push("'26.07");
+																useCachChart.push(1731);
+																uswCachChart.push(2533);
+																euCachChart.push(1295);
+																useMaxCach = 1731;
+																uswMaxCach = 2533;
+																euMaxCach = 1295;
+															
+															
+															useMaxCachMi = useCachChart[(useCachChart.length) - 2];
+															var usePrcDiff = (useMaxCach-useMaxCachMi);
+															
+															uswMaxCachMi = uswCachChart[(uswCachChart.length) - 2];
+															var uswPrcDiff = (uswMaxCach-uswMaxCachMi);
+															
+															euMaxCachMi = euCachChart[(euCachChart.length) - 2];
+															var euPrcDiff = (euMaxCach-euMaxCachMi);
+														
+															var poeNum ='';
+															var powNum ='';
+															var neNum ='';
+															
+															$('#objSeaLongImp').empty();
+															
+															// 양수인지 음수인지 판정
+															if (Math.sign(usePrcDiff) == 1) {
+																// 양수일경우
+																poeNum= '&uArr;';
+															} else {
+																// 음수일경우
+																poeNum= '&dArr;';
+															}
+															
+															if (Math.sign(uswPrcDiff) == 1) {
+																// 양수일경우
+																powNum= '&uArr;';
+															} else {
+																// 음수일경우
+																powNum= '&dArr;';
+															}
+															
+															if (Math.sign(euPrcDiff) == 1) {
+																neNum = '&uArr;';
+															}else{
+																neNum= '&dArr;';														
+															}
+															
+															$('#objSeaLongImp').html('미국 서부 '+ uswMaxCach +'원('+uswPrcDiff+' 원  '+powNum+'), 미국 동부 '+ useMaxCach +'원('+usePrcDiff+' 원  '+poeNum+') 유럽연합 '+ euMaxCach +'원('+euPrcDiff+' 원 '+neNum+')');
+															
+														
+															Highcharts.chart('container12_b', {
+																chart: {
+																	type: 'line',
+																	backgroundColor:''
+																},
+																title: {
+																	text:''
+																},
+																xAxis: {
+																	categories: acptYymmChart,
+																	tickmarkPlacement : 'on',
+																	labels:{
+																		style:{
+																			fontSize: 14
+																		}
+																	}
+																},
+																plotOptions: {
+																	series: {
+																		marker: {
+																			fillColor: '#ffffff',
+																			lineWidth: 3,
+																			lineColor: null,
+																			symbol: 'circle',
+																			radius: 6
+																		},
+																		dashStyle: 'ShortDot',
+																		dataLabels: {
+																			align: 'center',
+																			style: {
+																				fontSize: 14,
+																				fontWeight: 500
+																			},
+																			enabled: true,
+																			y: -4
+																		}
+																	}
+																},
+																yAxis:{
+																	title: {
+																		text:''
+																	},
+																	labels:{
+																		style:{
+																			fontSize: 14
+																		}
+																	}
+																},
+																legend: {
+																		layout: 'horizontal',
+																		align: 'right',
+																		verticalAlign: 'top',
+																		x: 0,
+																		y: 0,
+																		itemStyle: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		}
+																},
+																series: [{
+																	name: '미국서부',
+																	data: uswCachChart,
+																	color:'#1d4dcc',
+																	dataLabels: {
+																		color:'#1d4dcc'
+																	}
+																},{
+																	name: '유럽연합',
+																	data: euCachChart,
+																	color:'#059567',
+																	dataLabels: {
+																		color:'#059567'
+																	}
+			
+																},{
+																	name: '미국동부',
+																	data: useCachChart,
+																	color:'#f5680a',
+																	dataLabels: {
+																		color:'#f5680a'
+																	}
+																}],
+																responsive: {
+																/*	rules: [{
+																	condition: {
+																		maxWidth: 300
+																	},
+																	chartOptions: {
+																		legend: {
+																			layout: 'horizontal',
+																			align: 'center',
+																			verticalAlign: 'bottom'
+																		}
+																	}
+																}] */
+																},
+																exporting: {
+																	enabled: false
+																},
+																credits: {
+																	enabled: false
+																},
+																tooltip: {
+																	enabled: true,
+																	formatter: function() {
+																		return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: 20' + this.point.category.substr(1) + '<br>'
+																			+ '국가: ' + this.series.name + '<br>'
+																			+ '운송비용: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																	}
+																}
+															});
+														</script>
+													</figure>
+													<figure class="highcharts-figure swiper-slide">
+														<strong>
+															해상 수입 운송비용 평균 월별 추이
+														</strong>
+														<div class="course shrt">
+															<strong>근거리항로</strong>
+															<p>운송비용 평균 월별추이 <span>중국 / 일본 / 베트남</span></p>
+														</div>
+														<span class="floating">(단위 : 천원/2TEU)</span>
+														<div id="container13_b" class="chartThing"></div>
+														<script type="text/javascript">
+				
+															//X축 월별
+															var acptYymmChart = [];
+															//운송비용(중국)
+															var cnCachChart = [];
+															//운송비용(일본)
+															var jpCachChart = [];
+															//운송비용(베트남)
+															var vnCachChart = [];
+															//최근 중국 비용
+															var cnMaxCach = 0;
+															var cnMaxCachMi = 0;
+															//최근 일본 비용
+															var jpMaxCach = 0;
+															var jpMaxCachMi = 0;
+															//최근 베트남 비용
+															var vnMaxCach = 0;
+															var vnMaxCachMi = 0;
+															
+															
+																acptYymmChart.push("'25.08");
+																cnCachChart.push(1222);
+																jpCachChart.push(1019);
+																vnCachChart.push(1200);
+																cnMaxCach = 1222;
+																jpMaxCach = 1019;
+																vnMaxCach = 1200;
+															
+																acptYymmChart.push("'25.09");
+																cnCachChart.push(1154);
+																jpCachChart.push(885);
+																vnCachChart.push(1184);
+																cnMaxCach = 1154;
+																jpMaxCach = 885;
+																vnMaxCach = 1184;
+															
+																acptYymmChart.push("'25.10");
+																cnCachChart.push(1196);
+																jpCachChart.push(900);
+																vnCachChart.push(1172);
+																cnMaxCach = 1196;
+																jpMaxCach = 900;
+																vnMaxCach = 1172;
+															
+																acptYymmChart.push("'25.11");
+																cnCachChart.push(1162);
+																jpCachChart.push(995);
+																vnCachChart.push(1067);
+																cnMaxCach = 1162;
+																jpMaxCach = 995;
+																vnMaxCach = 1067;
+															
+																acptYymmChart.push("'25.12");
+																cnCachChart.push(1222);
+																jpCachChart.push(954);
+																vnCachChart.push(1010);
+																cnMaxCach = 1222;
+																jpMaxCach = 954;
+																vnMaxCach = 1010;
+															
+																acptYymmChart.push("'26.01");
+																cnCachChart.push(1227);
+																jpCachChart.push(854);
+																vnCachChart.push(1030);
+																cnMaxCach = 1227;
+																jpMaxCach = 854;
+																vnMaxCach = 1030;
+															
+																acptYymmChart.push("'26.02");
+																cnCachChart.push(1180);
+																jpCachChart.push(799);
+																vnCachChart.push(980);
+																cnMaxCach = 1180;
+																jpMaxCach = 799;
+																vnMaxCach = 980;
+															
+																acptYymmChart.push("'26.03");
+																cnCachChart.push(1226);
+																jpCachChart.push(982);
+																vnCachChart.push(1003);
+																cnMaxCach = 1226;
+																jpMaxCach = 982;
+																vnMaxCach = 1003;
+															
+																acptYymmChart.push("'26.04");
+																cnCachChart.push(1408);
+																jpCachChart.push(1204);
+																vnCachChart.push(1148);
+																cnMaxCach = 1408;
+																jpMaxCach = 1204;
+																vnMaxCach = 1148;
+															
+																acptYymmChart.push("'26.05");
+																cnCachChart.push(1508);
+																jpCachChart.push(1196);
+																vnCachChart.push(1193);
+																cnMaxCach = 1508;
+																jpMaxCach = 1196;
+																vnMaxCach = 1193;
+															
+																acptYymmChart.push("'26.06");
+																cnCachChart.push(1573);
+																jpCachChart.push(1357);
+																vnCachChart.push(1219);
+																cnMaxCach = 1573;
+																jpMaxCach = 1357;
+																vnMaxCach = 1219;
+															
+																acptYymmChart.push("'26.07");
+																cnCachChart.push(1583);
+																jpCachChart.push(1139);
+																vnCachChart.push(1325);
+																cnMaxCach = 1583;
+																jpMaxCach = 1139;
+																vnMaxCach = 1325;
+															
+															
+															cnMaxCachMi = cnCachChart[(cnCachChart.length) - 2];
+															var cnPrcDiff = (cnMaxCach-cnMaxCachMi);
+															
+															jpMaxCachMi = jpCachChart[(jpCachChart.length) - 2];
+															var jpPrcDiff = (jpMaxCach-jpMaxCachMi);
+															
+															vnMaxCachMi = vnCachChart[(vnCachChart.length) - 2];
+															var vnPrcDiff = (vnMaxCach-vnMaxCachMi);
+															
+															var poNum ='';
+															var pojNum ='';
+															var neNum ='';
+															
+															// 양수인지 음수인지 판정
+															if (Math.sign(cnPrcDiff) == 1) {
+																// 양수일경우
+																poNum= '&uArr;';
+															} else {
+																// 음수일경우
+																poNum= '&dArr;';
+															}
+															if (Math.sign(jpPrcDiff) == 1) {
+																// 양수일경우
+																pojNum= '&uArr;';
+															} else {
+																// 음수일경우
+																pojNum= '&dArr;';
+															}
+															if (Math.sign(vnPrcDiff) == 1) {
+																neNum = '&uArr;';
+															}else{
+																neNum= '&dArr;';														
+															}
+															
+															$('#objSeaShrtImp').empty();
+															
+															$('#objSeaShrtImp').html('중국 '+ cnMaxCach +'원('+cnPrcDiff+' 원  '+poNum+'), 일본 '+ jpMaxCach +'원('+jpPrcDiff+' 원 '+pojNum+'), 베트남 '+ vnMaxCach +'원('+vnPrcDiff+' 원 '+neNum+')');
+																
+														
+															Highcharts.chart('container13_b', {
+																chart: {
+																	type: 'line',
+																	backgroundColor:''
+																},
+																title: {
+																	text:''
+																},
+																xAxis: {
+																	categories: acptYymmChart,
+																	tickmarkPlacement : 'on',
+																	labels:{
+																		style:{
+																			fontSize: 14
+																		}
+																	}
+																},
+																plotOptions: {
+																	series: {
+																		marker: {
+																			fillColor: '#ffffff',
+																			lineWidth: 3,
+																			lineColor: null,
+																			symbol: 'circle',
+																			radius: 6
+																		},
+																		dashStyle: 'ShortDot',
+																		dataLabels: {
+																			align: 'center',
+																			style: {
+																				fontSize: 14,
+																				fontWeight: 500
+																			},
+																			enabled: true,
+																			y: -4
+																		}
+																	}
+																},
+																yAxis:{
+																	title: {
+																		text:''
+																	},
+																	labels:{
+																		style:{
+																			fontSize: 14
+																		}
+																	}
+																},
+																legend: {
+																		layout: 'horizontal',
+																		align: 'right',
+																		verticalAlign: 'top',
+																		x: 0,
+																		y: 0,
+																		itemStyle: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		}
+																},
+																series: [{
+																	name: '중국',
+																	data: cnCachChart,
+																	color:'#2a58cf',
+																	dataLabels:{
+																		color:'#2a58cf'
+																	}
+			
+																},{
+																	name: '일본',
+																	data: jpCachChart,
+																	color:'#d7133a',
+																	dataLabels:{
+																		color:'#d7133a'
+																	}
+																},{
+																	name: '베트남',
+																	data: vnCachChart,
+																	color:'#9312c1',
+																	dataLabels:{
+																		color:'#9312c1'
+																	}
+																}],
+																responsive: {
+																/*	rules: [{
+																	condition: {
+																		maxWidth: 300
+																	},
+																	chartOptions: {
+																		legend: {
+																			layout: 'horizontal',
+																			align: 'center',
+																			verticalAlign: 'bottom'
+																		}
+																	}
+																}] */
+																},
+																exporting: {
+																	enabled: false
+																},
+																credits: {
+																	enabled: false
+																},
+																tooltip: {
+																	enabled: true,
+																	formatter: function() {
+																		return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: 20' + this.point.category.substr(1) + '<br>'
+																			+ '국가: ' + this.series.name + '<br>'
+																			+ '운송비용: <b>' + Highcharts.numberFormat(this.point.y, 0) + '</b>';
+																	}
+																}
+															});
+														</script>
+													</figure>
+												</div>
+											</div>
+											<div class="swiper-pagination bigchart3_b"></div>
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li class="chartHeader">
+								<div class="tabHead" id="chartHeader4">
+									<a href="javascript:void(0)">
+										<div class="tabHeadWrap">
+											<span class="subTitOil" id="subTitOil">
+												<!-- 22.6월 <b>원유 평균</b>수입가격 -->
+												<i class="">(단위 : $/배럴)</i>
+											</span>
+	<!-- 										<span class="floating">(단위 : $/배럴)</span> -->
+											<div class="objBox objBoxOil" id="objBox`Oil">
+												<div class="artObj oil"></div>
+												<span class="costUp">128.6</span>
+												<span class="costTxt">전월대비 1.6% 상승</span>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="tabBody">
+									<!-- <div class="tabinMid">
+										<p class="tobinMidOil" id="tobinMidOil">
+											<span>[원유 평균수입가격]</span> 전월 100.8($/배럴) &rarr; 당월 102.8($/배럴) 2.7% &uArr;
+										</p>
+									</div> -->
+									<!-- <span class="gijun">[ 비교기준 : 전월대비 ]</span> -->
+									<div class="ex_imTabX">
+										<ul>
+											<li style="display:none;">수출</li>
+											<li class="on">수입</li>
+										</ul>
+									</div>
+									<div class="moreInfo">
+										<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100103Q.do', {menuId: 'ETS_MNK_40302000'});">더보기</a>
+									</div>
+									<div class="responWrap">
+										<div class="respon bigchart4">
+											<div class="chartBox">
+												<figure class="highcharts-figure">
+													<strong>
+														원유 평균수입가격(전년동월 비교)
+													</strong>
+													<div id="container14" class="chartThing"></div>
+													
+													<script type="text/javascript">
+														// 오일 서브 타이틀
+														var subTitOil = '';
+														// x축 기준
+														var baseYymmChart = [];
+														// 전년동월가격
+														var befPrcChart = [];
+														// 원유평균가격
+														var curPrcChart = [];
+														
+														// 전월대비 증감률
+														var befPrcVal = '';
+														var curPrcVal = '';
+	
+														
+															var befYymm = (Number("25") - 1).toString().padStart(2, '0') + ".08";
+															var curYymm = "25.08";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 86.7});
+															curPrcChart.push({tp: curYymm, y: 73.7});
+															subTitOil = '25.08';
+															befPrcVal = 86.7;
+															curPrcVal = 73.7;
+														
+															var befYymm = (Number("25") - 1).toString().padStart(2, '0') + ".09";
+															var curYymm = "25.09";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 81.4});
+															curPrcChart.push({tp: curYymm, y: 73.5});
+															subTitOil = '25.09';
+															befPrcVal = 81.4;
+															curPrcVal = 73.5;
+														
+															var befYymm = (Number("25") - 1).toString().padStart(2, '0') + ".10";
+															var curYymm = "25.10";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 78.8});
+															curPrcChart.push({tp: curYymm, y: 74.4});
+															subTitOil = '25.10';
+															befPrcVal = 78.8;
+															curPrcVal = 74.4;
+														
+															var befYymm = (Number("25") - 1).toString().padStart(2, '0') + ".11";
+															var curYymm = "25.11";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 78.2});
+															curPrcChart.push({tp: curYymm, y: 70});
+															subTitOil = '25.11';
+															befPrcVal = 78.2;
+															curPrcVal = 70;
+														
+															var befYymm = (Number("25") - 1).toString().padStart(2, '0') + ".12";
+															var curYymm = "25.12";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 76.9});
+															curPrcChart.push({tp: curYymm, y: 68.3});
+															subTitOil = '25.12';
+															befPrcVal = 76.9;
+															curPrcVal = 68.3;
+														
+															var befYymm = (Number("26") - 1).toString().padStart(2, '0') + ".01";
+															var curYymm = "26.01";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 78.5});
+															curPrcChart.push({tp: curYymm, y: 66.7});
+															subTitOil = '26.01';
+															befPrcVal = 78.5;
+															curPrcVal = 66.7;
+														
+															var befYymm = (Number("26") - 1).toString().padStart(2, '0') + ".02";
+															var curYymm = "26.02";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 81.8});
+															curPrcChart.push({tp: curYymm, y: 67.1});
+															subTitOil = '26.02';
+															befPrcVal = 81.8;
+															curPrcVal = 67.1;
+														
+															var befYymm = (Number("26") - 1).toString().padStart(2, '0') + ".03";
+															var curYymm = "26.03";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 80.5});
+															curPrcChart.push({tp: curYymm, y: 80.3});
+															subTitOil = '26.03';
+															befPrcVal = 80.5;
+															curPrcVal = 80.3;
+														
+															var befYymm = (Number("26") - 1).toString().padStart(2, '0') + ".04";
+															var curYymm = "26.04";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 76.7});
+															curPrcChart.push({tp: curYymm, y: 112.4});
+															subTitOil = '26.04';
+															befPrcVal = 76.7;
+															curPrcVal = 112.4;
+														
+															var befYymm = (Number("26") - 1).toString().padStart(2, '0') + ".05";
+															var curYymm = "26.05";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 72.8});
+															curPrcChart.push({tp: curYymm, y: 117.6});
+															subTitOil = '26.05';
+															befPrcVal = 72.8;
+															curPrcVal = 117.6;
+														
+															var befYymm = (Number("26") - 1).toString().padStart(2, '0') + ".06";
+															var curYymm = "26.06";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 70.1});
+															curPrcChart.push({tp: curYymm, y: 117});
+															subTitOil = '26.06';
+															befPrcVal = 70.1;
+															curPrcVal = 117;
+														
+															var befYymm = (Number("26") - 1).toString().padStart(2, '0') + ".07";
+															var curYymm = "26.07";
+															baseYymmChart.push("'" + curYymm);
+															befPrcChart.push({tp: befYymm, y: 72.2});
+															curPrcChart.push({tp: curYymm, y: 103.7});
+															subTitOil = '26.07';
+															befPrcVal = 72.2;
+															curPrcVal = 103.7;
+														
+														
+														
+														// 각 타이틀을 최신화 한다.
+														
+														// 서브타이틀 최신화
+														$('.subTitOil').html("'"+subTitOil+'월 <b>원유 평균</b>수입가격 <br/><i class="">&nbsp;</i>');
+														
+														// 소수점 한자리에서 버림
+														var objBoxOilHtml = '<div class="artObj oil"></div>';
+	
+														if (befPrcVal <= curPrcVal) {
+															objBoxOilHtml += '<span class="costUp crrncy">'+curPrcVal+'<br><b>$/배럴</b></span>';
+															if (befPrcVal == 0) {
+																objBoxOilHtml += '<span class="costTxt">전년동월대비 <i>'+(curPrcVal - befPrcVal).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</i>$/배럴</span>';
+															} else {
+																objBoxOilHtml += '<span class="costTxt">전년동월대비 <i>'+((curPrcVal - befPrcVal) / befPrcVal * 100).toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</i>%</span>';
+															}
+	
+														// 음수일경우
+														} else {
+															objBoxOilHtml += '<span class="costDown crrncy">'+curPrcVal+'<br><b>$/배럴</b></span>';
+															if (befPrcVal == 0) {
+																objBoxOilHtml += '<span class="costTxt">전년동월대비 <i>'+(befPrcVal - cufPrcVal).toString()+'</i>$/배럴</span>';
+															} else {
+																objBoxOilHtml += '<span class="costTxt">전년동월대비 <i>'+((befPrcVal - curPrcVal) / befPrcVal * 100).toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'</i>%</span>';
+															}
+														}
+														$('.objBoxOil').empty();
+														$('.objBoxOil').html(objBoxOilHtml);
+														
+														$('.tobinMidOil').empty();
+														$('.tobinMidOil').html('<span>[원유 평균수입가격]</span> 전월 100.8($/배럴) &rarr; 당월 102.8($/배럴) 2.7% &uArr;');
+														
+														Highcharts.chart('container14', {
+															chart: {
+																backgroundColor: ''
+															},
+															title: {
+																text: ''
+															},
+															xAxis: {
+																categories: baseYymmChart,
+																labels: {
+																	style: {
+																		fontSize: 14
+																	}
+																}
+															},
+															plotOptions: {
+																series: {
+																	marker: {
+																		fillColor: '#ffffff',
+																		lineWidth: 3,
+																		lineColor: null,
+																		symbol: 'circle',
+																		radius: 6
+																	},
+																	dashStyle: 'shortDot',
+																	dataLabels: {
+																		align: 'center',
+																		style: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		},
+																		enabled: true,
+																		y: -4
+																	}
+																}
+															},
+															yAxis:{
+																title: {
+																	text: ''
+																},
+																labels:{
+																	style:{
+																		fontSize: 14
+																	}
+																}
+															},
+															legend: {
+																layout: 'horizontal',
+																align: 'right',
+																verticalAlign: 'top',
+																x: 0,
+																y: 0,
+																itemStyle: {
+																	fontSize: 14,
+																	fontWeight: 500
+																}
+															},
+															series: [{
+																type: 'spline',
+																name: '최근1년',
+																data: curPrcChart,
+																color: '#3865dc',
+																dataLabels: {
+																	color: '#3865dc'
+																}
+															},{
+																type: 'spline',
+																name: '전년동월',
+																data: befPrcChart,
+																color: '#707070',
+																dataLabels: {
+																	color: '#707070'
+																}
+															}],
+															responsive: {
+															/*	rules: [{
+																	condition: {
+																		maxWidth: 300
+																	},
+																	chartOptions: {
+																		legend: {
+																			layout: 'horizontal',
+																			align: 'center',
+																			verticalAlign: 'bottom'
+																		}
+																	}
+																}] */
+															},
+															exporting: {
+																enabled: false
+															},
+															credits: {
+																enabled: false
+															},
+															tooltip: {
+																enabled: true,
+																formatter: function() {
+																	return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: 20' + this.point.tp + '<br>'
+																		+ '원유평균수입가격: <b>' + Highcharts.numberFormat(this.point.y, 1) + '</b>';
+																}
+															}
+														});
+													</script>
+												</figure>
+												<figure class="highcharts-figure">
+													<strong>
+														원유 평균수입가격 vs 국제유가 (두바이)
+													</strong>
+													<div id="container15" class="chartThing"></div>
+													<script type="text/javascript">
+	
+														// x축 기준
+														var baseYymmChart = [];
+														// 원유 평균수입가
+														var impPrcChart = [];
+														// 국제유가(두바이)
+														var intnPrcChart = [];
+														
+														
+															baseYymmChart.push("'25.08");
+															
+																 impPrcChart.push(73.7);
+															
+																 intnPrcChart.push(69.4);
+															
+															baseYymmChart.push("'25.09");
+															
+																 impPrcChart.push(73.5);
+															
+																 intnPrcChart.push(69.8);
+															
+															baseYymmChart.push("'25.10");
+															
+																 impPrcChart.push(74.4);
+															
+																 intnPrcChart.push(65.1);
+															
+															baseYymmChart.push("'25.11");
+															
+																 impPrcChart.push(70);
+															
+																 intnPrcChart.push(64.5);
+															
+															baseYymmChart.push("'25.12");
+															
+																 impPrcChart.push(68.3);
+															
+																 intnPrcChart.push(62.1);
+															
+															baseYymmChart.push("'26.01");
+															
+																 impPrcChart.push(66.7);
+															
+																 intnPrcChart.push(62);
+															
+															baseYymmChart.push("'26.02");
+															
+																 impPrcChart.push(67.1);
+															
+																 intnPrcChart.push(68.4);
+															
+															baseYymmChart.push("'26.03");
+															
+																 impPrcChart.push(80.3);
+															
+																 intnPrcChart.push(128.5);
+															
+															baseYymmChart.push("'26.04");
+															
+																 impPrcChart.push(112.4);
+															
+																 intnPrcChart.push(106.2);
+															
+															baseYymmChart.push("'26.05");
+															
+																 impPrcChart.push(117.6);
+															
+																 intnPrcChart.push(103.1);
+															
+															baseYymmChart.push("'26.06");
+															
+																 impPrcChart.push(117);
+															
+																 intnPrcChart.push(79.5);
+															
+															baseYymmChart.push("'26.07");
+															
+																 impPrcChart.push(103.7);
+															
+																 intnPrcChart.push(76.5);
+															
+		
+														Highcharts.chart('container15', {
+															chart: {
+																type: 'column',
+																backgroundColor:''
+															},
+															title: {
+																text:''
+															},
+															xAxis: {
+																categories: baseYymmChart,
+																labels:{
+																	style:{
+																		fontSize: 14
+																	}
+																}
+															},/*
+															plotOptions: {
+																series: {
+																	dataLabels: {
+																		align: 'center',
+																		style: {
+																			fontSize: 14,
+																			fontWeight: 500
+																		},
+																		enabled: true
+																	}
+																}
+															},*/
+															yAxis:{
+																title: {
+																	text:''
+																},
+																labels:{
+																	style:{
+																		fontSize: 14
+																	}
+																}
+															},
+															legend: {
+																layout: 'horizontal',
+																align: 'right',
+																verticalAlign: 'top',
+																x: 0,
+																y: 0,
+																itemStyle: {
+																	fontSize: 14,
+																	fontWeight: 500
+																}
+															},
+															series: [{
+																name: '원유평균수입가격',
+																data: impPrcChart,
+																color: '#3865dc',
+																dataLabels: {
+																	color: '#3865dc'
+																}
+															},{
+																name: '국제유가(두바이)',
+																data: intnPrcChart,
+																color: '#06af79',
+																dataLabels: {
+																	color: '#06af79'
+																}
+															}],
+															responsive: {
+																/*	rules: [{
+																	condition: {
+																		maxWidth: 300
+																	},
+																	chartOptions: {
+																		legend: {
+																			layout: 'horizontal',
+																			align: 'center',
+																			verticalAlign: 'bottom'
+																		}
+																	}
+																}] */
+															},
+															exporting: {
+																enabled: false
+															},
+															credits: {
+																enabled: false
+															},
+															tooltip: {
+																enabled: true,
+																formatter: function() {
+																	return '<span style="color:' + this.point.color + '">\u25CF</span> 기간: 20' + this.point.category.substr(1) + '<br>'
+																		+ this.series.name + ': <b>' + Highcharts.numberFormat(this.point.y, 1) + '</b>';
+																}
+															}
+														});
+													</script>
+												</figure>
+											</div>
+										</div>
+										<div class="swiper-pagination bigchart4"></div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!-- Main Chart e -->
+					<div class="bttmInfo" data-custom-tab>
+						<div class="bdboxWrap">
+							<div class="bdTab">
+								<ul>
+									<li class="all on"><a href="javascript:void(0)" onclick="f_mainBoard('all')">전체</a></li>
+									<li class="notice"><a href="javascript:void(0)" onclick="f_mainBoard('notice')">공지사항</a></li>
+									<li class="report"><a href="javascript:void(0)" onclick="f_mainBoard('report')">보도자료</a></li>
+									<li class="perio"><a href="javascript:void(0)" onclick="f_mainBoard('perio')">자료실</a></li>
+									<li class="more-empty"></li>
+								</ul>
+							</div>
+							<div class="bdBox">
+								<ul id="mainBoardArea">
+									
+											<li class="ntic">
+											<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100211Q.do',{blbrTpcd:'10', ntarSrno:'2105', menuId:'ETS_MNK_50200000'});">공지사항</a>
+											<a href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100211Q.do',{blbrTpcd:'10', ntarSrno:'2105', menuId:'ETS_MNK_50200000'});">FTA 무역  ‘활용률’  통계 메뉴 이용안내</a>
+										
+										<span>2025-11-24</span>
+										</li>
+									
+											<li class="ntic">
+											<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100211Q.do',{blbrTpcd:'10', ntarSrno:'2101', menuId:'ETS_MNK_50200000'});">공지사항</a>
+											<a href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100211Q.do',{blbrTpcd:'10', ntarSrno:'2101', menuId:'ETS_MNK_50200000'});">2025년 국가관세종합정보시스템 사용자 만족도 조사</a>
+										
+										<span>2025-07-04</span>
+										</li>
+									
+											<li class="ntic">
+											<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100211Q.do',{blbrTpcd:'10', ntarSrno:'2099', menuId:'ETS_MNK_50200000'});">공지사항</a>
+											<a href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100211Q.do',{blbrTpcd:'10', ntarSrno:'2099', menuId:'ETS_MNK_50200000'});">무역통계 A~Z 까지 (무역통계의 모든 것을 알려드립니다)</a>
+										
+										<span>2025-06-10</span>
+										</li>
+									
+											<li class="ntic">
+											<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100211Q.do',{blbrTpcd:'10', ntarSrno:'1428', menuId:'ETS_MNK_50200000'});">공지사항</a>
+											<a href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100211Q.do',{blbrTpcd:'10', ntarSrno:'1428', menuId:'ETS_MNK_50200000'});">무역통계 등 국가승인통계 공표일정 안내</a>
+										
+										<span>2017-11-10</span>
+										</li>
+									
+											<li class="prio">
+											<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100212Q.do',{blbrTpcd:'32', ntarSrno:'2158', menuId:'ETS_MNK_50200000'});">자료실</a>
+											<a href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100212Q.do',{blbrTpcd:'32', ntarSrno:'2158', menuId: 'ETS_MNK_50302000'});">[연보] 2025년 무역통계연보
+											</a>
+										
+										<span>2026-08-12</span>
+										</li>
+									
+											<li class="prio">
+											<a class="cate" tabindex="-1" aria-hidden="true" href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100212Q.do',{blbrTpcd:'32', ntarSrno:'2157', menuId:'ETS_MNK_50200000'});">자료실</a>
+											<a href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100212Q.do',{blbrTpcd:'32', ntarSrno:'2157', menuId: 'ETS_MNK_50302000'});">[연보] 2025년 수출입물류통연보
+											</a>
+										
+										<span>2026-08-12</span>
+										</li>
+									
+								</ul>
+							</div>
+							<div class="moreArea">
+								<a href="javascript:void(0)" id="boardMore" tabindex="-1" aria-hidden="true">+</a>
+							</div>
+						</div>
+						<div class="exchangeInfo">
+							
+							<div class="exchanHead">
+								<p>
+									<strong>
+										금주의 관세환율 정보&nbsp;
+										<span id="aplyDt">(전주 환율 비교)</span>
+									</strong>
+									
+								</p> 
+								<div class="moreExchangeInfo">
+									<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100141Q.do', {menuId: 'ETS_MNK_50601000'});" aria-label="관세환율정보 더보기">+</a>
+								</div>
+							</div>
+							<ul>
+								
+								<li class="">
+									<p><strong>미국</strong><span>USD</span></p>
+	
+									<div class="flags CNTY_USD"></div>
+									<div class="exchanTxt import"><p>1,427.06</p></div>
+	
+									<div class="icdcValWrap"><b class="icdcVal">30.76</b></div>
+								</li>
+								
+								<li class="">
+									<p><strong>유럽연합</strong><span>EUR</span></p>
+	
+									<div class="flags CNTY_EUR"></div>
+									<div class="exchanTxt import"><p>1,645.8</p></div>
+	
+									<div class="icdcValWrap"><b class="icdcVal">20.22</b></div>
+								</li>
+								
+								<li class="">
+									<p><strong>중국</strong><span>CNY</span></p>
+	
+									<div class="flags CNTY_CNY"></div>
+									<div class="exchanTxt import"><p>211.49</p></div>
+	
+									<div class="icdcValWrap"><b class="icdcVal">3.99</b></div>
+								</li>
+								
+								<li class="">
+									<p><strong>일본</strong><span>JPY</span></p>
+	
+									<div class="flags CNTY_JPY"></div>
+									<div class="exchanTxt export"><p>9.0479</p></div>
+	
+									<div class="icdcValWrap"><b class="icdcVal">0.0966</b></div>
+								</li>
+								
+								<script>
+								var end = String(20260809);
+								var start = String(20260802);
+								// var aplyDt = "적용기간 : "+start.substr(0,4)+"."+start.substr(4,2)+"."+start.substr(6,2) + " ~ " + end.substr(0,4)+"."+end.substr(4,2)+"."+end.substr(6,2)+" (전주환율비교)"; 
+								// $('#aplyDt').text(aplyDt); 
+								</script>
+							</ul>
+						</div>
+					</div>
+					
+					<!-- 이미지 다운로드 div -->
+					<div class="responWrap">
+						<div class="respon" id="imgDownDiv"> 
+	
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Quick Menu s -->
+			<div class="quickWrap" id="quickWrap">
+				<div class="quickMenu">
+					<div class="quickSide">
+						<span>Quick Menu</span>
+						<span class="mobile_Q">Q</span>
+					</div>
+					<div class="quickTab">
+						<ul>
+							<li>
+								<a href="javascript:void(0);" onclick="f_quickLinkClick()">최근본메뉴</a>
+								<div id="quickLinkDiv" class="quickLink">
+									<ul>
+										<li><a href="" id="rcntMenu1"><span></span></a></li>
+										<li><a href="" id="rcntMenu2"><span></span></a></li>
+										<li><a href="" id="rcntMenu3"><span></span></a></li>
+									</ul>	
+								</div>
+							</li>
+							<li>
+								<a target="_blank" href="https://unipass.customs.go.kr/clip/index.do?opnurl=/hsinfosrch/openULS0201005Q.do&searchVal=0101">HS부호</a>
+							</li>
+							<li>
+								<a target="_blank" href="https://unipass.customs.go.kr/clip/index.do?opnurl=/hsinfosrch/openULS0201013Q.do">통계부호</a>
+							</li>
+	<!-- 						<li> -->
+	<!-- 							<a target="_blank" onclick="f_ets_pdfPopup('사용자가이드',650,700,'KOR');">사용자 가이드</a> -->
+	<!-- 						</li> -->
+							<li>
+	
+									<a href="javascript:ets_f_prccMenuAdmin('/cts/hmpg/openETS0100211Q.do',{blbrTpcd:'10', ntarSrno:'2099', menuId:'ETS_MNK_50200000'});">
+										무역통계 가이드
+									</a>
+	
+							</li>
+							<li>
+								<a href="javascript:ets_f_prccMenuLoad('/cts/hmpg/openETS0100020Q.do', {menuId: 'ETS_MNK_10600000'});">미국무역통계</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- Quick Menu e --> 
+		</div>
+		<!--main con e--><!-- <img src="images/mainSmple.png" alt="메인화면" /> -->
+		</div>
+		<div id="maindetailarea">
+		</div>
+		<div class="loadingWrap"><div class="loadingImg"></div></div>
+		</section>
+	</main>
+	
+		<footer>
+			<div class="foot_menu_wrap">
+				<div class="foot_menu_in">
+					<ul>
+<!-- 						<li><a href="#" id="personalInfoBtn">개인정보처리방침</a></li> -->
+<!-- 						<li><a href="#" id="copyrightProBtn">저작권보호정책</a></li> -->
+<!-- 						<li><a href="#" class="del" id="wayHereBtn">찾아오시는 길</a></li> -->
+					</ul>
+					<div class="footer_lst">
+						<label for="footer_lst" class="visually-hidden">관련 누리집 선택하기</label>
+						<select id="footer_lst" name="footer_lst" onchange="window.open(value,'_blank');" aria-label="관련 누리집 선택하기">
+							<option value="" selected disabled hidden>관련 누리집</option>
+							<option value="http://customs.go.kr/kcs/main.do">관세청 홈페이지</option>
+							<option value="http://unipass.customs.go.kr/">UNI-PASS전자통관</option>
+							
+							<!-- <option value="https://www.customs.go.kr/foreign/main.do">해외통관지원센터</option>
+							<option value="https://www.customs.go.kr/call/main.do">고객지원센터</option> -->
+							<option value="https://www.customs.go.kr/ftaportalkor/main.do">FTA포털</option>
+							
+							<!-- <option value="http://www.ftapass.or.kr/">FTA-PASS원산지관리시스템</option> -->
+							<option value="http://unipass.customs.go.kr/clip/index.do">관세법령정보포털</option>
+							<!-- <option value="http://bicdata.customs.go.kr/">관세청빅데이터포털</option> -->
+							<option value="http://www.ktspi.or.kr/main.do">한국무역통계진흥원</option>
+							<option value="http://www.export119.go.kr/">재정경제부 수출플러스 지원단</option>
+							<!-- <option value="http://www.date.go.kr/">공공데이터포털</option> -->
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="foot_con_wrap">
+				<div class="foot_con_in">
+					<div class="foot_item">
+						<div class="footer_logo">
+							<img src="images/foot_logo2.png" alt="푸터 로고">
+						</div>
+						<ul>
+							<li class="addr_copy">
+								<p>
+									(35208) 대전광역시 서구 청사로 189 정부대전청사 1동
+								</p>
+							</li>
+							<li class="ft_as1">
+								<p>관세법령 등 고객지원</p>
+								<span><a title="관세법령 등 고객지원 전화번호" href="tel:125">125</a></span>
+							</li>
+							<li class="ft_as2">
+								<p>홈페이지 문의 및 기술지원</p>
+								<span><a title="홈페이지 문의 및 기술지원 전화번호" href="tel:15441285">1544-1285</a></span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="foot_btm_wrap">
+					<div class="footer_navlink">
+						<div class="foot_section">
+							<ul class="footer_link">
+								<li><a href="#" id="personalInfoBtn" title="개인정보처리방침">개인정보처리방침</a></li>
+								<li><a href="#" id="copyrightProBtn" title="저작권보호정책">저작권보호정책</a></li>
+								<li><a href="#" class="del" id="wayHereBtn" title="찾아오시는 길">찾아오시는 길</a></li>
+							</ul>
+							<p>Copyright Korea Customs Service. All Rights Reserved</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<div class="productPop w1000" id="personalInfoPop">
+			<div class="popHeader">
+				<h2>개인정보처리방침</h2>
+				<button class="layer-close" aria-label="창닫기"></button>
+			</div>
+			<div class="popBody">
+				<div class="pop_container" id="personalInfoPopBody">
+				</div>
+			</div>
+		</div>
+		<div class="productPop w1000" id="copyrightProPop">
+			<div class="popHeader">
+				<h2>저작권보호정책</h2>
+				<button class="layer-close" aria-label="창닫기"></button>
+			</div>
+			<div class="popBody">
+				<div class="pop_container" id="copyrightProPopBody">
+				</div>
+			</div>
+		</div>
+		<div class="productPop w1000" id="wayHerePop">
+			<div class="popHeader">
+				<h2>찾아오시는 길</h2>
+				<button class="layer-close" aria-label="창닫기"></button>
+			</div>
+			<div class="popBody">
+				<div class="pop_container" id="wayHerePopBody">
+				</div>
+			</div>
+		</div>
+		<div class="black-bg"></div>
+		
+</div>
+<input type="hidden" id="ETS0100001Q_adminUrl" name="adminUrl" value="" /> 
+<input type="hidden" id="ETS0100001Q_menuId" name="menuId" value="ETS_MNU_00000134" />
+</body>
+</html>
