@@ -1,0 +1,48 @@
+{
+  "_comment": [
+    "Taiwan watch groups for aggregate monthly-revenue signals. Company codes",
+    "are TWSE/TPEx tickers. Edit freely — groups feed compute_signals.py and",
+    "the robotics / AI-infrastructure threads. Membership here is a Tier 1",
+    "screening convenience, not a thesis claim."
+  ],
+  "groups": {
+    "ai_compute": {
+      "label": "AI compute / foundry / design services",
+      "members": {
+        "2330": "TSMC",
+        "2454": "MediaTek",
+        "3443": "Global Unichip",
+        "3661": "Alchip",
+        "5274": "ASPEED"
+      }
+    },
+    "ai_server_odm": {
+      "label": "AI server ODM / assembly",
+      "members": {
+        "2317": "Hon Hai",
+        "2356": "Inventec",
+        "2382": "Quanta",
+        "3231": "Wistron",
+        "6669": "Wiwynn"
+      }
+    },
+    "power_cooling": {
+      "label": "Power & thermal for AI infrastructure",
+      "members": {
+        "1519": "Fortune Electric",
+        "2308": "Delta Electronics",
+        "2421": "Sunon",
+        "3017": "Asia Vital Components",
+        "3324": "Auras"
+      }
+    },
+    "robotics_motion": {
+      "label": "Robotics motion components (feeds the robotics map)",
+      "members": {
+        "1590": "Airtac",
+        "2049": "Hiwin",
+        "4583": "TBI Motion"
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+name: update-signals
+
+# Fetch Taiwan MOPS monthly revenue + Korea Customs export data, recompute
+# derived signals, and commit any changes (git-scraping pattern).
+#
+# Publication calendar the daily run rides on:
+#   Taiwan monthly revenue: filed by the 10th of the following month
+#   Korea flash exports:    days 1-10 on the 11th, 1-20 on the 21st,
+#                           full month on the 1st
+# The fetchers are idempotent and no-op when nothing new is published,
+# so a daily cron is safe and catches late filers and revisions.
+
+on:
+  schedule:
+    - cron: "30 7 * * *"   # 15:30 Taipei / 16:30 Seoul, after publish times
+  workflow_dispatch:
+    inputs:
+      taiwan_backfill:
+        description: "Backfill Taiwan archive, e.g. 2024-01:2026-06 (slow, polite pauses)"
+        required: false
+        default: ""
+      korea_monthly_range:
+        description: "Korea monthly range, e.g. 2024-01:2026-07"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r signals/requirements.txt
+
+      - name: Run offline tests
+        run: python -m unittest discover tests
+
+      - name: Fetch Taiwan monthly revenue (current month)
+        run: python -m signals.taiwan_mops current
+
+      - name: Backfill Taiwan archive (manual runs only)
+        if: ${{ github.event.inputs.taiwan_backfill != '' }}
+        run: |
+          RANGE="${{ github.event.inputs.taiwan_backfill }}"
+          python -m signals.taiwan_mops backfill "${RANGE%%:*}" "${RANGE##*:}"
+
+      - name: Fetch Korea Customs data
+        env:
+          DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
+        run: |
+          python -m signals.korea_customs flash
+          if [ -n "${{ github.event.inputs.korea_monthly_range }}" ]; then
+            RANGE="${{ github.event.inputs.korea_monthly_range }}"
+            python -m signals.korea_customs monthly "${RANGE%%:*}" "${RANGE##*:}"
+          else
+            python -m signals.korea_customs monthly-latest
+          fi
+
+      - name: Recompute derived signals
+        run: python -m signals.compute_signals
+
+      - name: Commit and push if data changed
+        run: |
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No new data."
+            exit 0
+          fi
+          git config user.name "signals-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "signals: data update $(date -u +%F)"
+          git push
