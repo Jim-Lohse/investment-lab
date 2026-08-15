@@ -1,0 +1,1876 @@
+//프린트용 검색조건
+var searchValue='';
+//엑셀용 검색조건
+var searchValueExcel='';
+// 검색완료한 json데이터
+var searchJsonData = '';
+//검색 리스트에 있는 전체 코드
+var selectdHsSgnCdList = '';
+// 체크된 HsSgn
+var checkdHsSgn = '';
+
+// 검색조건
+// 통계항목
+var statsKind = '';
+// 수출입구분
+var imexTpcd = '';
+// 조회기간 구분
+var priodKind = '';
+// 조회기간 시작일
+var priodFr = '';
+// 조회기간 종료일
+var priodTo = '';
+// 조회일기간 구분
+var priodDate = '';
+
+// 검색 플래그
+var seartFlag = 'N'; 
+// 검색시 조회결과 플래그
+var resultFlag = 'N';
+// 다운로드 플래그
+var downFlag = 'N';
+
+$(document).ready(function() {
+	
+	document.title = '수출입무역통계 > 수출입통계 > 10일 단위 잠정치 통계';
+
+	$(".filter_area > .left_close").click(function(e){
+		if($(".con_container").hasClass('folded')){
+			$(this).attr('aria-label','조회 필터 닫기');
+		}
+		else {
+			$(this).attr('aria-label','조회 필터 열기');
+		}
+		$(".con_container").toggleClass('folded');
+	});
+	var PcOrMobile = 'pc';
+	// 처음 로딩시 화면검색조건
+	var innerWidth = window.innerWidth;
+	if (innerWidth <= 1024) {
+		$('#filterCon').clone().appendTo("#optionBody");
+		$('#filterCon').remove();
+		// 모바일일떄는 모바일검색조건을 표시한다
+		$('.filter_mobile').show();
+		PcOrMobile = 'mobile';
+	}
+	// 화면 사이즈 변경시마다 검색조건 위치 수정
+	window.onresize = function(event) {
+		var innerWidth = window.innerWidth;
+		// 시작연도, 끝연도 변수 선
+		var fromYearVal, toYearVal,fromYearMonVal, toYearMonVal;
+		
+		// 시작연도
+		fromYearVal = $("#ETS0100173Q_formYearPc option:selected").val(); 
+		// 종료연도
+		toYearVal = $("#ETS0100173Q_toYearPc option:selected").val(); 
+		// 시작년월
+		fromYearMonVal = $('#ETS0100173Q_formYearMonthPc option:selected').val();
+		// 종료년월
+		toYearMonVal = $('#ETS0100173Q_toYearMonthPc option:selected').val();
+		
+		if (innerWidth > 1024) {
+			if (PcOrMobile == 'mobile') {
+				$('#filterCon').clone().appendTo("#filterArea");
+				$('#optionBody').empty();
+				// PC일때는 모바일 검색조건을 숨긴다
+				$('.filter_mobile').hide();
+				// 모바일 검색조건 숨기기
+				$('.optionChangeLayer').hide();
+				document.body.style.overflow = "unset";
+				PcOrMobile = 'pc';
+			}
+		} else {
+			if (PcOrMobile == 'pc') {
+				$('#filterCon').clone().appendTo("#optionBody");
+				$('#filterCon').remove();
+				// 모바일일떄는 모바일검색조건을 표시한다
+				$('.filter_mobile').show();
+				PcOrMobile = 'mobile';
+			}
+		}
+		
+		// 저장해둔 데이터를 설정한다. (SELECT BOX)
+		$('#ETS0100173Q_formYearPc').val(fromYearVal);
+		$('#ETS0100173Q_toYearPc').val(toYearVal);
+		$('#ETS0100173Q_formYearMonthPc').val(fromYearMonVal);
+		$('#ETS0100173Q_toYearMonthPc').val(toYearMonVal);
+	};
+	// 조회기간
+	ets_f_setSelectBox();
+	
+	// 서브타이틀을 취득하고 통계항목리스트를 취득후 초기 검색을 실시한다.
+	cf_titleNmae($('#ETS0100173Q_menuId').val()).then(function(){
+		cf_typeList($('#ETS0100173Q_menuId').val()).then(function(){
+			// 초기화
+			f_resetData();
+		});
+	});
+
+	$(".optionChange").click(function() {
+		$(".optionChangeLayer").css("display", "block");
+	});
+	$(".optionLayerClose").click(function() {
+		$(".optionChangeLayer").css("display", "none");
+	});
+	$(".btnSearch").click(function() {
+		document.body.style.overflow = "unset";
+	});
+	$(".black-bg").click(function() {
+		$(".m-search-layer").css("display", "none");
+		$(".black-bg").css("display", "none");
+		// 통계설명 팝업닫기
+		$("#statsPopup").css('display','none');
+		// 선택된 항목을 PC항목으로 초기화한다.
+		f_pcToMobile();
+	});
+
+	$(".m-layer-close").click(function() {
+		$(".m-search-layer").css("display", "none");
+		$(".black-bg").css("display", "none");
+		// 선택된 항목을 PC항목으로 초기화한다.
+		f_pcToMobile();
+	});
+
+	
+	//파이차트 버튼 (수출금액, 수입금액, 수출건수, 수입건수) 숨기고, 
+	$('#expAmtBtn').hide();
+	$('#impAmtBtn').hide();
+	
+	//전체, 단위 표시하기
+	$('#tableTitle').show();
+	
+
+	// 막대, 라인, 파이차트 버튼 클릭 시 데이터 설정 
+	$('#ETS0100173Q_btnChartColumn').on('click', function() {
+		chartTypeAll = $(this).attr('data-chart-type');
+	});
+	$('#chartLineBtn').on('click', function() {
+		chartTypeAll = $(this).attr('data-chart-type');
+	});
+
+	// 파이차트버튼 클릭했을 때 (수출금액, 수입금액, 수출건수, 수입건수)버튼 보이고, (금액, 건수) 버튼 숨기기
+	$('#chartPieBtn').on('click', function(){
+		chartTypeAll = $(this).attr('data-chart-type');
+	});
+	
+	//파이차트버튼(...) 클릭했을 때
+	$('#expAmtBtn, #impAmtBtn').on('click', function(){
+		$('#expAmtBtn').removeClass('active');
+		$('#impAmtBtn').removeClass('active');
+		$(this).addClass('active');
+	});
+	
+	// 다운로드 팝업창
+	$(".downBtnBox > .down_btn").click(function(){
+		// 검색 플래그가 Y일경우에만 다운로드 기능을 제공 한다
+		if (seartFlag == 'N') {
+			cf_alertMessage(ETS_MSG.inf_all_00037);//조회조건을 선택하십시오.
+			return;
+		};
+
+		// 조회결과 플래그가 Y일경우에만 다운로드 기능을 제공 한다
+		if (resultFlag == 'N') {
+			cf_alertMessage(ETS_MSG.inf_all_00038);//조회결과가 존재하지 않습니다.
+			return;
+		};
+
+		// 10만건 이상일경우에는 다운로드 기능을 제공안한다.
+		if (downFlag == 'N') {
+			// 체크된값 확인
+			var downCheckItem = $("input:checkbox[name='listItem']:checked");
+
+			// 체크된값이 없으면 다운로드 기능 제한
+			if (downCheckItem.length == 0) {
+				cf_alertMessage(ETS_MSG.inf_trs_00009,'다운로드|100,000건');//{0}는 {1} 이내만 가능합니다. \n조회조건을 변경후 다운로드 받으십시오.
+				return;
+			}
+		};
+
+		$("#downPopup").css('display','block');
+		
+		
+		var windowWidth = $ (window).width();
+		if (windowWidth < 714) {
+			$(".m-black-down-bg").css("display", "block");
+			document.body.style.overflow = "hidden";
+		}else{
+			$(".m-black-down-bg").css("display", "none");
+		};
+	});
+	
+	$(".layer-close").click(function(){
+		$("#downPopup").css('display','none');
+		$(".m-black-down-bg").css("display", "none");
+		document.body.style.overflow = "unset";
+	});
+	
+	// 다운로드 팝업창 배경클릭시 닫기
+	$(".m-black-down-bg").on('touch click',function(){
+		$("#downPopup").css('display','none');
+		$(".m-black-down-bg").css('display','none');
+		document.body.style.overflow = "unset";
+	});
+	
+	// 스크린터치버튼
+	$(".screenTouchBtn").on('click touch',function(){
+		$(".board_scroll").css('overflow-x','scroll');
+		$(".screenTouchBtn").css('display','none');
+	});
+	
+	
+});
+
+//차트 타입
+var chartTypeAll; 
+
+//검색된 json 데이터
+var jsonObj;
+
+/*****************************************************
+* Function 명 : f_chartBtnShowHide
+* Function 기능설명 : 차트 타입에 따라 버튼 관련 표시
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function f_chartBtnShowHide(chartType) {
+	
+	if(chartType != 'pie') {
+		// 파이차트 버튼 (수출금액, 수입금액, 수출건수, 수입건수) 숨기기
+		$('#expAmtBtn').hide();
+		$('#impAmtBtn').hide();
+	}
+	$('#expAmtBtn, #impAmtBtn').removeClass('active');
+	$('#expAmtBtn').addClass('active');
+}
+
+
+/*****************************************************
+* Function 명 : f_retrieveData
+* Function 기능설명 : 10일단위 잠정치통계 화면검색기능
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function f_retrieveData(selectPaging, sortColumn='', sortOrder='') {
+	// 다운로드 팝업창 숨기기
+	$('#downPopup').hide();
+	// 네비게이션 숨기기
+	$('.loc_nav > ul > li > ul').hide();
+	// 로딩화면 표시
+	$('.loadingWrap').show();
+	
+	// 초기화면 테이블 데이터 취득
+	var callUrl = "/cts/hmpg/retrieveTentativeValues.do";
+	
+	// 정렬일경우 검색했을때 저장해놓은 json 데이터로 검색처리를 한다.
+	if (sortColumn != '' && sortOrder != ''){
+		// 전체 체크박스를 해제한다.
+		$('input[name=listItemAll]').prop('checked',false);
+		params = searchJsonData;
+		params.sortColumn = sortColumn;
+		params.sortOrder = sortOrder;
+		params.selectPaging = selectPaging;
+		params.isAllExcel = 'NO';
+	} else {
+		// 통계항목
+		statsKind = $("input[name='radioTypePc']:checked").val();
+		// 서브타이틀 취득
+		cf_titleSubNmae(statsKind);
+		
+		// 수출입구분
+		imexTpcd = $("input[name='radioImexPc']:checked").val();
+	
+		// 조회기간 구분
+		//priodKind = $("input[name='radioYearPc']:checked").val();
+		priodKind = 'MON';
+		// 조회기간 시작일
+		priodFr = '';
+		// 조회기간 종료일
+		priodTo = '';
+		// 조회일기간 구분
+		priodDate = $("input[name='radioDatePc']:checked").val();
+		
+		// 조회기간 시작일
+		priodFr = $('#ETS0100173Q_formYearMonthPc').val();
+		// 조회기간 종료일
+		priodTo = $('#ETS0100173Q_toYearMonthPc').val();
+		
+		var showPagingLine =  $('#ETS0100173Q_showPagingLine').val();
+		// 선택한 페이지 (초기 페이지는 1)
+		var params = {
+			'statsKind' : statsKind
+			,'imexTpcd' : imexTpcd
+			,'priodKind' : priodKind
+			,'priodFr' : priodFr
+			,'priodTo' : priodTo
+			,'priodDate' : priodDate
+			,'selectPaging' : selectPaging
+			,'showPagingLine' : showPagingLine
+			,'sortColumn' : sortColumn
+			,'sortOrder' : sortOrder
+		};
+		
+		
+		// 조회기간 validation
+		if( priodFr > priodTo ) {
+				cf_alertMessage(ETS_MSG.err_all_00101,"조회기간의"); //{0} 시작일이 종료일보다 미래입니다. 확인 바랍니다. 
+		// 로딩화면 숨기기
+		$('.loadingWrap').hide();
+		return false; 
+		}
+				// 검색 플래그를 Y로 바꾼다.
+				seartFlag = 'Y'; 
+				// 모바일 검색조건을 표시한다.
+				$('#searchMboxIn').css("display", "flex"); 
+		
+			// 검색건수 영역 표시
+			$('#boardArea').show();
+			// 차트영역 숨기기
+			$('#chartArea').hide();
+			$('#chartTableArea').hide();
+		// 모바일 검색창 닫는처리
+		$(".optionChangeLayer").css("display", "none");
+		
+		// 모바일 검색 조건 표시
+		$('#ETS0100173Q_btnTypeMobile').text( $("input[name='radioTypePc']:checked").next().text());  //통계항목
+		$('#ETS0100173Q_btnImexMobile').text( $("input[name='radioImexPc']:checked").next().text());  //수출입구분
+		$('#ETS0100173Q_btnYearMobile').text(priodFr + ' ~ ' + priodTo + " " + $("input[name='radioDatePc']:checked").next().text());		//조회기간
+		// 인쇄값
+		searchValue = "";
+		searchValue +="<h4>";
+		searchValue +="10일 단위 잠정치 통계";
+		searchValue +="</h4>";
+		searchValue +="<p>";
+		searchValueExcel = "";
+		searchValue +="통계항목 : " + $("input[name='radioTypePc']:checked").next().text();
+		searchValueExcel +="통계항목 : " + $("input[name='radioTypePc']:checked").next().text();
+		searchValue +="<br/>수출입구분 : " + $("input[name='radioImexPc']:checked").next().text();
+		searchValueExcel +=", 수출입구분 : " + $("input[name='radioImexPc']:checked").next().text();
+		searchValue +="<br/>조회기간 : " +priodFr+" ~ "+priodTo + ", " + $("input[name='radioDatePc']:checked").next().text(); 
+		searchValueExcel +=", 조회기간 : " +priodFr+" ~ "+priodTo + ", " + $("input[name='radioDatePc']:checked").next().text(); 
+		searchValue +="</p>";
+
+	}
+
+	var opts = 
+	{
+		url: callUrl,
+		data: params,
+		 callback : 
+		 function(result){
+			 // 조회결과가 없을 경우 
+			if (result.items.length == 0) 	{ 
+				resultFlag = 'N'; 
+			} else {	// 조회결과가 있을 경우
+				resultFlag = 'Y';
+				// 검색조건을 설정한다.
+				searchJsonData = params; 
+			}
+			
+			// 페이징            
+			$('#paginationList').empty();
+			cf_chartBtnClassOn('table');
+			
+			// 전체 건수
+			var count =  result.count;
+			// 전체 검색건수가 10만건 이하일 경우에만 다운로드 기능을 제공한다.
+			if (count <= 100000) {
+				downFlag  = 'Y';
+			} else {
+				downFlag  = 'N';
+			}
+			// 검색한 페이지
+			var searchPaging =  result.searchPaging;
+			// json 담기
+			jsonObj = result.items;
+			
+			if (count > 0) {
+				// 정렬일 경우
+				if (sortColumn != '') {
+					// 페이징 처리
+					f_pagingOrder(count, searchPaging,sortColumn,sortOrder);
+				} else {
+					// 페이징 처리
+					f_paging(count, searchPaging);
+				}
+
+			}
+			
+			$('#tableTitle').empty();
+			$('#tableTitle').html('[전체] <strong>'+count.toLocaleString('ko-KR')+'</strong> 건 / [단위] <span>천 달러</span>');
+
+			// 정렬일경우
+			if (sortColumn != '') {
+				// 테이블 출력
+				f_tableDataOrder(result.count, result.items);
+			} else {
+				// 테이블 출력
+				f_tableData(result.count, result.items);
+			}
+			// 로딩화면 숨기기
+			$('.loadingWrap').hide();
+		}
+	};
+
+	$.fn.kcs4gAjax(opts);
+	
+	/*****************************************************
+	* Function 명 : f_tableData
+	* Function 기능설명 : 검색결과 출력
+	* 작성자 : 김태일
+	* 작성일 : 2023-02-22
+	* 변경로그 : 
+	* 2023-02-22-김태일-최초생성
+	******************************************************/
+	function f_tableData(count, items) {
+		// 데이터
+		$('#trade_table').empty();
+		var innerHtml = '';
+		
+		innerHtml +='<caption>10일 단위 잠정치 통계 현황</caption>';
+		
+		innerHtml +='<colgroup>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='<col>';
+		innerHtml +='</colgroup>';
+
+		innerHtml +='<thead>';
+		innerHtml +='<tr>';
+		innerHtml +='<th scope="col" class="borderL_0 "><input type="checkbox" id="listItemAll" name="listItemAll" onclick ="cf_listItemAll()"><label class="visually-hidden" for="listItemAll">전체 선택</label></th>';
+		innerHtml +='<th scope="col" aria-sort="none">월별<a class="sort" href="#" data-sort="PRIOD_MON" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden">월별 정렬하기</span></a></th>';
+		innerHtml +='<th scope="col" aria-sort="none">기간<a class="sort" href="#" data-sort="PRIOD_DT" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden" for="sort_priod_dt">기간 정렬하기</span></a></th>';
+		if (statsKind == 'ETS_MNK_1050000A') {
+			if(imexTpcd == "E") {
+				innerHtml +='<th scope="col">전체</th>';
+				innerHtml +='<th scope="col">반도체</th>';
+				innerHtml +='<th scope="col">철강제품</th>';
+				innerHtml +='<th scope="col">승용차</th>';
+				innerHtml +='<th scope="col">석유제품</th>';
+				innerHtml +='<th scope="col">무선<br>통신기기</th>';
+				innerHtml +='<th scope="col">선박</th>';
+				innerHtml +='<th scope="col">자동차부품</th>';
+				innerHtml +='<th scope="col">컴퓨터<br>주변기기</th>';
+				innerHtml +='<th scope="col">정밀기기</th>';
+				innerHtml +='<th scope="col">가전제품</th>';
+				$('#trade_table').attr("summary","조회 기간별로 전체, 반도체, 철장제품, 승용차, 석유제품, 무선 통신기기, 선박, 자동차부품, 검퓨터 주변기기, 정밀기기, 가전제품 수출액 통계를 제공하는 표입니다.");
+			} else {
+				innerHtml +='<th scope="col">전체</th>';
+				innerHtml +='<th scope="col">반도체</th>';
+				innerHtml +='<th scope="col">원유</th>';
+				innerHtml +='<th scope="col">기계류</th>';
+				innerHtml +='<th scope="col">가스</th>';
+				innerHtml +='<th scope="col">반도체<br>제조용장비</th>';
+				innerHtml +='<th scope="col">정밀기기</th>';
+				innerHtml +='<th scope="col">석유제품</th>';
+				innerHtml +='<th scope="col">무선<br>통신기기</th>';
+				innerHtml +='<th scope="col">승용차</th>';
+				innerHtml +='<th scope="col">석탄</th>';
+				$('#trade_table').attr("summary","조회 기간별로 전제, 반도체, 원유, 기계류, 가스, 반도체 제조용장비, 정밀기기, 석유제품, 무선 통신기기, 승용차, 석탄 수입액 통계를 제공하는 표입니다.");
+			}
+		} else {
+			if(imexTpcd == "E") {
+				innerHtml +='<th scope="col">전체</th>';
+				innerHtml +='<th scope="col">중국</th>';
+				innerHtml +='<th scope="col">미국</th>';
+				innerHtml +='<th scope="col">유럽연합</th>';
+				innerHtml +='<th scope="col">베트남</th>';
+				innerHtml +='<th scope="col">홍콩</th>';
+				innerHtml +='<th scope="col">일본</th>';
+				innerHtml +='<th scope="col">대만</th>';
+				innerHtml +='<th scope="col">인도</th>';
+				innerHtml +='<th scope="col">싱가포르</th>';
+				innerHtml +='<th scope="col">말레이시아</th>';
+				$('#trade_table').attr("summary","조회 기간별로 전체, 중국, 미국, 유럽연합, 베트남, 홍콩, 일본, 대만, 인도, 싱가포르, 말레이시아 수출액 통계를 제공하는 표입니다.");
+			} else {
+				innerHtml +='<th scope="col">전체</th>';
+				innerHtml +='<th scope="col">중국</th>';
+				innerHtml +='<th scope="col">미국</th>';
+				innerHtml +='<th scope="col">유럽연합</th>';
+				innerHtml +='<th scope="col">일본</th>';
+				innerHtml +='<th scope="col">베트남</th>';
+				innerHtml +='<th scope="col">호주</th>';
+				innerHtml +='<th scope="col">대만</th>';
+				innerHtml +='<th scope="col">사우디<br>아라비아</th>';
+				innerHtml +='<th scope="col">러시아연방</th>';
+				innerHtml +='<th scope="col">말레이시아</th>';
+				$('#trade_table').attr("summary","조회 기간별로 전체, 중국, 미국, 유럽연합, 일본, 베트남, 호주, 대만, 사우디아라비아, 러시아연방, 말레이시아 수입액 통계를 제공하는 표입니다.");
+			}
+		}
+		innerHtml +='</tr>';
+		innerHtml +='</thead>';
+		innerHtml +='<tbody id="tradeTableTbody">';
+		
+		// 조회결과가 있을경우
+		if (count > 0) {
+			$.each(items, function(i, item){
+				innerHtml +='<tr>';
+				innerHtml +='<td class="txt_center"><input type="checkbox" id="listItem'+i+'" name="listItem" onclick="cf_itemCheck()"><label class="visually-hidden" for="listItem'+i+'">선택</label></td>';
+				innerHtml +='<td class="txt_center">'+item.priodMon     +'</td>';
+				innerHtml +='<td class="txt_center">'+item.priodDt      +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt00 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt01 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt02 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt03 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt04 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt05 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt06 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt07 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt08 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt09 +'</td>';
+				innerHtml +='<td>'+item.itemUsdAmt10 +'</td>';
+				innerHtml +='</tr>';
+			});
+		} else {
+			// 조회결과가 없을경우
+			innerHtml +='<tr>';
+			innerHtml +='<td colspan="14" class="txt_center noResult">조회결과가 존재하지 않습니다.</td>';
+			innerHtml +='</tr>';
+		}
+
+		innerHtml +='</tbody>';
+		innerHtml +='<tfoot id="tradeTableTfoot">';
+		innerHtml +='</tfoot>';
+		
+		$('#trade_table').html(innerHtml);
+	}
+	
+		/*****************************************************
+		* Function 명 : f_tableDataOrder
+		* Function 기능설명 : 검색결과 출력
+		* 작성자 : 김태일
+		* 작성일 : 2023-02-22
+		* 변경로그 : 
+		* 2023-02-22-김태일-최초생성
+		******************************************************/
+		function f_tableDataOrder(count, items) {
+			// 데이터
+			$('#tradeTableTbody').empty();
+			
+			var innerHtml = '';
+			var itemName = '';
+			
+			// 테이블 데이터
+			// 조회결과가 있을경우
+			if (count > 0) {
+				$.each(items, function(i, item){
+					innerHtml +='<tr>';
+					innerHtml +='<td class="txt_center"><input type="checkbox" id="listItem'+i+'" name="listItem" onclick="cf_itemCheck()"><label class="visually-hidden" for="listItem'+i+'">선택</label></td>';
+					innerHtml +='<td class="txt_center">'+item.priodMon     +'</td>';
+					innerHtml +='<td class="txt_center">'+item.priodDt      +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt00 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt01 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt02 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt03 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt04 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt05 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt06 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt07 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt08 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt09 +'</td>';
+					innerHtml +='<td>'+item.itemUsdAmt10 +'</td>';
+					innerHtml +='</tr>';
+				});
+			} else {
+				// 조회결과가 없을경우
+				innerHtml +='<tr>';
+				innerHtml +='<td colspan="14" class="txt_center noResult">조회결과가 존재하지 않습니다.</td>';
+				innerHtml +='</tr>';
+			}
+			
+			$('#tradeTableTbody').html(innerHtml);
+		}
+	
+	/*****************************************************
+	* Function 명 : f_paging
+	* Function 기능설명 : 페이징 처리 (총데이터, 선택한 페이지넘버)
+	* 작성자 : 김태일
+	* 작성일 : 2023-02-22
+	* 변경로그 : 
+	* 2023-02-22-김태일-최초생성
+	******************************************************/
+	function f_paging(count, searchPaging) {
+		showPagingLine = $("select[name=showPagingLine]").val();
+		searchPaging = Math.max(searchPaging, 1);
+
+		var pageCount = Math.ceil(count / showPagingLine);
+
+		var leftPage = Math.floor((searchPaging - 1) / 10) * 10 + 1;
+		var rightPage = Math.min(leftPage + 9, pageCount);
+
+		var pagingHtml = '';
+
+		// 페이지가 10보다 클때 왼쪽 화살표 표시
+		if (1 < leftPage) {
+			pagingHtml += '<a class="page_prev" onclick="f_retrieveData(1)">';
+			pagingHtml += '<i class="left_more"></i>';
+			pagingHtml += '<span class="visually-hidden">처음 페이지</span>';
+			pagingHtml += '</a>';
+			pagingHtml += '<a class="page_prev" onclick="f_retrieveData('+Math.max(leftPage - 1, 1)+')">';
+			pagingHtml += '<i class="left"></i>';
+			pagingHtml += '<span class="visually-hidden">이전 페이지</span>';
+			pagingHtml += '</a>';
+		}
+
+		pagingHtml += '<ul class="pagination_lst">';
+		for (var i = leftPage; i <= rightPage; i++) {
+			if (i == searchPaging) {
+				pagingHtml += '<li onclick="f_retrieveData('+i+')"><a class="page active" href="javascript:void(0);">'+i+'</a></li>';
+			} else {
+				pagingHtml += '<li onclick="f_retrieveData('+i+')"><a class="page" href="javascript:void(0);">'+i+'</a></li>';
+			}
+		}
+		pagingHtml += '</ul>';
+		
+		if (rightPage < pageCount) {
+			pagingHtml += '<a class="page_next" onclick="f_retrieveData('+ Math.min(rightPage + 1, pageCount) +')">';
+			pagingHtml += '<i class="right"></i>';
+			pagingHtml += '<span class="visually-hidden">다음 페이지</span>';
+			pagingHtml += '</a>';
+			pagingHtml += '<a class="page_next" onclick="f_retrieveData('+pageCount+')">';
+			pagingHtml += '</a>';
+			pagingHtml += '<span class="visually-hidden">마지막 페이지</span>';
+		}
+		
+		$('#paginationList').html(pagingHtml);
+	}	
+	
+	/*****************************************************
+	* Function 명 : f_pagingOrder
+	* Function 기능설명 : 정렬 페이징 처리 (총데이터, 선택한 페이지넘버)
+	* 작성자 : 김태일
+	* 작성일 : 2023-02-22
+	* 변경로그 : 
+	* 2023-02-22-김태일-최초생성
+	******************************************************/
+	function f_pagingOrder(count, searchPaging,sortColumn,sortOrder) {
+		showPagingLine = $("select[name=showPagingLine]").val();
+		searchPaging = Math.max(searchPaging, 1);
+
+		var pageCount = Math.ceil(count / showPagingLine);
+
+		var leftPage = Math.floor((searchPaging - 1) / 10) * 10 + 1;
+		var rightPage = Math.min(leftPage + 9, pageCount);
+
+		var pagingHtml = '';
+
+		// 페이지가 10보다 클때 왼쪽 화살표 표시
+		if (1 < leftPage) {
+			pagingHtml += '<a class="page_prev" onclick="f_retrieveData(1,\''+sortColumn+'\',\''+sortOrder+'\')">';
+			pagingHtml += '<i class="left_more"></i>';
+			pagingHtml += '<span class="visually-hidden">처음 페이지</span>';
+			pagingHtml += '</a>';
+			pagingHtml += '<a class="page_prev" onclick="f_retrieveData('+Math.max(leftPage - 1, 1)+',\''+sortColumn+'\',\''+sortOrder+'\')">';
+			pagingHtml += '<i class="left"></i>';
+			pagingHtml += '<span class="visually-hidden">이전 페이지</span>';
+			pagingHtml += '</a>';
+		}
+
+		pagingHtml += '<ul class="pagination_lst">';
+		for (var i = leftPage; i <= rightPage; i++) {
+			if (i == searchPaging) {
+				pagingHtml += '<li onclick="f_retrieveData('+i+',\''+sortColumn+'\',\''+sortOrder+'\')"><a class="page active" href="javascript:void(0);">'+i+'</a></li>';
+			} else {
+				pagingHtml += '<li onclick="f_retrieveData('+i+',\''+sortColumn+'\',\''+sortOrder+'\')"><a class="page" href="javascript:void(0);">'+i+'</a></li>';
+			}
+		}
+		pagingHtml += '</ul>';
+		
+		if (rightPage < pageCount) {
+			pagingHtml += '<a class="page_next" onclick="f_retrieveData('+ Math.min(rightPage + 1, pageCount) +',\''+sortColumn+'\',\''+sortOrder+'\')">';
+			pagingHtml += '<i class="right"></i>';
+			pagingHtml += '<span class="visually-hidden">다음 페이지</span>';
+			pagingHtml += '</a>';
+			pagingHtml += '<a class="page_next" onclick="f_retrieveData('+pageCount+',\''+sortColumn+'\',\''+sortOrder+'\')">';
+			pagingHtml += '<i class="right_more"></i>';
+			pagingHtml += '<span class="visually-hidden">마지막 페이지</span>';
+			pagingHtml += '</a>';
+		}
+		
+		$('#paginationList').html(pagingHtml);
+	}
+}
+
+/*****************************************************
+* Function 명 : f_resetData
+* Function 기능설명 : 초기화
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function f_resetData() {
+	// 로딩화면 숨기기
+	$('.loadingWrap').hide();
+		// 모바일 검색 숨기기
+	$('#searchMboxIn').hide();
+	// 건수, 단위 초기화
+	$('#tableTitle').empty(); 
+	cf_chartBtnClassOn('table');
+	// 다운로드 팝업창 숨기기
+	$('#downPopup').hide();
+	// 네비게이션 숨기기
+	$('.loc_nav > ul > li > ul').hide();
+	
+	//체크해제
+	$("input[name='radioYearPc']:checked").prop('checked',false);
+	$("input[name='radioDatePc']:checked").prop('checked',false);
+	$("input[name='radioImexPc']:checked").prop('checked',false);
+	//체크
+	$("input:radio[name='radioYearPc']:radio[value='YEAR']").prop('checked', true);
+	$("#yearMonthDivPc").show();
+	$("input:radio[name='radioDatePc']:radio[value='']").prop('checked', true);
+	$("input[name='radioImexPc']:radio[value='E']").prop('checked',true); 
+	
+	// 조회기간
+	ets_f_setSelectBox();
+
+	
+	// 페이징 초기화 
+	$("#paginationList").empty();
+	// 전체 건수 초기화
+	$('#tableTitle strong').text('0');
+	
+	// 테이블 페이징라인 select box 
+	$('#ETS0100173Q_showPagingLine option:eq(0)').prop('selected', true);
+	// 차트 영역을 숨긴다.
+	$('#chartArea').hide();
+	// 통계영역을 표시한다.
+	$('#boardArea').show();
+	
+	// 검색 플래그를 N으로 바꾼다.
+	seartFlag = 'N'; 
+
+	statsKind = $("input[name='radioTypePc']:checked").val();
+	// 데이터
+	$('#trade_table').empty();
+	var innerHtml = '';
+	
+	innerHtml +='<caption>10일 단위 잠정치 통계 현황</caption>';
+	
+	innerHtml +='<colgroup>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='<col>';
+	innerHtml +='</colgroup>';
+
+	innerHtml +='<thead>';
+	innerHtml +='<tr>';
+	innerHtml +='<th scope="col" class="borderL_0 "><input type="checkbox" id="listItemAll" name="listItemAll" onclick ="cf_listItemAll()"><label class="visually-hidden" for="listItemAll">전체 선택</label></th>';
+	innerHtml +='<th scope="col" aria-sort="none">월별<a class="sort" href="#" data-sort="PRIOD_MON" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden">월별 정렬하기</span></a></th>';
+	innerHtml +='<th scope="col" aria-sort="none">기간<a class="sort" href="#" data-sort="PRIOD_DT" data-sort-order="down" onclick="f_tableSort(this)"><span class="visually-hidden" for="sort_priod_dt">기간 정렬하기</span></a></th>';
+	if (statsKind == 'ETS_MNK_1050000A') {
+		if(imexTpcd == "E") {
+			innerHtml +='<th scope="col">전체</th>';
+			innerHtml +='<th scope="col">반도체</th>';
+			innerHtml +='<th scope="col">철강제품</th>';
+			innerHtml +='<th scope="col">승용차</th>';
+			innerHtml +='<th scope="col">석유제품</th>';
+			innerHtml +='<th scope="col">무선<br>통신기기</th>';
+			innerHtml +='<th scope="col">선박</th>';
+			innerHtml +='<th scope="col">자동차부품</th>';
+			innerHtml +='<th scope="col">컴퓨터<br>주변기기</th>';
+			innerHtml +='<th scope="col">정밀기기</th>';
+			innerHtml +='<th scope="col">가전제품</th>';
+			$('#trade_table').attr("summary","조회 기간별로 전체, 반도체, 철장제품, 승용차, 석유제품, 무선 통신기기, 선박, 자동차부품, 검퓨터 주변기기, 정밀기기, 가전제품 수출액 통계를 제공하는 표입니다.");
+		} else {
+			innerHtml +='<th scope="col">전체</th>';
+			innerHtml +='<th scope="col">반도체</th>';
+			innerHtml +='<th scope="col">원유</th>';
+			innerHtml +='<th scope="col">기계류</th>';
+			innerHtml +='<th scope="col">가스</th>';
+			innerHtml +='<th scope="col">반도체<br>제조용장비</th>';
+			innerHtml +='<th scope="col">정밀기기</th>';
+			innerHtml +='<th scope="col">석유제품</th>';
+			innerHtml +='<th scope="col">무선<br>통신기기</th>';
+			innerHtml +='<th scope="col">승용차</th>';
+			innerHtml +='<th scope="col">석탄</th>';
+			$('#trade_table').attr("summary","조회 기간별로 전제, 반도체, 원유, 기계류, 가스, 반도체 제조용장비, 정밀기기, 석유제품, 무선 통신기기, 승용차, 석탄 수입액 통계를 제공하는 표입니다.");
+		}
+	} else {
+		if(imexTpcd == "E") {
+			innerHtml +='<th scope="col">전체</th>';
+			innerHtml +='<th scope="col">중국</th>';
+			innerHtml +='<th scope="col">미국</th>';
+			innerHtml +='<th scope="col">유럽연합</th>';
+			innerHtml +='<th scope="col">베트남</th>';
+			innerHtml +='<th scope="col">홍콩</th>';
+			innerHtml +='<th scope="col">일본</th>';
+			innerHtml +='<th scope="col">대만</th>';
+			innerHtml +='<th scope="col">인도</th>';
+			innerHtml +='<th scope="col">싱가포르</th>';
+			innerHtml +='<th scope="col">말레이시아</th>';
+			$('#trade_table').attr("summary","조회 기간별로 전체, 중국, 미국, 유럽연합, 베트남, 홍콩, 일본, 대만, 인도, 싱가포르, 말레이시아 수출액 통계를 제공하는 표입니다.");
+		} else {
+			innerHtml +='<th scope="col">전체</th>';
+			innerHtml +='<th scope="col">중국</th>';
+			innerHtml +='<th scope="col">미국</th>';
+			innerHtml +='<th scope="col">유럽연합</th>';
+			innerHtml +='<th scope="col">일본</th>';
+			innerHtml +='<th scope="col">베트남</th>';
+			innerHtml +='<th scope="col">호주</th>';
+			innerHtml +='<th scope="col">대만</th>';
+			innerHtml +='<th scope="col">사우디<br>아라비아</th>';
+			innerHtml +='<th scope="col">러시아연방</th>';
+			innerHtml +='<th scope="col">말레이시아</th>';
+			$('#trade_table').attr("summary","조회 기간별로 전체, 중국, 미국, 유럽연합, 일본, 베트남, 호주, 대만, 사우디아라비아, 러시아연방, 말레이시아 수입액 통계를 제공하는 표입니다.");
+		}
+	}
+	innerHtml +='</tr>';
+	innerHtml +='</thead>';
+	innerHtml +='<tbody id="tradeTableTbody">';
+	innerHtml +='<tr>';
+	innerHtml +='<td colspan="14" class="txt_center noResult">조회조건을 선택해주세요.</td>';
+	innerHtml +='</tr>';
+	innerHtml +='</tbody>';
+	innerHtml +='<tfoot id="tradeTableTfoot">';
+	innerHtml +='</tfoot>';
+	
+	$('#trade_table').html(innerHtml);
+		
+	/* 웹 접근성 추가 - 테이블 헤더 정렬 버튼 */
+	$('.sort').attr("role","button");
+
+}
+
+/*****************************************************
+* Function 명 : f_pcToMobile
+* Function 기능설명 : pc에서 선택한 검색조건을 Mobile에도 적용
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function f_pcToMobile() {
+	// 통계항목
+	var checkType = $('#retrieveSelectTypePC').val();
+	if (checkType == 'P') {
+		$('#ETS0100173Q_btnTypeMobile').text("품목");
+	} else {
+		$('#ETS0100173Q_btnTypeMobile').text("국가");
+	}
+
+	// 구분 팝업 라디오 버튼 체크 해제
+	$("input:radio[name='radioType']").prop('checked', false);
+	// 라디오버튼 체크
+	$("input:radio[name='radioType']:radio[value='" + checkType + "']").prop('checked', true);
+
+	// 수출입구분
+	var checkImex = $('#selectImexPC').val();
+	if (checkImex == 'E') {
+		$('#ETS0100173Q_btnImexMobile').text("수출");
+	} else {
+		$('#ETS0100173Q_btnImexMobile').text("수입");
+	}
+
+	// 구분 팝업 라디오 버튼 체크 해제
+	$("input:radio[name='radioImex']").prop('checked', false);
+	// 라디오버튼 체크
+	$("input:radio[name='radioImex']:radio[value='" + checkImex + "']").prop('checked', true);
+
+	// 조회기간
+	var checkYear = $('#selectYearPC').val();
+	$("input:radio[name='radioYear']").prop('checked', false);
+	$("input:radio[name='radioYear']:radio[value='" + checkYear + "']").prop('checked', true);
+
+	var checkDate = $('#selectDatePC').val();
+	$("input:radio[name='radioDate']").prop('checked', false);
+	$("input:radio[name='radioDate']:radio[value='" + checkDate + "']").prop('checked', true);
+
+	if (checkYear == 'YEAR') {
+		$('#yearPcDiv').show();
+		$('#yearMonthPcDiv').hide();
+		$('#yearDiv').show();
+		$('#yearMonthDiv').hide();
+	} else if (checkYear == 'MON') {
+		$('#yearPcDiv').hide();
+		$('#yearMonthPcDiv').show();
+		$('#yearDiv').hide();
+		$('#yearMonthDiv').show();
+	}
+
+	// 조회기간 - 연도별
+	var checkFormYear = $('#ETS0100173Q_formYearPc').val();
+	var checkToYear = $('#ETS0100173Q_toYearPc').val();
+
+	$("#ETS0100173Q_formYearMobile").val(checkFormYear).prop('checked', true);
+	$("#ETS0100173Q_toYearMobile").val(checkToYear).prop('checked', true);
+
+	// 조회기간 - 월별
+	var checkFormYearMonth = $('#ETS0100173Q_formYearMonthPc').val();
+	var checkToYearMonth = $('#ETS0100173Q_toYearMonthPc').val();
+
+	$("#ETS0100173Q_formYearMonthMobile").val(checkFormYearMonth).prop('checked', true);
+	$("#ETS0100173Q_toYearMonthMobile").val(checkToYearMonth).prop('checked', true);
+}
+
+// 연도별인지 월별인지 체크하는 값 (초기값 연도)
+var yearOrMonth = 'YEAR';
+
+
+/*****************************************************
+* Function 명 : f_radioCheck
+* Function 기능설명 : 팝업 라디오 버튼 클릭시 체크
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function f_radioCheck(item, itemValue) {
+	$("input:radio[name='"+item+"']").prop('checked', false);
+	$("input:radio[name='"+item+"']:radio[value='"+itemValue+"']").prop('checked', true);
+
+	// 조회기간
+	if ('radioYearPc' == item) {
+		// 선택된값이 연도별인지 월별인지 체크한다
+		yearOrMonth = itemValue;
+		if (itemValue == 'YEAR') {
+			$('#yearDivPc').show();
+			$('#yearMonthDivPc').hide();
+		} else if (itemValue == 'MON') {
+			$('#yearDivPc').hide();
+			$('#yearMonthDivPc').show();
+		}
+	}
+}
+
+/*****************************************************
+ * Function 명 : f_popupLayerMobile
+ * Function 기능설명 : Mobile 버튼별 화면 팝업
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_popupLayerMobile(popupName) {
+	$(".search_mbox button").removeClass("active");
+	if (popupName == 'type') { // 통계항목
+		$("#ETS0100173Q_btnTypeMobile").addClass("active");
+		$("#type").css("display", "block");
+		$(".black-bg").css("display", "block");
+	} else if (popupName == 'imex') { // 수출입구분
+		$("#ETS0100173Q_btnImexMobile").addClass("active");
+		$("#imex").css("display", "block");
+		$(".black-bg").css("display", "block");
+	} else if (popupName == 'year') { // 조회기간(연/월)
+		$("#ETS0100173Q_btnYearMobile").addClass("active");
+		$("#year").css("display", "block");
+		$(".black-bg").css("display", "block");
+	} else if (popupName == 'date') { // 조회기간(일)
+		$("#buttonDateMobile").addClass("active");
+		$("#date").css("display", "block");
+		$(".black-bg").css("display", "block");
+	}
+}
+
+
+/*****************************************************
+ * Function 명 : f_popupLayerPc
+ * Function 기능설명 : pc 버튼별 화면 팝업
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+// pc 버튼별 화면 팝업
+function f_popupLayerPc(popupName) {
+}
+
+/*****************************************************
+ * Function 명 : f_searchPc
+ * Function 기능설명 : PC 적용버튼시 작동
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_searchPc() {
+		
+	// 제목
+	$('#titleType').text(retrieveSelectType);
+	$(".p_search-layer").css("display","none");
+	
+	// 검색박스 전부 숨긴다
+	f_hideFilterBox();
+	// 선택한 검색박스만 표시한다
+	f_showFilterBox(retrieveSelectType);
+}
+
+/*****************************************************
+ * Function 명 : f_showFilterBox
+ * Function 기능설명 : 통계항목별 검색박스 표시
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_showFilterBox(retrieveSelectType) {
+}
+
+/*****************************************************
+ * Function 명 : f_hideFilterBox
+ * Function 기능설명 : 검색항목 전체 숨기기 
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_hideFilterBox() {
+}
+
+/*****************************************************
+ * Function 명 : f_searchMobile
+ * Function 기능설명 : 모바일 적용버튼시 작동 
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_searchMobile(item) {
+	// 통계항목
+	if (item == 'type') {
+		$("#retrieveSelectTypePC").val($("input[name='radioType']:checked").val()).prop('checked', true);
+		if ($("input[name='radioType']:checked").val() == 'P') {
+			$('#ETS0100173Q_btnTypeMobile').text('품목');
+		} else {
+			$('#ETS0100173Q_btnTypeMobile').text('국가');
+		}
+	}
+	// 수출입구분
+	if (item == 'imex') {
+		$("#selectImexPC").val($("input[name='radioImex']:checked").val()).prop('checked', true);
+		if ($("input[name='radioImex']:checked").val() == 'E') {
+			$('#ETS0100173Q_btnImexMobile').text('수출');
+		} else {
+			$('#ETS0100173Q_btnImexMobile').text('수입');
+		}
+	}
+	// 조회기간
+	if (item == 'year') {
+		// 조회기간 - 연도별
+		var checkFormYear = $('#ETS0100173Q_formYearMobile').val();
+		var checkToYear = $('#ETS0100173Q_toYearMobile').val();
+
+		$("#ETS0100173Q_formYearPc").val(checkFormYear).prop('checked', true);
+		$("#ETS0100173Q_toYearPc").val(checkToYear).prop('checked', true);
+
+		// 조회기간 - 월별
+		var checkFormYearMonth = $('#ETS0100173Q_formYearMonthMobile').val();
+		var checkToYearMonth = $('#ETS0100173Q_toYearMonthMobile').val();
+
+		$("#ETS0100173Q_formYearMonthPc").val(checkFormYearMonth).prop('checked', true);
+		$("#ETS0100173Q_toYearMonthPc").val(checkToYearMonth).prop('checked', true);
+
+		// 연도별인지 월별인지 셀렉트 박스를 선택한다
+		if (yearOrMonth == 'YEAR') {
+			$('#yearPcDiv').show();
+			$('#yearMonthPcDiv').hide();
+		} else if (yearOrMonth == 'MON') {
+			$('#yearPcDiv').hide();
+			$('#yearMonthPcDiv').show();
+		}
+		$("#selectYearPC").val(yearOrMonth).prop('checked', true);
+	}
+	// 조회기간(일)
+	if (item == 'date') {
+		$("#selectDatePC").val($("input[name='radioDate']:checked").val()).prop('checked', true);
+		if ($("input[name='radioDate']:checked").val() == '1') {
+			$('#buttonDateMobile').text('1~10일');
+		} else if ($("input[name='radioDate']:checked").val() == '2') {
+			$('#buttonDateMobile').text('1~20일');
+		} else if ($("input[name='radioDate']:checked").val() == '3') {
+			$('#buttonDateMobile').text('1~말일');
+		} else {
+			$('#buttonDateMobile').text('전체');
+		}
+	}
+	// 팝업 닫기
+	$(".m-search-layer").css("display", "none");
+	$(".black-bg").css("display", "none");
+	
+	// 적용버튼 클릭시 검색기능 활성화
+	f_retrieveData(1);
+}
+
+/*****************************************************
+ * Function 명 : ets_f_setSelectBox
+ * Function 기능설명 : 검색조건 연도 가져오기
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function ets_f_setSelectBox() {
+
+	var opts = 
+	{
+		url: "/cts/hmpg/retrieveSetSelectBoxTentative.do",
+		 callback : 
+		 function(result){
+			var now = new Date();
+			var nyear = result.item.maxYear.substr(0,4);
+			var nmon = result.item.maxYear.substr(4,6);
+//			var nmon = (now.getMonth()+1)>9?(now.getMonth()+1):(now.getMonth()+1);
+			var cmon ="";
+			var cmonVal ="";	
+			var optFrString = "";
+			
+			// 연도별
+//			for (var sy = 2000; sy <= nyear; sy++){
+			for (var sy =nyear; sy >=2016;sy--){	// 최대연도를 맨 위로
+				cmon = sy;
+				cmonVal = sy;
+				
+				if (sy == nyear) {
+					optFrString += '<option value="'+cmonVal+'" selected="'+'selected'+'" >'+cmon +'</option>';
+				} else { 
+					optFrString += '<option value="'+cmonVal+'">'+cmon +'</option>';
+				}		
+			}
+			
+			$("#ETS0100173Q_formYearPc").html(optFrString);
+			$("#ETS0100173Q_toYearPc").html(optFrString);
+			$("#ETS0100173Q_formYearMobile").html(optFrString);
+			$("#ETS0100173Q_toYearMobile").html(optFrString);
+		
+			optFrString = "";
+			// 월별
+//			for (var sy =2000; sy <=nyear;sy++){
+			for (var sy =nyear; sy >=2016;sy--){	// 최대연도를 맨 위로
+				cmon = sy;
+				cmonVal = sy;
+				
+//				for (var mon = 1; mon <= 12; mon++) {
+				for (var mon = 12; mon >= 1; mon--) {	// 최대연도를 맨 위로
+					var month = mon;
+					
+					if(sy == nyear && nmon < mon) 	continue;	// 최대연도를 맨 위로
+					
+					if(month <= 9){
+						month = '0'+month;
+					}
+					
+					if (sy == nyear && nmon == mon) {
+						optFrString += '<option value="'+cmonVal+month+'" selected="'+'selected'+'" >'+cmon +'.'+month +'</option>';
+					} else { 
+						optFrString += '<option value="'+cmonVal+month+'">'+cmon +'.'+month +'</option>';
+					}
+				}
+			}
+			
+			$("#ETS0100173Q_formYearMonthPc").html(optFrString);
+			$("#ETS0100173Q_toYearMonthPc").html(optFrString);
+			$("#ETS0100173Q_formYearMonthMobile").html(optFrString);
+			$("#ETS0100173Q_toYearMonthMobile").html(optFrString);
+	
+		}
+	};
+
+	$.fn.kcs4gAjax(opts);
+	
+} // end of function
+
+/*****************************************************
+ * Function 명 : f_tableView
+ * Function 기능설명 : 검색내용 보기
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_tableView(){
+	cf_chartBtnClassOn('table');
+	// 테이블 영역을 표시한다.
+	$('#boardArea').show();
+
+	// 차트영역을 숨긴다.
+	$('#chartArea').hide();
+	$('#chartTableArea').hide();
+	// 다운로드 팝업창 숨기기
+	$('#downPopup').hide();
+	
+	$('#tableTitle').show();
+}
+
+/*****************************************************
+ * Function 명 : f_viewChart
+ * Function 기능설명 : 차트만들기
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_viewChart(chartType, sort) {
+	// 검색 플래그가 Y일경우에만 차트를표시한다
+	if (seartFlag == 'N') {
+		cf_alertMessage(ETS_MSG.inf_all_00037);//조회조건을 선택하십시오.
+		return;
+	}
+	// 조회결과 플래그가 Y일경우에만 차트 기능을 제공 한다
+	if (resultFlag == 'N') {
+		cf_alertMessage(ETS_MSG.inf_all_00038);//조회결과가 존재하지 않습니다.
+		return;
+	};
+	
+	// 로딩화면 표시
+	$('.loadingWrap').show();
+
+	f_chartBtnShowHide(chartType);
+
+	// 초기화면 테이블 데이터 취득
+	var callUrl = "/cts/hmpg/retrieveChartTentativeValues.do";
+	// 선택한 페이지 (초기 페이지는 1)
+	var params = {
+		'statsKind' : statsKind
+		,'imexTpcd' : imexTpcd
+		,'priodKind' : priodKind
+		,'priodFr' : priodFr
+		,'priodTo' : priodTo
+		,'priodDate' : priodDate
+	};
+	
+	var seriesData = [];
+	var chartObj;
+	
+	var opts = 
+	{
+		url: callUrl,
+		data: params,
+		 callback : 
+		 function(result){
+			// 결과값이없을경우
+			if (result.items.length == 0) {
+				cf_alertMessage(ETS_MSG.inf_all_00038);//조회결과가 존재하지 않습니다.
+				// 로딩화면 숨기기
+				$('.loadingWrap').hide();
+				return false;
+			}
+			cf_chartBtnClassOn(chartType);
+
+			// 테이블 영역을 숨긴다
+			$('#boardArea').hide();
+			// 차트영역을 표시한다
+			$('#chartArea').show();
+	
+			// 다운로드 팝업창 숨기기
+			$('#downPopup').hide();
+
+			// 1~10일 데이터
+			var amtData1 = [];
+			// 1~20일 데이터
+			var amtData2 = [];
+			// 1~말일 데이터
+			var amtData3 = [];
+
+			// 시리즈 데이터
+			var seriesColumn = [];
+			// 드릴다운데이터
+			var drilldownData = [];
+			
+			var uprId = '';
+			var curAmtData1 = [];
+			var curAmtData2 = [];
+			var curAmtData3 = [];
+			
+			var color1 = "";
+			var color2 = "";
+			var color3 = "";
+			if (imexTpcd == 'E') {
+				color1 = '#01BFBF';
+				color2 = '#1488D1';
+				color3 = '#0050DF';
+			} else {
+				color1 = '#FAAA15';
+				color2 = '#F3562B';
+				color3 = '#DB2929';
+			}
+
+			// 검색결과를 for문 돌면서 차트리스트를 설정한다.
+			$.each(result.items, function(i, item) {
+				var amtValue1 = Number(item.itemUsdAmt1);
+				var amtValue2 = Number(item.itemUsdAmt2);
+				var amtValue3 = Number(item.itemUsdAmt3);
+
+				if (item.uprId == '') {
+					if (item.lwprId == '') { // 드릴다운 (xX)
+						if (amtValue1 > 0) { amtData1.push({'name': item.curTitle, 'y': amtValue1}); }
+						if (amtValue2 > 0) { amtData2.push({'name': item.curTitle, 'y': amtValue2}); }
+						if (amtValue3 > 0) { amtData3.push({'name': item.curTitle, 'y': amtValue3}); }
+					} else { // 드릴다운 최상위 단계
+						if (amtValue1 > 0) { amtData1.push({'name': item.curTitle, 'y': amtValue1, 'drilldown': item.lwprId + '1'}); }
+						if (amtValue2 > 0) { amtData2.push({'name': item.curTitle, 'y': amtValue2, 'drilldown': item.lwprId + '2'}); }
+						if (amtValue3 > 0) { amtData3.push({'name': item.curTitle, 'y': amtValue3, 'drilldown': item.lwprId + '3'}); }
+					}
+					
+				} else {
+					if (uprId == '') {
+						uprId = item.uprId;
+						curAmtData1 = [];
+						curAmtData2 = [];
+						curAmtData3 = [];
+					} else if (uprId != item.uprId) {
+						if (priodDate == '' || priodDate == '1') { drilldownData.push({'name': '1~10일', 'id': uprId + '1', 'data': curAmtData1}); }
+						if (priodDate == '' || priodDate == '2') { drilldownData.push({'name': '1~20일', 'id': uprId + '2', 'data': curAmtData2}); }
+						if (priodDate == '' || priodDate == '3') { drilldownData.push({'name': '1~말일', 'id': uprId + '3', 'data': curAmtData3}); }
+						uprId = item.uprId;
+						curAmtData1 = [];
+						curAmtData2 = [];
+						curAmtData3 = [];
+					}
+
+					if (item.lwprId == '') {
+						curAmtData1.push({'name': item.curTitle, 'y': amtValue1});
+						curAmtData2.push({'name': item.curTitle, 'y': amtValue2});
+						curAmtData3.push({'name': item.curTitle, 'y': amtValue3});
+						
+					} else {
+						curAmtData1.push({'name': item.curTitle, 'y': amtValue1, 'drilldown': item.lwprId + '1'});
+						curAmtData2.push({'name': item.curTitle, 'y': amtValue2, 'drilldown': item.lwprId + '2'});
+						curAmtData3.push({'name': item.curTitle, 'y': amtValue3, 'drilldown': item.lwprId + '3'});
+					}
+				}
+
+				if (uprId != '') {
+					if (priodDate == '' || priodDate == '1') { drilldownData.push({'name': '1~10일', 'id': uprId + '1', 'data': curAmtData1}); }
+					if (priodDate == '' || priodDate == '2') { drilldownData.push({'name': '1~20일', 'id': uprId + '2', 'data': curAmtData2}); }
+					if (priodDate == '' || priodDate == '3') { drilldownData.push({'name': '1~말일', 'id': uprId + '3', 'data': curAmtData3}); }
+				}
+			});
+			
+			if (chartType == 'column') {
+				if (priodDate == '' || priodDate == '1') { seriesColumn.push({'name': '1~10일', 'color': color1, 'dataLabels': {'color': color1}, 'data': amtData1}); }
+				if (priodDate == '' || priodDate == '2') { seriesColumn.push({'name': '1~20일', 'color': color2, 'dataLabels': {'color': color2}, 'data': amtData2}); }
+				if (priodDate == '' || priodDate == '3') { seriesColumn.push({'name': '1~말일', 'color': color3, 'dataLabels': {'color': color3}, 'data': amtData3}); }
+
+				// 컬럼 기본차트
+				cf_columnDrilldownChart(seriesColumn, drilldownData);
+			}
+			// 로딩화면 숨기기
+			$('.loadingWrap').hide();
+		}
+	};
+
+	$.fn.kcs4gAjax(opts);
+}
+
+/*****************************************************
+ * Function 명 : f_getChangeChart
+ * Function 기능설명 : 각 버튼에 따라 해당 차트 보이기
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_getChangeChart(sort) {
+	
+	// 파이차트
+	// 수출금액
+	if(sort === 'EAMT') {
+		f_viewChart(chartTypeAll, 'EAMT');
+	}
+	
+	// 수입금액
+	if(sort === 'IAMT') {
+		f_viewChart(chartTypeAll, 'IAMT');
+	}	
+}
+
+/*****************************************************
+ * Function 명 : f_pagiongLineChange
+ * Function 기능설명 : 페이징갯수 셀렉트박스 클릭시 검색결과 초기화
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_pagiongLineChange() {
+	f_retrieveData(1);
+}
+
+
+/*****************************************************
+ * Function 명 : f_saveJson
+ * Function 기능설명 : json 다운로드
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_saveJson() {
+	
+	$('.loadingWrap').show();
+	$('.m-black-down-bg').hide();
+	document.body.style.overflow = "unset";
+	// 검색 데이터를 취득한다.
+	var params = f_tableDownData();
+	
+	var opts = 
+	{
+		url: "/cts/hmpg/downloadTentativeValuesJson.do",
+		data: params,
+		 callback : 
+		 function(result){
+			// 통계항목
+			var statsKind = $("input[name='radioTypePc']:checked").val();
+			var jsonData = [];
+			var params;
+			$.each(result.items, function(i, item){
+				if (statsKind == 'ETS_MNK_1050000A') {
+					if(imexTpcd == "E") {
+						params = {
+							'월별' : item.priodMon
+							,'기간' : item.priodDt
+							,'전체' : item.itemUsdAmt00.replace(/,/g, "").replace(/ /g, "")
+							,'반도체' : item.itemUsdAmt01.replace(/,/g, "").replace(/ /g, "")
+							,'철강제품' : item.itemUsdAmt02.replace(/,/g, "").replace(/ /g, "")
+							,'승용차' : item.itemUsdAmt03.replace(/,/g, "").replace(/ /g, "")
+							,'석유제품' : item.itemUsdAmt04.replace(/,/g, "").replace(/ /g, "")
+							,'무선통신기기' : item.itemUsdAmt05.replace(/,/g, "").replace(/ /g, "")
+							,'선박' : item.itemUsdAmt06.replace(/,/g, "").replace(/ /g, "")
+							,'자동차부품' : item.itemUsdAmt07.replace(/,/g, "").replace(/ /g, "")
+							,'컴퓨터주변기기' : item.itemUsdAmt08.replace(/,/g, "").replace(/ /g, "")
+							,'정밀기기' : item.itemUsdAmt09.replace(/,/g, "").replace(/ /g, "")
+							,'가전제품' : item.itemUsdAmt10.replace(/,/g, "").replace(/ /g, "")
+						};
+					} else {
+						params = {
+							'월별' : item.priodMon
+							,'기간' : item.priodDt
+							,'전체' : item.itemUsdAmt00.replace(/,/g, "").replace(/ /g, "")
+							,'반도체' : item.itemUsdAmt01.replace(/,/g, "").replace(/ /g, "")
+							,'원유' : item.itemUsdAmt02.replace(/,/g, "").replace(/ /g, "")
+							,'기계류' : item.itemUsdAmt03.replace(/,/g, "").replace(/ /g, "")
+							,'가스' : item.itemUsdAmt04.replace(/,/g, "").replace(/ /g, "")
+							,'반도체제조용장비' : item.itemUsdAmt05.replace(/,/g, "").replace(/ /g, "")
+							,'정밀기기' : item.itemUsdAmt06.replace(/,/g, "").replace(/ /g, "")
+							,'석유제품' : item.itemUsdAmt07.replace(/,/g, "").replace(/ /g, "")
+							,'무선통신기기' : item.itemUsdAmt08.replace(/,/g, "").replace(/ /g, "")
+							,'승용차' : item.itemUsdAmt09.replace(/,/g, "").replace(/ /g, "")
+							,'석탄' : item.itemUsdAmt10.replace(/,/g, "").replace(/ /g, "")
+						};
+					}
+				} else if (statsKind == 'ETS_MNK_1050000B') {
+					if(imexTpcd == "E") {
+						params = {
+							'월별' : item.priodMon
+							,'기간' : item.priodDt
+							,'전체' : item.itemUsdAmt00.replace(/,/g, "").replace(/ /g, "")
+							,'중국' : item.itemUsdAmt01.replace(/,/g, "").replace(/ /g, "")
+							,'미국' : item.itemUsdAmt02.replace(/,/g, "").replace(/ /g, "")
+							,'유럽연합' : item.itemUsdAmt03.replace(/,/g, "").replace(/ /g, "")
+							,'베트남' : item.itemUsdAmt04.replace(/,/g, "").replace(/ /g, "")
+							,'홍콩' : item.itemUsdAmt05.replace(/,/g, "").replace(/ /g, "")
+							,'일본' : item.itemUsdAmt06.replace(/,/g, "").replace(/ /g, "")
+							,'대만' : item.itemUsdAmt07.replace(/,/g, "").replace(/ /g, "")
+							,'인도' : item.itemUsdAmt08.replace(/,/g, "").replace(/ /g, "")
+							,'싱가포르' : item.itemUsdAmt09.replace(/,/g, "").replace(/ /g, "")
+							,'말레이시아' : item.itemUsdAmt10.replace(/,/g, "").replace(/ /g, "")
+						};
+					} else {
+						params = {
+							'월별' : item.priodMon
+							,'기간' : item.priodDt
+							,'전체' : item.itemUsdAmt00.replace(/,/g, "").replace(/ /g, "")
+							,'중국' : item.itemUsdAmt01.replace(/,/g, "").replace(/ /g, "")
+							,'미국' : item.itemUsdAmt02.replace(/,/g, "").replace(/ /g, "")
+							,'유럽연합' : item.itemUsdAmt03.replace(/,/g, "").replace(/ /g, "")
+							,'일본' : item.itemUsdAmt04.replace(/,/g, "").replace(/ /g, "")
+							,'베트남' : item.itemUsdAmt05.replace(/,/g, "").replace(/ /g, "")
+							,'호주' : item.itemUsdAmt06.replace(/,/g, "").replace(/ /g, "")
+							,'대만' : item.itemUsdAmt07.replace(/,/g, "").replace(/ /g, "")
+							,'사우디아라비아' : item.itemUsdAmt08.replace(/,/g, "").replace(/ /g, "")
+							,'러시아연방' : item.itemUsdAmt09.replace(/,/g, "").replace(/ /g, "")
+							,'말레이시아' : item.itemUsdAmt10.replace(/,/g, "").replace(/ /g, "")
+						};
+					}
+				}
+				jsonData.push(params);
+			});
+			
+			cf_saveJsonSrc(jsonData, $('#subTitle').text() + '_' + fileNowDate+'.json');
+			// 로딩화면 숨기기
+			$('.loadingWrap').hide();
+		}
+	};
+
+	$.fn.kcs4gAjax(opts);
+}
+
+/*****************************************************
+ * Function 명 : f_saveCsv
+ * Function 기능설명 : csv 다운로드
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_saveCsv() {
+	$('.loadingWrap').show();
+	$('.m-black-down-bg').hide();
+	document.body.style.overflow = "unset";
+	// 검색 데이터를 취득한다.
+	var params = f_tableDownData();
+	
+	var opts = 
+	{
+		url: "/cts/hmpg/downloadTentativeValuesCsv.do",
+		data: params,
+		 callback : 
+		 function(result){
+			
+			// 통계항목
+			var statsKind = $("input[name='radioTypePc']:checked").val();
+			var csv = [];
+			var row = [];
+			
+			// 1열에 셋팅하는 컬럼명
+			if (statsKind == 'ETS_MNK_1050000A') {
+				if(imexTpcd == "E") {
+					row.push (
+						"월별"
+						,"기간"
+						,"전체"
+						,"반도체"
+						,"철강제품"
+						,"승용차"
+						,"석유제품"
+						,"무선통신기기"
+						,"선박"
+						,"자동차부품"
+						,"컴퓨터주변기기"
+						,"정밀기기"
+						,"가전제품"
+					);
+				} else {
+					row.push (
+						"월별"
+						,"기간"
+						,"전체"
+						,"반도체"
+						,"원유"
+						,"기계류"
+						,"가스"
+						,"반도체제조용장비"
+						,"정밀기기"
+						,"석유제품"
+						,"무선통신기기"
+						,"승용차"
+						,"석탄"
+					);
+				}
+			} else if (statsKind == 'ETS_MNK_1050000B') {
+				if(imexTpcd == "E") {
+					row.push (
+						"월별"
+						,"기간"
+						,"전체"
+						,"중국"
+						,"미국"
+						,"유럽연합"
+						,"베트남"
+						,"홍콩"
+						,"일본"
+						,"대만"
+						,"인도"
+						,"싱가포르"
+						,"말레이시아"
+					);
+				} else {
+					row.push (
+						"월별"
+						,"기간"
+						,"전체"
+						,"중국"
+						,"미국"
+						,"유럽연합"
+						,"일본"
+						,"베트남"
+						,"호주"
+						,"대만"
+						,"사우디아라비아"
+						,"러시아연방"
+						,"말레이시아"
+					);
+				}
+			}
+			
+			// csv넣기
+			csv.push(row.join(","));
+		
+			$.each(result.items, function(i, item){
+				row = [];
+				if (statsKind == 'ETS_MNK_1050000A') {
+					row.push(
+						item.priodMon,
+						item.priodDt,
+						item.itemUsdAmt00.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt01.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt02.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt03.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt04.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt05.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt06.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt07.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt08.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt09.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt10.replace(/,/g, "").replace(/ /g, "")
+					);
+				}else if (statsKind == 'ETS_MNK_1050000B') {
+					row.push(
+						item.priodMon,
+						item.priodDt,
+						item.itemUsdAmt00.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt01.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt02.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt03.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt04.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt05.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt06.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt07.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt08.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt09.replace(/,/g, "").replace(/ /g, ""),
+						item.itemUsdAmt10.replace(/,/g, "").replace(/ /g, "")
+					);
+				}
+				
+				csv.push(row.join(","));
+			});
+			
+			
+			cf_saveCsvSrc(csv.join("\n"), $('#subTitle').text() + '_' + fileNowDate+'.csv');
+			// 로딩화면 숨기기
+			$('.loadingWrap').hide();
+		}
+	};
+
+	$.fn.kcs4gAjax(opts);
+}
+
+/*****************************************************
+ * Function 명 : f_saveExl
+ * Function 기능설명 : Excel 다운로드
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_saveExl(excelName){
+//	// 상단에 검색조건을 넣는다
+//	$('#trade_table thead').prepend('<tr id="excelDownTitle"><th scope="colgroup" colspan="8">'+searchValue+'</th></tr>');
+//	f_saveExcel(excelName);
+	$('.loadingWrap').show();
+	$('.m-black-down-bg').hide();
+	document.body.style.overflow = "unset";
+	// 검색 데이터를 취득한다.
+	var params = f_tableDownData();
+	
+	var opts = 
+	{
+		url: "/cts/hmpg/downloadTentativeValuesExcel.do",
+		data: params,
+		 callback : 
+		 function(result){
+			var frmId = "ETS0100173Q_excel_download_form";
+			document.forms[frmId].xlsFileNm.value = result.xlsFileNm;
+			document.forms[frmId].action = '/cts/hmpg/saveXlsxExl.do';
+			document.forms[frmId].submit();
+			// 로딩화면 숨기기
+			$('.loadingWrap').hide();
+		}
+	};
+
+	$.fn.kcs4gAjax(opts);
+}
+
+/*****************************************************
+ * Function 명 : f_tableDownData
+ * Function 기능설명 : 다운로드시 필요한 파라미터 설정
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_tableDownData() {
+	// 선택한 페이지 (초기 페이지는 1)
+	var params = searchJsonData;
+	
+	// 엑셀에 필요한 데이터
+	// 파일명
+	var xlsxFileNm = $('#subTitle').text();
+	// 제목 셀병합할 위치 Ex) "A1:G1"
+	var xlsxSellMerge = '';
+	// 단위
+	var xlsxUnit = '';
+	// 단위 위치 (0번부터 시작) 숫자
+	var xlsxUnitPosition = '';
+	// 검색조건
+	var xlsxSearch = searchValueExcel;
+	// 엑셀 헤더값 (컬럼명, 헤더 제목, 넓이) Ex) "priodTitle:품목별:6000,sidoNm:시도명:6000"
+	var xlsxHeards = '';
+	
+	// 품목별일경우
+	if (statsKind == 'ETS_MNK_1050000A') {
+		// 제목 셀병합할 위치 Ex) "A1:G1"
+		xlsxSellMerge = 'A1:E1';
+		// 단위
+		xlsxUnit = '천 달러';
+		// 단위 위치 (0번부터 시작) 숫자
+		xlsxUnitPosition = '12';
+		// 엑셀 헤더값 (컬럼명, 헤더 제목, 넓이) Ex) "priodTitle:품목별:6000,sidoNm:시도명:6000"
+		if(imexTpcd == "E") {
+			xlsxHeards = 'priodMon:월별:4000,priodDt:기간:4000,itemUsdAmt00:전체:4000,itemUsdAmt01:반도체:4000,itemUsdAmt02:철강제품:4000,itemUsdAmt03:승용차:4000,itemUsdAmt04:석유제품:4000,itemUsdAmt05:무선통신기기:4000,itemUsdAmt06:선박:4000,itemUsdAmt07:자동차부품:4000,itemUsdAmt08:컴퓨터주변기기:4000,itemUsdAmt09:정밀기기:4000,itemUsdAmt10:가전제품:4000';
+		} else {
+			xlsxHeards = 'priodMon:월별:4000,priodDt:기간:4000,itemUsdAmt00:전체:4000,itemUsdAmt01:반도체:4000,itemUsdAmt02:원유:4000,itemUsdAmt03:기계류:4000,itemUsdAmt04:가스:4000,itemUsdAmt05:반도체제조용장비:4000,itemUsdAmt06:정밀기기:4000,itemUsdAmt07:석유제품:4000,itemUsdAmt08:무선통신기기:4000,itemUsdAmt09:승용차:4000,itemUsdAmt10:석탄:4000';
+		}
+	}
+	// 국가별일경우
+	if (statsKind == 'ETS_MNK_1050000B') {
+		// 제목 셀병합할 위치 Ex) "A1:G1"
+		xlsxSellMerge = 'A1:E1';
+		// 단위
+		xlsxUnit = '천 달러';
+		// 단위 위치 (0번부터 시작) 숫자
+		xlsxUnitPosition = '12';
+		// 엑셀 헤더값 (컬럼명, 헤더 제목, 넓이) Ex) "priodTitle:품목별:6000,sidoNm:시도명:6000"
+		if(imexTpcd == "E") {
+			xlsxHeards = 'priodMon:월별:4000,priodDt:기간:4000,itemUsdAmt00:전체:4000,itemUsdAmt01:중국:4000,itemUsdAmt02:미국:4000,itemUsdAmt03:유럽연합:4000,itemUsdAmt04:베트남:4000,itemUsdAmt05:홍콩:4000,itemUsdAmt06:일본:4000,itemUsdAmt07:대만:4000,itemUsdAmt08:인도:4000,itemUsdAmt09:싱가포르:4000,itemUsdAmt10:말레이시아:4000';
+		} else {
+			xlsxHeards = 'priodMon:월별:4000,priodDt:기간:4000,itemUsdAmt00:전체:4000,itemUsdAmt01:중국:4000,itemUsdAmt02:미국:4000,itemUsdAmt03:유럽연합:4000,itemUsdAmt04:일본:4000,itemUsdAmt05:베트남:4000,itemUsdAmt06:호주:4000,itemUsdAmt07:대만:4000,itemUsdAmt08:사우디아라비아:4000,itemUsdAmt09:러시아연방:4000,itemUsdAmt10:말레이시아:4000';
+		}
+	}
+
+	// Data값 설정
+	params.xlsxFileNm = xlsxFileNm;
+	params.xlsxSellMerge = xlsxSellMerge;
+	params.xlsxUnit = xlsxUnit;
+	params.xlsxUnitPosition = xlsxUnitPosition;
+	params.xlsxSearch = xlsxSearch;
+	params.xlsxHeards = xlsxHeards;
+	
+	// 체크된값 확인
+	var checkItem = $("input:checkbox[name='listItem']:checked");
+
+	// 체크된값이 없으면 전체 출력
+    if (checkItem.length == 0) {
+    	params.isAllExcel = 'YES';
+	} else {
+    	params.isAllExcel = 'NO';
+		var dataArray = [];
+		// 체크된값이 있으면 부분 출력
+	    checkItem.each(function(i){
+			var tr = checkItem.parent().parent().eq(i);
+			var td = tr.children();
+			var checkData;
+			
+				//Pk값을 취득한다.
+				checkData = {
+						'priodMon':td.eq(1).text(),
+						'priodDt':td.eq(2).text()
+				};
+			
+			// pk값 설정한걸 Array에 담는다
+			dataArray.push(checkData);
+		});
+	    
+	    // 리스트로 데이터를 넘긴다
+	    params.excelCheckDataList = JSON.stringify(dataArray);
+	    
+		
+	}
+		
+	// 다운로드 팝업창 숨기기
+	$('#downPopup').hide();
+	
+	return params;
+}
+
+/*****************************************************
+ * Function 명 : f_tableSort
+ * Function 기능설명 : 테이블 정렬 기능
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_tableSort(e) {
+	// 검색했을경우에만 정렬이 되게 한다.
+	if (seartFlag == 'N') {
+		return;
+	}
+	// 조회결과 플래그가 Y일경우에만 정렬 기능을 제공 한다
+	if (resultFlag == 'N') {
+		return;
+	};
+	// 정렬할 컬럼정보를 취득한다.
+	var sortColumn = $(e).attr("data-sort");
+	// 현재 정렬 정보를 취득한다.
+	var sortOrder = $(e).attr("data-sort-order");
+	// 전체 정렬을 up으로 초기화한다
+	$(".sort").attr("data-sort-order","up");
+	// 전체 클래스 정보를 초기화한다
+	$(".sort").removeClass('up');
+	$(".sort").removeClass('down');
+	$('#trade_table tr th[aria-sort]').attr("aria-sort","none");
+	// 정렬 정보에 따라 정렬 조건을 설정한다
+	if (sortOrder == 'up') {
+		$(e).attr("data-sort-order","down");
+		$(e).addClass('down');
+		sortOrder = 'down';
+		/* 웹 접근성 추가 - 테이블 헤더 정렬 버튼 */
+		$(e).attr("aria-label","내림차순 정렬됨");
+		$(e).parent().attr("aria-sort","descending");
+	} else {
+		$(e).attr("data-sort-order","up");
+		$(e).addClass('up');
+		sortOrder = 'up';
+		/* 웹 접근성 추가 - 테이블 헤더 정렬 버튼 */
+		$(e).attr("aria-label","오름차순 정렬됨");
+		$(e).parent().attr("aria-sort","ascending");
+	}
+	
+	// 검색처리
+	f_retrieveData(1, sortColumn, sortOrder);
+}
+/* subPage Navigation */
+$(function(){
+	f_subNavClick();
+});
+
+/*****************************************************
+ * Function 명 : f_subNavClick
+ * Function 기능설명 : 네비게이션 슬라이드 효과
+ * 작성자 : 김태일
+ * 작성일 : 2023-02-22
+ * 변경로그 : 
+ * 2023-02-22-김태일-최초생성
+ ******************************************************/
+function f_subNavClick() {
+	var subNav = $('.loc_nav > ul > li > a');
+	subNav.on('click',function(){
+		$(this).siblings('ul').slideToggle();
+	}); 	
+}
