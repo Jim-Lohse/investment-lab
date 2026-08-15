@@ -13,6 +13,9 @@ name: update-signals
 on:
   schedule:
     - cron: "30 7 * * *"   # 15:30 Taipei / 16:30 Seoul, after publish times
+    # Second attempt: tradedata.go.kr connectivity from cloud runners flaps,
+    # and fetchers are idempotent, so a later retry window is free insurance.
+    - cron: "30 12 * * *"
   workflow_dispatch:
     inputs:
       taiwan_backfill:
