@@ -64,6 +64,10 @@ jobs:
         continue-on-error: true
         run: python -m signals.korea_tradedata dashboard
 
+      - name: Fetch Korea tradedata.go.kr by-item flash (no key required)
+        continue-on-error: true
+        run: python -m signals.korea_tradedata items
+
       - name: Capture tradedata pages for parser development (manual runs only)
         if: ${{ github.event.inputs.capture_pages != '' }}
         continue-on-error: true
