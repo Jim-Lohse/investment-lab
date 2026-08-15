@@ -131,7 +131,9 @@ def parse_dashboard(html: str, retrieved: dt.date) -> list[dict]:
 
 def fetch_dashboard() -> int:
     retrieved = dt.date.today()
-    resp = http_get(DASHBOARD_URL)
+    # Single attempt, short timeout: when the site's protection is blocking
+    # cloud-runner IPs, backoff-hammering only entrenches the block.
+    resp = http_get(DASHBOARD_URL, retries=1, timeout=30)
     resp.encoding = resp.encoding or "utf-8"
     rows = parse_dashboard(resp.text, retrieved)
     if not rows:
@@ -176,7 +178,7 @@ def _session():
     from .common import USER_AGENT
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
-    session.get("https://tradedata.go.kr/cts/index.do", timeout=60)
+    session.get("https://tradedata.go.kr/cts/index.do", timeout=30)
     session.headers.update({
         "X-Requested-With": "XMLHttpRequest",
         "Referer": "https://tradedata.go.kr/cts/index.do",
