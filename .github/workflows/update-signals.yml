@@ -51,7 +51,10 @@ jobs:
       - name: Run offline tests
         run: python -m unittest discover tests
 
+      # Sources are independent: a failure in one is a visible red step but
+      # must not block fetching the others.
       - name: Fetch Taiwan monthly revenue (current month)
+        continue-on-error: true
         run: python -m signals.taiwan_mops current
 
       - name: Backfill Taiwan archive (manual runs only)
@@ -76,6 +79,7 @@ jobs:
           python -m signals.korea_tradedata probe
 
       - name: Fetch Korea Customs data
+        continue-on-error: true
         env:
           DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
         run: |
