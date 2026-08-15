@@ -165,6 +165,135 @@ def capture() -> None:
             print(f"capture {name} failed: {err}")
 
 
+ITEMS_HEADER = ["yyyymm", "period_label", "period_type", "imex", "item_slot",
+                "item_name", "value_usd_k", "retrieved_at"]
+TENTATIVE_URL = "https://tradedata.go.kr/cts/hmpg/retrieveTentativeValues.do"
+
+
+def _session():
+    import requests
+
+    from .common import USER_AGENT
+    session = requests.Session()
+    session.headers.update({"User-Agent": USER_AGENT})
+    session.get("https://tradedata.go.kr/cts/index.do", timeout=60)
+    session.headers.update({
+        "X-Requested-With": "XMLHttpRequest",
+        "Referer": "https://tradedata.go.kr/cts/index.do",
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+    })
+    return session
+
+
+def _hangul_strings(node, out):
+    if isinstance(node, str):
+        if any("가" <= ch <= "힣" for ch in node):
+            out.append(node.strip())
+    elif isinstance(node, list):
+        for child in node:
+            _hangul_strings(child, out)
+    elif isinstance(node, dict):
+        for child in node.values():
+            _hangul_strings(child, out)
+
+
+def parse_tentative_json(payload, retrieved_at: str, imex: str) -> list[dict]:
+    """Normalize the 10-day by-item grid response.
+
+    Rows carry priodDt/priodMon plus pivoted itemUsdAmt<NN> columns. Item
+    names for the slots are resolved from Korean strings in the same row
+    when present, else the row order of a header-ish record; failing both,
+    slots keep generic labels (raw JSON is preserved regardless).
+    """
+    from .korea_customs import classify_period
+
+    # Collect every dict that looks like a grid row.
+    rows_in: list[dict] = []
+
+    def walk(node):
+        if isinstance(node, dict):
+            if any(k.startswith("itemUsdAmt") for k in node):
+                rows_in.append(node)
+            for child in node.values():
+                walk(child)
+        elif isinstance(node, list):
+            for child in node:
+                walk(child)
+
+    walk(payload)
+
+    out: list[dict] = []
+    for row in rows_in:
+        period_label = str(row.get("priodDt") or "").strip()
+        month_raw = str(row.get("priodMon") or "").replace(".", "")
+        yyyymm = (f"{month_raw[:4]}-{month_raw[4:6]}"
+                  if len(month_raw) >= 6 else "")
+        curtitle = str(row.get("curTitle") or "").strip()
+        ptype = classify_period(period_label) or classify_period(curtitle)
+        slots = sorted(k for k in row if k.startswith("itemUsdAmt"))
+        for slot in slots:
+            value = str(row.get(slot) or "").replace(",", "").strip()
+            if not value:
+                continue
+            # A header-style record carries names instead of numbers: use it
+            # to label subsequent numeric rows via the shared slot key.
+            try:
+                float(value)
+            except ValueError:
+                _SLOT_NAMES[(imex, slot)] = value
+                continue
+            out.append({
+                "yyyymm": yyyymm,
+                "period_label": period_label or curtitle,
+                "period_type": ptype,
+                "imex": imex,
+                "item_slot": slot.replace("itemUsdAmt", ""),
+                "item_name": _SLOT_NAMES.get((imex, slot), ""),
+                "value_usd_k": value,
+                "retrieved_at": retrieved_at,
+            })
+    return out
+
+
+_SLOT_NAMES: dict = {}
+
+
+def fetch_items(start_yyyymm: str | None = None, end_yyyymm: str | None = None) -> int:
+    """Fetch the by-item 10-day grid (both exports and imports)."""
+    import json as _json
+
+    today = dt.date.today()
+    if end_yyyymm is None:
+        end_yyyymm = today.strftime("%Y%m")
+    if start_yyyymm is None:
+        prev = (today.replace(day=1) - dt.timedelta(days=1))
+        start_yyyymm = prev.strftime("%Y%m")
+
+    session = _session()
+    retrieved_at = today.isoformat()
+    added_total = 0
+    for imex in ("E", "I"):
+        data = {
+            "statsKind": "P", "imexTpcd": imex, "priodKind": "MON",
+            "priodFr": start_yyyymm, "priodTo": end_yyyymm, "priodDate": "",
+            "selectPaging": "1", "showPagingLine": "1000",
+            "sortColumn": "", "sortOrder": "",
+        }
+        resp = session.post(TENTATIVE_URL, data=data, timeout=60)
+        resp.raise_for_status()
+        PAGES_DIR.parent.mkdir(parents=True, exist_ok=True)
+        raw_name = f"tentative_{imex}_{start_yyyymm}_{end_yyyymm}.json"
+        (PAGES_DIR.parent / raw_name).write_bytes(resp.content)
+        rows = parse_tentative_json(_json.loads(resp.content), retrieved_at, imex)
+        added = append_dedup_csv(
+            OUT_DIR / "tradedata_items.csv", ITEMS_HEADER, rows,
+            ["yyyymm", "period_label", "imex", "item_slot"])
+        print(f"tentative items imex={imex} {start_yyyymm}..{end_yyyymm}: "
+              f"{len(rows)} values parsed, {added} new")
+        added_total += added
+    return added_total
+
+
 def probe() -> None:
     """Exercise candidate data endpoints from CI and save every response.
 
@@ -212,6 +341,11 @@ def main(argv: list[str]) -> int:
         return 2
     if argv[0] == "dashboard":
         fetch_dashboard()
+    elif argv[0] == "items":
+        if len(argv) >= 3:
+            fetch_items(argv[1], argv[2])
+        else:
+            fetch_items()
     elif argv[0] == "capture":
         capture()
     elif argv[0] == "probe":

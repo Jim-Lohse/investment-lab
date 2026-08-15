@@ -119,6 +119,23 @@ def korea_signals() -> list[list]:
                         f"{prefix}:TOTAL (tradedata)", f"{value * 1000.0:.0f}",
                         "", row["yoy_pct"]])
 
+    items_path = KOREA_DIR / "tradedata_items.csv"
+    if items_path.exists():
+        by_item_key: dict[tuple, float] = {}
+        for row in read_csv_dicts(items_path):
+            value = _f(row["value_usd_k"])
+            if value is None or not row["yyyymm"]:
+                continue
+            prefix = "exp" if row["imex"] == "E" else "imp"
+            item = f"{prefix}:{row['item_name'] or 'slot' + row['item_slot']}"
+            by_item_key[(row["yyyymm"], row["period_type"] or row["period_label"],
+                         item)] = value
+        for (yyyymm, ptype, item), value in sorted(by_item_key.items()):
+            ago = by_item_key.get((f"{int(yyyymm[:4]) - 1}{yyyymm[4:]}", ptype, item))
+            yoy = f"{(value / ago - 1.0) * 100.0:.2f}" if ago else ""
+            out.append([yyyymm, ptype, item, f"{value:.0f}",
+                        f"{ago:.0f}" if ago else "", yoy])
+
     if monthly_path.exists():
         by_ym: dict[tuple, float] = {}
         names: dict[str, str] = {}

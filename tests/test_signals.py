@@ -195,6 +195,20 @@ class TestTradedata(unittest.TestCase):
         self.assertEqual(korea_tradedata.parse_window("Dec.1~Dec.31", dt.date(2027, 1, 2)),
                          ("2026-12", "FULL"))
 
+    def test_parse_tentative_items(self):
+        payload = {"tentativeList": [
+            {"curTitle": "품목", "itemUsdAmt00": "전체", "itemUsdAmt01": "반도체"},
+            {"priodDt": "2026.08.01~08.10", "priodMon": "202608",
+             "itemUsdAmt00": "19,800,000", "itemUsdAmt01": "11,000,000"},
+        ]}
+        rows = korea_tradedata.parse_tentative_json(payload, "2026-08-15", "E")
+        self.assertEqual(len(rows), 2)
+        semis = [r for r in rows if r["item_slot"] == "01"][0]
+        self.assertEqual(semis["item_name"], "반도체")
+        self.assertEqual(semis["value_usd_k"], "11000000")
+        self.assertEqual(semis["yyyymm"], "2026-08")
+        self.assertEqual(semis["period_type"], "D10")
+
     def test_parse_dashboard(self):
         rows = korea_tradedata.parse_dashboard(TRADEDATA_HTML, self.RETRIEVED)
         self.assertEqual(len(rows), 2)  # 3-cell mobile duplicate table ignored
