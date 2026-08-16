@@ -32,3 +32,26 @@ Known caveat (open item): adjusted_close reinvests gross dividends — dividend
 withholding tax (e.g., 26% Italy, 15% Canada treaty rate) is not deducted, so
 USD total returns are slightly overstated for a US taxable holder. Flagged for
 the contest sessions; immaterial for the drawdown-cap diagnostic.
+
+## Rev 2 additions (Jim's rulings, 2026-08-16)
+
+- `rates/UST_BILL_3M.csv` — EODHD 13-week T-bill rates 2015-01-02 →
+  2026-08-14 (2,906 rows; `discount` = bank-discount basis, `coupon` =
+  coupon-equivalent/bond-equivalent yield, plus API average variants;
+  percent units). Cash leg accrues at `coupon` (ruling #1).
+- `corp_actions/{IMB.LSE,RR.LSE,SCCO.NYSE,FFH.TSE}.ibkr.csv` — IBKR
+  corporate-action records (5y window), saved verbatim; SCCO's include ten
+  StockDividends events 2024-05-07 → 2026-08-11. FFH values are the USD
+  declarations (EODHD carries CAD conversions).
+- `prices/ISP.BVME.monthly.ibkr.csv` — IBKR monthly bars for the BVME
+  contract back to 2014-07 (raw EUR), used for the pre-2021 Milan-vs-XETRA
+  proxy spot check.
+- `dividends_reconciled/<KEY>.csv` — the contest-grade dividend tables built
+  by `analysis/reconcile_dividends.py`: EODHD ∪ IBKR ∪ company declarations,
+  with per-row `sources`/`note`. IMB's spurious 2026-05-28 row is dropped
+  (RNS + IBKR evidence); SCCO rows are as-declared amounts (IBKR where
+  covered, EODHD × K_eodhd=1.08085 inversion earlier, verified to 0.00% on
+  all 19 overlap rows). `stock_events.csv` holds share-adjustment factors
+  (SCCO only). Total-return construction: raw closes + these tables, net of
+  withholding (IT 26%, CA 15%, UK 0%, US 0%) — EODHD `adjusted_close` is no
+  longer the total-return basis.

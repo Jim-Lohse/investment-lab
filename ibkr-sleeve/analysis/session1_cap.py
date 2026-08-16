@@ -195,6 +195,20 @@ def split_factors(name, idx):
         fac[fac.index < pd.Timestamp(r[date_col])] *= old / new
     return fac
 
+def stock_event_factors(name, idx):
+    """Share-adjustment events that are not in the EODHD splits table
+    (e.g. SCCO's 2024 stock dividend), from dividends_reconciled/
+    stock_events.csv. Same convention: dates BEFORE the event scale by
+    old/new."""
+    path = os.path.join(DATA, "dividends_reconciled", "stock_events.csv")
+    fac = pd.Series(1.0, index=idx)
+    if not os.path.exists(path):
+        return fac
+    ev = pd.read_csv(path)
+    for _, r in ev[ev["name"] == name].iterrows():
+        fac[fac.index < pd.Timestamp(r["date"])] *= float(r["old"]) / float(r["new"])
+    return fac
+
 def load_reconciled_divs(name):
     path = os.path.join(DATA, "dividends_reconciled", f"{name}.csv")
     df = pd.read_csv(path)
@@ -207,7 +221,7 @@ def tr_local(name, net=True):
     dividends (net of withholding unless net=False), split-adjusted.
     Ex-dates falling on non-trading days roll to the next trading day."""
     px_raw = raw_close(name)
-    fac = split_factors(name, px_raw.index)
+    fac = split_factors(name, px_raw.index) * stock_event_factors(name, px_raw.index)
     px = px_raw * fac
     d = pd.Series(0.0, index=px.index)
     scale = DIV_UNIT_SCALE.get(name, 1.0)
@@ -268,6 +282,33 @@ def firing_stats(nav, X):
     episodes = int((breached & ~breached.shift(fill_value=False)).sum())
     return episodes, int(breached.sum()), float(dd.min())
 
+def milan_proxy_spot_check():
+    """Ruling #4: verify the pre-2021 XETRA proxy against actual Milan
+    closes. IBKR monthly bars for the BVME contract reach back to 2014
+    (ISP.BVME.monthly.ibkr.csv, raw EUR trade prices, bar labeled at month
+    start, close = that month's last close). Compare each pre-2021-08 month's
+    Milan close with the XETRA close on the same last trading day."""
+    m = load_prices("ISP.BVME.monthly.ibkr")["close"]
+    x = load_prices("IES.XETRA")["close"]
+    diffs = []
+    for bar_date, m_close in m.items():
+        per = bar_date.to_period("M")
+        if per < pd.Period("2015-01", "M") or per >= pd.Period("2021-08", "M"):
+            continue
+        xm = x[x.index.to_period("M") == per]
+        if len(xm) == 0:
+            continue
+        diffs.append((str(per), m_close, xm.iloc[-1], xm.iloc[-1] / m_close - 1))
+    d = pd.DataFrame(diffs, columns=["month", "milan", "xetra", "rel"])
+    print(f"\nMilan-vs-XETRA proxy spot check, {len(d)} month-end closes"
+          f" 2015-01..2021-07 (IBKR monthly bars, raw EUR):")
+    print(f"  mean {d['rel'].mean():+.2%}, mean|diff| {d['rel'].abs().mean():.2%},"
+          f" max|diff| {d['rel'].abs().max():.2%}"
+          f" ({d.loc[d['rel'].abs().idxmax(), 'month']}:"
+          f" Milan {d.loc[d['rel'].abs().idxmax(), 'milan']}"
+          f" vs XETRA {d.loc[d['rel'].abs().idxmax(), 'xetra']})")
+    print(f"  months with |diff| > 1%: {(d['rel'].abs() > 0.01).sum()} of {len(d)}")
+
 def quantify_gross_vs_net():
     """Ruling #3: quantify the withholding thumb-on-the-scale per name."""
     print("\nGross vs net-of-withholding total return (local currency, full"
@@ -312,6 +353,7 @@ def backtest(X):
     print("Construction: buy-and-hold, seeded at current weights on window"
           " start; no rebalancing, so no trading frictions inside the window"
           " (entry frictions scale NAV and cancel out of drawdown).")
+    milan_proxy_spot_check()
     quantify_gross_vs_net()
     end = usd.index[-1]
     one_window(usd, cash, usd.index[0],
