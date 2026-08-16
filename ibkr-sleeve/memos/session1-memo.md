@@ -64,11 +64,11 @@ split-adjusted), union calendar across the four venues with stated
 forward-fill (Section 5.7). "Fired" = the sleeve's value closed at or below
 25% under its running peak.
 
-| Window (labeled per Section 7.3) | Max drawdown | Days below −25% | Share of days |
-|---|---|---|---|
-| 2015-01-02 → 2026-08-14 (11.6y) | −50.6% | 393 | 13.1% |
-| 2021-08-16 → 2026-08-14 (5y) | −35.3% | 94 | 7.3% |
-| 2024-08-14 → 2026-08-14 (2y) | −15.1% | 0 | 0% |
+| Window (labeled per Section 7.3) | ISP source | Max drawdown | Days below −25% | Share of days |
+|---|---|---|---|---|
+| 2015-01-02 → 2026-08-14 (11.6y) | XETRA proxy (pre-2021 has no Milan data) | −50.6% | 393 | 13.1% |
+| 2021-08-16 → 2026-08-14 (5y) | Milan via IBKR | −34.1% | 89 | 6.9% |
+| 2024-08-14 → 2026-08-14 (2y) | Milan via IBKR | −15.4% | 0 | 0% |
 
 Reading: over the last two years the cap never fires (max drawdown −15.1%) —
 seatbelt behavior. The full-window breaches are concentrated in 2020–2022
@@ -102,18 +102,29 @@ EODHD (primary source) daily OHLCV + adjusted close 2015-01-02 → 2026-08-14
 (~2,915–3,001 rows/series), dividends and splits, saved verbatim under
 `ibkr-sleeve/data/` (see its README for the calendar and units rules).
 
-**Venue substitution, flagged:** this EODHD plan has no Borsa Italiana data
-(ISP.MI → 404; no Milan exchange on the plan's list). The dataset uses
-Intesa Sanpaolo's XETRA line **IES.XETRA — same ISIN IT0000072618, EUR** — as
-a proxy for the Milan line. Cross-listed arbitrage keeps the two within
-basis points, and the Milan fill below lands inside the XETRA day range, but
-this is a proxy, not Milan data.
+**ISP venue sourcing (updated per Jim's instruction to pull via IBKR):** the
+EODHD plan has no Borsa Italiana data (ISP.MI → 404), so ISP's Milan line
+comes from the **IBKR API** (contract 29816328, symbol ISP, exchange BVME,
+EUR): raw daily bars 2021-08-16 → 2026-08-14 — the API's five-year maximum —
+saved as `prices/ISP.BVME.ibkr.csv`, with IBKR's own dividend records saved
+verbatim under `corp_actions/`. IBKR bars are trade prices, not
+dividend-adjusted, so the analysis reinvests Intesa's EUR cash dividends on
+their ex-dates to build the total-return series; IBKR's dividend records
+match the EODHD table on every date and amount, which also confirms the
+ex-dates. Two flags: (a) the account lacks direct-BVME market-data
+permission, so bars are SMART-routed for the BVME contract; (b) for history
+before 2021-08-16 (the 11.6y window only), the thin XETRA line **IES.XETRA**
+(same ISIN, EUR) remains the labeled proxy. Cross-check on the 5y common
+window: the two sources end within 0.40% of each other (mean gap −0.32%),
+with transient divergences up to 9.7% concentrated in volatile mid-2022 →
+early-2023 — stale prints on XETRA's ~27k shares/day vs Milan's ~87M — so
+proxy-window *daily* drawdown readings carry that noise.
 
 Validation against known fills (Section 5.9) — raw values first, all PASS:
 
 | Fill (IBKR record) | Dataset day range (raw O/H/L/C) | Result |
 |---|---|---|
-| 2026-08-06 BUY 545 ISP @ €6.843 | IES.XETRA 6.818 / 6.857 / 6.792 / 6.792 | PASS (inside range) |
+| 2026-08-06 BUY 545 ISP @ €6.843 | ISP Milan (IBKR) 6.637 / 6.864 / 6.637 / 6.807 | PASS (inside range) |
 | 2026-08-14 BUY 26 IMB @ 2629p | IMB.LSE 2637 / 2652 / 2597 / 2609 | PASS |
 | 2026-08-14 SELL 25.5427 EUAD @ $47.86 | EUAD.US 47.86 / 48.15 / 47.61 / 47.89 | PASS (= open) |
 | 2026-08-14 SELL 21 INDA @ $49.775 | INDA.US 49.88 / 49.92 / 49.735 / 49.78 | PASS |
@@ -128,8 +139,11 @@ it once open items are accepted.**
 
 ## 5. Open items (nothing estimated around — Section 10)
 
-1. **Milan venue proxy** (above). REOPEN IF Milan-native data becomes
-   available; Italian FTT frictions still apply per rules regardless.
+1. **ISP pre-2021 history is still the XETRA proxy** — IBKR's history API
+   tops out at five years, so the 11.6y window mixes Milan (2021→) and
+   XETRA (2015–2021) sourcing for ISP. Also: Milan bars are SMART-routed
+   (no direct-BVME data permission on the account). REOPEN IF deeper
+   Milan-native history becomes available (e.g. EODHD plan upgrade).
 2. **IMB dividend near-duplicate in EODHD:** rows 2026-05-21 (0.4168) and
    2026-05-28 (0.419) share payment date 2026-06-30 — possibly one real
    event returned twice, which would slightly overstate IMB's adjusted

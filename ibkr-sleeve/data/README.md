@@ -1,7 +1,18 @@
 # IBKR sleeve pilot — dataset
 
 Source: EODHD (primary source per CLAUDE.md Section 9.4), fetched 2026-08-16
-via the EODHD MCP tools. Raw API output saved verbatim; no hand edits.
+via the EODHD MCP tools; plus the IBKR API for Intesa Sanpaolo's Borsa
+Italiana line, which the EODHD plan does not carry (per Jim, 2026-08-16).
+Raw API output saved verbatim; no hand edits.
+
+- `prices/ISP.BVME.ibkr.csv` — ISP on Borsa Italiana via IBKR (contract
+  29816328, EUR, SMART-routed bars), daily OHLCV 2021-08-16 → 2026-08-14
+  (IBKR's 5-year maximum). Raw trade prices, NOT dividend-adjusted; the
+  analysis reinvests EUR dividends on ex-dates to build total return.
+  For pre-2021 ISP history the XETRA line below is the labeled proxy.
+- `corp_actions/ISP.BVME.ibkr.csv` — IBKR's dividend records for that
+  contract, extracted verbatim (dates are YYYYMMDD); matches the EODHD
+  dividend table on every date and amount.
 
 - `prices/<TICKER>.csv` — daily OHLCV + adjusted close, 2015-01-01 → 2026-08-15
   (EUAD.US and INDA.US: 2026-08-01 → 2026-08-15, validation-fill window only).
