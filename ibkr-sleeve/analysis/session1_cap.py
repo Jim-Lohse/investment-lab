@@ -4,8 +4,16 @@ fills, and backtest the cap's firing frequency on sleeve history.
 
 Rules: CLAUDE.md (repo root). Labeled inputs are printed BEFORE any computed
 output (Section 5.8). Zero fabrication: every market number is read from the
-CSVs under ibkr-sleeve/data/ fetched from EODHD, or is a labeled household
-planning input.
+CSVs under ibkr-sleeve/data/ (EODHD, plus IBKR for the ISP Milan line), or is
+a labeled household planning input.
+
+ISP source note: Borsa Italiana is not on the EODHD plan. The ISP Milan line
+(ISP.BVME.ibkr.csv, via the IBKR API, ~5y depth) is primary wherever it has
+coverage; the XETRA line IES.XETRA.csv (same ISIN, EUR) is the labeled proxy
+for history before IBKR coverage starts. IBKR closes are not
+dividend-adjusted, so the Milan total-return series reinvests Intesa's EUR
+cash dividends (dividends/IES.XETRA.csv — same-ISIN dividend events; ex-dates
+assumed common across venues, flagged as an open item) on their ex-dates.
 """
 
 import os
@@ -78,11 +86,11 @@ def load_prices(name):
     df["date"] = pd.to_datetime(df["date"])
     return df.set_index("date").sort_index()
 
-FILLS = [  # (ticker, date, side, fill price in venue quote units, label)
-    ("IES.XETRA",  "2026-08-06", "BUY 545",       6.843,  "EUR"),
-    ("IMB.LSE", "2026-08-14", "BUY 26",        2629.0, "GBX (pence)"),
-    ("EUAD.US", "2026-08-14", "SELL 25.5427",  47.86,  "USD"),
-    ("INDA.US", "2026-08-14", "SELL 21",       49.775, "USD"),
+FILLS = [  # (ticker file, date, side, fill price in venue quote units, label)
+    ("ISP.BVME.ibkr", "2026-08-06", "BUY 545",      6.843,  "EUR (Milan, IBKR)"),
+    ("IMB.LSE",       "2026-08-14", "BUY 26",       2629.0, "GBX (pence)"),
+    ("EUAD.US",       "2026-08-14", "SELL 25.5427", 47.86,  "USD"),
+    ("INDA.US",       "2026-08-14", "SELL 21",      49.775, "USD"),
 ]
 
 def validate_fills():
@@ -109,28 +117,58 @@ def validate_fills():
 # ----------------------------------------------------------------------------
 
 # Current sleeve weights (CLAUDE.md Section 3, IBKR-verified 2026-08-14)
-WEIGHTS = {"IES.XETRA": 0.376, "RR.LSE": 0.162, "IMB.LSE": 0.158,
+WEIGHTS = {"ISP": 0.376, "RR.LSE": 0.162, "IMB.LSE": 0.158,
            "FFH.TO": 0.141, "SCCO.US": 0.099}
 CASH_W = 0.064  # earns 0% in this diagnostic (flagged in memo)
 
-FX_FOR = {"IES.XETRA": ("EURUSD.FOREX", 1.0), "RR.LSE": ("GBPUSD.FOREX", 0.01),
+FX_FOR = {"ISP": ("EURUSD.FOREX", 1.0), "RR.LSE": ("GBPUSD.FOREX", 0.01),
           "IMB.LSE": ("GBPUSD.FOREX", 0.01), "FFH.TO": ("CADUSD.FOREX", 1.0),
           "SCCO.US": (None, 1.0)}  # scale 0.01 converts GBX pence -> GBP
 
-def build_usd_series():
+def isp_milan_tr_eur():
+    """ISP Milan total-return index, EUR: IBKR raw closes with Intesa's EUR
+    cash dividends reinvested on their ex-dates (TR_t = TR_{t-1} *
+    (C_t + D_t)/C_{t-1}). Ex-dates taken from the same-ISIN dividend table;
+    assumed common across venues (open item)."""
+    px = load_prices("ISP.BVME.ibkr")["close"]
+    div = pd.read_csv(os.path.join(DATA, "dividends", "IES.XETRA.csv"))
+    div.columns = [c.strip().lower() for c in div.columns]
+    div["date"] = pd.to_datetime(div["date"])
+    # Map each ex-date to the first trading day >= it (an ex-date on a Milan
+    # holiday must roll forward, not silently drop), keep events in coverage.
+    d = pd.Series(0.0, index=px.index)
+    for ex, val in div.set_index("date")["value"].items():
+        pos = px.index.searchsorted(ex)
+        if pos < len(px.index) and ex >= px.index[0]:
+            d.iloc[pos] += val
+    gross = (px + d) / px.shift(1)
+    gross.iloc[0] = 1.0
+    return gross.cumprod() * px.iloc[0]  # scaled to price units at series start
+
+def isp_series_eur(source):
+    if source == "milan":
+        return isp_milan_tr_eur()
+    if source == "xetra":
+        return load_prices("IES.XETRA")["adjusted_close"]
+    raise ValueError(source)
+
+def build_usd_series(isp_source):
     """USD total-return index per name.
 
     Calendar rule (Section 5.7, stated): union of the five equity venues'
-    trading dates; each local adjusted close and each FX rate forward-filled
-    over its own venue's holidays. No inner join, no dropped dates.
+    trading dates; each local price and each FX rate forward-filled over its
+    own venue's holidays. No inner join, no dropped dates.
     Total return: EODHD adjusted_close (split- and dividend-adjusted, gross
-    dividends reinvested same day in the same name, local currency), then
-    converted to USD at the day's FX rate.
+    dividends reinvested same day in the same name, local currency) for
+    RR/IMB/FFH/SCCO; for ISP see isp_series_eur(). Converted to USD at the
+    day's FX rate.
     """
     px, fx = {}, {}
     for name in WEIGHTS:
-        df = load_prices(name)
-        px[name] = df["adjusted_close"]
+        if name == "ISP":
+            px[name] = isp_series_eur(isp_source)
+        else:
+            px[name] = load_prices(name)["adjusted_close"]
         f = FX_FOR[name][0]
         if f and f not in fx:
             fx[f] = load_prices(f)["close"]
@@ -153,37 +191,59 @@ def firing_stats(nav, X):
     episodes = int((breached & ~breached.shift(fill_value=False)).sum())
     return episodes, int(breached.sum()), float(dd.min())
 
+def cross_check_isp():
+    """Report divergence between the two ISP sources (USD-invariant: both EUR)
+    on their common window, normalized at its start."""
+    m = isp_series_eur("milan")
+    x = isp_series_eur("xetra")
+    common = m.index.intersection(x.index)
+    m, x = m.loc[common], x.loc[common]
+    rel = (m / m.iloc[0]) / (x / x.iloc[0]) - 1
+    print(f"\nISP source cross-check, common window {common[0].date()} ->"
+          f" {common[-1].date()} ({len(common)} days):")
+    print(f"  Milan-IBKR TR vs XETRA adjusted, normalized at start:"
+          f" mean {rel.mean():+.2%}, max |divergence| {rel.abs().max():.2%},"
+          f" end {rel.iloc[-1]:+.2%}")
+
+def one_window(usd, start, label, X):
+    u = usd[usd.index >= start]
+    rel = u / u.iloc[0]
+    nav = rel.mul(pd.Series(WEIGHTS)).sum(axis=1) + CASH_W
+    ep, days, mdd = firing_stats(nav, X)
+    print(f"\n[{label}] {u.index[0].date()} -> {u.index[-1].date()} "
+          f"({len(nav)} trading days, {(u.index[-1]-u.index[0]).days/365.25:.1f}y)")
+    print(f"  max drawdown {mdd:.1%}; cap X={X:.1%} fired {ep} time(s), "
+          f"{days} day(s) in breach ({days/len(nav):.1%} of days)")
+    print("  sensitivity:")
+    for x in (0.10, 0.125, 0.15, 0.20, 0.25, 0.30, 0.40):
+        ep, days, _ = firing_stats(nav, x)
+        print(f"    X={x:>5.1%}: {ep} episode(s), {days} breach day(s)"
+              f" ({days/len(nav):.1%} of days)")
+
 def backtest(X):
-    usd = build_usd_series()
     print("\n== PART 3: SLEEVE HISTORY AND CAP FIRING ==")
-    print("Raw inputs (Section 5.8) — USD total-return series coverage:")
-    for name in usd.columns:
-        s = usd[name]
+    usd_m = build_usd_series("milan")
+    usd_x = build_usd_series("xetra")
+    print("Raw inputs (Section 5.8) — USD total-return series coverage"
+          " (primary build, ISP = Milan/IBKR):")
+    for name in usd_m.columns:
+        s = usd_m[name]
         print(f"  {name}: {s.index[0].date()} -> {s.index[-1].date()}"
               f"  first={s.iloc[0]:.4f} last={s.iloc[-1]:.4f}  n={len(s)}")
     print(f"Weights: {WEIGHTS} cash={CASH_W} (cash return 0%)")
     print("Construction: buy-and-hold, seeded at current weights on window start;"
           " no rebalancing, so no trading frictions inside the window (entry"
           " frictions scale NAV and cancel out of peak-to-trough drawdown).")
-    windows = {
-        "full common window": usd.index[0],
-        "trailing 5y": usd.index[-1] - pd.DateOffset(years=5),
-        "trailing 2y": usd.index[-1] - pd.DateOffset(years=2),
-    }
-    for label, start in windows.items():
-        u = usd[usd.index >= start]
-        rel = u / u.iloc[0]
-        nav = rel.mul(pd.Series(WEIGHTS)).sum(axis=1) + CASH_W
-        ep, days, mdd = firing_stats(nav, X)
-        print(f"\n[{label}] {u.index[0].date()} -> {u.index[-1].date()} "
-              f"({len(nav)} trading days, {(u.index[-1]-u.index[0]).days/365.25:.1f}y)")
-        print(f"  max drawdown {mdd:.1%}; cap X={X:.1%} fired {ep} time(s), "
-              f"{days} day(s) in breach ({days/len(nav):.1%} of days)")
-        print("  sensitivity:")
-        for x in (0.10, 0.125, 0.15, 0.20, 0.25, 0.30, 0.40):
-            ep, days, _ = firing_stats(nav, x)
-            print(f"    X={x:>5.1%}: {ep} episode(s), {days} breach day(s)"
-                  f" ({days/len(nav):.1%} of days)")
+    cross_check_isp()
+    end = usd_m.index[-1]
+    # Windows inside IBKR-Milan coverage use the Milan build; the full window
+    # predates it and uses the labeled XETRA proxy for ISP.
+    one_window(usd_x, usd_x.index[0],
+               "full common window — ISP via XETRA proxy (labeled)", X)
+    one_window(usd_m, max(usd_m.index[0], end - pd.DateOffset(years=5)),
+               "trailing 5y (or IBKR-Milan coverage if shorter) — ISP via Milan/IBKR", X)
+    one_window(usd_m, end - pd.DateOffset(years=2),
+               "trailing 2y — ISP via Milan/IBKR", X)
 
 if __name__ == "__main__":
     X = derive_cap()
