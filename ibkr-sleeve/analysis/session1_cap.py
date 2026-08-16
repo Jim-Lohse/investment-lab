@@ -79,7 +79,7 @@ def load_prices(name):
     return df.set_index("date").sort_index()
 
 FILLS = [  # (ticker, date, side, fill price in venue quote units, label)
-    ("ISP.MI",  "2026-08-06", "BUY 545",       6.843,  "EUR"),
+    ("IES.XETRA",  "2026-08-06", "BUY 545",       6.843,  "EUR"),
     ("IMB.LSE", "2026-08-14", "BUY 26",        2629.0, "GBX (pence)"),
     ("EUAD.US", "2026-08-14", "SELL 25.5427",  47.86,  "USD"),
     ("INDA.US", "2026-08-14", "SELL 21",       49.775, "USD"),
@@ -109,11 +109,11 @@ def validate_fills():
 # ----------------------------------------------------------------------------
 
 # Current sleeve weights (CLAUDE.md Section 3, IBKR-verified 2026-08-14)
-WEIGHTS = {"ISP.MI": 0.376, "RR.LSE": 0.162, "IMB.LSE": 0.158,
+WEIGHTS = {"IES.XETRA": 0.376, "RR.LSE": 0.162, "IMB.LSE": 0.158,
            "FFH.TO": 0.141, "SCCO.US": 0.099}
 CASH_W = 0.064  # earns 0% in this diagnostic (flagged in memo)
 
-FX_FOR = {"ISP.MI": ("EURUSD.FOREX", 1.0), "RR.LSE": ("GBPUSD.FOREX", 0.01),
+FX_FOR = {"IES.XETRA": ("EURUSD.FOREX", 1.0), "RR.LSE": ("GBPUSD.FOREX", 0.01),
           "IMB.LSE": ("GBPUSD.FOREX", 0.01), "FFH.TO": ("CADUSD.FOREX", 1.0),
           "SCCO.US": (None, 1.0)}  # scale 0.01 converts GBX pence -> GBP
 
