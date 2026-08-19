@@ -55,3 +55,8 @@ the contest sessions; immaterial for the drawdown-cap diagnostic.
   (SCCO only). Total-return construction: raw closes + these tables, net of
   withholding (IT 26%, CA 15%, UK 0%, US 0%) — EODHD `adjusted_close` is no
   longer the total-return basis.
+- `prices/ISP.MI.upload.csv` — Milan-native ISP daily file supplied by Jim
+  (2026-08-19; Yahoo-Finance-style columns, EUR, 2025-08-19 → 2026-08-19,
+  two null rows). Verification source only — cross-checked against the IBKR
+  Milan bars (mean abs close diff 0.167%) by `analysis/check_isp_upload.py`;
+  the IBKR daily series remains primary.

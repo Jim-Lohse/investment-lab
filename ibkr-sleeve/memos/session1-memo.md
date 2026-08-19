@@ -212,3 +212,30 @@ universe file is written and committed.
 **Session verdict: ACTION — Jim: (a) confirm X = 25% / $2,905.70 or move
 w_max; (b) accept the reconciliation evidence tier or request the
 statement-level check; then the candidate list unlocks the contest.**
+
+## 7. Addendum 2026-08-19 — Milan-native upload cross-check
+
+Jim supplied a Milan-native ISP.MI daily file (Yahoo-Finance-style columns,
+EUR, 2025-08-19 → 2026-08-19), saved verbatim as
+`data/prices/ISP.MI.upload.csv` and checked by
+`analysis/check_isp_upload.py`:
+
+- **vs the IBKR Milan bars** (249 overlapping days): close differences mean
+  +0.006% (unbiased), mean absolute 0.167%, worst 0.616% (2026-02-10, 6.048
+  vs 6.011), 6 days over 0.5% — normal print/venue noise. This is a third
+  independent source confirming the SMART-routed IBKR series; the residual
+  routing concern from §4 is closed.
+- **Fill check**: 2026-08-06 BUY @ €6.843 sits inside the upload's Milan day
+  range (6.786–6.864) — PASS from a second Milan source.
+- **Dividend ex-dates**: the upload's Adj Close ratio implies exactly two
+  events in its window, 2025-11-24 and 2026-05-18 — matching the reconciled
+  table's dates precisely (implied amounts 0.192/0.197 vs actual
+  0.186/0.190 are within the file's 6-decimal rounding noise).
+- **Quality notes**: the upload has null rows on 2026-07-20 and 2026-07-31
+  where IBKR has real bars (6.33, 6.5625), and only ~1 year of depth, so the
+  IBKR daily series **remains primary**; the upload is retained as
+  verification evidence. Its extra days (2026-08-17→19) extend past the
+  dataset's common end (2026-08-14) and will fold in at the next full
+  refresh rather than extending one name piecemeal.
+
+**Verdict: DONE — third source agrees; no pipeline change needed.**
