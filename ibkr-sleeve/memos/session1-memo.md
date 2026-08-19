@@ -77,10 +77,16 @@ assumption**. The solvency bound never binds unless w_max ≥ 6.85%
 (implausible). X is insensitive to T, H, and r_req over any reasonable range
 because they only enter through the (slack) solvency bound.
 
-**Verdict: ACTION — the chain holds mechanically; the two judgment calls are
-now recorded as such. Jim confirms X = 25% iff $2,905.70 peak-to-trough on
-today's sleeve is a number he'd hold through without intervening. REOPEN IF
-w_max ≠ 4.0% or the anchoring-on-guardrail-max choice is revised.**
+**Verdict: DONE — X = 25% CONFIRMED by Jim, 2026-08-19:** he would hold
+through a $2,905.70 peak-to-trough decline; his stated response to a cap
+breach is a research review ("determine if the story changed or if it was
+ordinary market selloff action and not indicative of the given company's
+fundamentals"), not reflexive liquidation. Recorded implication for the
+contest: X is the *constraint* candidate portfolios must satisfy in
+backtest/Monte Carlo (drawdown ≤ 25%); in live operation a breach triggers
+the story-vs-selloff review that feeds the existing sell-rule framework
+(Section 8.1), with cash/T-bills as the de-risk asset if the review says
+de-risk. REOPEN IF w_max ≠ 4.0% or the guardrail-max anchoring is revised.
 
 ## 2. Cap firing frequency (agenda item 2) — rev 2 numbers
 
@@ -179,14 +185,12 @@ with the prior day's rate (no look-ahead).
 
 ## 5. Remaining open items
 
-1. **IBKR account-statement cross-check of received dividends** (Jim's
-   ruling #2 named it as ground truth): the MCP toolset exposes trades and
-   positions but not cash-transaction/statement history, so the
-   reconciliation used IBKR *corporate-action records* + company RNS/8-K
-   instead. If statement-level proof is wanted, Jim can eyeball the
-   2026-06-30 IMB credit (26 shares × 41.68p) in Account Management, or
-   grant a Flex-query path. Evidence tier is already two independent
-   sources; this would make three.
+1. ~~IBKR account-statement cross-check of received dividends~~ —
+   **CLOSED 2026-08-19: Jim accepted the IMB dividend reconciliation** on
+   the two-source evidence tier (IBKR corporate-action records + company
+   RNS; the MCP toolset exposes trades/positions but not statement history,
+   so the optional third layer — the 2026-06-30 credit of 26 × 41.68p —
+   remains available to him in Account Management but is not required).
 2. **FFH dividend currency**: IBKR records the USD declaration, EODHD the
    CAD-converted amounts; the reconciled table keeps EODHD's CAD values
    (matched to IBKR by date only). A conversion-rate audit of those 12
@@ -205,13 +209,13 @@ with the prior day's rate (no look-ahead).
 
 ## 6. STOP (agenda item 5)
 
-Items 1–4 of the agenda pass under rev 2. Per Section 9.5 no hypothesis
-agent runs until Jim confirms X (the $2,905.70 question) and the candidate
+Items 1–4 of the agenda pass under rev 2. X = 25% is confirmed (2026-08-19,
+see §1). Per Section 9.5 no hypothesis agent runs until the candidate
 universe file is written and committed.
 
-**Session verdict: ACTION — Jim: (a) confirm X = 25% / $2,905.70 or move
-w_max; (b) accept the reconciliation evidence tier or request the
-statement-level check; then the candidate list unlocks the contest.**
+**Session verdict: ACTION — X confirmed and the IMB dividend evidence
+accepted (both 2026-08-19). The single remaining gate is the candidate
+list: drafted, approved by Jim, and committed. Then the contest can run.**
 
 ## 7. Addendum 2026-08-19 — Milan-native upload cross-check
 
