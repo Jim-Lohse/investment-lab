@@ -1,3 +1,5 @@
 yyyymm,period_label,period_type,metric,value_usd_m,yoy_pct,retrieved_at
 2026-08,Aug.1~Aug.10,D10,Export,21286,45.30,2026-08-14
 2026-08,Aug.1~Aug.10,D10,Import,19488,23.10,2026-08-14
+2026-08,Aug.1~Aug.20,D20,Export,55207,56,2026-08-21
+2026-08,Aug.1~Aug.20,D20,Import,41231,19,2026-08-21

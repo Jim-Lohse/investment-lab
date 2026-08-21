@@ -1,3 +1,5 @@
 period,period_type,item,value_usd_k,value_usd_k_year_ago,yoy_pct
 2026-08,D10,exp:TOTAL (tradedata),21286000,,45.30
 2026-08,D10,imp:TOTAL (tradedata),19488000,,23.10
+2026-08,D20,exp:TOTAL (tradedata),55207000,,56
+2026-08,D20,imp:TOTAL (tradedata),41231000,,19
