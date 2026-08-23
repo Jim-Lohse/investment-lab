@@ -1,6 +1,6 @@
 # Demand-signal snapshot: Taiwan monthly revenue + Korea exports
 
-_Generated 2026-08-22 by `signals/compute_signals.py`._
+_Generated 2026-08-23 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
 ## Taiwan monthly revenue — 2026-07
