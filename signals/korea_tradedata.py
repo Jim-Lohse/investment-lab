@@ -47,6 +47,7 @@ CAPTURE_URLS = {
     "js_index_main": "https://tradedata.go.kr/cts/js/ets/cmmn/indexMain.js",
     "js_menu": "https://tradedata.go.kr/cts/js/menu.js",
     "js_kcs4g_ajax": "https://tradedata.go.kr/cts/js/kcs4g/kcs4g_ajax.js",
+    "js_common": "https://tradedata.go.kr/cts/js/common/common.js",
     # The 10-day provisional screen's own controller: names its grid-data call.
     "js_ets173": "https://tradedata.go.kr/cts/js/ets/hmpg/trade/ETS0100173Q.js",
 }
@@ -361,6 +362,13 @@ def probe() -> None:
         ("probe_tent_grid_N", "POST", tent_url, {**tent, "statsKind": "N"}),
         ("probe_tent_dljson", "POST",
          f"{base}/cts/hmpg/downloadTentativeValuesJson.do", dict(tent)),
+        # The 통계항목 option list — should carry the real statsKind codes.
+        ("probe_tent_selectbox", "POST",
+         f"{base}/cts/hmpg/retrieveSetSelectBoxTentative.do",
+         {"menuId": "ETS_MNU_00000134"}),
+        ("probe_tent_selectbox_get", "GET",
+         f"{base}/cts/hmpg/retrieveSetSelectBoxTentative.do?menuId=ETS_MNU_00000134",
+         None),
     ]
     PAGES_DIR.mkdir(parents=True, exist_ok=True)
     for name, method, url, data in attempts:
