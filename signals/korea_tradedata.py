@@ -331,9 +331,12 @@ def probe() -> None:
            "Accept": "application/json, text/javascript, */*; q=0.01",
            "isAjax": "true"}
 
-    session.get(f"{base}/cts/hmpg/openETS0100173Q.do",
-                params={"menuId": "ETS_MNU_00000134"}, timeout=30,
-                headers={"isAjax": "true"})
+    try:
+        session.get(f"{base}/cts/hmpg/openETS0100173Q.do",
+                    params={"menuId": "ETS_MNU_00000134"}, timeout=30,
+                    headers={"isAjax": "true"})
+    except requests.RequestException as err:
+        print(f"probe preload failed (continuing): {err}")
     tent = {
         "menuId": "ETS_MNU_00000134", "statsKind": "P", "imexTpcd": "E",
         "priodKind": "MON", "priodFr": "202607", "priodTo": "202608",
