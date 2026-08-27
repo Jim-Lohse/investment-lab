@@ -352,6 +352,13 @@ def probe() -> None:
         ("probe_tent_d10", "POST", tent_url, {**tent, "priodDate": "1"}),
         ("probe_tent_chart", "POST",
          f"{base}/cts/hmpg/retrieveChartTentativeValues.do", dict(tent)),
+        ("probe_tent_chart_N", "POST",
+         f"{base}/cts/hmpg/retrieveChartTentativeValues.do",
+         {**tent, "statsKind": "N"}),
+        ("probe_tent_chart_N_imp", "POST",
+         f"{base}/cts/hmpg/retrieveChartTentativeValues.do",
+         {**tent, "statsKind": "N", "imexTpcd": "I"}),
+        ("probe_tent_grid_N", "POST", tent_url, {**tent, "statsKind": "N"}),
         ("probe_tent_dljson", "POST",
          f"{base}/cts/hmpg/downloadTentativeValuesJson.do", dict(tent)),
     ]
