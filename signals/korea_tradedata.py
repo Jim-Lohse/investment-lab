@@ -183,6 +183,9 @@ def _session():
         "X-Requested-With": "XMLHttpRequest",
         "Referer": "https://tradedata.go.kr/cts/index.do",
         "Accept": "application/json, text/javascript, */*; q=0.01",
+        # The portal's kcs4g AJAX wrapper marks every call with this custom
+        # header; requests without it can be rejected server-side.
+        "isAjax": "true",
     })
     return session
 
@@ -324,15 +327,33 @@ def probe() -> None:
     session.get(f"{base}/cts/index.do", timeout=60)  # establish session cookie
     xhr = {"X-Requested-With": "XMLHttpRequest",
            "Referer": f"{base}/cts/index.do",
-           "Accept": "application/json, text/javascript, */*; q=0.01"}
+           "Accept": "application/json, text/javascript, */*; q=0.01",
+           "isAjax": "true"}
 
+    session.get(f"{base}/cts/hmpg/openETS0100173Q.do",
+                params={"menuId": "ETS_MNU_00000134"}, timeout=30,
+                headers={"isAjax": "true"})
+    tent = {
+        "menuId": "ETS_MNU_00000134", "statsKind": "P", "imexTpcd": "E",
+        "priodKind": "MON", "priodFr": "202607", "priodTo": "202608",
+        "priodDate": "", "selectPaging": "1", "showPagingLine": "100",
+        "sortColumn": "", "sortOrder": "",
+    }
+    tent_url = f"{base}/cts/hmpg/retrieveTentativeValues.do"
     attempts = [
-        ("probe_pprc_get", "GET", f"{base}/cts/hmpg/retrieveTradePprc.do", None),
-        ("probe_pprc_post", "POST", f"{base}/cts/hmpg/retrieveTradePprc.do", {}),
-        ("probe_173_post", "POST", f"{base}/cts/hmpg/openETS0100173Q.do",
-         {"menuId": "ETS_MNU_00000134"}),
-        ("probe_173_get_menu", "GET",
-         f"{base}/cts/hmpg/openETS0100173Q.do?menuId=ETS_MNU_00000134", None),
+        # Variants for the by-item grid; kcs4g's isAjax header rides on all.
+        ("probe_tent_base", "POST", tent_url, dict(tent)),
+        ("probe_tent_space", "POST", tent_url,
+         {**tent, "priodFr": "202607 ", "priodTo": "202608 "}),
+        ("probe_tent_paging15", "POST", tent_url,
+         {**tent, "showPagingLine": "15"}),
+        ("probe_tent_nomenu", "POST", tent_url,
+         {k: v for k, v in tent.items() if k != "menuId"}),
+        ("probe_tent_d10", "POST", tent_url, {**tent, "priodDate": "1"}),
+        ("probe_tent_chart", "POST",
+         f"{base}/cts/hmpg/retrieveChartTentativeValues.do", dict(tent)),
+        ("probe_tent_dljson", "POST",
+         f"{base}/cts/hmpg/downloadTentativeValuesJson.do", dict(tent)),
     ]
     PAGES_DIR.mkdir(parents=True, exist_ok=True)
     for name, method, url, data in attempts:
