@@ -1,0 +1,2 @@
+HTTP 200 text/html ; charset=UTF-8
+{"errortype":"KcsRuntimeException","message":"오류가 발생했습니다. 업무담당자에게 문의하시길 바랍니다.","error":"true"}
