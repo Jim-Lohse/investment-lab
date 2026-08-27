@@ -272,13 +272,20 @@ def fetch_items(start_yyyymm: str | None = None, end_yyyymm: str | None = None) 
         start_yyyymm = prev.strftime("%Y%m")
 
     session = _session()
+    # Load the screen once: mirrors the browser flow and establishes any
+    # server-side screen state before the grid query.
+    session.get("https://tradedata.go.kr/cts/hmpg/openETS0100173Q.do",
+                params={"menuId": "ETS_MNU_00000134"}, timeout=30)
     retrieved_at = today.isoformat()
     added_total = 0
     for imex in ("E", "I"):
         data = {
+            "menuId": "ETS_MNU_00000134",
             "statsKind": "P", "imexTpcd": imex, "priodKind": "MON",
             "priodFr": start_yyyymm, "priodTo": end_yyyymm, "priodDate": "",
-            "selectPaging": "1", "showPagingLine": "1000",
+            # 100 is the largest page size the screen's own select offers;
+            # larger values are rejected server-side (KcsRuntimeException).
+            "selectPaging": "1", "showPagingLine": "100",
             "sortColumn": "", "sortOrder": "",
         }
         resp = session.post(TENTATIVE_URL, data=data, timeout=60)
@@ -286,7 +293,12 @@ def fetch_items(start_yyyymm: str | None = None, end_yyyymm: str | None = None) 
         PAGES_DIR.parent.mkdir(parents=True, exist_ok=True)
         raw_name = f"tentative_{imex}_{start_yyyymm}_{end_yyyymm}.json"
         (PAGES_DIR.parent / raw_name).write_bytes(resp.content)
-        rows = parse_tentative_json(_json.loads(resp.content), retrieved_at, imex)
+        payload = _json.loads(resp.content)
+        if isinstance(payload, dict) and payload.get("error") == "true":
+            raise RuntimeError(
+                f"tentative items imex={imex}: server error "
+                f"{payload.get('errortype')}: {payload.get('message')}")
+        rows = parse_tentative_json(payload, retrieved_at, imex)
         added = append_dedup_csv(
             OUT_DIR / "tradedata_items.csv", ITEMS_HEADER, rows,
             ["yyyymm", "period_label", "imex", "item_slot"])
