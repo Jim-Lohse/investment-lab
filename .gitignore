@@ -1,0 +1,12 @@
+# Secrets — the Nasdaq Data Link key lives here, never in git
+.env
+
+# Local data store and vendor downloads (licensed data stays local)
+lab/data/
+
+# Personal holdings are not public repo content
+lab/portfolio/holdings.csv
+
+# Python
+__pycache__/
+*.pyc

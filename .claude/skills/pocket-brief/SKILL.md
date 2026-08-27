@@ -22,7 +22,11 @@ principle). A packet that editorializes contaminates every analyst downstream.
 2. **Create the run directory:** `lab/runs/<YYYY-MM-DD>-<ticker-or-mask>/`
    with subdirectory `packets/`.
 
-3. **Retrieve and rank into three packets.** Rank within each packet by
+3. **Retrieve and rank into three packets.** If the local Sharadar store
+   exists (`lab/data/sharadar.duckdb`, see `/pocket-data`), prefer it for
+   fundamentals and price history — and for any packet with a historical
+   cutoff (§18), query it with `datekey <= cutoff` so the packet is
+   point-in-time by construction. Rank within each packet by
    source class (§8.1) — primary regulatory records and filings first,
    management statements clearly labeled as such, aggregators last. Every
    item carries: source class, date, retrieval provenance (which tool/URL),
