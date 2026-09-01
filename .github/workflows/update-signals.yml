@@ -79,7 +79,7 @@ jobs:
         run: |
           if [ -n "${{ github.event.inputs.korea_items_range }}" ]; then
             RANGE="${{ github.event.inputs.korea_items_range }}"
-            python -m signals.korea_tradedata items "${RANGE%%:*}" "${RANGE##*:}"
+            python -m signals.korea_tradedata items-backfill "${RANGE%%:*}" "${RANGE##*:}"
           else
             python -m signals.korea_tradedata items
           fi
