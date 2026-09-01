@@ -365,13 +365,17 @@ def probe() -> None:
         ("probe_tent_grid_N", "POST", tent_url, {**tent, "statsKind": "N"}),
         ("probe_tent_dljson", "POST",
          f"{base}/cts/hmpg/downloadTentativeValuesJson.do", dict(tent)),
-        # The 통계항목 option list — should carry the real statsKind codes.
-        ("probe_tent_selectbox", "POST",
-         f"{base}/cts/hmpg/retrieveSetSelectBoxTentative.do",
+        # cf_typeList (common.js): the 통계항목 radios are built from
+        # retrieveType.do, and each radio's value is item.menuId — so
+        # statsKind takes a menu ID, not the placeholder "P"/"N".
+        ("probe_type_list", "POST", f"{base}/cts/hmpg/retrieveType.do",
          {"menuId": "ETS_MNU_00000134"}),
-        ("probe_tent_selectbox_get", "GET",
-         f"{base}/cts/hmpg/retrieveSetSelectBoxTentative.do?menuId=ETS_MNU_00000134",
-         None),
+        # Item dimension per the site nav: 품목별 수출입실적.
+        ("probe_chart_item_menu", "POST",
+         f"{base}/cts/hmpg/retrieveChartTentativeValues.do",
+         {**tent, "statsKind": "ETS_MNU_00000103"}),
+        ("probe_grid_item_menu", "POST", tent_url,
+         {**tent, "statsKind": "ETS_MNU_00000103"}),
     ]
     PAGES_DIR.mkdir(parents=True, exist_ok=True)
     for name, method, url, data in attempts:
