@@ -44,6 +44,14 @@
         "4583": "TBI Motion"
       }
     },
+    "network_interconnect": {
+      "label": "Switches and high-speed interconnect (what optics plug into)",
+      "members": {
+        "2345": "Accton",
+        "3665": "BizLink-KY",
+        "3023": "Sinbon"
+      }
+    },
     "photonics_epi": {
       "label": "InP/GaAs epi and optical components",
       "members": {
