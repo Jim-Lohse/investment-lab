@@ -21,6 +21,8 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | 2026-08 | D10 | imp:TOTAL (tradedata) | 19488000 | 23.10 |
 | 2026-08 | D20 | exp:TOTAL (tradedata) | 55207000 | 56 |
 | 2026-08 | D20 | imp:TOTAL (tradedata) | 41231000 | 19 |
+| 2026-08 | FULL | exp:TOTAL (tradedata) | 98255000 | 68.70 |
+| 2026-08 | FULL | imp:TOTAL (tradedata) | 63507000 | 22.50 |
 
 ---
 Validation status (constitution §21): raw government data, mechanically aggregated. Tier 1 screening input only; not a thesis, not advice.
