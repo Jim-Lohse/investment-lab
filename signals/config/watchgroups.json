@@ -43,6 +43,26 @@
         "2049": "Hiwin",
         "4583": "TBI Motion"
       }
+    },
+    "photonics_epi": {
+      "label": "InP/GaAs epi and optical components",
+      "members": {
+        "3081": "LandMark Optoelectronics",
+        "2455": "VPEC"
+      }
+    },
+    "photonics_cpo": {
+      "label": "Photonics / optical interconnect (CPO chain)",
+      "members": {
+        "3081": "LandMark Optoelectronics",
+        "3105": "WIN Semiconductors",
+        "3163": "Browave",
+        "3234": "Truelight",
+        "3363": "FOCI",
+        "4979": "LuxNet",
+        "6442": "Gloriole Electroptic",
+        "6451": "ShunSin Technology"
+      }
     }
   }
 }

@@ -11,6 +11,8 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | ai_server_odm | 5 | 65.83 | 60.76 | 100.0 |
 | power_cooling | 5 | 49.06 | 47.75 | 80.0 |
 | robotics_motion | 3 | 42.35 | 33.94 | 100.0 |
+| photonics_epi | 2 | 95.57 | 110.83 | 100.0 |
+| photonics_cpo | 8 | 37.26 | 31.09 | 100.0 |
 | all_listed | 1967 | 41.79 | 16.14 | 73.8 |
 
 ## Korea trade (KCS)
