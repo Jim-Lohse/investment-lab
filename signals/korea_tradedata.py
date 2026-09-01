@@ -28,6 +28,7 @@ from __future__ import annotations
 import datetime as dt
 import re
 import sys
+import time
 from pathlib import Path
 
 from .common import (DATA_DIR, TableParser, append_dedup_csv, fmt, http_get,
@@ -168,9 +169,20 @@ def capture() -> None:
             print(f"capture {name} failed: {err}")
 
 
-ITEMS_HEADER = ["yyyymm", "period_label", "period_type", "imex", "item_slot",
-                "item_name", "value_usd_k", "retrieved_at"]
+ITEMS_HEADER = ["yyyymm", "period_type", "imex", "dimension",
+                "name", "value_usd_k", "retrieved_at"]
 TENTATIVE_URL = "https://tradedata.go.kr/cts/hmpg/retrieveTentativeValues.do"
+CHART_URL = "https://tradedata.go.kr/cts/hmpg/retrieveChartTentativeValues.do"
+
+# statsKind takes a menu ID (cf_typeList builds the 통계항목 radios from
+# retrieveType.do using item.menuId as each value); the screen's own radio
+# element ids are those IDs. Confirmed 2026-09-01 against live responses:
+# ...A returns the product breakdown (slot 1 = semiconductors, 37% of
+# exports), ...B the country breakdown (slot 1 = China).
+STATS_KINDS = {"item": "ETS_MNK_1050000A", "country": "ETS_MNK_1050000B"}
+
+# The chart response gives each window as a positional amount field.
+WINDOW_FIELDS = {"itemUsdAmt1": "D10", "itemUsdAmt2": "D20", "itemUsdAmt3": "FULL"}
 
 
 def _session():
@@ -191,124 +203,99 @@ def _session():
     return session
 
 
-def _hangul_strings(node, out):
-    if isinstance(node, str):
-        if any("가" <= ch <= "힣" for ch in node):
-            out.append(node.strip())
-    elif isinstance(node, list):
-        for child in node:
-            _hangul_strings(child, out)
-    elif isinstance(node, dict):
-        for child in node.values():
-            _hangul_strings(child, out)
+def parse_chart_breakdown(payload, dimension: str, imex: str,
+                          retrieved_at: str) -> list[dict]:
+    """Normalize the chart endpoint's breakdown rows.
 
-
-def parse_tentative_json(payload, retrieved_at: str, imex: str) -> list[dict]:
-    """Normalize the 10-day by-item grid response.
-
-    Rows carry priodDt/priodMon plus pivoted itemUsdAmt<NN> columns. Item
-    names for the slots are resolved from Korean strings in the same row
-    when present, else the row order of a header-ish record; failing both,
-    slots keep generic labels (raw JSON is preserved regardless).
+    Two row shapes share one list: month rows (lwprId=YYYYMM, curTitle
+    '2026년 07월') carrying that month's totals, and detail rows
+    (uprId=YYYYMM, curTitle = product or country name). Both carry
+    itemUsdAmt1/2/3 = the 1-10, 1-20 and full-month cumulative values in
+    thousand USD. Names come from the payload itself, so no slot-order
+    assumption is baked in.
     """
-    from .korea_customs import classify_period
-
-    # Collect every dict that looks like a grid row.
-    rows_in: list[dict] = []
-
-    def walk(node):
-        if isinstance(node, dict):
-            if any(k.startswith("itemUsdAmt") for k in node):
-                rows_in.append(node)
-            for child in node.values():
-                walk(child)
-        elif isinstance(node, list):
-            for child in node:
-                walk(child)
-
-    walk(payload)
-
-    out: list[dict] = []
-    for row in rows_in:
-        period_label = str(row.get("priodDt") or "").strip()
-        month_raw = str(row.get("priodMon") or "").replace(".", "")
-        yyyymm = (f"{month_raw[:4]}-{month_raw[4:6]}"
-                  if len(month_raw) >= 6 else "")
-        curtitle = str(row.get("curTitle") or "").strip()
-        ptype = classify_period(period_label) or classify_period(curtitle)
-        slots = sorted(k for k in row if k.startswith("itemUsdAmt"))
-        for slot in slots:
-            value = str(row.get(slot) or "").replace(",", "").strip()
-            if not value:
+    rows: list[dict] = []
+    for item in (payload.get("items") or []):
+        if not isinstance(item, dict):
+            continue
+        month = str(item.get("uprId") or item.get("lwprId") or "").strip()
+        if len(month) != 6 or not month.isdigit():
+            continue
+        is_total = not str(item.get("uprId") or "").strip()
+        name = "TOTAL" if is_total else str(item.get("curTitle") or "").strip()
+        if not name:
+            continue
+        for field, period_type in WINDOW_FIELDS.items():
+            raw = str(item.get(field) or "").replace(",", "").strip()
+            if not raw:
                 continue
-            # A header-style record carries names instead of numbers: use it
-            # to label subsequent numeric rows via the shared slot key.
             try:
-                float(value)
+                value = float(raw)
             except ValueError:
-                _SLOT_NAMES[(imex, slot)] = value
                 continue
-            out.append({
-                "yyyymm": yyyymm,
-                "period_label": period_label or curtitle,
-                "period_type": ptype,
+            if value == 0:
+                continue  # window not published yet
+            rows.append({
+                "yyyymm": f"{month[:4]}-{month[4:]}",
+                "period_type": period_type,
                 "imex": imex,
-                "item_slot": slot.replace("itemUsdAmt", ""),
-                "item_name": _SLOT_NAMES.get((imex, slot), ""),
-                "value_usd_k": value,
+                "dimension": "total" if is_total else dimension,
+                "name": name,
+                "value_usd_k": f"{value:.0f}",
                 "retrieved_at": retrieved_at,
             })
-    return out
+    return rows
 
 
-_SLOT_NAMES: dict = {}
+def fetch_items(start_yyyymm: str | None = None,
+                end_yyyymm: str | None = None) -> int:
+    """Fetch the 10-day flash breakdowns (products and destinations).
 
-
-def fetch_items(start_yyyymm: str | None = None, end_yyyymm: str | None = None) -> int:
-    """Fetch the by-item 10-day grid (both exports and imports)."""
+    Four polite calls: {product, country} x {exports, imports}. Each returns
+    every published window in the month range, so re-runs are cheap and the
+    append-only store keeps first prints immutable.
+    """
     import json as _json
 
     today = dt.date.today()
     if end_yyyymm is None:
         end_yyyymm = today.strftime("%Y%m")
     if start_yyyymm is None:
-        prev = (today.replace(day=1) - dt.timedelta(days=1))
+        prev = today.replace(day=1) - dt.timedelta(days=1)
         start_yyyymm = prev.strftime("%Y%m")
 
     session = _session()
-    # Load the screen once: mirrors the browser flow and establishes any
-    # server-side screen state before the grid query.
-    session.get("https://tradedata.go.kr/cts/hmpg/openETS0100173Q.do",
-                params={"menuId": "ETS_MNU_00000134"}, timeout=30)
     retrieved_at = today.isoformat()
     added_total = 0
-    for imex in ("E", "I"):
-        data = {
-            "menuId": "ETS_MNU_00000134",
-            "statsKind": "P", "imexTpcd": imex, "priodKind": "MON",
-            "priodFr": start_yyyymm, "priodTo": end_yyyymm, "priodDate": "",
-            # 100 is the largest page size the screen's own select offers;
-            # larger values are rejected server-side (KcsRuntimeException).
-            "selectPaging": "1", "showPagingLine": "100",
-            "sortColumn": "", "sortOrder": "",
-        }
-        resp = session.post(TENTATIVE_URL, data=data, timeout=60)
-        resp.raise_for_status()
-        PAGES_DIR.parent.mkdir(parents=True, exist_ok=True)
-        raw_name = f"tentative_{imex}_{start_yyyymm}_{end_yyyymm}.json"
-        (PAGES_DIR.parent / raw_name).write_bytes(resp.content)
-        payload = _json.loads(resp.content)
-        if isinstance(payload, dict) and payload.get("error") == "true":
-            raise RuntimeError(
-                f"tentative items imex={imex}: server error "
-                f"{payload.get('errortype')}: {payload.get('message')}")
-        rows = parse_tentative_json(payload, retrieved_at, imex)
-        added = append_dedup_csv(
-            OUT_DIR / "tradedata_items.csv", ITEMS_HEADER, rows,
-            ["yyyymm", "period_label", "imex", "item_slot"])
-        print(f"tentative items imex={imex} {start_yyyymm}..{end_yyyymm}: "
-              f"{len(rows)} values parsed, {added} new")
-        added_total += added
+    for dimension, stats_kind in STATS_KINDS.items():
+        for imex in ("E", "I"):
+            data = {
+                "menuId": "ETS_MNU_00000134",
+                "statsKind": stats_kind, "imexTpcd": imex,
+                "priodKind": "MON", "priodFr": start_yyyymm,
+                "priodTo": end_yyyymm, "priodDate": "",
+                "selectPaging": "1", "showPagingLine": "100",
+                "sortColumn": "", "sortOrder": "",
+            }
+            resp = session.post(CHART_URL, data=data, timeout=60)
+            resp.raise_for_status()
+            RAW_DIR = PAGES_DIR.parent
+            RAW_DIR.mkdir(parents=True, exist_ok=True)
+            (RAW_DIR / f"flash_{dimension}_{imex}_{start_yyyymm}_{end_yyyymm}.json"
+             ).write_bytes(resp.content)
+            payload = _json.loads(resp.content)
+            if isinstance(payload, dict) and payload.get("error") == "true":
+                raise RuntimeError(
+                    f"flash {dimension}/{imex}: server error "
+                    f"{payload.get('errortype')}: {payload.get('message')}")
+            rows = parse_chart_breakdown(payload, dimension, imex, retrieved_at)
+            added = append_dedup_csv(
+                OUT_DIR / "tradedata_items.csv", ITEMS_HEADER, rows,
+                ["yyyymm", "period_type", "imex", "dimension", "name"])
+            print(f"flash {dimension}/{imex} {start_yyyymm}..{end_yyyymm}: "
+                  f"{len(rows)} values, {added} new")
+            added_total += added
+            time.sleep(1.0)
     return added_total
 
 

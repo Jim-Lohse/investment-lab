@@ -195,19 +195,33 @@ class TestTradedata(unittest.TestCase):
         self.assertEqual(korea_tradedata.parse_window("Dec.1~Dec.31", dt.date(2027, 1, 2)),
                          ("2026-12", "FULL"))
 
-    def test_parse_tentative_items(self):
-        payload = {"tentativeList": [
-            {"curTitle": "품목", "itemUsdAmt00": "전체", "itemUsdAmt01": "반도체"},
-            {"priodDt": "2026.08.01~08.10", "priodMon": "202608",
-             "itemUsdAmt00": "19,800,000", "itemUsdAmt01": "11,000,000"},
+    def test_parse_chart_breakdown(self):
+        payload = {"items": [
+            # Month total row (lwprId, no uprId); full month not yet published.
+            {"curTitle": "2026년 08월", "lwprId": "202608",
+             "itemUsdAmt1": "21285723", "itemUsdAmt2": "55206635",
+             "itemUsdAmt3": "0"},
+            # Breakdown rows carry their own names.
+            {"uprId": "202608", "curTitle": "반도체",
+             "itemUsdAmt1": "8000000", "itemUsdAmt2": "20000000",
+             "itemUsdAmt3": "36000000"},
+            {"uprId": "202608", "curTitle": "승용차",
+             "itemUsdAmt1": "1,500,000", "itemUsdAmt2": "", "itemUsdAmt3": ""},
         ]}
-        rows = korea_tradedata.parse_tentative_json(payload, "2026-08-15", "E")
-        self.assertEqual(len(rows), 2)
-        semis = [r for r in rows if r["item_slot"] == "01"][0]
-        self.assertEqual(semis["item_name"], "반도체")
-        self.assertEqual(semis["value_usd_k"], "11000000")
-        self.assertEqual(semis["yyyymm"], "2026-08")
-        self.assertEqual(semis["period_type"], "D10")
+        rows = korea_tradedata.parse_chart_breakdown(
+            payload, "item", "E", "2026-09-01")
+        semis = [r for r in rows if r["name"] == "반도체"]
+        self.assertEqual(len(semis), 3)  # D10, D20, FULL
+        d10 = [r for r in semis if r["period_type"] == "D10"][0]
+        self.assertEqual((d10["yyyymm"], d10["value_usd_k"], d10["dimension"]),
+                         ("2026-08", "8000000", "item"))
+        totals = [r for r in rows if r["dimension"] == "total"]
+        self.assertEqual(len(totals), 2)  # zero FULL window skipped
+        self.assertEqual(totals[0]["name"], "TOTAL")
+        # Comma-formatted values parse; empty windows are skipped.
+        cars = [r for r in rows if r["name"] == "승용차"]
+        self.assertEqual(len(cars), 1)
+        self.assertEqual(cars[0]["value_usd_k"], "1500000")
 
     def test_parse_dashboard(self):
         rows = korea_tradedata.parse_dashboard(TRADEDATA_HTML, self.RETRIEVED)
