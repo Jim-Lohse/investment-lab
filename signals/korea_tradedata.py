@@ -400,14 +400,19 @@ def main(argv: list[str]) -> int:
             start_y = year - 1
             start = f"{start_y:04d}{month:02d}"
             print(f"--- chunk {max(start, floor)}..{end}")
-            fetch_items(max(start, floor), end)
+            try:
+                fetch_items(max(start, floor), end)
+            except Exception as err:  # noqa: BLE001 - one chunk must not
+                # abort the walk; the site throttles bursts, and every chunk
+                # is independent and re-runnable thanks to dedup.
+                print(f"    chunk failed ({type(err).__name__}: {err}); continuing")
             # Step back a full year for the next chunk.
             end = f"{start_y:04d}{month:02d}"
             prev_month = month - 1
             if prev_month == 0:
                 prev_month, start_y = 12, start_y - 1
             end = f"{start_y:04d}{prev_month:02d}"
-            time.sleep(3.0)
+            time.sleep(20.0)  # the portal throttles bursts; go slowly
     elif argv[0] == "items":
         if len(argv) >= 3:
             fetch_items(argv[1], argv[2])
