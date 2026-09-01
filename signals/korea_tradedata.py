@@ -390,6 +390,24 @@ def main(argv: list[str]) -> int:
         return 2
     if argv[0] == "dashboard":
         fetch_dashboard()
+    elif argv[0] == "items-backfill":
+        # The endpoint answers with at most a rolling 12 months ending at
+        # priodTo, so history is walked backwards in 12-month steps.
+        end = argv[2] if len(argv) > 2 else dt.date.today().strftime("%Y%m")
+        floor = argv[1] if len(argv) > 1 else "201601"
+        while end >= floor:
+            year, month = int(end[:4]), int(end[4:])
+            start_y = year - 1
+            start = f"{start_y:04d}{month:02d}"
+            print(f"--- chunk {max(start, floor)}..{end}")
+            fetch_items(max(start, floor), end)
+            # Step back a full year for the next chunk.
+            end = f"{start_y:04d}{month:02d}"
+            prev_month = month - 1
+            if prev_month == 0:
+                prev_month, start_y = 12, start_y - 1
+            end = f"{start_y:04d}{prev_month:02d}"
+            time.sleep(3.0)
     elif argv[0] == "items":
         if len(argv) >= 3:
             fetch_items(argv[1], argv[2])
