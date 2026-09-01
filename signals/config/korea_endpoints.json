@@ -38,10 +38,20 @@
       "endYymm": "{end_yyyymm}"
     }
   },
+  "_hs_codes_note": [
+    "Used only by the monthly item-trade API path (korea_customs.py), which",
+    "requires DATA_GO_KR_API_KEY. The no-key tradedata.go.kr flash feed uses",
+    "KCS's own fixed 10-category breakdown and ignores these codes, so the",
+    "photonics entries below are inert until a service key is configured."
+  ],
   "hs_codes": {
     "85": "Electrical machinery and electronics (chapter)",
     "8542": "Semiconductors - electronic integrated circuits",
     "8486": "Semiconductor manufacturing equipment",
-    "8479": "Machines with individual functions (incl. industrial robots ex 8479.50)"
+    "8479": "Machines with individual functions (incl. industrial robots ex 8479.50)",
+    "8541": "Photosensitive semiconductor devices - laser diodes, photodiodes, LEDs",
+    "8517": "Transmission apparatus for networks (incl. optical transceivers, 8517.62)",
+    "9001": "Optical fibres, fibre bundles and cables",
+    "9013": "Optical devices, appliances and instruments"
   }
 }
