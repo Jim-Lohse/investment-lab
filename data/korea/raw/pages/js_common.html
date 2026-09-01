@@ -1,0 +1,952 @@
+
+/*****************************************************
+* Function 명 : ets_f_prccMenuLoad
+* Function 기능설명 : 화면 load
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function ets_f_prccMenuLoad(openUrl, data) {
+	// 전체메뉴 출력일 경우 닫기처리
+	$('html').removeClass('allOpen');
+	$('#all_menu').removeClass('open');
+
+	// 모바일 검색기능 닫기처리
+	$('.srchBar').removeClass('on');
+	$('.dim').removeClass('on');
+	$('html').removeClass('allOpen');
+	//웹 편의성 검색어 유지
+	if(!openUrl.includes('ETS0100213Q')) {
+		$('#totalSearchWord').val('');
+	}
+	$('.btnClear').hide();
+
+	// 국뮨일 경우에만  최근본 메뉴에 등록한다.
+	if (openUrl.includes('ETS010')) {
+		// 기존에 최근본 메뉴에 등록이 안되있을경우에만 등록처리를 한다.
+		if (cf_getCookie('CKEY_RCNT_MENU_DATA1') != JSON.stringify(data)
+				&& cf_getCookie('CKEY_RCNT_MENU_DATA2') != JSON.stringify(data)
+				&& cf_getCookie('CKEY_RCNT_MENU_DATA3') != JSON.stringify(data)){
+			
+			// 최근본 메뉴가없을경우 셋팅
+			if (cf_getCookie('CKEY_RCNT_MENU1') == '') {
+				// 쿠키저장
+				cf_setCookie("CKEY_RCNT_MENU1", openUrl, 1);
+				cf_setCookie("CKEY_RCNT_MENU_DATA1", JSON.stringify(data), 1);
+			}
+			// 최근본 메뉴가없을경우 셋팅
+			else if (cf_getCookie('CKEY_RCNT_MENU1') != '' && cf_getCookie('CKEY_RCNT_MENU2') == '') {
+				// 쿠키저장
+				cf_setCookie("CKEY_RCNT_MENU2", openUrl, 1);
+				cf_setCookie("CKEY_RCNT_MENU_DATA2", JSON.stringify(data), 1);
+			}
+			// 최근본 메뉴가없을경우 셋팅
+			else if (cf_getCookie('CKEY_RCNT_MENU1') != '' && cf_getCookie('CKEY_RCNT_MENU2') != '' && cf_getCookie('CKEY_RCNT_MENU3') == '') {
+				// 쿠키저장
+				cf_setCookie("CKEY_RCNT_MENU3", openUrl, 1);
+				cf_setCookie("CKEY_RCNT_MENU_DATA3", JSON.stringify(data), 1);
+			}
+			// 최근본 메뉴가없을경우 셋팅
+			else if (cf_getCookie('CKEY_RCNT_MENU1') != '' && cf_getCookie('CKEY_RCNT_MENU2') != '' && cf_getCookie('CKEY_RCNT_MENU3') != '') {
+				// 쿠키저장
+				cf_setCookie("CKEY_RCNT_MENU3", cf_getCookie('CKEY_RCNT_MENU2'), 1);
+				cf_setCookie("CKEY_RCNT_MENU_DATA3", cf_getCookie('CKEY_RCNT_MENU_DATA2'), 1);
+				// 쿠키저장
+				cf_setCookie("CKEY_RCNT_MENU2", cf_getCookie('CKEY_RCNT_MENU1'), 1);
+				cf_setCookie("CKEY_RCNT_MENU_DATA2", cf_getCookie('CKEY_RCNT_MENU_DATA1'), 1);
+				// 쿠키저장
+				cf_setCookie("CKEY_RCNT_MENU1", openUrl, 1);
+				cf_setCookie("CKEY_RCNT_MENU_DATA1", JSON.stringify(data), 1);
+			}
+		}
+	}
+
+	
+	// 팝업닫기 처리
+	$('.topPop').css('display','none');
+	
+	
+	// 화면 맨위로 이동시킨다.
+	$('html').scrollTop(0);
+	$('#mainarea').load(openUrl, data);
+
+	/* 웹 접근성 수정 - 페이지 로드 후 탭 위치 초기화 */
+	if($('#mainbody').length > 0) {
+		$('#mainbody').attr('tabindex','-1').focus();
+	}
+	/* 페이지 로드 후 탭 위치 초기화 끝 */
+};
+
+/*****************************************************
+* Function 명 : ets_f_prccMenuAdmin
+* Function 기능설명 : 화면 load
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function ets_f_prccMenuAdmin(openUrl, data) {
+	// 화면 맨위로 이동시킨다.
+	$('html').scrollTop(0);
+	$('#mainarea').load(openUrl, data);
+
+	// 팝업닫기 처리
+	$('.topPop').css('display','none');
+};
+
+/*****************************************************
+* Function 명 : searchEncoder
+* Function 기능설명 : 한글 인코딩 설정
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function searchEncoder(word) {
+	var searchWord = encodeURI(word); //검색어
+	return encodeURI(searchWord,"UTF-8");
+};
+
+/*****************************************************
+* Function 명 : cf_printPage
+* Function 기능설명 : 프린트
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+var win;
+function cf_printPage() {
+	// 검색 플래그가 Y일경우에만 인쇄를 한다
+	if (seartFlag == 'N') {
+		cf_alertMessage(ETS_MSG.inf_all_00037);//조회조건을 선택하십시오.
+		return;
+	};
+
+	// 조회결과 플래그가 Y일경우에만 인쇄를 한다
+	if (resultFlag == 'N') {
+		cf_alertMessage(ETS_MSG.inf_all_00038);//조회결과가 존재하지 않습니다.
+		return;
+	};
+
+	win = window.open('', 'PrintWindow', 'width=800, height=500, top = 300, left = 700, toolbars =no, scrollbars=no, status=no, resizable=no');
+	self.focus();
+	win.document.open();
+	var printStyle = '';
+	printStyle += '.board_type1{ width:100%; border-top: 1px solid #2f343e; border-bottom: 1px solid #2f343e; border-collapse: collapse; border-spacing:0px;}';
+	printStyle += '.board_type1 thead {background-color: #F9FAFB; border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 thead th{background-color: #F9FAFB; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; text-align:center; padding: 8px 10px; border-top: 1px solid #e0dfe1; font-weight:600; font-size: 14px;}';
+	printStyle += '.board_type1 thead th.borderL_0 {border-left: none;}';
+	printStyle += '.board_type1 thead tr:first-child th {border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td{padding: 5px 10px; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; border-top: 1px solid #e0dfe1; text-align:right; font-size: 14px;}';
+	printStyle += '.board_type1 tbody.txt_center td {text-align: center;}';
+	printStyle += '.board_type1 tbody.pd10 tr td {padding:10px 0;}';
+	printStyle += '.board_type1 tbody.bgNone tr td {word-break: break-word;white-space:normal;}';
+	printStyle += '.board_type1 tbody tr td:first-child {border-left: none;}';
+	printStyle += '.board_type1 tbody tr:last-child td {border-bottom: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td.borderL_1 {border-left: 1px solid #e0dfe1 !important;}';
+	printStyle += '.board_type1 tbody td.borderB_1 {border-bottom: 1px solid #2f343e !important;}';
+	printStyle += '.board_type1 tbody .sum td {color:#191919;background-color:#e7eaf9; font-weight:600;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n) td{background: #fff;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n-1) td{background: #ECEFFB;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):nth-child(2n-1) td{background: #ffffff;}';
+	printStyle += '.board_type1 th,';
+	printStyle += '.board_type1 td{transition: .3s all;}';
+	printStyle += '.board_type1 td .elips{display: inline-block;position:relative;width:100%;max-width:184px;height: 19px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):hover td{background-color: #baa8ff;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):hover td{background-color: transparent;}';
+	printStyle += '.board_type1 th *,';
+	printStyle += '.board_type1 td *{color: inherit;}';
+	printStyle += '.board_type1 td .toolTip{display:none;position:absolute;white-space: pre-line;color:#000;padding: 3px 7px;background:#eceffb;border: 1px solid #3e67cf;border-radius:4px;box-shadow:4px 4px 4px rgba(0,0,0,.1);left: 8px;top: calc(100% - 2px);z-index: 1;}';
+	printStyle += '.board_type1 td:hover .toolTip{display: inline-block;}';
+	printStyle += '.board_type1 td .toolTip::before{display: inline-block;position:absolute;content:"";width: 13px;height: 10px;background: url(../images/toolarrw.png) no-repeat center;left: 17px;top: -10px;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(1){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(2){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n-1):hover td{background-color: #ECEFFB;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n):hover td{background-color: #fff;}';
+	printStyle += '.lfpoil .board_type1 tbody tr td.on.hover{background-color: #baa8ff !important;}';
+	printStyle += '.txt_left{text-align:left !important;}';
+	printStyle += '.txt_right{text-align:right !important;}';
+	printStyle += '.txt_center{text-align:center !important;}';
+	printStyle += '.btn_grping{display:inline-block;float:right;margin: 0 0 12px}';
+	printStyle += '.print_btn {padding: 6px; margin: 0 10px 0 0; width: 32px; height: 32px; background: #707070 url(../cts/images/print.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';
+	printStyle += '.del_btn {padding: 6px; width: 32px; height: 32px; background: #707070 url(../cts/images/closeW.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';
+	win.document.write('<html>');
+	win.document.write('<head>');
+	win.document.write('<style>');
+	win.document.write(printStyle);
+	win.document.write('</style>');
+	win.document.write('</head>');
+	win.document.write('<body>');
+	win.document.write('<script>');
+	win.document.write('function cf_printPgPopup(){opener.cf_printPg();}');
+	win.document.write('function printPgClosePopup(){opener.cf_printPgClose();}');
+	win.document.write('</script>');
+	win.document.write(searchValue);
+	win.document.write('<div class="btn_grping">');
+	win.document.write('<button type="button" class="print_btn" onclick="return cf_printPgPopup()" aria-label="인쇄"></button>');
+	win.document.write('<button type="button" class="del_btn" onclick="return printPgClosePopup()"></button>');
+	win.document.write('</div>');
+
+	win.document.write('<table class="board_type1" id="trade_table">');
+	win.document.write(document.getElementById('trade_table').innerHTML);
+	win.document.write('</div>');
+	win.document.write('</body>');
+	win.document.write('</html>');
+	win.document.close();
+};
+
+/*****************************************************
+* Function 명 : cf_printPg
+* Function 기능설명 : 프린트
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_printPg() {
+	win.document.open();
+	var printStyle = '';
+	printStyle += '.board_type1{ width:100%; border-top: 1px solid #2f343e; border-bottom: 1px solid #2f343e; border-collapse: collapse; border-spacing:0px;}';
+	printStyle += '.board_type1 thead {background-color: #F9FAFB; border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 thead th{background-color: #F9FAFB; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; text-align:center; padding: 3pt 2pt; border-top: 1px solid #e0dfe1; font-weight:600; font-size: 4pt;}';
+	printStyle += '.board_type1 thead th.borderL_0 {border-left: none;}';
+	printStyle += '.board_type1 thead tr:first-child th {border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td{padding: 3pt 2pt; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; border-top: 1px solid #e0dfe1; text-align:right; font-size: 4pt;}';
+	printStyle += '.board_type1 tbody.txt_center td {text-align: center;}';
+	printStyle += '.board_type1 tbody.pd10 tr td {padding:10px 0;}';
+	printStyle += '.board_type1 tbody.bgNone tr td {word-break: break-word;white-space:normal;}';
+	printStyle += '.board_type1 tbody tr td:first-child {border-left: none;}';
+	printStyle += '.board_type1 tbody tr:last-child td {border-bottom: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td.borderL_1 {border-left: 1px solid #e0dfe1 !important;}';
+	printStyle += '.board_type1 tbody td.borderB_1 {border-bottom: 1px solid #2f343e !important;}';
+	printStyle += '.board_type1 tbody .sum td {color:#191919;background-color:#e7eaf9; font-weight:600;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n) td{background: #fff;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n-1) td{background: #ECEFFB;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):nth-child(2n-1) td{background: #ffffff;}';
+	printStyle += '.board_type1 th,';
+	printStyle += '.board_type1 td{transition: .3s all;}';
+	printStyle += '.board_type1 td .elips{display: inline-block;position:relative;width:100%;max-width:184px;height: 19px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):hover td{background-color: #baa8ff;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):hover td{background-color: transparent;}';
+	printStyle += '.board_type1 th *,';
+	printStyle += '.board_type1 td *{color: inherit;}';
+	printStyle += '.board_type1 td .toolTip{display:none;position:absolute;white-space: pre-line;color:#000;padding: 3px 7px;background:#eceffb;border: 1px solid #3e67cf;border-radius:4px;box-shadow:4px 4px 4px rgba(0,0,0,.1);left: 8px;top: calc(100% - 2px);z-index: 1;}';
+	printStyle += '.board_type1 td:hover .toolTip{display: inline-block;}';
+	printStyle += '.board_type1 td .toolTip::before{display: inline-block;position:absolute;content:"";width: 13px;height: 10px;background: url(../images/toolarrw.png) no-repeat center;left: 17px;top: -10px;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(1){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(2){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n-1):hover td{background-color: #ECEFFB;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n):hover td{background-color: #fff;}';
+	printStyle += '.lfpoil .board_type1 tbody tr td.on.hover{background-color: #baa8ff !important;}';
+	printStyle += '.txt_left{text-align:left !important;}';
+	printStyle += '.txt_right{text-align:right !important;}';
+	printStyle += '.txt_center{text-align:center !important;}';
+	printStyle += '.btn_grping{display:inline-block;float:right;margin: 0 0 12px}';
+	printStyle += '.print_btn {padding: 6px; margin: 0 10px 0 0; width: 32px; height: 32px; background: #707070 url(../cts/images/print.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';
+	printStyle += '.del_btn {padding: 6px; width: 32px; height: 32px; background: #707070 url(../cts/images/closeW.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';	win.document.write('<html>');
+	printStyle += '@media print{ .board_type1 thead th,.board_type1 thead td{font-size: 8pt;} }';
+	win.document.write('<head>');
+	win.document.write('<style>');
+	win.document.write(printStyle);
+	win.document.write('</style>');
+	win.document.write('</head>');
+	win.document.write('<body>');
+	win.document.write('<script>');
+	win.document.write('function cf_printPgPopup(){opener.cf_printPg();}');
+	win.document.write('function printPgClosePopup(){opener.cf_printPgClose();}');
+	win.document.write('</script>');
+	win.document.write(searchValue);
+	win.document.write('<table class="board_type1" id="trade_table">');
+	win.document.write(document.getElementById('trade_table').innerHTML);
+	win.document.write('</div>');
+	win.document.write('</body>');
+	win.document.write('</html>');
+	win.document.close();
+	win.print();
+	win.close();
+}
+
+/*****************************************************
+* Function 명 : cf_printPgClose
+* Function 기능설명 : 프린트 닫기
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_printPgClose() {
+	win.close();
+}
+
+/*****************************************************
+* Function 명 : cf_printPageEng
+* Function 기능설명 : 프린트 영문
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_printPageEng() {
+	// 검색 플래그가 Y일경우에만 인쇄를 한다
+	if (seartFlag == 'N') {
+		cf_alertMessage(ETS_MSG.inf_trs_00004_en);//조회조건을 선택하십시오.
+		return;
+	};
+	// 조회결과 플래그가 Y일경우에만 인쇄를 한다
+	if (resultFlag == 'N') {
+		cf_alertMessage(ETS_MSG.inf_all_00038_en);//조회결과가 존재하지 않습니다.
+		return;
+	};
+	win = window.open('', 'PrintWindow', 'width=800, height=500, top = 300, left = 700, toolbars =no, scrollbars=no, status=no, resizable=no');
+	self.focus();
+	win.document.open();
+	var printStyle = '';
+	printStyle += '.board_type1{ width:100%; border-top: 1px solid #2f343e; border-bottom: 1px solid #2f343e; border-collapse: collapse; border-spacing:0px;}';
+	printStyle += '.board_type1 thead {background-color: #F9FAFB; border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 thead th{background-color: #F9FAFB; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; text-align:center; padding: 8px 10px; border-top: 1px solid #e0dfe1; font-weight:600; font-size: 14px;}';
+	printStyle += '.board_type1 thead th.borderL_0 {border-left: none;}';
+	printStyle += '.board_type1 thead tr:first-child th {border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td{padding: 5px 10px; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; border-top: 1px solid #e0dfe1; text-align:right; font-size: 14px;}';
+	printStyle += '.board_type1 tbody.txt_center td {text-align: center;}';
+	printStyle += '.board_type1 tbody.pd10 tr td {padding:10px 0;}';
+	printStyle += '.board_type1 tbody.bgNone tr td {word-break: break-word;white-space:normal;}';
+	printStyle += '.board_type1 tbody tr td:first-child {border-left: none;}';
+	printStyle += '.board_type1 tbody tr:last-child td {border-bottom: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td.borderL_1 {border-left: 1px solid #e0dfe1 !important;}';
+	printStyle += '.board_type1 tbody td.borderB_1 {border-bottom: 1px solid #2f343e !important;}';
+	printStyle += '.board_type1 tbody .sum td {color:#191919;background-color:#e7eaf9; font-weight:600;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n) td{background: #fff;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n-1) td{background: #ECEFFB;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):nth-child(2n-1) td{background: #ffffff;}';
+	printStyle += '.board_type1 th,';
+	printStyle += '.board_type1 td{transition: .3s all;}';
+	printStyle += '.board_type1 td .elips{display: inline-block;position:relative;width:100%;max-width:184px;height: 19px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):hover td{background-color: #baa8ff;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):hover td{background-color: transparent;}';
+	printStyle += '.board_type1 th *,';
+	printStyle += '.board_type1 td *{color: inherit;}';
+	printStyle += '.board_type1 td .toolTip{display:none;position:absolute;white-space: pre-line;color:#000;padding: 3px 7px;background:#eceffb;border: 1px solid #3e67cf;border-radius:4px;box-shadow:4px 4px 4px rgba(0,0,0,.1);left: 8px;top: calc(100% - 2px);z-index: 1;}';
+	printStyle += '.board_type1 td:hover .toolTip{display: inline-block;}';
+	printStyle += '.board_type1 td .toolTip::before{display: inline-block;position:absolute;content:"";width: 13px;height: 10px;background: url(../images/toolarrw.png) no-repeat center;left: 17px;top: -10px;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(1){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(2){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n-1):hover td{background-color: #ECEFFB;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n):hover td{background-color: #fff;}';
+	printStyle += '.lfpoil .board_type1 tbody tr td.on.hover{background-color: #baa8ff !important;}';
+	printStyle += '.txt_left{text-align:left !important;}';
+	printStyle += '.txt_right{text-align:right !important;}';
+	printStyle += '.txt_center{text-align:center !important;}';
+	printStyle += '.btn_grping{display:inline-block;float:right;margin: 0 0 12px}';
+	printStyle += '.print_btn {padding: 6px; margin: 0 10px 0 0; width: 32px; height: 32px; background: #707070 url(../cts/images/print.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';
+	printStyle += '.del_btn {padding: 6px; width: 32px; height: 32px; background: #707070 url(../cts/images/closeW.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';
+	win.document.write('<html>');
+	win.document.write('<head>');
+	win.document.write('<style>');
+	win.document.write(printStyle);
+	win.document.write('</style>');
+	win.document.write('</head>');
+	win.document.write('<body>');
+	win.document.write('<script>');
+	win.document.write('function cf_printPgPopup(){opener.cf_printPgEng();}');
+	win.document.write('function printPgClosePopup(){opener.cf_printPgClose();}');
+	win.document.write('</script>');
+	win.document.write(searchValue);
+	win.document.write('<div class="btn_grping">');
+	win.document.write('<button type="button" class="print_btn" onclick="return cf_printPgPopup()" aria-label="인쇄"></button>');
+	win.document.write('<button type="button" class="del_btn" onclick="return printPgClosePopup()"></button>');
+	win.document.write('</div>');
+
+	win.document.write('<table class="board_type1" id="trade_table">');
+	win.document.write(document.getElementById('tradeEng_table').innerHTML);
+	win.document.write('</div>');
+	win.document.write('</body>');
+	win.document.write('</html>');
+	win.document.close();
+};
+
+
+/*****************************************************
+* Function 명 : cf_printPgEng
+* Function 기능설명 : 프린트 영문
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_printPgEng() {
+	win.document.open();
+	var printStyle = '';
+	printStyle += '.board_type1{ width:100%; border-top: 1px solid #2f343e; border-bottom: 1px solid #2f343e; border-collapse: collapse; border-spacing:0px;}';
+	printStyle += '.board_type1 thead {background-color: #F9FAFB; border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 thead th{background-color: #F9FAFB; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; text-align:center; padding: 8px 10px; border-top: 1px solid #e0dfe1; font-weight:600; font-size: 14px;}';
+	printStyle += '.board_type1 thead th.borderL_0 {border-left: none;}';
+	printStyle += '.board_type1 thead tr:first-child th {border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td{padding: 5px 10px; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; border-top: 1px solid #e0dfe1; text-align:right; font-size: 14px;}';
+	printStyle += '.board_type1 tbody.txt_center td {text-align: center;}';
+	printStyle += '.board_type1 tbody.pd10 tr td {padding:10px 0;}';
+	printStyle += '.board_type1 tbody.bgNone tr td {word-break: break-word;white-space:normal;}';
+	printStyle += '.board_type1 tbody tr td:first-child {border-left: none;}';
+	printStyle += '.board_type1 tbody tr:last-child td {border-bottom: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td.borderL_1 {border-left: 1px solid #e0dfe1 !important;}';
+	printStyle += '.board_type1 tbody td.borderB_1 {border-bottom: 1px solid #2f343e !important;}';
+	printStyle += '.board_type1 tbody .sum td {color:#191919;background-color:#e7eaf9; font-weight:600;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n) td{background: #fff;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n-1) td{background: #ECEFFB;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):nth-child(2n-1) td{background: #ffffff;}';
+	printStyle += '.board_type1 th,';
+	printStyle += '.board_type1 td{transition: .3s all;}';
+	printStyle += '.board_type1 td .elips{display: inline-block;position:relative;width:100%;max-width:184px;height: 19px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):hover td{background-color: #baa8ff;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):hover td{background-color: transparent;}';
+	printStyle += '.board_type1 th *,';
+	printStyle += '.board_type1 td *{color: inherit;}';
+	printStyle += '.board_type1 td .toolTip{display:none;position:absolute;white-space: pre-line;color:#000;padding: 3px 7px;background:#eceffb;border: 1px solid #3e67cf;border-radius:4px;box-shadow:4px 4px 4px rgba(0,0,0,.1);left: 8px;top: calc(100% - 2px);z-index: 1;}';
+	printStyle += '.board_type1 td:hover .toolTip{display: inline-block;}';
+	printStyle += '.board_type1 td .toolTip::before{display: inline-block;position:absolute;content:"";width: 13px;height: 10px;background: url(../images/toolarrw.png) no-repeat center;left: 17px;top: -10px;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(1){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(2){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n-1):hover td{background-color: #ECEFFB;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n):hover td{background-color: #fff;}';
+	printStyle += '.lfpoil .board_type1 tbody tr td.on.hover{background-color: #baa8ff !important;}';
+	printStyle += '.txt_left{text-align:left !important;}';
+	printStyle += '.txt_right{text-align:right !important;}';
+	printStyle += '.txt_center{text-align:center !important;}';
+	printStyle += '.btn_grping{display:inline-block;float:right;margin: 0 0 12px}';
+	printStyle += '.print_btn {padding: 6px; margin: 0 10px 0 0; width: 32px; height: 32px; background: #707070 url(../cts/images/print.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';
+	printStyle += '.del_btn {padding: 6px; width: 32px; height: 32px; background: #707070 url(../cts/images/closeW.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';	win.document.write('<html>');
+	win.document.write('<head>');
+	win.document.write('<style>');
+	win.document.write(printStyle);
+	win.document.write('</style>');
+	win.document.write('</head>');
+	win.document.write('<body>');
+	win.document.write('<script>');
+	win.document.write('function cf_printPgPopup(){opener.cf_printPgEng();}');
+	win.document.write('function printPgClosePopup(){opener.cf_printPgClose();}');
+	win.document.write('</script>');
+	win.document.write(searchValue);
+	win.document.write('<table class="board_type1" id="trade_table">');
+	win.document.write(document.getElementById('tradeEng_table').innerHTML);
+	win.document.write('</div>');
+	win.document.write('</body>');
+	win.document.write('</html>');
+	win.document.close();
+	win.print();
+	win.close();
+}
+
+/*****************************************************
+* Function 명 : cf_printPagePopup
+* Function 기능설명 : 프린트 팝업
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_printPagePopup() {
+	win = window.open('', 'PrintWindow', 'width=800, height=500, top = 300, left = 700, toolbars =no, scrollbars=no, status=no, resizable=no');
+	self.focus();
+	win.document.open();
+	var printStyle = '';
+	printStyle += '.board_type1{ width:100%; border-top: 1px solid #2f343e; border-bottom: 1px solid #2f343e; border-collapse: collapse; border-spacing:0px;}';
+	printStyle += '.board_type1 thead {background-color: #F9FAFB; border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 thead th{background-color: #F9FAFB; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; text-align:center; padding: 8px 10px; border-top: 1px solid #e0dfe1; font-weight:600; font-size: 14px;}';
+	printStyle += '.board_type1 thead th.borderL_0 {border-left: none;}';
+	printStyle += '.board_type1 thead tr:first-child th {border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td{padding: 5px 10px; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; border-top: 1px solid #e0dfe1; text-align:right; font-size: 14px;}';
+	printStyle += '.board_type1 tbody.txt_center td {text-align: center;}';
+	printStyle += '.board_type1 tbody.pd10 tr td {padding:10px 0;}';
+	printStyle += '.board_type1 tbody.bgNone tr td {word-break: break-word;white-space:normal;}';
+	printStyle += '.board_type1 tbody tr td:first-child {border-left: none;}';
+	printStyle += '.board_type1 tbody tr:last-child td {border-bottom: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td.borderL_1 {border-left: 1px solid #e0dfe1 !important;}';
+	printStyle += '.board_type1 tbody td.borderB_1 {border-bottom: 1px solid #2f343e !important;}';
+	printStyle += '.board_type1 tbody .sum td {color:#191919;background-color:#e7eaf9; font-weight:600;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n) td{background: #fff;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n-1) td{background: #ECEFFB;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):nth-child(2n-1) td{background: #ffffff;}';
+	printStyle += '.board_type1 th,';
+	printStyle += '.board_type1 td{transition: .3s all;}';
+	printStyle += '.board_type1 td .elips{display: inline-block;position:relative;width:100%;max-width:184px;height: 19px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):hover td{background-color: #baa8ff;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):hover td{background-color: transparent;}';
+	printStyle += '.board_type1 th *,';
+	printStyle += '.board_type1 td *{color: inherit;}';
+	printStyle += '.board_type1 td .toolTip{display:none;position:absolute;white-space: pre-line;color:#000;padding: 3px 7px;background:#eceffb;border: 1px solid #3e67cf;border-radius:4px;box-shadow:4px 4px 4px rgba(0,0,0,.1);left: 8px;top: calc(100% - 2px);z-index: 1;}';
+	printStyle += '.board_type1 td:hover .toolTip{display: inline-block;}';
+	printStyle += '.board_type1 td .toolTip::before{display: inline-block;position:absolute;content:"";width: 13px;height: 10px;background: url(../images/toolarrw.png) no-repeat center;left: 17px;top: -10px;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(1){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(2){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n-1):hover td{background-color: #ECEFFB;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n):hover td{background-color: #fff;}';
+	printStyle += '.lfpoil .board_type1 tbody tr td.on.hover{background-color: #baa8ff !important;}';
+	printStyle += '.txt_left{text-align:left !important;}';
+	printStyle += '.txt_right{text-align:right !important;}';
+	printStyle += '.txt_center{text-align:center !important;}';
+	printStyle += '.btn_grping{display:inline-block;float:right;margin: 0 0 12px}';
+	printStyle += '.print_btn {padding: 6px; margin: 0 10px 0 0; width: 32px; height: 32px; background: #707070 url(../cts/images/print.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';
+	printStyle += '.del_btn {padding: 6px; width: 32px; height: 32px; background: #707070 url(../cts/images/closeW.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';
+	win.document.write('<html>');
+	win.document.write('<head>');
+	win.document.write('<style>');
+	win.document.write(printStyle);
+	win.document.write('</style>');
+	win.document.write('</head>');
+	win.document.write('<body>');
+	win.document.write('<script>');
+	win.document.write('function cf_printPgPopup(){opener.cf_printPgPopup();}');
+	win.document.write('function printPgClosePopup(){opener.cf_printPgClose();}');
+	win.document.write('</script>');
+	win.document.write(searchValue);
+	win.document.write('<div class="btn_grping">');
+	win.document.write('<button type="button" class="print_btn" onclick="return cf_printPgPopup()" aria-label="인쇄"></button>');
+	win.document.write('<button type="button" class="del_btn" onclick="return printPgClosePopup()"></button>');
+	win.document.write('</div>');
+
+	win.document.write('<table class="board_type1" id="trade_table">');
+	win.document.write(document.getElementById('trade_table_popup').innerHTML);
+	win.document.write('</div>');
+	win.document.write('</body>');
+	win.document.write('</html>');
+	win.document.close();
+};
+
+
+/*****************************************************
+* Function 명 : cf_printPgPopup
+* Function 기능설명 : 프린트 팝업
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_printPgPopup() {
+	win.document.open();
+	var printStyle = '';
+	printStyle += '.board_type1{ width:100%; border-top: 1px solid #2f343e; border-bottom: 1px solid #2f343e; border-collapse: collapse; border-spacing:0px;}';
+	printStyle += '.board_type1 thead {background-color: #F9FAFB; border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 thead th{background-color: #F9FAFB; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; text-align:center; padding: 8px 10px; border-top: 1px solid #e0dfe1; font-weight:600; font-size: 14px;}';
+	printStyle += '.board_type1 thead th.borderL_0 {border-left: none;}';
+	printStyle += '.board_type1 thead tr:first-child th {border-top: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td{padding: 5px 10px; border-bottom: 1px solid #e0dfe1; border-left: 1px solid #e0dfe1; border-top: 1px solid #e0dfe1; text-align:right; font-size: 14px;}';
+	printStyle += '.board_type1 tbody.txt_center td {text-align: center;}';
+	printStyle += '.board_type1 tbody.pd10 tr td {padding:10px 0;}';
+	printStyle += '.board_type1 tbody.bgNone tr td {word-break: break-word;white-space:normal;}';
+	printStyle += '.board_type1 tbody tr td:first-child {border-left: none;}';
+	printStyle += '.board_type1 tbody tr:last-child td {border-bottom: 1px solid #2f343e;}';
+	printStyle += '.board_type1 tbody td.borderL_1 {border-left: 1px solid #e0dfe1 !important;}';
+	printStyle += '.board_type1 tbody td.borderB_1 {border-bottom: 1px solid #2f343e !important;}';
+	printStyle += '.board_type1 tbody .sum td {color:#191919;background-color:#e7eaf9; font-weight:600;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n) td{background: #fff;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):nth-child(2n-1) td{background: #ECEFFB;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):nth-child(2n-1) td{background: #ffffff;}';
+	printStyle += '.board_type1 th,';
+	printStyle += '.board_type1 td{transition: .3s all;}';
+	printStyle += '.board_type1 td .elips{display: inline-block;position:relative;width:100%;max-width:184px;height: 19px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}';
+	printStyle += '.board_type1 tbody tr:not(.sum):hover td{background-color: #baa8ff;}';
+	printStyle += '.board_type1 tbody.bgNone tr:not(.sum):hover td{background-color: transparent;}';
+	printStyle += '.board_type1 th *,';
+	printStyle += '.board_type1 td *{color: inherit;}';
+	printStyle += '.board_type1 td .toolTip{display:none;position:absolute;white-space: pre-line;color:#000;padding: 3px 7px;background:#eceffb;border: 1px solid #3e67cf;border-radius:4px;box-shadow:4px 4px 4px rgba(0,0,0,.1);left: 8px;top: calc(100% - 2px);z-index: 1;}';
+	printStyle += '.board_type1 td:hover .toolTip{display: inline-block;}';
+	printStyle += '.board_type1 td .toolTip::before{display: inline-block;position:absolute;content:"";width: 13px;height: 10px;background: url(../images/toolarrw.png) no-repeat center;left: 17px;top: -10px;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(1){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:nth-child(2n-1) td:nth-child(2){background: #fff !important;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n-1):hover td{background-color: #ECEFFB;}';
+	printStyle += '.lfpoil .board_type1 tbody tr:not(.sum):nth-child(2n):hover td{background-color: #fff;}';
+	printStyle += '.lfpoil .board_type1 tbody tr td.on.hover{background-color: #baa8ff !important;}';
+	printStyle += '.txt_left{text-align:left !important;}';
+	printStyle += '.txt_right{text-align:right !important;}';
+	printStyle += '.txt_center{text-align:center !important;}';
+	printStyle += '.btn_grping{display:inline-block;float:right;margin: 0 0 12px}';
+	printStyle += '.print_btn {padding: 6px; margin: 0 10px 0 0; width: 32px; height: 32px; background: #707070 url(../cts/images/print.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';
+	printStyle += '.del_btn {padding: 6px; width: 32px; height: 32px; background: #707070 url(../cts/images/closeW.svg)no-repeat center; background-size: 16px; border-radius: 4px; text-indent: -9997px;}';	
+	printStyle += '@media print{ .board_type1 thead th,.board_type1 thead td{font-size: 5pt} }';
+	win.document.write('<html>');
+	win.document.write('<head>');
+	win.document.write('<style>');
+	win.document.write(printStyle);
+	win.document.write('</style>');
+	win.document.write('</head>');
+	win.document.write('<body>');
+	win.document.write('<script>');
+	win.document.write('function cf_printPgPopup(){opener.cf_printPgPopup();}');
+	win.document.write('function printPgClosePopup(){opener.cf_printPgClose();}');
+	win.document.write('</script>');
+	win.document.write(searchValue);
+	win.document.write('<table class="board_type1" id="trade_table">');
+	win.document.write(document.getElementById('trade_table_popup').innerHTML);
+	win.document.write('</div>');
+	win.document.write('</body>');
+	win.document.write('</html>');
+	win.document.close();
+	win.print();
+	win.close();
+}
+
+/*****************************************************
+* Function 명 : cf_getDateYYYYMMDD
+* Function 기능설명 : 현재 날짜 취득
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_getDateYYYYMMDD(){
+	var today = new Date();
+	
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() +1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+	
+	return  year + '-' + month + '-' + day;
+};
+
+/*****************************************************
+* Function 명 : cf_saveOpinion
+* Function 기능설명 : 만족도 평가
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_saveOpinion(menuId){
+	// 초기화면 테이블 데이터 취득
+	var callOpinionUrl = "/cts/hmpg/registOpinion.do";
+
+	// 고객만족도
+	var custStdgScrCd = $("input[name='custStdgScrCd']:checked").val();
+	
+	// 메뉴아이디 구분- 영문, 한글 
+	var code = menuId.substr(0,7);	
+	// 만족도 항목 선택 알림 메시지
+	var scrCdMsg;  
+	// 성공 알림 메시지 
+	var okMsg;	
+	// 실패 알림 메시지 
+	var failMsg;
+	
+	// 메뉴아이디가 한문, 영문일 때의 메시지 설정 
+	if(code == 'ETS_MNK') {
+		scrCdMsg = ETS_MSG.inf_trs_00007; // 만족도 항목을 선택해주세요.
+		okMsg = ETS_MSG.inf_trs_00008; // 만족도 참여를 완료하였습니다.
+		failMsg = ETS_MSG.inf_trs_00002; // 하루에 1회만 참여할 수 있습니다.
+	} else {
+		scrCdMsg = ETS_MSG.inf_trs_00007_en; // 만족도 항목을 선택해주세요.
+		okMsg = ETS_MSG.inf_trs_00008_en; // 만족도 참여를 완료하였습니다.
+		failMsg = ETS_MSG.inf_trs_00002_en; // 하루에 1회만 참여할 수 있습니다.
+	}
+	
+	// 고객만족도를 체크안했을경우 
+	if (custStdgScrCd == undefined) {
+		cf_alertMessage(scrCdMsg);
+		return false;
+	};
+	
+	// 고객만족도 의견내용
+	var custStdgOpinCn = $('input[name=custStdgOpinCn]').val();
+	// 선택한 페이지 (초기 페이지는 1)
+	var params = {
+			'custStdgScrCd' : custStdgScrCd
+			,'custStdgOpinCn' : custStdgOpinCn
+			,'menuId' : menuId
+	};
+	
+	var opts = 
+	{
+	 url : callOpinionUrl,
+	 data : params,
+		 callback : 
+		 function(result){
+			if (result.OpinionMsg == 'OK' ) {
+				cf_alertMessage(okMsg);
+				$('#custStdgOpinCn').val(''); 
+			}
+			
+			if (result.OpinionMsg == 'fail') {
+				cf_alertMessage(failMsg);
+				$('#custStdgOpinCn').val(''); 
+			}
+		}
+	};
+	
+	$.fn.kcs4gAjax(opts);
+};
+
+
+/*****************************************************
+* Function 명 : cf_saveJsonSrc
+* Function 기능설명 : JSON다운로드
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_saveJsonSrc(exportObj, exportFileName) {
+	const downloadLink = document.createElement('a');
+	const type = "json";
+	downloadLink.href = URL.createObjectURL(new Blob([JSON.stringify(exportObj)], {type:'application/json'} ));
+	downloadLink.download = exportFileName;
+	downloadLink.click();
+	downloadLink.remove();
+};
+
+/*****************************************************
+* Function 명 : cf_saveCsvSrc
+* Function 기능설명 : CSV다운로드
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_saveCsvSrc(csv, exportFileName) {
+	var csvFile;
+	var downloadLink;
+	
+	// 한글 처리를 위해 BOM 추가
+	const BOM = "\uFEFF";
+	csv = BOM +csv;
+	
+	csvFile = new Blob([csv], {type:'text/csv'});
+	downloadLink =  document.createElement('a');
+	downloadLink.download = exportFileName;
+	downloadLink.href = URL.createObjectURL(csvFile);
+	downloadLink.style.display = "none";
+	downloadLink.click();
+	downloadLink.remove();
+};
+
+/*****************************************************
+* Function 명 : cf_setCookie
+* Function 기능설명 : 쿠키 설정
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_setCookie(cname, cvalue, exdays) {
+	var safeValue = (cvalue + "").replace(/[^a-zA-Z0-9_.,\-/{}:"]/g,"");
+	var d = new Date();
+	d.setTime ( d.getTime() + ( exdays * 24 * 60 * 60 * 1000) );
+	var expires = "expires="+d.toUTCString();
+	if( exdays === 0 ){
+		document.cookie = cname + "=" + safeValue + "; ";
+	} else {
+		document.cookie = cname + "=" + safeValue + "; " + expires;
+	}
+	
+}
+
+/*****************************************************
+* Function 명 : cf_getCookie
+* Function 기능설명 : 쿠키 취득
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_getCookie(cname) {
+	var name = cname + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0; i<ca.length; i++) {
+		var c = ca[i];
+	   while (c.charAt(0)===' ') c = c.substring(1);
+		if (c.indexOf(name) === 0) {
+			var res = c.substring(name.length, c.length);
+			return res.replace(/[^a-zA-Z0-9_.,\-/{}:"]/g,"");
+		}
+	}
+	return "";
+	
+}
+
+/*****************************************************
+* Function 명 : cf_listItemAll
+* Function 기능설명 : 체크박스 전체선택
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_listItemAll(){
+	//상단 체크박스 선택시 전체선택
+	if($('#listItemAll').is(':checked')) {
+		$('input[name=listItem]').prop('checked',true);
+	}else {
+		$('input[name=listItem]').prop('checked',false);
+	}
+}
+
+/*****************************************************
+* Function 명 : cf_itemCheck
+* Function 기능설명 : 수동으로 목록의 체크박스 전체선택시 상단 자동 선택
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_itemCheck(){
+	//전체 체크박스 길이(갯수)
+	var listAll = $('input[name=listItem]').length;
+	//체크한 체크박스 길이(갯수)
+	var checked = $('input[name=listItem]:checked').length;
+	
+	if(listAll != checked) {
+		$('#listItemAll').prop("checked",false);
+	}else {
+		$('#listItemAll').prop("checked",true);
+	}
+}
+
+/*****************************************************
+* Function 명 : cf_titleNmae
+* Function 기능설명 : 서브타이틀 취득
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_titleNmae(menuId) {
+	return new Promise(function(resolve){
+		// 서브 타이틀을 취득한다.
+		var params = {
+				'menuId' : menuId
+		};
+
+		var opts = 
+		{
+		 url : "/cts/hmpg/retrieveSubTitle.do",
+		 data : params,
+			 callback : 
+			 function(result){
+				/** 서은주 주무관님 요청 예외사항 
+				 * 관세환율정보 타이틀은 사용자지원으로 표시할것*/
+				if ('ETS_MNK_50601000' != menuId) {
+					// PC타이틀
+					$('#filterTit').text(result.item.menuDtlNm);
+					// MOBILE타이틀
+					$('#filterTitMobile').text(result.item.menuDtlNm);
+				}
+				$('#subTitle').text(result.item.menuDtlNm);
+				$('.search_cate').text(result.item.menuDtlNm);
+				// Promise리턴
+				resolve();
+			}
+		};
+		
+		$.fn.kcs4gAjax(opts);
+	});
+};
+
+
+/*****************************************************
+* Function 명 : cf_titleSubNmae
+* Function 기능설명 : 서브타이틀 취득
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_titleSubNmae(menuId) {
+	// 서브 타이틀을 취득한다.
+	var params = {
+			'menuId' : menuId
+	};
+
+	var opts = 
+	{
+	 url : "/cts/hmpg/retrieveSubTitle.do",
+	 data : params,
+		 callback : 
+		 function(result){
+			$('#subTitle').text(result.item.menuDtlNm);
+			$('.search_cate').text(result.item.menuDtlNm);
+		}
+	};
+	
+	$.fn.kcs4gAjax(opts);
+};
+
+/*****************************************************
+* Function 명 : cf_typeList
+* Function 기능설명 : 통계항목 리스트 취득
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_typeList(menuId) {
+	return new Promise(function(resolve){
+		// 통계항목을 취득한다.
+		var params = {
+				'menuId' : menuId
+		};
+
+		var opts = 
+		{
+		 url : "/cts/hmpg/retrieveType.do",
+		 data : params,
+			 callback : 
+			 function(result){
+				// 취득결과가 있을경우
+				if (result.items.length > 0) {
+					
+					$('#subTitle').text(result.items[0].firstSubTitle);
+					$('.search_cate').text(result.items[0].firstSubTitle);
+					
+					$('#radioListType').empty();
+					$.each(result.items, function(i, item){
+						// 통계항목 순번이 1번이면 체크상태로 표시한다.
+						if (i == '0') {
+							$('#radioListType').append('<li onclick="f_radioCheck(\'radioTypePc\', \''+item.menuId+'\')"><input type="radio" id ="'+item.menuId+'" name="radioTypePc" value="'+item.menuId+'" checked><label for="'+item.menuId+'" >'+item.menuNm+'</label></li>');
+							$('#titleType').text(item.menuNm);
+							// 검색박스 전부 숨긴다
+							f_hideFilterBox();
+							// 선택한 검색박스만 표시한다
+							f_showFilterBox(item.menuId);
+						} else if ((i >= 4) && (i == (result.items.length - 1)) && ((i % 2) == 0)) {
+							$('#radioListType').append('<li onclick="f_radioCheck(\'radioTypePc\', \''+item.menuId+'\')" style="width:100%"><input type="radio" id ="'+item.menuId+'" name="radioTypePc" value="'+item.menuId+'"><label for="'+item.menuId+'">'+item.menuNm+'</label></li>');
+						} else {
+							$('#radioListType').append('<li onclick="f_radioCheck(\'radioTypePc\', \''+item.menuId+'\')"><input type="radio" id ="'+item.menuId+'" name="radioTypePc" value="'+item.menuId+'"><label for="'+item.menuId+'" >'+item.menuNm+'</label></li>');
+						}
+					});
+				};
+				
+				// Promise리턴
+				resolve();
+			}
+		};
+		
+		$.fn.kcs4gAjax(opts);
+	});
+};
+
+/*****************************************************
+* Function 명 : cf_chartBtnClassOn
+* Function 기능설명 : 차트 버튼 관련 클래스 효과
+* 작성자 : 김태일
+* 작성일 : 2023-02-22
+* 변경로그 : 
+* 2023-02-22-김태일-최초생성
+******************************************************/
+function cf_chartBtnClassOn(type) {
+	$('.table_btn').removeClass('on'); // 테이블
+   	$('.chart_btn').removeClass('on'); // 막대
+   	$('.piechart_btn').removeClass('on'); // 파이
+   	$('.linechart_btn').removeClass('on'); // 라인
+   	$('.bubble_btn').removeClass('on'); // 버블
+   	
+   	if (type == 'table'){
+   		$('.table_btn').addClass('on');
+   	} else if (type == 'column'){
+   		$('.chart_btn').addClass('on'); // 막대
+	} else if (type == 'pie'){
+		$('.piechart_btn').addClass('on'); // 파이
+	} else if (type == 'line'){
+		$('.linechart_btn').addClass('on'); // 라인
+	} else if (type == 'bubble'){
+		$('.bubble_btn').addClass('on'); // 버블
+	}
+}
