@@ -30,6 +30,10 @@ on:
         description: "Backfill Korea flash windows, e.g. 2016-01:2026-08 (one-time)"
         required: false
         default: ""
+      korea_items_range:
+        description: "Backfill Korea flash breakdowns, e.g. 201601:202609 (one call per dimension)"
+        required: false
+        default: ""
       capture_pages:
         description: "Set to any value to snapshot tradedata.go.kr pages into data/korea/raw/pages/"
         required: false
@@ -72,7 +76,13 @@ jobs:
 
       - name: Fetch Korea tradedata.go.kr by-item flash (no key required)
         continue-on-error: true
-        run: python -m signals.korea_tradedata items
+        run: |
+          if [ -n "${{ github.event.inputs.korea_items_range }}" ]; then
+            RANGE="${{ github.event.inputs.korea_items_range }}"
+            python -m signals.korea_tradedata items "${RANGE%%:*}" "${RANGE##*:}"
+          else
+            python -m signals.korea_tradedata items
+          fi
 
       - name: Capture tradedata pages for parser development (manual runs only)
         if: ${{ github.event.inputs.capture_pages != '' }}
