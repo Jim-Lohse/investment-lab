@@ -370,12 +370,17 @@ def probe() -> None:
         # statsKind takes a menu ID, not the placeholder "P"/"N".
         ("probe_type_list", "POST", f"{base}/cts/hmpg/retrieveType.do",
          {"menuId": "ETS_MNU_00000134"}),
-        # Item dimension per the site nav: 품목별 수출입실적.
-        ("probe_chart_item_menu", "POST",
-         f"{base}/cts/hmpg/retrieveChartTentativeValues.do",
-         {**tent, "statsKind": "ETS_MNU_00000103"}),
-        ("probe_grid_item_menu", "POST", tent_url,
-         {**tent, "statsKind": "ETS_MNU_00000103"}),
+        # ETS_MNU_00000103 works but yields countries. The screen's own radio
+        # ids (ETS_MNK_1050000A = 품목/items, B = 국가/countries) are the
+        # likely real codes: cf_typeList uses item.menuId for id AND value.
+        ("probe_grid_mnkA", "POST", tent_url,
+         {**tent, "statsKind": "ETS_MNK_1050000A"}),
+        ("probe_grid_mnkB", "POST", tent_url,
+         {**tent, "statsKind": "ETS_MNK_1050000B"}),
+        ("probe_grid_menu104", "POST", tent_url,
+         {**tent, "statsKind": "ETS_MNU_00000104"}),
+        ("probe_grid_menu105", "POST", tent_url,
+         {**tent, "statsKind": "ETS_MNU_00000105"}),
     ]
     PAGES_DIR.mkdir(parents=True, exist_ok=True)
     for name, method, url, data in attempts:
