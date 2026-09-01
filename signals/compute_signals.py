@@ -127,9 +127,8 @@ def korea_signals() -> list[list]:
             if value is None or not row["yyyymm"]:
                 continue
             prefix = "exp" if row["imex"] == "E" else "imp"
-            item = f"{prefix}:{row['item_name'] or 'slot' + row['item_slot']}"
-            by_item_key[(row["yyyymm"], row["period_type"] or row["period_label"],
-                         item)] = value
+            by_item_key[(row["yyyymm"], row["period_type"],
+                         f"{prefix}:{row['name']}")] = value
         for (yyyymm, ptype, item), value in sorted(by_item_key.items()):
             ago = by_item_key.get((f"{int(yyyymm[:4]) - 1}{yyyymm[4:]}", ptype, item))
             yoy = f"{(value / ago - 1.0) * 100.0:.2f}" if ago else ""
