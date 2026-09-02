@@ -457,9 +457,9 @@ def parse_estat_month_page(html_text: str) -> list[dict]:
 
 def discover_tclass2(html_text: str, label: str) -> str:
     """tclass2 of the child whose link text mentions `label` (輸出/輸入)."""
-    for href, tclass2, text in TCLASS2_LINK_RE.finditer(html_text):
-        if label in text:
-            return tclass2
+    for match in TCLASS2_LINK_RE.finditer(html_text):
+        if label in match.group(3):
+            return match.group(2)
     return ""
 
 

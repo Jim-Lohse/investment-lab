@@ -371,6 +371,12 @@ class TestJapan(unittest.TestCase):
         self.assertIn("&month=23070907", months[0]["url"])
         self.assertEqual(japan_customs.estat_month_code(7), "23070907")
         self.assertEqual(japan_customs.estat_month_code(12), "24101212")
+        parent = ('<a href="/stat-search/files?toukei=00350300&amp;tstat=000001013141&amp;'
+                  'tclass1=000001013183&amp;tclass2=000001013184" target="_blank">輸出</a>'
+                  '<a href="/stat-search/files?toukei=00350300&amp;tstat=000001013141&amp;'
+                  'tclass1=000001013183&amp;tclass2=000001013199" target="_blank">輸入</a>')
+        self.assertEqual(japan_customs.discover_tclass2(parent, "輸入"), "000001013199")
+        self.assertEqual(japan_customs.discover_tclass2(parent, "再輸出"), "")
         files = japan_customs.parse_estat_month_page(JAPAN_ESTAT_MONTH_HTML)
         self.assertEqual(files[0]["stat_inf_id"], "000040500123")
         self.assertIn("確報", files[0]["title"])
