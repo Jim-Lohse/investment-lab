@@ -50,11 +50,6 @@ _Derived data; the underlying records in `data/` are the source of truth._
 
 | Period | Window | Source | Item | JPY m | YoY % (store) | YoY % (published) |
 |---|---|---|---|---:|---:|---:|
-| 2026-07 | D20 | press_release | BAL:Grand Total | 37102 |  | -71.90 |
-| 2026-07 | D20 | press_release | E:Grand Total | 7231361 |  | 20.40 |
-| 2026-07 | D20 | press_release | I:Grand Total | 7194259 |  | 22.50 |
-| 2026-07 | MONTH | press_release | BAL:Grand Total | -638344 |  | 308.50 |
-| 2026-07 | MONTH | press_release | E:(IC) | 659368 |  | 52 |
 | 2026-07 | MONTH | press_release | E:ELECTRICAL MEASURING | 228432 |  | 26.80 |
 | 2026-07 | MONTH | press_release | E:Grand Total | 11509374 |  | 23.20 |
 | 2026-07 | MONTH | press_release | E:SCIENTIFIC, OPTICAL INST | 271075 |  | 16.50 |
@@ -77,6 +72,24 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | 2026-07 | MONTH | timeseries:world_imports_by_commodity | I:半導体等電子部品 | 547093 | 79.69 |  |
 | 2026-07 | MONTH | timeseries:world_imports_by_commodity | I:科学光学機器 | 244216 | 10.45 |  |
 | 2026-07 | MONTH | timeseries:world_imports_by_commodity | I:総額 | 12147718 | 27.86 |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | E:HS280461 | 3461 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | E:HS3818 | 63046 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | E:HS8486 | 493950 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | E:HS8517 | 26837 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | E:HS8541 | 143147 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | E:HS8542 | 715777 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | E:HS854470 | 5661 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | E:HS9001 | 41230 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | E:HS9013 | 10990 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | I:HS280461 | 6838 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | I:HS3818 | 17139 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | I:HS8486 | 103303 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | I:HS8517 | 437747 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | I:HS8541 | 47162 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | I:HS8542 | 497299 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | I:HS854470 | 3449 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | I:HS9001 | 35553 |  |  |
+| 2026-07 | MONTH | estat_hs:DETAILED | I:HS9013 | 10915 |  |  |
 
 ---
 Validation status (constitution §21): raw government data, mechanically aggregated. Tier 1 screening input only; not a thesis, not advice.
