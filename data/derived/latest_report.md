@@ -1,4 +1,4 @@
-# Demand-signal snapshot: Taiwan monthly revenue + Korea exports
+# Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan trade
 
 _Generated 2026-09-02 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
@@ -45,6 +45,38 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | 2026-08 | FULL | imp:정밀기기 | 1598369 |  |
 | 2026-08 | FULL | imp:중국 | 15325220 |  |
 | 2026-08 | FULL | imp:호주 | 2930015 |  |
+
+## Japan trade (MOF / Customs) — supply side
+
+| Period | Window | Source | Item | JPY m | YoY % (store) | YoY % (published) |
+|---|---|---|---|---:|---:|---:|
+| 2026-07 | D20 | press_release | BAL:Grand Total | 37102 |  | -71.90 |
+| 2026-07 | D20 | press_release | E:Grand Total | 7231361 |  | 20.40 |
+| 2026-07 | D20 | press_release | I:Grand Total | 7194259 |  | 22.50 |
+| 2026-07 | MONTH | press_release | BAL:Grand Total | -638344 |  | 308.50 |
+| 2026-07 | MONTH | press_release | E:(IC) | 659368 |  | 52 |
+| 2026-07 | MONTH | press_release | E:ELECTRICAL MEASURING | 228432 |  | 26.80 |
+| 2026-07 | MONTH | press_release | E:Grand Total | 11509374 |  | 23.20 |
+| 2026-07 | MONTH | press_release | E:SCIENTIFIC, OPTICAL INST | 271075 |  | 16.50 |
+| 2026-07 | MONTH | press_release | E:SEMICON MACHINERY ETC | 493950 |  | 40.70 |
+| 2026-07 | MONTH | press_release | E:SEMICONDUCTORS ETC | 862099 |  | 49.10 |
+| 2026-07 | MONTH | press_release | E:TELEPHONY, TELEGRAPHY | 34047 |  | 20.60 |
+| 2026-07 | MONTH | press_release | I:(IC) | 493295 |  | 92.60 |
+| 2026-07 | MONTH | press_release | I:ELECTRICAL MEASURING | 112202 |  | 31.50 |
+| 2026-07 | MONTH | press_release | I:Grand Total | 12147718 |  | 27.90 |
+| 2026-07 | MONTH | press_release | I:SCIENTIFIC, OPTICAL INST | 244216 |  | 10.50 |
+| 2026-07 | MONTH | press_release | I:SEMICONDUCTORS ETC | 547093 |  | 79.70 |
+| 2026-07 | MONTH | press_release | I:TELEPHONY, TELEGRAPHY | 461870 |  | 48.20 |
+| 2026-08 | D10 | press_release | BAL:Grand Total | 217306 |  | -50 |
+| 2026-08 | D10 | press_release | E:Grand Total | 3678584 |  | 15.50 |
+| 2026-08 | D10 | press_release | I:Grand Total | 3461278 |  | 25.80 |
+| 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:半導体等製造装置 | 493950 | 40.75 |  |
+| 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:半導体等電子部品 | 862099 | 49.07 |  |
+| 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:科学光学機器 | 271075 | 16.48 |  |
+| 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:総額 | 11509374 | 23.16 |  |
+| 2026-07 | MONTH | timeseries:world_imports_by_commodity | I:半導体等電子部品 | 547093 | 79.69 |  |
+| 2026-07 | MONTH | timeseries:world_imports_by_commodity | I:科学光学機器 | 244216 | 10.45 |  |
+| 2026-07 | MONTH | timeseries:world_imports_by_commodity | I:総額 | 12147718 | 27.86 |  |
 
 ---
 Validation status (constitution §21): raw government data, mechanically aggregated. Tier 1 screening input only; not a thesis, not advice.

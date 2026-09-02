@@ -1,6 +1,7 @@
-# Early demand signals: Taiwan MOPS + Korea Customs
+# Early demand signals: Taiwan MOPS + Korea Customs + Japan MOF
 
-The two fastest free, legal, public reads on global tech demand:
+The fastest free, legal, public reads on global tech demand — and, with
+Japan, on the supply response:
 
 1. **Taiwan monthly revenue (MOPS).** Every TWSE/TPEx-listed company must
    report monthly revenue by the 10th of the following month — actual sales,
@@ -10,10 +11,17 @@ The two fastest free, legal, public reads on global tech demand:
    a month (days 1–10 on the 11th, days 1–20 on the 21st, full month on the
    1st) with a semiconductor breakout — the earliest broad demand datapoint in
    each month, anywhere.
+3. **Japan MOF/Customs trade statistics.** The same three-revision cadence
+   (first 10 days, first 20 days, monthly), but read from the *supply* side:
+   semiconductor-equipment and materials exports (Tokyo Electron, Screen,
+   Shin-Etsu, SUMCO) and optical components (Sumitomo Electric, Fujikura,
+   Furukawa). This is the capacity-response signal constitution §9 warns
+   about, observed at the supplier's dock rather than the buyer's.
 
-No vendor dependency: both are primary government sources (constitution §8.1
-source class: *government or industry dataset* / *primary regulatory record*).
-Everything lands in this repo as plain CSV via a scheduled GitHub Action.
+No vendor dependency: all three are primary government sources (constitution
+§8.1 source class: *government or industry dataset* / *primary regulatory
+record*). Everything lands in this repo as plain CSV via a scheduled GitHub
+Action.
 
 ## Layout
 
@@ -21,11 +29,14 @@ Everything lands in this repo as plain CSV via a scheduled GitHub Action.
 |---|---|
 | `signals/taiwan_mops.py` | Fetch current month (open-data CSV, no key) and historical archive (Big5 HTML) |
 | `signals/korea_customs.py` | Fetch monthly HS-code trade + 10/20-day flash via data.go.kr APIs |
+| `signals/japan_customs.py` | Fetch MOF press-release XML (10/20-day totals, monthly commodity breakdown), keyless time-series CSVs and e-Stat 9-digit commodity CSVs |
 | `signals/compute_signals.py` | Aggregate YoY / median / breadth per watch group; snapshot report |
 | `signals/config/watchgroups.json` | Taiwan ticker groups (AI compute, server ODM, power/cooling, robotics motion) |
 | `signals/config/korea_endpoints.json` | Korea endpoint config incl. HS codes (8542 semis, 8486 semi equipment, 8479 robots) |
+| `signals/config/japan_endpoints.json` | Japan endpoints (URL patterns, stage codes, e-Stat navigation), HS prefixes and principal-commodity codes |
 | `data/taiwan/monthly_revenue/` | One normalized CSV per month & market (thousand TWD) |
 | `data/korea/` | Append-only long tables + verbatim raw API responses |
+| `data/japan/` | Append-only long tables + verbatim raw XML/CSV/HTML payloads (`raw/`) |
 | `data/derived/` | Recomputed signals + `latest_report.md` (regenerated each run) |
 | `tests/test_signals.py` | Offline parser/math tests (`python -m unittest discover tests`) |
 
@@ -78,10 +89,50 @@ only — the by-item semiconductor breakout needs either the data.go.kr API key
 HTML the workflow's `capture_pages` input snapshots into
 `data/korea/raw/pages/` for that purpose.
 
+**Japan — works immediately, no key.** Three keyless sources, each its own
+workflow step so one drifting schema is one red step:
+
+```bash
+python -m signals.japan_customs flash          # 10/20-day + monthly press-release XML, last 3 months
+python -m signals.japan_customs timeseries     # monthly series by principal commodity since 1988
+python -m signals.japan_customs estat          # newest 9-digit-code monthly CSV (HS 8486, 8541, 8517, 9001, ...)
+python -m signals.japan_customs flash-backfill 2021-01 2026-08   # one-time history
+python -m signals.japan_customs reparse        # rebuild the CSV stores from data/japan/raw/
+```
+
+1. *Press releases* (`data/japan/press_release.csv`, million yen). File names
+   are deterministic: `trade-st_e/<YYYY>/<YYYYMM><stage>e.xml` with stage 1 =
+   first 10 days, 2 = first 20 days, 4 = monthly provisional, 5 = exports
+   detailed / imports 9-digit provisional. **The 10- and 20-day files carry
+   totals only** (exports, imports, balance, each with the year-ago value and
+   MOF's own YoY) — unlike Korea there is no early commodity breakout. The
+   monthly file carries every principal commodity (value, quantity, YoY, share,
+   contribution) for the world and for USA / EU / Asia / China / Korea / ASEAN
+   / Middle East / Russia, so `SEMICON MACHINERY ETC` by destination is
+   available on the ~20th of the following month.
+2. *Time series* (`data/japan/time_series.csv`, thousand yen): MOF's own
+   monthly CSVs by press-release commodity (概況品 codes: 70131 semiconductor
+   equipment, 70323 semiconductors, 81101 scientific/optical) from 1988 —
+   a decade-plus of same-month comparables on day one, no backfill needed.
+3. *e-Stat 9-digit tables* (`data/japan/trade_monthly_hs.csv`, thousand yen):
+   the monthly "Values by Commodity" CSV filtered to the HS prefixes in
+   `japan_endpoints.json` (8486 equipment, 3818 wafers, 2804.61 polysilicon,
+   8541 laser diodes / photodiodes, 8517 transceivers, 9001 fibre, 9013
+   optics). Reached by scraping e-Stat's listing page → month page → file id;
+   every hop is saved under `data/japan/raw/pages/` so a layout change is
+   diagnosable from the repo.
+
+Publication calendar (JST): first 10 days ~28th of the same month (08:50),
+first 20 days ~7th of the next month, monthly provisional ~20th of the next
+month, detailed ~end of the next month (09:30). See
+[calend_e.htm](https://www.customs.go.jp/toukei/calendar/calend_e.htm).
+
 **Automation.** `.github/workflows/update-signals.yml` runs daily at 07:30 UTC
-(after Taipei/Seoul publish times), fetches whatever is newly published,
+(after Taipei/Seoul/Tokyo publish times), fetches whatever is newly published,
 recomputes `data/derived/`, and commits only when data changed. Manual runs
-accept backfill ranges.
+accept backfill ranges; the `japan_only` input skips the Taiwan and Korea
+steps so a Japan-only dispatch does not spend tradedata.go.kr's manual-run
+budget, and `japan_capture` snapshots every Japan source raw.
 
 ## What the signals mean (and don't)
 
@@ -104,6 +155,13 @@ Known caveats:
   TWD; currency effects distort YoY for USD-billing exporters.
 - Korea 10-day windows are working-day sensitive (Lunar New Year, Chuseok);
   compare YoY, mind the calendar, and prefer the 20-day print for signal.
+- Japan's 10/20-day prints are totals only; the commodity read arrives with
+  the monthly provisional (~20th of the following month). Values are yen, so
+  YoY carries the currency move; MOF publishes the average customs rate in
+  the monthly summary if a USD view is needed. Japan's trade data reads
+  geographies, not companies: it isolates no US-listed optical name
+  (Lumentum, Coherent, Credo, AAOI have distributed manufacturing). Fabrinet
+  is the one exception (Thailand), which is a separate, unverified source.
 - The archive backfill hits MOPS politely (3s pauses); backfill years, not
   decades, in one run.
 - This environment's egress policy blocked live endpoint verification at build

@@ -2,26 +2,33 @@
   "_comment": [
     "Japan Ministry of Finance / Customs trade statistics. Everything here is",
     "keyless: static files on customs.go.jp plus e-Stat's public CSV downloads.",
-    "Verified 2026-09-02 (customs.go.jp is unreachable from the build sandbox;",
-    "file existence was checked through an external fetcher, and the first",
-    "GitHub Actions run captures the payloads under data/japan/raw/).",
+    "Verified 2026-09-02 against live payloads captured by the workflow into",
+    "data/japan/raw/ (customs.go.jp is unreachable from the build sandbox).",
     "",
     "Release cadence (calendar: https://www.customs.go.jp/toukei/calendar/calend_e.htm):",
-    "  first 10 days  -> ~28th of the same month, 08:50 JST (press release XML)",
-    "  first 20 days  -> ~7th of the next month, 08:50 JST (press release XML)",
-    "  monthly prov.  -> ~20th of the next month, 08:50 JST (press release XML + PDF)",
-    "  detailed (D&P) -> end of the next month, 09:30 JST (XML + PDF, e-Stat CSVs)",
-    "Press-release XML file naming, verified by probing existing files:",
+    "  first 10 days  -> ~28th of the same month, 08:50 JST (press release XML, totals only)",
+    "  first 20 days  -> ~7th of the next month, 08:50 JST (press release XML, totals only)",
+    "  monthly prov.  -> ~20th of the next month, 08:50 JST (XML with commodity breakdown)",
+    "  detailed (D&P) -> end of the next month, 09:30 JST (XML + e-Stat 9-digit CSVs)",
+    "Press-release XML file naming, verified against the live site:",
     "  trade-st_e/<YYYY>/<YYYYMM><stage>e.xml  (English; Japanese: trade-st/<YYYY>/<YYYYMM><stage>.xml)",
     "  stage 1 = first 10 days, 2 = first 20 days, 4 = monthly provisional,",
     "  5 = exports detailed / imports 9-digit provisional. 3 does not exist.",
-    "  e.g. 2026081e.xml (Aug 2026 first 10 days), 2026064e.xml (Jun 2026 monthly)."
+    "  e.g. 2026081e.xml (Aug 2026 first 10 days), 2026074e.xml (Jul 2026 monthly).",
+    "  Root element hodoxml; values in million yen; △ marks negatives; ZENZO/ZENGEN",
+    "  mark growth from/to zero."
   ],
   "press_release": {
     "url_template": "https://www.customs.go.jp/toukei/shinbun/{lang_dir}/{year}/{yyyymm}{stage}{lang_suffix}.xml",
     "languages": {
-      "en": {"lang_dir": "trade-st_e", "lang_suffix": "e"},
-      "ja": {"lang_dir": "trade-st", "lang_suffix": ""}
+      "en": {
+        "lang_dir": "trade-st_e",
+        "lang_suffix": "e"
+      },
+      "ja": {
+        "lang_dir": "trade-st",
+        "lang_suffix": ""
+      }
     },
     "stages": {
       "1": "D10",
@@ -38,19 +45,17 @@
   },
   "time_series": {
     "_comment": [
-      "Keyless CSV time series (thousand yen) under toukei/suii/html/data/.",
-      "d41ma.csv is confirmed as the world monthly export/import total from 1979",
-      "(used by third-party packages). d51ma.csv and d61ma.csv exist and are the",
-      "candidates for the monthly principal-commodity series (exports/imports,",
-      "from 1988); the first capture run settles which is which. Index pages:",
-      "https://www.customs.go.jp/toukei/suii/html/time_e.htm (area totals),",
-      "https://www.customs.go.jp/toukei/suii/html/time.htm (adds 主要商品別)."
+      "Keyless CSV time series (thousand yen, cp932) under toukei/suii/html/data/.",
+      "d41ma.csv: world monthly export/import totals from 1979 (Years/Months,Exp-Total,Imp-Total).",
+      "d51ma.csv: world monthly EXPORTS by press-release commodity from 1988; header rows",
+      "  報道発表品目名 / 概況品名 / 概況品コード / 金額,数量 then YYYY/MM rows, '-' = unpublished.",
+      "d61ma.csv: same for IMPORTS. Index: https://www.customs.go.jp/toukei/suii/html/time.htm"
     ],
     "base_url": "https://www.customs.go.jp/toukei/suii/html/data/",
     "files": {
-      "world_monthly_total": "d41ma.csv",
-      "candidate_commodity_a": "d51ma.csv",
-      "candidate_commodity_b": "d61ma.csv"
+      "world_total": "d41ma.csv",
+      "world_exports_by_commodity": "d51ma.csv",
+      "world_imports_by_commodity": "d61ma.csv"
     }
   },
   "estat": {
@@ -58,16 +63,21 @@
       "e-Stat hosts MOF's monthly CSV tables without a key. 統計品別表 (Values by",
       "Commodity) gives value and quantity per 9-digit statistical code for the",
       "world, one file per month (each file carries Jan..latest of its year).",
-      "Listing pages (HTML) carry links of the form",
-      "  stat-search/file-download?statInfId=<12 digits>&fileKind=1",
-      "CSV columns (confirmed from a consumer of these files):",
-      "  Exp or Imp,Year,HS,Unit1,Unit2,Quantity1-Year,Quantity2-Year,Value-Year,",
-      "  Quantity1-Jan,Quantity2-Jan,Value-Jan,...,Value-Dec  (value = thousand yen)",
-      "tclass2 000001013185 = imports (confirmed); 000001013184 = exports (inferred)."
+      "Navigation (all server-rendered HTML): parent page lists 輸出/輸入 children",
+      "(tclass2); the listing page lists year/month links (year=YYYY0&month=<8-digit",
+      "code, e.g. July = 23070907>); the month page carries the file id",
+      "(stat_infid / statInfId); download_url_template fetches the CSV.",
+      "CSV columns: Exp or Imp,Year,HS,Unit1,Unit2,Quantity1-Year,Quantity2-Year,",
+      "Value-Year,Quantity1-Jan,Quantity2-Jan,Value-Jan,...,Value-Dec (thousand yen).",
+      "tclass2 values below are fallbacks; the fetcher discovers them from the parent page."
     ],
     "listing_url_template": "https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00350300&tstat=000001013141&cycle=1&tclass1=000001013183&tclass2={tclass2}&tclass3val=0&metadata=1&data=1",
-    "tclass2": {"E": "000001013184", "I": "000001013185"},
-    "download_url_template": "https://www.e-stat.go.jp/stat-search/file-download?statInfId={stat_inf_id}&fileKind=1"
+    "tclass2": {
+      "E": "000001013184",
+      "I": "000001013185"
+    },
+    "download_url_template": "https://www.e-stat.go.jp/stat-search/file-download?statInfId={stat_inf_id}&fileKind=1",
+    "parent_url": "https://www.e-stat.go.jp/stat-search/files?toukei=00350300&tstat=000001013141&tclass1=000001013183"
   },
   "hs_codes": {
     "_comment": "Prefixes matched against the 9-digit statistical code (dots removed). Supply side of the AI build-out: equipment, materials, optics.",

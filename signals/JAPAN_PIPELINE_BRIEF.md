@@ -1,4 +1,10 @@
-# Brief: Japan trade-statistics pipeline (not yet built)
+# Brief: Japan trade-statistics pipeline
+
+**Status (2026-09-02): built.** `signals/japan_customs.py`, config in
+`signals/config/japan_endpoints.json`, steps in `update-signals.yml`,
+fixtures in `tests/test_signals.py`, first captured payloads under
+`data/japan/raw/`. The open questions below are answered in
+"Resolved" at the end; the rest of the brief is kept as the original handoff.
 
 Handoff note for a fresh session. The Taiwan + Korea pipeline in this
 directory is the working template; Japan is a near-copy of the Korea leg.
@@ -75,3 +81,35 @@ manufacturing is overwhelmingly Thailand-based — Thai optical-component
 exports (HS 8517.62 / 9013) are a legitimate, imperfect throughput proxy.
 Thailand's Ministry of Commerce cadence is unverified; check before
 promising it.
+
+## Resolved (2026-09-02, against live payloads captured by the workflow)
+
+1. **10/20-day provisional = totals only.** The XML (`<hodoxml>`, ~800 bytes)
+   carries exports, imports and balance with the year-ago value and MOF's
+   YoY — nothing else. The commodity breakdown (world + USA/EU/Asia/China/
+   Korea/ASEAN/Middle East/Russia, with quantity, YoY, share, contribution)
+   first appears in the monthly provisional (~20th of the following month).
+   So Japan's early read is the headline only; the equipment/optics read is
+   monthly.
+2. **No key anywhere.** Press-release XML and the `suii/html/data/d*.csv`
+   time series are static files on customs.go.jp; e-Stat's 9-digit CSVs are
+   reachable through three server-rendered HTML hops (parent → year/month
+   listing → month page → `file-download?statInfId=…`). The e-Stat API
+   (appId) was not needed. e-Stat's WAF rejected one query-style URL during
+   research (`Request Rejected`); the listing URLs used here were served
+   normally to the Actions runner.
+3. **HS codes** live in `japan_endpoints.json` as 9-digit prefixes: 8486,
+   8541, 8542, 8517, 9001, 9013, 3818, 280461, 854470. Principal-commodity
+   codes (70131 半導体等製造装置 = HS 8486; 70323 semiconductors; 81101
+   scientific/optical) come from MOF's 2026 correspondence table
+   (`sankou/code/GH202601e.html`).
+4. **File naming** (verified by probing): `trade-st_e/<YYYY>/<YYYYMM><stage>e.xml`,
+   stage 1/2/4/5 = 10-day / 20-day / monthly provisional / detailed; stage 3
+   does not exist. English files exist at least back to 2021 on the index
+   page; the Japanese index lists XML back to 2006.
+5. **Sandbox egress** blocks customs.go.jp *and* e-stat.go.jp; Exa reaches
+   customs.go.jp HTML/PDF but not XML/CSV bodies. The workaround that worked:
+   push the fetcher with a `capture` command, dispatch `update-signals.yml`
+   on the feature branch with `japan_only` + `japan_capture`, and read the
+   committed payloads back. `reparse` then rebuilds the stores after any
+   parser fix, so the first-print store never carries an old bug.

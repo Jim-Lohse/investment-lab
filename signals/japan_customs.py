@@ -6,44 +6,49 @@ materials exports (HS 8486, 3818, 2804.61) plus optical components (8541,
 Korea — first 10 days, first 20 days, monthly provisional, then detailed —
 so the by-window YoY logic from the Korea leg carries over unchanged.
 
-Sources (all free, no registration; verified 2026-09-02):
+Sources (all free, no registration; verified against live payloads 2026-09-02):
   1. Press-release XML on customs.go.jp:
        https://www.customs.go.jp/toukei/shinbun/trade-st_e/<YYYY>/<YYYYMM><stage>e.xml
      stage 1 = first 10 days, 2 = first 20 days, 4 = monthly provisional,
-     5 = exports detailed / imports 9-digit provisional. Index:
-       https://www.customs.go.jp/toukei/shinbun/happyou_e.htm
-  2. Time-series CSVs (thousand yen, monthly from 1979/1988):
-       https://www.customs.go.jp/toukei/suii/html/data/d41ma.csv (world total)
-  3. e-Stat monthly "Values by Commodity" CSV (9-digit statistical code,
-     thousand yen), linked from the listing page and downloaded as
-       https://www.e-stat.go.jp/stat-search/file-download?statInfId=...&fileKind=1
+     5 = exports detailed / imports 9-digit provisional. The 10/20-day files
+     carry TOTALS ONLY (exports, imports, balance; current, year-ago, % change).
+     The monthly files carry the full principal-commodity breakdown for the
+     world and for USA / EU / Asia / China / Korea / ASEAN / Middle East /
+     Russia, each row with value (million yen), quantity, YoY, share and
+     contribution. Index: https://www.customs.go.jp/toukei/shinbun/happyou_e.htm
+  2. Time-series CSVs on customs.go.jp (thousand yen, Shift_JIS):
+       d41ma.csv  world monthly exports/imports totals from 1979
+       d51ma.csv  world monthly EXPORTS by press-release commodity from 1988
+       d61ma.csv  world monthly IMPORTS by press-release commodity from 1988
+  3. e-Stat monthly "Values by Commodity" (統計品別表) CSV: value and quantity
+     per 9-digit statistical code, one file per month carrying Jan..latest of
+     its year. Reached through the listing page -> month page -> file link.
 
-The XML schema of the press release is not documented and this module was
-built where customs.go.jp is unreachable, so the XML parser is deliberately
-schema-tolerant: every record's fields are kept verbatim in an extra_json
-column, the raw payload is saved under data/japan/raw/, and zero parsed rows
-is an error rather than an empty file. A `capture` command snapshots every
-source for parser development, exactly as the Korea leg did.
+Every raw payload is saved under data/japan/raw/ before parsing; zero parsed
+rows raises instead of writing an empty file; `reparse` rebuilds the CSV
+stores from those raw files after any parser fix.
 
 Output (append-only, first print wins):
-  data/japan/press_release.csv   — 10/20-day and monthly press-release rows
-  data/japan/time_series.csv     — long-format monthly series from the CSVs
+  data/japan/press_release.csv    — totals, area and commodity rows per window
+  data/japan/time_series.csv      — long-format monthly series (thousand yen)
   data/japan/trade_monthly_hs.csv — monthly value/quantity per 9-digit code
                                     for the configured HS prefixes
 
 Usage:
-    python -m signals.japan_customs flash            # prev + current month, all stages
+    python -m signals.japan_customs flash            # last 3 months, all stages
     python -m signals.japan_customs flash 2026-06 2026-08
     python -m signals.japan_customs flash-backfill 2021-01 2026-08
     python -m signals.japan_customs timeseries
-    python -m signals.japan_customs estat            # latest monthly HS-level CSVs
+    python -m signals.japan_customs estat [months_back]
     python -m signals.japan_customs capture          # snapshot everything raw
+    python -m signals.japan_customs reparse          # rebuild CSVs from raw
 """
 
 from __future__ import annotations
 
 import csv
 import datetime as dt
+import html
 import io
 import json
 import re
@@ -55,18 +60,23 @@ from pathlib import Path
 import requests
 
 from .common import (CONFIG_DIR, DATA_DIR, USER_AGENT, append_dedup_csv, fmt,
-                     http_get, month_range, parse_number)
+                     http_get, month_range, parse_number, write_csv)
 
 OUT_DIR = DATA_DIR / "japan"
 RAW_DIR = OUT_DIR / "raw"
 PAGES_DIR = RAW_DIR / "pages"
 
 PRESS_HEADER = ["yyyymm", "period_type", "stage", "lang", "section", "imex",
-                "name", "value", "yoy_pct", "extra_json", "retrieved_at"]
+                "area", "name", "level", "value_jpy_m", "value_year_ago_jpy_m",
+                "yoy_pct", "quantity", "unit", "qty_yoy_pct", "share_pct",
+                "contribution_pt", "extra_json", "retrieved_at"]
+PRESS_KEY = ["yyyymm", "stage", "lang", "section", "imex", "area", "name"]
 TS_HEADER = ["series", "imex", "area", "code", "name", "yyyymm", "value_jpy_k",
-             "quantity", "retrieved_at"]
+             "quantity", "unit", "retrieved_at"]
+TS_KEY = ["series", "imex", "area", "code", "name", "yyyymm"]
 HS_HEADER = ["yyyymm", "imex", "hs_code", "stage", "value_jpy_k", "quantity1",
              "unit1", "quantity2", "unit2", "source_file", "retrieved_at"]
+HS_KEY = ["yyyymm", "imex", "hs_code", "stage"]
 
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -98,7 +108,7 @@ def _get_optional(url: str, timeout: float = 60.0) -> requests.Response | None:
 
 
 def _decode(content: bytes) -> str:
-    """MOF files are Shift_JIS or UTF-8 depending on age; try both."""
+    """MOF CSVs are Shift_JIS (cp932); e-Stat and XML are UTF-8."""
     for enc in ("utf-8-sig", "cp932", "euc_jp"):
         try:
             return content.decode(enc)
@@ -107,119 +117,111 @@ def _decode(content: bytes) -> str:
     return content.decode("utf-8", errors="replace")
 
 
+def _num(text: str | None) -> str:
+    """Formatted number or '' (handles '△' negatives, '-', ZENZO/ZENGEN)."""
+    return fmt(parse_number(text))
+
+
 # --- Press-release XML (10/20-day + monthly) --------------------------------
 
-def _strip_ns(tag: str) -> str:
-    return tag.rsplit("}", 1)[-1] if "}" in tag else tag
+def _text(elem: ET.Element | None, tag: str) -> str:
+    if elem is None:
+        return ""
+    return (elem.findtext(tag) or "").strip()
 
 
-def flatten_xml_records(root: ET.Element) -> list[tuple[str, dict]]:
-    """Schema-tolerant record extraction.
-
-    A record is any element that carries at least two scalar fields, where a
-    field is an attribute or a leaf child element. Fields are stored under
-    their tag/attribute names; a leaf child's own attributes are stored as
-    ``tag@attr``. Returns (path, fields) so the section an item came from
-    (area table vs. commodity table) is recoverable from the element path.
-    """
-    records: list[tuple[str, dict]] = []
-
-    def walk(elem: ET.Element, path: str) -> None:
-        tag = _strip_ns(elem.tag)
-        here = f"{path}/{tag}"
-        fields: dict[str, str] = {k: v.strip() for k, v in elem.attrib.items()}
-        text = (elem.text or "").strip()
-        if text and not len(elem):
-            fields["#text"] = text
-        for child in elem:
-            if len(child):
-                continue
-            ctag = _strip_ns(child.tag)
-            ctext = (child.text or "").strip()
-            if ctext or not child.attrib:
-                fields[ctag] = ctext
-            for k, v in child.attrib.items():
-                fields[f"{ctag}@{k}"] = v.strip()
-        if len(fields) >= 2:
-            records.append((here, fields))
-        for child in elem:
-            if len(child) or (child.attrib and len(fields) < 2):
-                walk(child, here)
-
-    walk(root, "")
-    return records
+def _page_direction(title: str) -> str:
+    low = title.lower()
+    if low.startswith("import") or title.startswith("主要商品別輸入") or "商品別輸入" in title:
+        return "I"
+    if low.startswith("export") or "輸出" in title:
+        return "E"
+    return ""
 
 
-NAME_HINTS = ("name", "title", "item", "commodity", "area", "country", "label",
-              "品目", "品名", "国", "地域", "名")
-VALUE_HINTS = ("value", "amount", "amt", "価額", "金額", "額")
-YOY_HINTS = ("rate", "ratio", "change", "yoy", "伸率", "伸び率", "前年")
-IMPORT_HINTS = ("import", "imp", "輸入")
-EXPORT_HINTS = ("export", "exp", "輸出")
-
-
-def _pick(fields: dict, hints: tuple[str, ...], numeric: bool | None) -> tuple[str, str]:
-    """First (key, value) whose key mentions a hint and whose value matches
-    the numeric expectation (None = don't care)."""
-    for key, val in fields.items():
-        lk = key.lower()
-        if not any(h in lk for h in hints):
-            continue
-        is_num = parse_number(val) is not None
-        if numeric is None or is_num == numeric:
-            return key, val
-    return "", ""
-
-
-def normalize_press_records(records: list[tuple[str, dict]], yyyymm: str,
-                            period_type: str, stage: str, lang: str,
-                            retrieved_at: str) -> list[dict]:
-    """Turn flattened records into long rows. Name/value/yoy detection uses
-    field-name hints and falls back to 'first non-numeric field' / 'largest
-    numeric field', so an unexpected schema still yields usable rows while
-    extra_json keeps every field for a later exact parser."""
-    rows: list[dict] = []
-    for path, fields in records:
-        _, name = _pick(fields, NAME_HINTS, numeric=False)
-        if not name:
-            non_numeric = [v for v in fields.values()
-                           if v and parse_number(v) is None and not v.isdigit()]
-            name = non_numeric[0] if non_numeric else ""
-        numerics = [(k, parse_number(v)) for k, v in fields.items()
-                    if parse_number(v) is not None]
-        if not name or not numerics:
-            continue
-        _, value = _pick(fields, VALUE_HINTS, numeric=True)
-        if not value:
-            value = fmt(max(v for _, v in numerics))
-        _, yoy = _pick(fields, YOY_HINTS, numeric=True)
-        lpath = path.lower()
-        imex = ""
-        if any(h in lpath for h in IMPORT_HINTS):
-            imex = "I"
-        elif any(h in lpath for h in EXPORT_HINTS):
-            imex = "E"
-        rows.append({
-            "yyyymm": yyyymm,
-            "period_type": period_type,
-            "stage": stage,
-            "lang": lang,
-            "section": path.strip("/"),
-            "imex": imex,
-            "name": name,
-            "value": fmt(parse_number(value)),
-            "yoy_pct": fmt(parse_number(yoy)) if yoy else "",
-            "extra_json": json.dumps(fields, ensure_ascii=False, sort_keys=True),
-            "retrieved_at": retrieved_at,
-        })
-    return rows
+def _page_area(title: str) -> str:
+    """'Exports by Principal Commodity by Area(Country)(USA)' -> 'USA';
+    '主要商品別輸出(世界)' -> '世界'."""
+    groups = re.findall(r"[（(]\s*([^()（）]+?)\s*[)）]", title)
+    return groups[-1].strip() if groups else ""
 
 
 def parse_press_xml(content: bytes, yyyymm: str, period_type: str, stage: str,
                     lang: str, retrieved_at: str) -> list[dict]:
+    """Exact parser for MOF's hodoxml press-release format.
+
+    Pages: sogakutsuki (totals), chiikikunisogaku (area/country totals),
+    shuyochiikikunihin (principal commodity tables per area), shisu /
+    chiikishisu (trade indexes, not stored). Values are million yen.
+    """
     root = ET.fromstring(content)
-    return normalize_press_records(flatten_xml_records(root), yyyymm,
-                                   period_type, stage, lang, retrieved_at)
+    rows: list[dict] = []
+
+    def base(section: str, imex: str, area: str, name: str, fields: dict) -> dict:
+        return {
+            "yyyymm": yyyymm, "period_type": period_type, "stage": stage,
+            "lang": lang, "section": section, "imex": imex, "area": area,
+            "name": name, "level": "", "value_jpy_m": "",
+            "value_year_ago_jpy_m": "", "yoy_pct": "", "quantity": "",
+            "unit": "", "qty_yoy_pct": "", "share_pct": "", "contribution_pt": "",
+            "extra_json": json.dumps(fields, ensure_ascii=False, sort_keys=True),
+            "retrieved_at": retrieved_at,
+        }
+
+    def leaf_fields(elem: ET.Element) -> dict:
+        return {child.tag: (child.text or "").strip() for child in elem if not len(child)}
+
+    for total in root.iter("sogakutsuki"):
+        for tag, imex in (("export", "E"), ("import", "I"), ("sashihiki", "BAL")):
+            node = total.find(tag)
+            if node is None:
+                continue
+            fields = leaf_fields(node)
+            fields["title"] = _text(total, "title")
+            fields["taishoymtonen"] = _text(total, "taishoymtonen")
+            row = base("TOTAL", imex, "WORLD", "Grand Total", fields)
+            row["value_jpy_m"] = _num(fields.get("sogakutonen"))
+            row["value_year_ago_jpy_m"] = _num(fields.get("sogakuzennen"))
+            row["yoy_pct"] = _num(fields.get("nobiritsu"))
+            if row["value_jpy_m"]:
+                rows.append(row)
+
+    for page in root.iter("chiikikunisogaku"):
+        for info in page.iter("chiikikunisogakuinfo"):
+            fields = leaf_fields(info)
+            area = fields.get("chiikikuni", "")
+            if not area:
+                continue
+            for prefix, imex in (("export", "E"), ("import", "I"), ("sashihiki", "BAL")):
+                row = base("AREA", imex, area, area, fields)
+                row["level"] = fields.get("chiikikunikbn", "")
+                row["value_jpy_m"] = _num(fields.get(f"{prefix}kagakue"))
+                row["yoy_pct"] = _num(fields.get(f"{prefix}nobiritsu"))
+                if row["value_jpy_m"]:
+                    rows.append(row)
+
+    for page in root.iter("shuyochiikikunihin"):
+        title = _text(page, "title")
+        imex = _page_direction(title)
+        area = _page_area(title) or "WORLD"
+        for info in page.iter("shuyochiikikunihininfo"):
+            fields = leaf_fields(info)
+            name = fields.get("shuyoshohin", "")
+            if not name:
+                continue
+            fields["page_title"] = title
+            row = base("COMMODITY", imex, area, name, fields)
+            row["level"] = fields.get("shuyoshohinbunrui", "")
+            row["value_jpy_m"] = _num(fields.get("kagaku"))
+            row["yoy_pct"] = _num(fields.get("kagakunobiritsu"))
+            row["quantity"] = _num(fields.get("suryo"))
+            row["unit"] = fields.get("tani", "")
+            row["qty_yoy_pct"] = _num(fields.get("suryonobiritsu"))
+            row["share_pct"] = _num(fields.get("koseihi"))
+            row["contribution_pt"] = _num(fields.get("zogenkiyodo"))
+            if row["value_jpy_m"]:
+                rows.append(row)
+    return rows
 
 
 def press_url(cfg: dict, yyyymm: str, stage: str, lang: str) -> str:
@@ -229,21 +231,28 @@ def press_url(cfg: dict, yyyymm: str, stage: str, lang: str) -> str:
                                      stage=stage, **lang_cfg)
 
 
+def _default_range(today: dt.date, months_back: int = 2) -> tuple[str, str]:
+    start = today.replace(day=1)
+    for _ in range(months_back):
+        start = (start - dt.timedelta(days=1)).replace(day=1)
+    return start.strftime("%Y-%m"), today.strftime("%Y-%m")
+
+
 def fetch_press_release(start_iso: str | None = None, end_iso: str | None = None,
                         stages: list[str] | None = None,
                         langs: tuple[str, ...] = ("en",)) -> int:
     """Fetch every press-release window in a month range.
 
-    Unpublished windows 404 and are skipped; a published window that parses
-    to zero rows raises after saving the raw file, so a schema change is
-    loud rather than an empty CSV.
+    Unpublished windows 404 and are skipped. A published window that parses
+    to zero rows raises after the raw file is saved, so a schema change is a
+    red step rather than an empty CSV. Default range is the last three
+    months: the detailed monthly file for month M lands at the end of M+1.
     """
     cfg = _load_config()
     today = dt.date.today()
-    if end_iso is None:
-        end_iso = today.strftime("%Y-%m")
-    if start_iso is None:
-        start_iso = (today.replace(day=1) - dt.timedelta(days=1)).strftime("%Y-%m")
+    default_start, default_end = _default_range(today)
+    start_iso = start_iso or default_start
+    end_iso = end_iso or default_end
     stage_map = cfg["press_release"]["stages"]
     stages = stages or list(stage_map)
     retrieved_at = today.isoformat()
@@ -270,9 +279,8 @@ def fetch_press_release(start_iso: str | None = None, end_iso: str | None = None
                 if not rows:
                     unparsed.append(f"{raw_name}: 0 rows")
                     continue
-                added = append_dedup_csv(
-                    OUT_DIR / "press_release.csv", PRESS_HEADER, rows,
-                    ["yyyymm", "stage", "lang", "section", "name"])
+                added = append_dedup_csv(OUT_DIR / "press_release.csv", PRESS_HEADER,
+                                         rows, PRESS_KEY)
                 print(f"  {yyyymm} stage {stage} ({lang}): {len(rows)} rows, {added} new")
                 added_total += added
                 time.sleep(1.0)
@@ -285,109 +293,93 @@ def fetch_press_release(start_iso: str | None = None, end_iso: str | None = None
 
 # --- Time-series CSVs -------------------------------------------------------
 
-JP_MONTH_RE = re.compile(r"(\d{4})\s*[年/.-]\s*(\d{1,2})\s*月?")
-
-
-def _yyyymm_from_label(label: str) -> str:
-    """'2026年7月', '2026/07', '202607', 'Jul.2026' -> '2026-07'."""
-    label = label.strip()
-    match = JP_MONTH_RE.search(label)
-    if match:
-        return f"{int(match.group(1)):04d}-{int(match.group(2)):02d}"
-    match = re.fullmatch(r"(\d{4})(\d{2})", label)
-    if match:
-        return f"{match.group(1)}-{match.group(2)}"
-    match = re.search(r"([A-Za-z]{3})[a-z]*\.?\s*(\d{4})", label)
-    if match and match.group(1).title() in MONTHS:
-        return f"{int(match.group(2)):04d}-{MONTHS.index(match.group(1).title()) + 1:02d}"
-    return ""
+DATA_ROW_RE = re.compile(r"^(\d{4})/(\d{1,2})$")
 
 
 def parse_time_series_csv(text: str, series: str, retrieved_at: str) -> list[dict]:
-    """Long-format rows from a MOF time-series CSV.
+    """Long-format rows from a MOF 推移 CSV.
 
-    Two layouts are handled without knowing which one a file uses: a wide
-    table whose header names months (one row per series, one column per
-    month) and a long table with a year/month column per row. Everything
-    that cannot be classified is skipped rather than guessed.
+    Layout (cp932): title row with 《area》 and (輸出)/(輸入), an English title
+    row, then header rows keyed by their first cell — 報道発表品目名 (press
+    item), 概況品名 (principal commodity), 概況品コード (code), a 金額/数量
+    kind row and a unit row — followed by data rows 'YYYY/MM,...'. Column 1
+    is the grand total (value only); every other item is a (数量, 金額) pair
+    whose label sits on the 数量 column. d41ma has plain Exp-Total/Imp-Total
+    columns. Unpublished months are '-' or 0 and are skipped.
     """
     reader = list(csv.reader(io.StringIO(text)))
     rows: list[dict] = []
-    if not reader:
+    header_rows: list[list[str]] = []
+    data_rows: list[list[str]] = []
+    for rec in reader:
+        if rec and DATA_ROW_RE.match(rec[0].strip()):
+            data_rows.append(rec)
+        elif not data_rows:
+            header_rows.append([c.strip() for c in rec])
+    if not data_rows:
         return rows
-    header = [h.strip() for h in reader[0]]
-    month_cols = {i: _yyyymm_from_label(h) for i, h in enumerate(header)}
-    month_cols = {i: m for i, m in month_cols.items() if m}
 
-    if len(month_cols) >= 3:  # wide layout
-        label_cols = [i for i in range(len(header)) if i not in month_cols]
-        for rec in reader[1:]:
-            if not any(cell.strip() for cell in rec):
+    title = " ".join(header_rows[0]) if header_rows else ""
+    area_match = re.search(r"《([^》]+)》", title)
+    area = area_match.group(1) if area_match else "WORLD"
+    file_imex = "I" if ("輸入" in title or "Import" in title) else (
+        "E" if ("輸出" in title or "Export" in title) else "")
+
+    def find_row(label: str) -> list[str]:
+        for rec in header_rows:
+            if rec and rec[0] == label:
+                return rec
+        return []
+
+    def cell(rec: list[str], j: int) -> str:
+        return rec[j] if j < len(rec) else ""
+
+    press_row, pc_row, code_row = (find_row("報道発表品目名"), find_row("概況品名"),
+                                   find_row("概況品コード"))
+    kind_row = next((r for r in header_rows if len(r) > 1 and r[0] == ""
+                     and "金額" in r and set(r[1:]) <= {"金額", "数量", ""}), [])
+    unit_row = next((r for r in header_rows if r and r[0].startswith("Years")
+                     and any("単位" in c for c in r)), [])
+    width = max(len(r) for r in data_rows)
+
+    # (value col, qty col, code, name, unit)
+    columns: list[tuple[int, int | None, str, str, str]] = []
+    if kind_row:
+        for j in range(1, width):
+            name = cell(pc_row, j) or cell(press_row, j)
+            if not name:
                 continue
-            labels = [rec[i].strip() for i in label_cols if i < len(rec)]
-            imex = ""
-            joined = " ".join(labels + [h for i, h in enumerate(header) if i in label_cols])
-            if any(h in joined for h in ("輸入", "Import", "IMPORT")):
-                imex = "I"
-            elif any(h in joined for h in ("輸出", "Export", "EXPORT")):
-                imex = "E"
-            code = next((l for l in labels if re.fullmatch(r"\d{1,9}", l)), "")
-            name = next((l for l in labels if l and l != code and parse_number(l) is None), "")
-            for i, month in month_cols.items():
-                if i >= len(rec):
-                    continue
-                value = parse_number(rec[i])
-                if value is None:
-                    continue
-                rows.append({
-                    "series": series, "imex": imex, "area": "",
-                    "code": code, "name": name, "yyyymm": month,
-                    "value_jpy_k": fmt(value), "quantity": "",
-                    "retrieved_at": retrieved_at,
-                })
-        return rows
+            code = cell(code_row, j).replace("'", "")
+            kind = cell(kind_row, j)
+            if kind == "数量":
+                unit = re.sub(r"[()（）単位：:\s]", "", cell(unit_row, j))
+                columns.append((j + 1, j, code, name, unit))
+            else:
+                columns.append((j, None, code, name, ""))
+    else:
+        head = next((r for r in header_rows if len(r) > 1 and any(r[1:])), [])
+        for j in range(1, width):
+            label = cell(head, j)
+            if label:
+                columns.append((j, None, "", label, ""))
 
-    # long layout: find a column whose cells look like year-months
-    period_col = None
-    for i in range(len(header)):
-        sample = [rec[i] for rec in reader[1:20] if i < len(rec)]
-        if sample and sum(bool(_yyyymm_from_label(s)) for s in sample) >= len(sample) * 0.6:
-            period_col = i
-            break
-    if period_col is None:
-        return rows
-    value_cols = [i for i, h in enumerate(header)
-                  if any(k in h.lower() for k in ("value", "価額", "金額", "額"))]
-    qty_cols = [i for i, h in enumerate(header)
-                if any(k in h.lower() for k in ("quantity", "数量"))]
-    text_cols = [i for i in range(len(header))
-                 if i != period_col and i not in value_cols and i not in qty_cols]
-    for rec in reader[1:]:
-        if period_col >= len(rec):
-            continue
-        month = _yyyymm_from_label(rec[period_col])
-        if not month:
-            continue
-        labels = [rec[i].strip() for i in text_cols if i < len(rec)]
-        joined = " ".join(labels)
-        imex = "I" if any(h in joined for h in ("輸入", "Import", "IMPORT", " 2")) else (
-            "E" if any(h in joined for h in ("輸出", "Export", "EXPORT", " 1")) else "")
-        code = next((l for l in labels if re.fullmatch(r"\d{1,9}", l)), "")
-        name = next((l for l in labels if l and l != code and parse_number(l) is None), "")
-        if value_cols:
-            value = parse_number(rec[value_cols[0]]) if value_cols[0] < len(rec) else None
-        else:
-            nums = [parse_number(rec[i]) for i in range(len(rec)) if i != period_col]
-            nums = [n for n in nums if n is not None]
-            value = max(nums) if nums else None
-        if value is None:
-            continue
-        qty = parse_number(rec[qty_cols[0]]) if qty_cols and qty_cols[0] < len(rec) else None
-        rows.append({
-            "series": series, "imex": imex, "area": "", "code": code,
-            "name": name, "yyyymm": month, "value_jpy_k": fmt(value),
-            "quantity": fmt(qty), "retrieved_at": retrieved_at,
-        })
+    for rec in data_rows:
+        match = DATA_ROW_RE.match(rec[0].strip())
+        yyyymm = f"{int(match.group(1)):04d}-{int(match.group(2)):02d}"
+        for vcol, qcol, code, name, unit in columns:
+            value = parse_number(cell(rec, vcol))
+            if value is None or value == 0:
+                continue
+            imex = file_imex
+            if not imex:
+                low = name.lower()
+                imex = "I" if low.startswith("imp") else ("E" if low.startswith("exp") else "")
+            qty = parse_number(cell(rec, qcol)) if qcol is not None else None
+            rows.append({
+                "series": series, "imex": imex, "area": area, "code": code,
+                "name": name, "yyyymm": yyyymm, "value_jpy_k": fmt(value),
+                "quantity": fmt(qty), "unit": unit, "retrieved_at": retrieved_at,
+            })
     return rows
 
 
@@ -406,8 +398,7 @@ def fetch_time_series() -> int:
         if not rows:
             problems.append(f"{filename}: 0 rows parsed")
             continue
-        added = append_dedup_csv(OUT_DIR / "time_series.csv", TS_HEADER, rows,
-                                 ["series", "imex", "code", "name", "yyyymm"])
+        added = append_dedup_csv(OUT_DIR / "time_series.csv", TS_HEADER, rows, TS_KEY)
         print(f"  {series} ({filename}): {len(rows)} rows, {added} new")
         added_total += added
         time.sleep(1.0)
@@ -419,45 +410,77 @@ def fetch_time_series() -> int:
 
 # --- e-Stat monthly HS-level CSV -------------------------------------------
 
+ESTAT_BASE = "https://www.e-stat.go.jp"
+MONTH_LINK_RE = re.compile(
+    r'href="([^"]*stat-search/files\?[^"]*year=(\d{4})0&(?:amp;)?month=(\d{8})[^"]*)"')
 STAT_ID_RE = re.compile(r"stat[_-]?inf[_-]?id=(\d{10,14})", re.IGNORECASE)
+TCLASS2_LINK_RE = re.compile(r'<a[^>]+href="([^"]*tclass2=(\d{12})[^"]*)"[^>]*>([^<]*)</a>')
 JP_MONTH_TITLE_RE = re.compile(r"(\d{4})\s*年\s*(\d{1,2})\s*月")
 
 
-def parse_estat_listing(html: str) -> list[dict]:
-    """Return [{stat_inf_id, yyyymm, title}] for every download link on an
-    e-Stat listing page, newest first. The month is taken from the nearest
-    'YYYY年M月' in the surrounding text; links without one are kept with an
-    empty month so nothing is silently dropped."""
+def estat_month_code(month: int) -> str:
+    """e-Stat's month parameter: half, quarter, quarter start, quarter end,
+    month — e.g. July = 2 3 07 09 07 -> '23070907'."""
+    quarter = (month - 1) // 3 + 1
+    half = 1 if month <= 6 else 2
+    return f"{half}{quarter}{(quarter - 1) * 3 + 1:02d}{quarter * 3:02d}{month:02d}"
+
+
+def parse_estat_listing(html_text: str) -> list[dict]:
+    """[{yyyymm, url}] for every year/month drill-down link, newest first."""
+    found: dict[str, str] = {}
+    for match in MONTH_LINK_RE.finditer(html_text):
+        href, year, month_code = match.groups()
+        yyyymm = f"{year}-{month_code[-2:]}"
+        url = html.unescape(href)
+        if url.startswith("/"):
+            url = ESTAT_BASE + url
+        found.setdefault(yyyymm, url)
+    return [{"yyyymm": k, "url": v} for k, v in sorted(found.items(), reverse=True)]
+
+
+def parse_estat_month_page(html_text: str) -> list[dict]:
+    """[{stat_inf_id, title}] for every file on a month page. The title is
+    the nearest 統計品別表 text around the link (carries 確報/速報)."""
     found: dict[str, dict] = {}
-    for match in STAT_ID_RE.finditer(html):
+    for match in STAT_ID_RE.finditer(html_text):
         sid = match.group(1)
-        window = html[max(0, match.start() - 1500): match.end() + 1500]
-        window_text = re.sub(r"<[^>]+>", " ", window)
-        months = JP_MONTH_TITLE_RE.findall(window_text)
-        yyyymm = ""
-        if months:
-            # Prefer the month mentioned closest before the link.
-            before = re.sub(r"<[^>]+>", " ", html[max(0, match.start() - 1500): match.start()])
-            prior = JP_MONTH_TITLE_RE.findall(before)
-            y, m = (prior[-1] if prior else months[0])
-            yyyymm = f"{int(y):04d}-{int(m):02d}"
-        title_match = re.search(r"([^<>]*統計品別表[^<>]*)", window_text)
-        title = title_match.group(1).strip() if title_match else ""
-        entry = found.setdefault(sid, {"stat_inf_id": sid, "yyyymm": yyyymm, "title": title})
-        if not entry["yyyymm"] and yyyymm:
-            entry["yyyymm"] = yyyymm
+        window = html_text[max(0, match.start() - 2500): match.end() + 2500]
+        window_text = html.unescape(re.sub(r"<[^>]+>", " ", window))
+        title_match = re.search(r"([^\s][^<>|]{0,80}統計品別表[^<>|]{0,60})", window_text)
+        title = re.sub(r"\s+", " ", title_match.group(1)).strip() if title_match else ""
+        entry = found.setdefault(sid, {"stat_inf_id": sid, "title": title})
         if not entry["title"] and title:
             entry["title"] = title
-    return sorted(found.values(), key=lambda e: e["yyyymm"], reverse=True)
+    return list(found.values())
+
+
+def discover_tclass2(html_text: str, label: str) -> str:
+    """tclass2 of the child whose link text mentions `label` (輸出/輸入)."""
+    for href, tclass2, text in TCLASS2_LINK_RE.finditer(html_text):
+        if label in text:
+            return tclass2
+    return ""
+
+
+def _stage_from_title(title: str) -> str:
+    if "確々報" in title or "確定" in title:
+        return "REVISED"
+    if "確報" in title:
+        return "DETAILED"
+    if "速報" in title:
+        return "PROV9"
+    return ""
 
 
 def parse_estat_commodity_csv(text: str, hs_prefixes: list[str], stage: str,
                               source_file: str, retrieved_at: str) -> list[dict]:
     """Rows for configured HS prefixes from a 統計品別表 CSV.
 
-    Header (documented): Exp or Imp, Year, HS, Unit1, Unit2, Quantity1-Year,
-    Quantity2-Year, Value-Year, then Quantity1-Jan, Quantity2-Jan, Value-Jan
-    ... Value-Dec. Columns are resolved by name so reordering is harmless.
+    Header: Exp or Imp, Year, HS, Unit1, Unit2, Quantity1-Year, Quantity2-Year,
+    Value-Year, then Quantity1-Jan, Quantity2-Jan, Value-Jan ... Value-Dec
+    (value = thousand yen). Columns are resolved by name so reordering is
+    harmless; HS arrives quoted like '848610000'.
     """
     reader = csv.DictReader(io.StringIO(text))
     if not reader.fieldnames:
@@ -509,73 +532,94 @@ def parse_estat_commodity_csv(text: str, hs_prefixes: list[str], stage: str,
 
 def fetch_estat(months_back: int = 1) -> int:
     """Download the newest 統計品別表 CSV(s) for exports and imports and keep
-    the configured HS prefixes. One listing page + one CSV per direction."""
+    the configured HS prefixes: parent page (to find the 輸出/輸入 children),
+    listing page (year/month links), month page (file ids), then the CSV."""
     cfg = _load_config()
     est = cfg["estat"]
     prefixes = [k for k in cfg["hs_codes"] if not k.startswith("_")]
     retrieved_at = dt.date.today().isoformat()
     added_total = 0
     problems: list[str] = []
-    for imex, tclass2 in est["tclass2"].items():
+
+    parent = _get_optional(est["parent_url"])
+    parent_html = _decode(parent.content) if parent is not None else ""
+    if parent is not None:
+        _save_raw("estat_parent.html", parent.content, PAGES_DIR)
+
+    for imex, label in (("E", "輸出"), ("I", "輸入")):
+        tclass2 = discover_tclass2(parent_html, label) or est["tclass2"][imex]
         listing_url = est["listing_url_template"].format(tclass2=tclass2)
         resp = _get_optional(listing_url)
         if resp is None:
             problems.append(f"listing {imex}: 404")
             continue
         _save_raw(f"estat_listing_{imex}.html", resp.content, PAGES_DIR)
-        entries = parse_estat_listing(_decode(resp.content))
-        if not entries:
-            problems.append(f"listing {imex}: no statInfId links found "
+        months = parse_estat_listing(_decode(resp.content))
+        if not months:
+            problems.append(f"listing {imex}: no year/month links "
                             f"(saved data/japan/raw/pages/estat_listing_{imex}.html)")
             continue
-        for entry in entries[:months_back]:
-            url = est["download_url_template"].format(stat_inf_id=entry["stat_inf_id"])
-            csv_resp = _get_optional(url)
-            if csv_resp is None:
-                problems.append(f"{imex} {entry['stat_inf_id']}: 404")
+        for month in months[:months_back]:
+            page = _get_optional(month["url"])
+            if page is None:
+                problems.append(f"{imex} {month['yyyymm']}: month page 404")
                 continue
-            fname = f"estat_{imex}_{entry['yyyymm'] or 'unknown'}_{entry['stat_inf_id']}.csv"
-            _save_raw(fname, csv_resp.content)
-            stage = "DETAILED" if "確報" in entry["title"] else (
-                "PROV9" if "速報" in entry["title"] else "")
-            rows = parse_estat_commodity_csv(_decode(csv_resp.content), prefixes,
-                                             stage, fname, retrieved_at)
-            if not rows:
-                problems.append(f"{fname}: 0 rows for configured HS prefixes")
+            _save_raw(f"estat_month_{imex}_{month['yyyymm']}.html", page.content, PAGES_DIR)
+            files = parse_estat_month_page(_decode(page.content))
+            if not files:
+                problems.append(f"{imex} {month['yyyymm']}: no file ids on month page")
                 continue
-            added = append_dedup_csv(OUT_DIR / "trade_monthly_hs.csv", HS_HEADER, rows,
-                                     ["yyyymm", "imex", "hs_code", "stage"])
-            print(f"  e-Stat {imex} {entry['yyyymm']} ({entry['stat_inf_id']}): "
-                  f"{len(rows)} rows, {added} new")
-            added_total += added
-            time.sleep(2.0)
+            for entry in files:
+                url = est["download_url_template"].format(stat_inf_id=entry["stat_inf_id"])
+                csv_resp = _get_optional(url)
+                if csv_resp is None:
+                    problems.append(f"{imex} {entry['stat_inf_id']}: 404")
+                    continue
+                fname = f"estat_{imex}_{month['yyyymm']}_{entry['stat_inf_id']}.csv"
+                _save_raw(fname, csv_resp.content)
+                stage = _stage_from_title(entry["title"])
+                rows = parse_estat_commodity_csv(_decode(csv_resp.content), prefixes,
+                                                 stage, fname, retrieved_at)
+                if not rows:
+                    problems.append(f"{fname}: 0 rows for configured HS prefixes")
+                    continue
+                added = append_dedup_csv(OUT_DIR / "trade_monthly_hs.csv", HS_HEADER,
+                                         rows, HS_KEY)
+                print(f"  e-Stat {imex} {month['yyyymm']} {entry['stat_inf_id']} "
+                      f"[{stage or 'stage?'}]: {len(rows)} rows, {added} new")
+                added_total += added
+                time.sleep(2.0)
     if problems:
         raise RuntimeError("e-Stat: " + "; ".join(problems))
     return added_total
 
 
-# --- Capture ----------------------------------------------------------------
+# --- Capture and reparse ----------------------------------------------------
 
 def capture() -> None:
     """Snapshot every source raw for parser development. Read-only GETs
-    against static files; safe to run from CI where the hosts are reachable."""
+    against static files; safe to run from CI where the hosts are reachable.
+    Data payloads land where the fetchers put them (data/japan/raw/), index
+    and listing HTML under data/japan/raw/pages/."""
     cfg = _load_config()
     today = dt.date.today()
-    months = month_range((today.replace(day=1) - dt.timedelta(days=40)).strftime("%Y-%m"),
-                         today.strftime("%Y-%m"))
-    targets: dict[str, str] = dict(cfg["press_release"]["index_pages"])
+    months = month_range(*_default_range(today))
+    targets: dict[str, tuple[str, Path]] = {
+        f"{name}.html": (url, PAGES_DIR)
+        for name, url in cfg["press_release"]["index_pages"].items()}
     for month in months:
         yyyymm = month.replace("-", "")
         for stage in cfg["press_release"]["stages"]:
             for lang in ("en", "ja"):
-                targets[f"press_{yyyymm}{stage}{lang}.xml"] = press_url(cfg, yyyymm, stage, lang)
+                targets[f"press_{yyyymm}{stage}{lang}.xml"] = (
+                    press_url(cfg, yyyymm, stage, lang), RAW_DIR)
     for series, filename in cfg["time_series"]["files"].items():
-        targets[filename] = cfg["time_series"]["base_url"] + filename
+        targets[filename] = (cfg["time_series"]["base_url"] + filename, RAW_DIR)
+    targets["estat_parent.html"] = (cfg["estat"]["parent_url"], PAGES_DIR)
     for imex, tclass2 in cfg["estat"]["tclass2"].items():
-        targets[f"estat_listing_{imex}.html"] = cfg["estat"]["listing_url_template"].format(
-            tclass2=tclass2)
-    PAGES_DIR.mkdir(parents=True, exist_ok=True)
-    for name, url in targets.items():
+        targets[f"estat_listing_{imex}.html"] = (
+            cfg["estat"]["listing_url_template"].format(tclass2=tclass2), PAGES_DIR)
+    for name, (url, out_dir) in targets.items():
         try:
             resp = _get_optional(url, timeout=60)
         except Exception as err:  # noqa: BLE001 - keep capturing the rest
@@ -584,11 +628,59 @@ def capture() -> None:
         if resp is None:
             print(f"capture {name}: 404")
             continue
-        out = name if "." in name else f"{name}.html"
-        (PAGES_DIR / out).write_bytes(resp.content[:2_000_000])
-        print(f"captured {out}: {len(resp.content)} bytes "
+        _save_raw(name, resp.content[:2_000_000], out_dir)
+        print(f"captured {out_dir.name}/{name}: {len(resp.content)} bytes "
               f"{resp.headers.get('Content-Type', '')}")
         time.sleep(1.0)
+
+
+def reparse() -> None:
+    """Rebuild the three CSV stores from the raw payloads on disk.
+
+    Raw files are the record; the stores are a parse of them. After a parser
+    fix this regenerates every store so history never carries the old bug.
+    """
+    cfg = _load_config()
+    stage_map = cfg["press_release"]["stages"]
+    retrieved_at = dt.date.today().isoformat()
+
+    press_rows: list[dict] = []
+    seen: set[str] = set()
+    for path in sorted(RAW_DIR.glob("press_*.xml")):
+        if path.name in seen:
+            continue
+        seen.add(path.name)
+        match = re.fullmatch(r"press_(\d{6})(\d)(en|ja)\.xml", path.name)
+        if not match:
+            continue
+        yyyymm, stage, lang = match.groups()
+        month = f"{yyyymm[:4]}-{yyyymm[4:]}"
+        press_rows += parse_press_xml(path.read_bytes(), month, stage_map.get(stage, ""),
+                                      stage, lang, retrieved_at)
+    ts_rows: list[dict] = []
+    for series, filename in cfg["time_series"]["files"].items():
+        path = RAW_DIR / filename
+        if path.exists():
+            ts_rows += parse_time_series_csv(_decode(path.read_bytes()), series, retrieved_at)
+    hs_rows: list[dict] = []
+    prefixes = [k for k in cfg["hs_codes"] if not k.startswith("_")]
+    for path in sorted(RAW_DIR.glob("estat_*.csv")):
+        hs_rows += parse_estat_commodity_csv(_decode(path.read_bytes()), prefixes,
+                                             "", path.name, retrieved_at)
+
+    for name, header, key, rows in (
+        ("press_release.csv", PRESS_HEADER, PRESS_KEY, press_rows),
+        ("time_series.csv", TS_HEADER, TS_KEY, ts_rows),
+        ("trade_monthly_hs.csv", HS_HEADER, HS_KEY, hs_rows),
+    ):
+        path = OUT_DIR / name
+        if rows:
+            write_csv(path, header, [])
+            added = append_dedup_csv(path, header, rows, key)
+            print(f"{name}: rebuilt with {added} rows")
+        elif path.exists():
+            path.unlink()
+            print(f"{name}: removed (no raw payloads to rebuild from)")
 
 
 # --- CLI --------------------------------------------------------------------
@@ -622,6 +714,8 @@ def main(argv: list[str]) -> int:
         fetch_estat(int(argv[1]) if len(argv) > 1 else 1)
     elif cmd == "capture":
         capture()
+    elif cmd == "reparse":
+        reparse()
     else:
         print(__doc__)
         return 2

@@ -29,7 +29,7 @@ Worked case files will be added to this repository as their redaction passes com
 ## Structure
 
 - `investment-lab-constitution.md` — the full constitution: purpose and authority, tiered rigor, research controls (independence, masking, evidence genealogy, base rates), scorecard and value-capture waterfall, decision and risk discipline (exit rules, calibration, committee), and the validation program (synthetic gates, baselines, point-in-time and forward tracks), with the seeded case roster as Appendix A.
-- `signals/` — free primary-source demand signals: Taiwan MOPS monthly revenue (filed by the 10th) and Korea Customs 10/20-day exports with semiconductor breakout, fetched on a schedule into `data/` and aggregated into watch-group YoY/breadth series. Tier 1 screening input under the constitution; see `signals/README.md`.
+- `signals/` — free primary-source demand and supply signals: Taiwan MOPS monthly revenue (filed by the 10th), Korea Customs 10/20-day exports with semiconductor breakout, and Japan MOF/Customs trade statistics (10/20-day totals, monthly principal-commodity breakdown, 9-digit HS tables) for the semiconductor-equipment and optical-component supply response, fetched on a schedule into `data/` and aggregated into YoY/breadth series. Tier 1 screening input under the constitution; see `signals/README.md`.
 
 ## License
 
