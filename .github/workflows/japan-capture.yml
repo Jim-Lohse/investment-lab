@@ -1,0 +1,62 @@
+name: japan-capture
+
+# Manual-only: snapshot the Japan (MOF/Customs, e-Stat) sources raw into
+# data/japan/raw/pages/ for parser development. Touches nothing Korean, so it
+# does not spend the one-manual-run-per-day budget that tradedata.go.kr
+# enforces. Only static files are requested.
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_fetchers:
+        description: "Set to any value to also run the Japan fetchers (flash, timeseries, estat) after the capture"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r signals/requirements.txt
+
+      - name: Run offline tests
+        run: python -m unittest discover tests
+
+      - name: Capture Japan sources
+        continue-on-error: true
+        run: python -m signals.japan_customs capture
+
+      - name: Run Japan fetchers (optional)
+        if: ${{ github.event.inputs.run_fetchers != '' }}
+        continue-on-error: true
+        run: |
+          python -m signals.japan_customs flash || true
+          python -m signals.japan_customs timeseries || true
+          python -m signals.japan_customs estat || true
+
+      - name: Commit and push if data changed
+        run: |
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No new data."
+            exit 0
+          fi
+          git config user.name "signals-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "signals: japan capture $(date -u +%F)"
+          for delay in 2 4 8 16 0; do
+            git push && exit 0
+            [ "$delay" = "0" ] && exit 1
+            sleep "$delay"
+            git pull --rebase --no-autostash || true
+          done

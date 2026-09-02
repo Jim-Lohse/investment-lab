@@ -1,0 +1,106 @@
+{
+  "_comment": [
+    "Japan Ministry of Finance / Customs trade statistics. Everything here is",
+    "keyless: static files on customs.go.jp plus e-Stat's public CSV downloads.",
+    "Verified 2026-09-02 (customs.go.jp is unreachable from the build sandbox;",
+    "file existence was checked through an external fetcher, and the first",
+    "GitHub Actions run captures the payloads under data/japan/raw/).",
+    "",
+    "Release cadence (calendar: https://www.customs.go.jp/toukei/calendar/calend_e.htm):",
+    "  first 10 days  -> ~28th of the same month, 08:50 JST (press release XML)",
+    "  first 20 days  -> ~7th of the next month, 08:50 JST (press release XML)",
+    "  monthly prov.  -> ~20th of the next month, 08:50 JST (press release XML + PDF)",
+    "  detailed (D&P) -> end of the next month, 09:30 JST (XML + PDF, e-Stat CSVs)",
+    "Press-release XML file naming, verified by probing existing files:",
+    "  trade-st_e/<YYYY>/<YYYYMM><stage>e.xml  (English; Japanese: trade-st/<YYYY>/<YYYYMM><stage>.xml)",
+    "  stage 1 = first 10 days, 2 = first 20 days, 4 = monthly provisional,",
+    "  5 = exports detailed / imports 9-digit provisional. 3 does not exist.",
+    "  e.g. 2026081e.xml (Aug 2026 first 10 days), 2026064e.xml (Jun 2026 monthly)."
+  ],
+  "press_release": {
+    "url_template": "https://www.customs.go.jp/toukei/shinbun/{lang_dir}/{year}/{yyyymm}{stage}{lang_suffix}.xml",
+    "languages": {
+      "en": {"lang_dir": "trade-st_e", "lang_suffix": "e"},
+      "ja": {"lang_dir": "trade-st", "lang_suffix": ""}
+    },
+    "stages": {
+      "1": "D10",
+      "2": "D20",
+      "4": "MONTH_PROV",
+      "5": "MONTH_DP"
+    },
+    "index_pages": {
+      "press_release_en": "https://www.customs.go.jp/toukei/shinbun/happyou_e.htm",
+      "press_release_ja": "https://www.customs.go.jp/toukei/shinbun/happyou.htm",
+      "latest_en": "https://www.customs.go.jp/toukei/latest/index_e.htm",
+      "calendar_en": "https://www.customs.go.jp/toukei/calendar/calend_e.htm"
+    }
+  },
+  "time_series": {
+    "_comment": [
+      "Keyless CSV time series (thousand yen) under toukei/suii/html/data/.",
+      "d41ma.csv is confirmed as the world monthly export/import total from 1979",
+      "(used by third-party packages). d51ma.csv and d61ma.csv exist and are the",
+      "candidates for the monthly principal-commodity series (exports/imports,",
+      "from 1988); the first capture run settles which is which. Index pages:",
+      "https://www.customs.go.jp/toukei/suii/html/time_e.htm (area totals),",
+      "https://www.customs.go.jp/toukei/suii/html/time.htm (adds 主要商品別)."
+    ],
+    "base_url": "https://www.customs.go.jp/toukei/suii/html/data/",
+    "files": {
+      "world_monthly_total": "d41ma.csv",
+      "candidate_commodity_a": "d51ma.csv",
+      "candidate_commodity_b": "d61ma.csv"
+    }
+  },
+  "estat": {
+    "_comment": [
+      "e-Stat hosts MOF's monthly CSV tables without a key. 統計品別表 (Values by",
+      "Commodity) gives value and quantity per 9-digit statistical code for the",
+      "world, one file per month (each file carries Jan..latest of its year).",
+      "Listing pages (HTML) carry links of the form",
+      "  stat-search/file-download?statInfId=<12 digits>&fileKind=1",
+      "CSV columns (confirmed from a consumer of these files):",
+      "  Exp or Imp,Year,HS,Unit1,Unit2,Quantity1-Year,Quantity2-Year,Value-Year,",
+      "  Quantity1-Jan,Quantity2-Jan,Value-Jan,...,Value-Dec  (value = thousand yen)",
+      "tclass2 000001013185 = imports (confirmed); 000001013184 = exports (inferred)."
+    ],
+    "listing_url_template": "https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00350300&tstat=000001013141&cycle=1&tclass1=000001013183&tclass2={tclass2}&tclass3val=0&metadata=1&data=1",
+    "tclass2": {"E": "000001013184", "I": "000001013185"},
+    "download_url_template": "https://www.e-stat.go.jp/stat-search/file-download?statInfId={stat_inf_id}&fileKind=1"
+  },
+  "hs_codes": {
+    "_comment": "Prefixes matched against the 9-digit statistical code (dots removed). Supply side of the AI build-out: equipment, materials, optics.",
+    "8486": "Semiconductor / flat-panel manufacturing machinery (Tokyo Electron, Screen, Kokusai, Lasertec, Disco)",
+    "8541": "Diodes, transistors, photosensitive devices incl. laser diodes and photodiodes",
+    "8542": "Electronic integrated circuits",
+    "8517": "Transmission apparatus incl. optical transceivers (8517.62)",
+    "9001": "Optical fibres, bundles, cables and optical elements (Sumitomo Electric, Fujikura, Furukawa)",
+    "9013": "Optical devices and instruments incl. lasers other than laser diodes",
+    "3818": "Doped chemical elements / wafers for electronics (Shin-Etsu, SUMCO)",
+    "280461": "Polysilicon >= 99.99% (Tokuyama)",
+    "854470": "Optical fibre cables"
+  },
+  "principal_commodities": {
+    "_comment": "MOF 概況品 (principal commodity) codes, 2026 table: https://www.customs.go.jp/toukei/sankou/code/GH202601e.html",
+    "70131": "半導体等製造装置 SEMICON MACHINERY ETC (HS 8486)",
+    "7013101": "（半導体製造装置） SEMICONDUCTOR MACHINERY (8486.10-.20)",
+    "70323": "半導体等電子部品 SEMICONDUCTORS ETC (8523.52, 8540-8542)",
+    "7032303": "（個別半導体） TRANSISTORS AND DIODES (8541.10-.60)",
+    "7032305": "（ＩＣ） INTEGRATED CIRCUITS (8542.31-.39)",
+    "70315": "通信機 TELEPHONY, TELEGRAPHY (8517, 8525.50-.60, 8526, 8529.10)",
+    "70327": "電気計測機器 ELECTRICAL MEASURING",
+    "81101": "科学光学機器 SCIENTIFIC, OPTICAL INST (9001-9013, 8544.70 ...)"
+  },
+  "press_release_items_of_interest": [
+    "SEMICON MACHINERY ETC",
+    "SEMICONDUCTORS ETC",
+    "(IC)",
+    "SCIENTIFIC, OPTICAL INST",
+    "TELEPHONY, TELEGRAPHY",
+    "ELECTRICAL MEASURING",
+    "半導体等製造装置",
+    "半導体等電子部品",
+    "科学光学機器"
+  ]
+}
