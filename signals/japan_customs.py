@@ -456,32 +456,66 @@ def parse_estat_month_page(html_text: str) -> list[dict]:
 
 
 def discover_tclass2(html_text: str, label: str) -> str:
-    """tclass2 of the child whose link text mentions `label` (輸出/輸入)."""
+    """tclass2 of the child whose link text mentions `label` (輸出/輸入).
+
+    Tries a clean <a href=...>label</a> first, then any tclass2 within the
+    500 characters before the label (e-Stat nests spans inside its links)."""
     for match in TCLASS2_LINK_RE.finditer(html_text):
         if label in match.group(3):
             return match.group(2)
+    for match in re.finditer(re.escape(label), html_text):
+        window = html_text[max(0, match.start() - 500): match.start()]
+        ids = re.findall(r"tclass2=(\d{12})", window)
+        if ids:
+            return ids[-1]
+    return ""
+
+
+STAGE_WORDS = (("確定", "FIXED"), ("確々報", "REVISED"), ("確報", "DETAILED"),
+               ("9桁速報", "PROV9"), ("速報", "PROV9"))
+TITLE_SPAN_RE = re.compile(r"(\d{1,2})\s*(?:[-～]\s*(\d{1,2}))?\s*月\s*[：:]\s*([^、,)）]+)")
+
+
+def _stage_word(text: str) -> str:
+    for word, stage in STAGE_WORDS:
+        if word in text:
+            return stage
     return ""
 
 
 def _stage_from_title(title: str) -> str:
-    if "確々報" in title or "確定" in title:
-        return "REVISED"
-    if "確報" in title:
-        return "DETAILED"
-    if "速報" in title:
-        return "PROV9"
-    return ""
+    """Whole-file stage (the strongest word wins for the summary label)."""
+    return _stage_word(title)
 
 
-def parse_estat_commodity_csv(text: str, hs_prefixes: list[str], stage: str,
-                              source_file: str, retrieved_at: str) -> list[dict]:
+def stages_by_month(title: str) -> dict[int, str]:
+    """Per-month stage from a title like
+    '2026年7月分 統計品別表 (輸入 1-6月：確報、7月：輸入9桁速報)' ->
+    {1..6: DETAILED, 7: PROV9}. Empty when the title carries no spans."""
+    out: dict[int, str] = {}
+    for start, end, label in TITLE_SPAN_RE.findall(title):
+        stage = _stage_word(label)
+        if not stage:
+            continue
+        for month in range(int(start), int(end or start) + 1):
+            out[month] = stage
+    return out
+
+
+def parse_estat_commodity_csv(text: str, hs_prefixes: list[str],
+                              stage: str | dict[int, str], source_file: str,
+                              retrieved_at: str) -> list[dict]:
     """Rows for configured HS prefixes from a 統計品別表 CSV.
 
     Header: Exp or Imp, Year, HS, Unit1, Unit2, Quantity1-Year, Quantity2-Year,
     Value-Year, then Quantity1-Jan, Quantity2-Jan, Value-Jan ... Value-Dec
     (value = thousand yen). Columns are resolved by name so reordering is
-    harmless; HS arrives quoted like '848610000'.
+    harmless; HS arrives quoted like '848610000'. `stage` is one label for
+    the whole file or a {month: label} map (import files mix detailed months
+    with a 9-digit provisional latest month).
     """
+    stage_map = stage if isinstance(stage, dict) else {}
+    default_stage = stage if isinstance(stage, str) else ""
     reader = csv.DictReader(io.StringIO(text))
     if not reader.fieldnames:
         return []
@@ -522,7 +556,7 @@ def parse_estat_commodity_csv(text: str, hs_prefixes: list[str], stage: str,
                 continue  # month not yet published in this file
             rows.append({
                 "yyyymm": f"{year}-{idx:02d}", "imex": imex, "hs_code": hs,
-                "stage": stage, "value_jpy_k": fmt(value),
+                "stage": stage_map.get(idx, default_stage), "value_jpy_k": fmt(value),
                 "quantity1": fmt(q1), "unit1": (rec.get(c_unit1) or "").strip() if c_unit1 else "",
                 "quantity2": fmt(q2), "unit2": (rec.get(c_unit2) or "").strip() if c_unit2 else "",
                 "source_file": source_file, "retrieved_at": retrieved_at,
@@ -577,7 +611,7 @@ def fetch_estat(months_back: int = 1) -> int:
                     continue
                 fname = f"estat_{imex}_{month['yyyymm']}_{entry['stat_inf_id']}.csv"
                 _save_raw(fname, csv_resp.content)
-                stage = _stage_from_title(entry["title"])
+                stage = stages_by_month(entry["title"]) or _stage_from_title(entry["title"])
                 rows = parse_estat_commodity_csv(_decode(csv_resp.content), prefixes,
                                                  stage, fname, retrieved_at)
                 if not rows:
@@ -585,8 +619,9 @@ def fetch_estat(months_back: int = 1) -> int:
                     continue
                 added = append_dedup_csv(OUT_DIR / "trade_monthly_hs.csv", HS_HEADER,
                                          rows, HS_KEY)
+                label = stage if isinstance(stage, str) else "/".join(sorted(set(stage.values())))
                 print(f"  e-Stat {imex} {month['yyyymm']} {entry['stat_inf_id']} "
-                      f"[{stage or 'stage?'}]: {len(rows)} rows, {added} new")
+                      f"[{label or 'stage?'}]: {len(rows)} rows, {added} new")
                 added_total += added
                 time.sleep(2.0)
     if problems:
@@ -665,8 +700,16 @@ def reparse() -> None:
     hs_rows: list[dict] = []
     prefixes = [k for k in cfg["hs_codes"] if not k.startswith("_")]
     for path in sorted(RAW_DIR.glob("estat_*.csv")):
+        match = re.fullmatch(r"estat_([EI])_(\d{4}-\d{2})_(\d+)\.csv", path.name)
+        stage: str | dict[int, str] = ""
+        if match:
+            page = PAGES_DIR / f"estat_month_{match.group(1)}_{match.group(2)}.html"
+            if page.exists():
+                for entry in parse_estat_month_page(_decode(page.read_bytes())):
+                    if entry["stat_inf_id"] == match.group(3):
+                        stage = stages_by_month(entry["title"]) or _stage_from_title(entry["title"])
         hs_rows += parse_estat_commodity_csv(_decode(path.read_bytes()), prefixes,
-                                             "", path.name, retrieved_at)
+                                             stage, path.name, retrieved_at)
 
     for name, header, key, rows in (
         ("press_release.csv", PRESS_HEADER, PRESS_KEY, press_rows),

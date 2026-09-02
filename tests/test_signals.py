@@ -381,6 +381,15 @@ class TestJapan(unittest.TestCase):
         self.assertEqual(files[0]["stat_inf_id"], "000040500123")
         self.assertIn("確報", files[0]["title"])
         self.assertEqual(japan_customs._stage_from_title(files[0]["title"]), "DETAILED")
+        mixed = "2026年7月分 統計品別表 (輸入 1-6月：確報、7月：輸入9桁速報)"
+        self.assertEqual(japan_customs.stages_by_month(mixed),
+                         {1: "DETAILED", 2: "DETAILED", 3: "DETAILED", 4: "DETAILED",
+                          5: "DETAILED", 6: "DETAILED", 7: "PROV9"})
+        self.assertEqual(japan_customs.stages_by_month("(輸出 1-7月：確報)"),
+                         {m: "DETAILED" for m in range(1, 8)})
+        rows = japan_customs.parse_estat_commodity_csv(
+            JAPAN_ESTAT_CSV, ["8486"], {1: "DETAILED", 2: "PROV9"}, "f", "d")
+        self.assertEqual([r["stage"] for r in rows], ["DETAILED", "PROV9"])
 
     def test_japan_signal_yoy(self):
         with tempfile.TemporaryDirectory() as tmp:

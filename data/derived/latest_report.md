@@ -81,15 +81,15 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | 2026-07 | MONTH | estat_hs:DETAILED | E:HS854470 | 5661 |  |  |
 | 2026-07 | MONTH | estat_hs:DETAILED | E:HS9001 | 41230 |  |  |
 | 2026-07 | MONTH | estat_hs:DETAILED | E:HS9013 | 10990 |  |  |
-| 2026-07 | MONTH | estat_hs:DETAILED | I:HS280461 | 6838 |  |  |
-| 2026-07 | MONTH | estat_hs:DETAILED | I:HS3818 | 17139 |  |  |
-| 2026-07 | MONTH | estat_hs:DETAILED | I:HS8486 | 103303 |  |  |
-| 2026-07 | MONTH | estat_hs:DETAILED | I:HS8517 | 437747 |  |  |
-| 2026-07 | MONTH | estat_hs:DETAILED | I:HS8541 | 47162 |  |  |
-| 2026-07 | MONTH | estat_hs:DETAILED | I:HS8542 | 497299 |  |  |
-| 2026-07 | MONTH | estat_hs:DETAILED | I:HS854470 | 3449 |  |  |
-| 2026-07 | MONTH | estat_hs:DETAILED | I:HS9001 | 35553 |  |  |
-| 2026-07 | MONTH | estat_hs:DETAILED | I:HS9013 | 10915 |  |  |
+| 2026-07 | MONTH | estat_hs:PROV9 | I:HS280461 | 6838 |  |  |
+| 2026-07 | MONTH | estat_hs:PROV9 | I:HS3818 | 17139 |  |  |
+| 2026-07 | MONTH | estat_hs:PROV9 | I:HS8486 | 103303 |  |  |
+| 2026-07 | MONTH | estat_hs:PROV9 | I:HS8517 | 437747 |  |  |
+| 2026-07 | MONTH | estat_hs:PROV9 | I:HS8541 | 47162 |  |  |
+| 2026-07 | MONTH | estat_hs:PROV9 | I:HS8542 | 497299 |  |  |
+| 2026-07 | MONTH | estat_hs:PROV9 | I:HS854470 | 3449 |  |  |
+| 2026-07 | MONTH | estat_hs:PROV9 | I:HS9001 | 35553 |  |  |
+| 2026-07 | MONTH | estat_hs:PROV9 | I:HS9013 | 10915 |  |  |
 
 ---
 Validation status (constitution §21): raw government data, mechanically aggregated. Tier 1 screening input only; not a thesis, not advice.
