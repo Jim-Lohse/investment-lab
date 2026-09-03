@@ -119,6 +119,15 @@ def bulk_load(ndl, con, name, spec):
 
 
 def incremental_load(ndl, con, name, spec):
+    has_lastupdated = con.execute(
+        "SELECT 1 FROM information_schema.columns "
+        "WHERE table_name = ? AND column_name = 'lastupdated'",
+        [name],
+    ).fetchone()
+    if not has_lastupdated:
+        print(f"  {name}: local table has no lastupdated column — "
+              "re-exporting wholesale instead of incrementally")
+        return bulk_load(ndl, con, name, spec)
     cutoff = con.execute(f"SELECT max(lastupdated) FROM {name}").fetchone()[0]
     if cutoff is None:
         return bulk_load(ndl, con, name, spec)

@@ -38,8 +38,10 @@ rows whose `lastupdated` changed — small, fast, cheap.
      that table with `--bulk`.
    - Missing key → step 1.
 
-4. **Hygiene.** Suggest (once) a periodic `--bulk SF2` true-up if insiders
-   are synced (SF2 lacks a clean natural key), and note that
+4. **Hygiene.** SF2 arrives without a `lastupdated` column, so the script
+   re-exports it wholesale on every sync that includes it — suggest (once)
+   keeping routine refreshes to `--tables SF1,SEP,TICKERS,ACTIONS` with SF2
+   on its own slower cadence. Note that
    `/pocket-observations` can fold a data-freshness line into its brief: a
    stale local store silently degrades every packet built from it.
 

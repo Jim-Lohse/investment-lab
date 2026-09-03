@@ -49,9 +49,12 @@ small tables (TICKERS, ACTIONS) are simply re-exported wholesale each sync.
 A `_sync_log` table in the DB records every run.
 
 Caveats built in: a delta that hits the API's 1M-row page ceiling refuses
-to merge and tells you to `--bulk` that table; SF2 has no clean natural
-key, so run `--bulk SF2` monthly-ish to true it up; a 403 on a table means
-it isn't in your subscription, and the script continues with the rest.
+to merge and tells you to `--bulk` that table; a 403 on a table means it
+isn't in your subscription, and the script continues with the rest. SF2's
+export arrives without a `lastupdated` column, so the script detects that
+and re-exports it wholesale each sync (~11M rows) — if that's too heavy
+for a routine refresh, sync it on its own cadence with `--tables SF2` and
+run day-to-day refreshes as `--tables SF1,SEP,TICKERS,ACTIONS`.
 
 ## Point-in-time rules (§18)
 
