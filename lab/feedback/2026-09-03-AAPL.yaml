@@ -1,0 +1,63 @@
+# Labeled example — graded Pocket Analyst run (blocked-run variant: grades
+# attach to the blocking decision, since no judgment memo exists).
+# Append-only. First example in the corpus.
+
+example_id: 2026-09-03-AAPL
+supersedes_id: null
+graded: 2026-09-03
+grader: human            # elicited via AskUserQuestion; grader jim.lohse@gmail.com
+run:
+  dir: lab/runs/2026-09-03-AAPL
+  tier: 1
+  masked_first_pass: false
+  independence_label: architecturally-independent
+  outcome: blocked
+
+# Blocked-run grading: the five judgment-section verdicts are replaced by a
+# verdict on the blocking decision itself.
+labels:
+  blocking_decision:
+    verdict: partial
+    note: >
+      Grader selected "Partial" (right outcome, wrong or overstated reasoning /
+      or should have produced a watch item outright) without free-text
+      elaboration. Read together with the most_doubted_claim below: the
+      CEO-continuity blocking reason is the likely overstatement — see next
+      field. Follow-up elaboration, if the grader supplies one, goes in a new
+      example superseding this id, per append-only rule.
+
+most_doubted_claim: >
+  The CEO-continuity concern as a load-bearing uncertainty. Grader's view:
+  treating Cook->Ternus continuity as a blocking-grade unknown overweights a
+  well-rehearsed insider succession. Next falsification target: does the
+  record (5.02 8-K, retention grants, first Ternus capital-allocation
+  actions) actually support elevated discontinuity risk, or should the
+  supervisor's blocking reason #2 be dropped in reruns?
+
+# §17 baseline comparison — Simplicity Auditor raw material
+baseline_delta:
+  loop_changed_conclusion: false
+  value_added: none
+  note: >
+    Grader: "Added nothing" — same conclusion with the same key points was
+    reachable in a few hours solo. NOTE: this is STRICTER than the
+    supervisor's own Simplicity Audit, which claimed value on falsifier
+    sharpening (tariff-refund decomposition, buyback rate-sensitivity,
+    Gemini sign inversion). The human label overrides for corpus purposes:
+    first data point says the machinery did not earn its cost on a
+    mega-cap everyone already knows. Consistent with constitution Appendix A
+    Case 2's lesson (the "no" should be reached cheaply). Hypothesis for
+    future examples: the loop's marginal value should be higher on
+    under-covered names than on the most-covered stock on earth.
+
+process_violations:
+  - violation: unpreserved retrieval provenance (industry submission; macro mildly)
+    severity: minor
+    note: >
+      Grader: supervisor caught and statused it correctly ("uncertain pending
+      verification") — the control worked as designed. No persona amendment
+      demanded yet; revisit if the pattern repeats.
+
+# No forecasts were logged for this run (blocked before the judgment layer;
+# §14 forecasts attach to judgment memos). Nothing to resolve.
+forecast_resolutions: []
