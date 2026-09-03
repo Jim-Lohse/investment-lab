@@ -1,0 +1,83 @@
+analyst: company
+packet_id: 2026-09-03-AAPL/company
+recognition_note: null  # packet unmasked (masked: false); no de-anonymization performed
+core_claim: >
+  Apple's economic claim is a mature quality-compounding engine — an installed-base
+  ecosystem (~2.4B active devices per management, all-time high per Q3 FY26 release)
+  that monetizes through premium hardware refresh plus attached Services, now with a
+  claimed second act: an AI-driven upgrade cycle ("all-new Siri AI," WWDC26) that
+  restored double-digit growth in FY2026 (Q3 revenue $109.4B, +16% YoY, records in
+  iPhone/Mac/Services per the 8-K exhibit). The engine's cash translation is real and
+  primary-sourced: FY25 GM 46.9%, FCF margin 23.7%, share count -4%/yr, EPS CAGR 14%
+  over 8 years on only 6.6% revenue CAGR. The open question is not whether the engine
+  exists but whether the AI leg is durable: Q3's headline strength included ~2pp of
+  gross margin and $0.11 of EPS from one-time tariff refunds (disclosed in the release),
+  the stock fell 9.3% on the print anyway, FY27 revisions are rolling over (8 up/19
+  down, avg $9.71→$9.53), reinvestment intensity is inflecting (FY25 capex +35%, Q3
+  R&D +32% YoY, intangibles $11.1B→$20.3B in nine months), and a CEO transition
+  (Ternus, Form 4 dated 2026-09-01) landed the month the fiscal year closes. At
+  ~$4.74T / ~37x FY26E, the price pays for the durable-AI-supercycle version of the
+  claim, not the mature-compounder version the filed record supports.
+engine: quality-compounder
+financial_translation:
+  score_0_10: 8
+  evidence:
+    - "Advantage reaches FCF, not just revenue: FY25 gross margin 46.9%, net margin 26.9%, FCF margin 23.7% ($98.8B FCF on $416B revenue); underlying Q3 FY26 GM ~48% even ex-tariff refunds [company filings, 10-K XBRL + 8-K exhibit 99.1]"
+    - "Allocation record supports retention: diluted shares -4.0%/yr for 8 years; Q1 FY26 alone $24.7B buybacks + $3.9B dividends [company filings, 10-Q XBRL]"
+    - "Caveats that keep this off a 9-10: FY25 OpCF fell 5.7% while NI rose 19.5%; Q1 FY26 OpCF ($53.9B vs $29.9B) flattered by cash-tax timing ($3.4B paid vs $18.7B prior year) and working-capital swings [company filings, XBRL]"
+    - "Reinvestment intensity rising with unproven incremental returns: capex +34.6% FY25, R&D +32% YoY in Q3, intangibles +$9.2B and inventories 2x ($5.7B→$11.1B) since Sept-2025 — the AI ramp's ROIC is not yet observable in the record [company filings, 10-Q XBRL]"
+load_bearing_claims:
+  - claim: "AI (Siri AI / WWDC26) drives a durable multi-year upgrade cycle, not a one-quarter pull-forward"
+    genealogy: "Company press release 2026-07-30 (8-K ex-99.1) for the AI framing; one quarter of filed results (+16% YoY) as partial confirmation; media coverage of WWDC26 is one genealogy back to Apple's own launch event"
+    source_class: "management statement (framing) + company filing (one quarter of results)"
+    status: uncertain
+  - claim: "FY2026 revenue ~$477.7B (+14.8%)"
+    genealogy: "Sell-side aggregate (n=37), but Q1-Q3 FY26 are filed; only the Sept quarter is estimate"
+    source_class: "independent financial research, anchored by company filings"
+    status: supported
+  - claim: "Gross margin structurally at ~48-50%"
+    genealogy: "Q3 FY26 8-K reports 50.1% but itself discloses ~2pp one-time tariff-refund benefit; underlying ~48% vs 46.9% FY25"
+    source_class: "company filing (the one-off is disclosed in the primary record)"
+    status: supported  # at ~48%, not at the 50.1% headline
+  - claim: "FY2027 growth continues at ~+10% (EPS $9.53)"
+    genealogy: "Sell-side aggregate (n=39); direction of travel negative — 8 up/19 down last 30d, avg cut from $9.71; no company guidance in the retrieved record"
+    source_class: "independent financial research"
+    status: uncertain
+  - claim: "CEO transition (Cook→Ternus) is seamless; strategy and capital-return policy continue"
+    genealogy: "Form 4 (2026-09-01, title CEO) proves the fact of transition; seamlessness has no source but board action and media repeating one announcement"
+    source_class: "primary regulatory record (fact) / management assertion (continuity)"
+    status: management-assertion-only
+  - claim: "Capital-return engine persists (~4%/yr share shrink)"
+    genealogy: "8 years of 10-K share counts; Q1 FY26 10-Q buyback line $24.7B"
+    source_class: "company filings"
+    status: supported
+reverse_dcf:
+  implied_assumptions: >
+    At $324.96 (~$4.74T, 42.4x FY25 EPS, 36.9x FY26E, ~2.1% trailing FCF yield):
+    to earn ~9-10%/yr, either (a) FCF grows ~7-9%/yr for a decade with ~4%/yr share
+    shrink AND the terminal multiple holds at ~28-30x+, or (b) if the multiple
+    mean-reverts toward ~20x FCF, FCF must compound ~14-15%/yr for 10 years
+    ($99B → ~$390B). Branch (b) has no precedent from a $400B-revenue base.
+    Branch (a) requires Apple to hold a premium multiple it has itself traded
+    below (12-30x range) for most of the last decade, through a CEO transition,
+    while consensus for the first post-cycle year is being cut.
+  reference_class_verdict: top-decile  # branch (a); branch (b) is never-achieved
+management_dependence: moderate
+# Note: moderate overall because the historical cash engine is fully primary-sourced,
+# but the marginal dollar of today's price rests on the two claims that are
+# management-assertion or narrative (AI-cycle durability, transition continuity).
+# Zero open-market insider buys since 2015; only 10b5-1 sales in the last 90 days.
+falsifiers:
+  - "Sept-2026 and Dec-2026 quarters (guidance or actuals) show revenue growth reverting below ~5% YoY — the AI cycle was a one-year pull-forward; Dec-qtr consensus range is already wide ($132.9-170.4B)"
+  - "Gross margin ex-one-offs prints back below ~46.5% for two consecutive quarters as tariff refunds lapse"
+  - "FY27 EPS consensus falls below ~$9.00 by mid-2027 (revision trend already 8 up/19 down) — the market repriced growth the record never confirmed"
+  - "Buyback run-rate cut materially (below ~$20B/qtr) to fund AI capex/acquisitions — the intangibles jump ($11.1B→$20.3B) and capex ramp become the new capital-allocation regime and the EPS-shrink engine stalls"
+  - "Post-Ternus senior executive departures or a stated strategy/capital-return reset within 12 months of 2026-09-01"
+confidence: 0.80
+# Confidence is in core_claim as stated (engine real, cash translation primary-sourced,
+# AI-durability and price legs unproven) — not in the stock outperforming.
+# Data caveats: FY2026 ends this month and is unreported; Q3 10-Q XBRL retrieved
+# directly (accession 0000320193-26-000020); the 8-K price reaction (-9.27%) is an
+# EOD venue-blend measurement, and edgar-tools flagged its 8-K event feed as 35 days
+# stale — a post-2026-07-30 8-K (e.g. a CEO-transition 8-K 5.02) may exist and is
+# not in this record.

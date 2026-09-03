@@ -1,0 +1,137 @@
+analyst: industry
+packet_id: 2026-09-03-AAPL/industry
+recognition_note: null  # packet unmasked (subject named AAPL); no masking to pierce
+constraint_track: >
+  distribution-and-network plus certification (App Store gatekeeping over
+  software distribution to a >2B-device installed base; ecosystem switching
+  costs). Evidence standard used: switching behavior, retention, third-party
+  willingness-to-pay for access, and regulatory rulings — not capacity
+  utilization. A physical-capacity subplot (2026 DRAM/NAND shortage) is
+  currently a cyclical tailwind to the subject, not the subject's constraint.
+waterfall:
+  subject_expression: >
+    Integrated device OEM + toll collector on its own installed base: captures
+    device revenue at 46.9% gross margin (FY2025 filing) plus 15-30% commission
+    on ecosystem digital spend, converting to FCF returned largely via buyback
+    with no parent/dilution interception.
+  alternatives:
+    - expression: Alphabet (platform substrate / AI layer over the same base)
+      verdict: comparable
+      reason: >
+        Extracts ~$20B/yr (court-affirmed search-default remedy, per media +
+        legal record) from Apple's installed base AND now sits upstream of
+        Apple's AI stack (Jan-2026 multi-year Gemini deal powering Apple
+        Foundation Models, joint company statement) — a rent on the subject's
+        chokepoint without hardware BOM exposure, though with its own
+        antitrust tail.
+    - expression: Samsung Electronics (vertically integrated competitor)
+      verdict: inferior
+      reason: >
+        Captures twice in the current memory crisis (handset share leader at
+        22.7-24% share, IDC/Counterpoint Q2-2026, plus memory pricing up
+        ~300% YoY) but the second leg is a classic cyclical shortage that
+        invites capacity response, it lacks a services annuity, and the packet
+        notes it is not EDGAR-listed (implementability friction).
+      # exclusions: memory suppliers (SK Hynix/Micron) are shortage-cycle
+      # beneficiaries — different engine, capacity response inevitable; TSMC is
+      # a real silicon chokepoint but a distinct constraint thesis, not an
+      # expression of subject ecosystem economics; contract assemblers (Hon
+      # Hai et al.) hold thin margins by the subject's own design; Microsoft
+      # (grows ~3x subject rate at 1.5x net margin per packet) monetizes a
+      # different end market (enterprise/cloud), not consumer-device spend.
+  leakage: >
+    Three named leaks from security holders: (1) regulator-mandated commission
+    compression — EU unified terms effective 2026-10-01 cut headline IAP rate
+    30%->26% with 20/15/10/5% alternative tiers (Apple newsroom 2026-08-18,
+    company record; follows EUR 500M DMA fine, EU legal record; Brazil and
+    Japan third-party stores already mandated); CFO already flagged App Store
+    softness from "changes to the App Store business model in certain
+    countries" (July-2026 call via media). (2) Memory BOM inflation shifting
+    gross profit toward component suppliers industry-wide (IDC: memory costs
+    +~300% YoY), largely mitigated for subject by early supply lock-in but not
+    zero. (3) ~$1B/yr reported payment to Google plus strategic cession of the
+    frontier-model layer — small in cash, large as an option Google holds on
+    the future agent relationship with subject's users.
+control_capture:
+  score_0_10: 7
+  evidence:
+    - >
+      Customers demonstrably fail to leave: during an industry -7.4% unit
+      contraction, subject shipments +14.9% YoY to record Q2 share (20.2%,
+      +3.9pp) — premium base absorbing price-hike fear rather than defecting
+      [government/industry dataset class: IDC final Q2-2026; corroborated by
+      Counterpoint and Omdia — three independent trackers, one genealogy each].
+    - >
+      Third-party willingness-to-pay for access to the base: ~$20B/yr search
+      default payment survived antitrust remedy review [legal record via
+      media]; Google additionally accepted supplying Gemini under Apple's
+      privacy wrapper [company joint statement].
+    - >
+      BUT the capture rate is administratively re-priced, not customer-priced:
+      EU commission tiers cut and alternative distribution at 5% CTC now in
+      force Oct-1 [company record + EU non-compliance decision, primary legal
+      record] — control of users intact, control of the toll schedule no
+      longer unilateral. Anchor-8 requires retained economics; this caps at 7.
+duration:
+  score_0_10: 5
+  announced_capacity_response: >
+    No funded hardware/ecosystem substitution exists (Android is the standing
+    competitor, not a new response; memory crisis currently punishes would-be
+    substitutes at the low end). The funded-and-enacted responses are
+    regulatory and platform-layer: EU unified terms in force 2026-10-01
+    (enacted, company record); Brazil third-party stores opened June 2026;
+    US Epic link-out litigation live with subject proposing 15% US link-out
+    commission; and Google's capex-funded Gemini agent layer now inside Siri.
+    Per instruction, the take-rate leg scores as announced-and-funded erosion
+    (2-level); the device-ecosystem leg is 8-level (>5yr, no credible funded
+    replication). Blended 5.
+  erosion_mechanism: >
+    Regulatory unbundling of distribution economics (commission tiers ratchet
+    down jurisdiction by jurisdiction), plus longer-dated: an AI agent layer
+    (currently Google's models) disintermediating the device-owner
+    relationship so services attach migrates to whoever owns the assistant.
+recognition_clock:
+  stage: T7
+  evidence: >
+    Broad thematic consensus markers all observable now: ~$4.74T market cap at
+    $324.96 [exchange data]; mainstream retrospectives ("2,200% rally", Inc.com
+    2026-09-02); sell-side target RAISED to $303 yet still below market
+    [independent financial research] — the market is ahead of published
+    recognition, the T7 signature; -9.27% one-day reaction to the July print
+    shows expectations fully loaded [primary regulatory record]. No T0-T3
+    "early" milestone is available to claim.
+  rerating_realized_pct: >
+    ~100% or more. ~42x FY2025 net income ($4.74T / $112.0B) on +6.4% revenue
+    growth vs a peer (Microsoft) compounding ~3x faster at 1.5x the margin on
+    a comparable multiple class; any further return must come from earnings,
+    not rerating. Basis: packet peer table + exchange data, single-context
+    arithmetic.
+base_rate_note: >
+  No single clean class; two overlapping ones. (a) Dominant consumer-platform
+  ecosystem holders (Windows, Google search, iOS to date): a majority retained
+  operating economics 5 years on — ecosystem rents historically sticky, though
+  regulatory intervention is the recurring haircut mechanism, rarely the kill.
+  (b) Companies entering a 5-year window as #1-2 global market cap at ~40x
+  earnings: historically a minority (roughly one in four or worse) beat the
+  market over the following 5 years — multiple retention, not economics
+  retention, is where this class fails. The thesis as priced requires an
+  outcome near the top of class (b).
+falsifiers:
+  - >
+    US court order or legislation forcing zero-commission link-outs or
+    third-party stores in the US (the largest App Store geography), replicating
+    EU terms without the 5%+ commission floor Apple negotiated there.
+  - >
+    Two consecutive quarters of premium-tier share loss with tracker-measured
+    iOS->Android switching (Counterpoint churn data), i.e. customers finally
+    qualifying the substitute within one purchasing cycle.
+  - >
+    Assistant-layer inversion: observable migration of AI engagement and
+    services attach to Google/third-party agents on-device, or non-renewal of
+    the search-default payment (appellate reversal), removing an
+    essentially-pure-profit ~$20B annuity.
+  - >
+    iPhone 18-cycle price increases (flagged by Omdia as likely) meet real
+    elasticity: unit decline >10% YoY without ASP/mix offset, breaking the
+    "premium base absorbs memory inflation" leg.
+confidence: 0.6

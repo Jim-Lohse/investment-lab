@@ -1,0 +1,86 @@
+analyst: macro
+packet_id: 2026-09-03-AAPL/macro
+recognition_note: null  # packet explicitly unmasked (masked: false); contamination check passed — no analyst conclusions or scores present
+exposure_map:
+  - driver: long-end US rates / term premium (10y 4.68% and rising, +55bp YTD while policy sits at 3.63%)
+    direction: short
+    silent: true
+    materiality: thesis-critical
+    # at ~$4.7T on ~$416B revenue (~11x sales) the equity is a very long-duration asset; the thesis is implicitly short the term premium whether it says so or not
+  - driver: US/global premium-consumer discretionary cycle (employment, real incomes)
+    direction: long
+    silent: false
+    materiality: moderate
+    # partly priced; unemployment 4.1% and improving currently supports it
+  - driver: broad USD (trade-weighted) vs revenue-basket currencies
+    direction: short
+    silent: true
+    materiality: moderate
+    # large international mix means USD strength is a translation drag; USD has weakened through 2026 (EUR/USD 1.16, USD/CNY 6.72 from 7.20 in Jul-2025), so the current tailwind is already in run-rate numbers
+  - driver: USD/CNY specifically (supply-chain cost base vs China revenue)
+    direction: long   # net long CNY: China revenue translation gain likely exceeds USD-denominated assembly-contract cost drift, but the cost leg partially offsets
+    silent: true
+    materiality: moderate
+    # retrieved: CNY appreciated ~6.7% vs USD since Jul-2025 (7.20 -> 6.72), a large move for this pair
+  - driver: US-China trade/tariff and tech-policy state
+    direction: short
+    silent: true
+    materiality: thesis-critical
+    # packet gap, explicitly not retrieved; assembly concentration in Asia plus China as end market makes this a two-sided policy exposure; must be verified from primary sources before the thesis advances
+  - driver: investment-grade financing conditions (funds the ~$100B+/yr buyback bid)
+    direction: short
+    silent: true
+    materiality: moderate
+    # net debt/EBITDA 0.38 means low refinancing risk, but the marginal buyback dollar competes with a 4.68% risk-free alternative — rising long rates raise the hurdle on the company's own largest buyer of its stock
+  - driver: US inflation path (consumer real purchasing power, replacement cycle)
+    direction: short
+    silent: true
+    materiality: low
+    # latest two CPI prints flat-to-negative; currently supportive
+regime_stress:
+  - scenario: recession (unemployment through 5%, consumer durables deferral)
+    effect: reduced-upside
+    mechanism: hardware units defer and the replacement cycle elongates, but the installed-base services annuity and net-cash balance sheet make the bear case a drawdown, not impairment — unless the installed base itself shrinks.
+  - scenario: higher long rates (10y sustained above ~5.25%, term premium regime)
+    effect: thesis-destruction
+    mechanism: at ~11x revenue the return thesis lives in the multiple, and a 100bp+ discount-rate repricing on a long-duration asset can swamp any plausible fundamental growth — the business survives intact while the equity return thesis dies; note the 2026 pattern (policy flat, 10y grinding up) is exactly the regime that does this.
+  - scenario: lower commodity prices
+    effect: neutral
+    mechanism: component and freight cost deflation is a mild gross-margin tailwind; no commodity leg of the thesis exists.
+  - scenario: adverse currency move (broad USD +10%, reversal of the 2026 weakening)
+    effect: reduced-upside
+    mechanism: translation drag on the majority-international revenue base compresses reported growth by mid-single digits; current run-rate results embed a USD-weakness tailwind that would reverse, making comps look worse than the business.
+  - scenario: policy intervention (tariffs >25% on consumer electronics from assembly jurisdictions, or Chinese retaliation restricting the company's devices/services)
+    effect: thesis-destruction
+    mechanism: the exposure is two-sided — cost shock on Asia-concentrated assembly AND demand shock in the China end market simultaneously — and unlike a cycle it does not mean-revert; the feedback loop is tariff -> price increase or margin absorption -> unit deferral -> services attach slows on a stagnant installed base.
+  - scenario: inflation re-acceleration forcing the Fed to re-tighten (spring-2026 CPI pattern repeats without the summer relief)
+    effect: reduced-upside
+    mechanism: hits both legs at once — real income squeeze on premium discretionary demand and a rates shock to the multiple — the correlated double exposure the map above shows the thesis running.
+capacity_response_conditions: >
+  The relevant constraint here is ecosystem lock-in, not physical capacity, and it cannot be
+  financed away at any rate of interest — competitors' problem is switching costs and installed
+  base, not access to capital. The §12.3 capacity-response hazard therefore runs through a
+  different channel: the credible competitive responses (AI-native interfaces, rival ecosystems)
+  are funded by mega-cap peers out of operating cash flow and are effectively rate-insensitive,
+  so today's moderately restrictive financing conditions (policy 3.63%, 10y 4.68%) provide no
+  protection against them. Conversely, the company's own capital-return engine IS rate-sensitive
+  at the margin: each 50bp of long-rate rise raises the opportunity cost of the buyback that has
+  historically absorbed ~$100B/yr of float. Net: financing conditions neither defend nor erode
+  the moat, but they do erode the per-share-value flywheel the valuation leans on.
+base_rate_note: >
+  Reference class: largest-cap premium-multiple companies (top-5 global market cap, >8-10x
+  revenue) entering a rising long-rate / rising term-premium regime. The historical base rate of
+  holding the multiple is poor: Nifty Fifty leaders 1972-74, and mega-cap tech 2000-2003, saw
+  multiple compression dominate returns for years even where revenue and earnings delivered
+  (Microsoft grew EPS ~3x 2000-2012 with a negative stock return). Rough frequency: well under
+  half of names in this class delivered market-beating 5-year returns from the premium-multiple
+  starting point, and almost none did so through a sustained 100bp+ rise in long yields. A thesis
+  requiring multiple maintenance at ~11x sales while the 10y grinds toward 5% is asking for a
+  top-decile reference-class outcome and should say so in those words.
+kill_conditions:
+  - 10y Treasury monthly average >= 5.25% for two consecutive months while the position's multiple has not already compressed proportionally (discount-rate regime confirmed, not a spike).
+  - Enactment (not proposal) of US tariffs >= 25% on consumer electronics imports from the company's primary assembly jurisdictions, or a Chinese government restriction materially expanding device/services bans.
+  - Broad USD appreciation >= 10% YoY (reversal of the 2026 weakening) coinciding with two consecutive quarters of negative constant-currency revenue growth — the FX excuse is then masking a demand problem.
+  - Unemployment rising through 5.0% alongside two consecutive quarters of negative real PCE durable-goods growth (consumer regime break, not noise).
+  - Announced pause or >25% YoY reduction in the buyback while long rates are above 4.5% — evidence the rate-sensitivity of the capital-return flywheel has bitten.
+confidence: 0.7
