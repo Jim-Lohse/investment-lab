@@ -1,10 +1,15 @@
-"""Compute demand signals from the stored Taiwan and Korea data.
+"""Compute demand signals from the stored Taiwan, Korea and Japan data.
 
 Outputs (regenerated in full each run — derived data, not a record):
   data/derived/taiwan_signals.csv  — per (month, group): aggregate YoY, median
                                      YoY, breadth (share of members growing)
   data/derived/korea_signals.csv   — per (period, item): exports and YoY where
                                      a year-ago observation exists
+  data/derived/japan_signals.csv   — per (period, window, item): MOF press-
+                                     release prints (with published YoY), the
+                                     monthly time series, and HS-prefix sums
+                                     from the e-Stat 9-digit tables, each with
+                                     YoY against the store's own history
   data/derived/latest_report.md    — human-readable snapshot of the newest data
 
 Aggregate YoY uses the report's own year-ago figures (each Taiwan monthly
@@ -24,10 +29,12 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-from .common import CONFIG_DIR, DATA_DIR, read_csv_dicts, write_csv
+from .common import CONFIG_DIR, DATA_DIR, prev_year_month, read_csv_dicts, write_csv
 
 TAIWAN_DIR = DATA_DIR / "taiwan" / "monthly_revenue"
 KOREA_DIR = DATA_DIR / "korea"
+JAPAN_DIR = DATA_DIR / "japan"
+US_DIR = DATA_DIR / "us"
 DERIVED_DIR = DATA_DIR / "derived"
 
 TAIWAN_SIGNAL_HEADER = [
@@ -37,6 +44,14 @@ TAIWAN_SIGNAL_HEADER = [
 KOREA_SIGNAL_HEADER = [
     "period", "period_type", "item", "value_usd_k",
     "value_usd_k_year_ago", "yoy_pct",
+]
+JAPAN_SIGNAL_HEADER = [
+    "period", "period_type", "source", "item", "value_jpy_m",
+    "value_jpy_m_year_ago", "yoy_pct", "yoy_pct_published",
+]
+US_SIGNAL_HEADER = [
+    "period", "imex", "code", "cty_code", "cty_name", "value_usd_k",
+    "value_usd_k_year_ago", "yoy_pct", "share_of_code_pct", "qty1", "unit1",
 ]
 
 
@@ -153,11 +168,203 @@ def korea_signals() -> list[list]:
     return out
 
 
+# --- Japan ------------------------------------------------------------------
+
+_year_ago = prev_year_month  # "2026-07" -> "2025-07"
+
+
+def _japan_interest() -> tuple[list[str], list[str]]:
+    cfg = json.loads((CONFIG_DIR / "japan_endpoints.json").read_text("utf-8"))
+    items = [s for s in cfg.get("press_release_items_of_interest", [])]
+    prefixes = [k.replace(".", "") for k in cfg.get("hs_codes", {}) if not k.startswith("_")]
+    return items, prefixes
+
+
+def japan_signals() -> list[list]:
+    """Long table of Japan series with YoY from the store's own history.
+
+    Press-release rows keep the YoY MOF published alongside the computed one
+    (they should agree once a year of history exists — a cheap parser check).
+    Values are normalised to million yen: the press release publishes million
+    yen, the CSV sources thousand yen.
+    """
+    out: list[list] = []
+    _, prefixes = _japan_interest()
+
+    press_path = JAPAN_DIR / "press_release.csv"
+    if press_path.exists():
+        press = read_csv_dicts(press_path)
+        langs = {r["lang"] for r in press}
+        lang = "en" if "en" in langs else (sorted(langs)[0] if langs else "")
+        # The two monthly stages collapse to one period type; the later stage
+        # (MONTH_DP, detailed/9-digit provisional) wins over MONTH_PROV
+        # regardless of the order rows were appended to the store.
+        # 10/20-day windows are separate period types.
+        stage_rank = {"MONTH_PROV": 1, "MONTH_DP": 2}
+        by_key: dict[tuple, tuple[float, str]] = {}
+        by_rank: dict[tuple, int] = {}
+        for row in press:
+            value = _f(row["value_jpy_m"])
+            if value is None or not row["yyyymm"] or row["lang"] != lang:
+                continue
+            if row["section"] == "COMMODITY" and row["area"] != "WORLD":
+                continue  # by-country commodity tables stay in the store only
+            item = f"{row['imex'] or '?'}:{row['name']}"
+            if row["section"] == "AREA":
+                item = f"{row['imex']}:AREA {row['name']}"
+            ptype = "MONTH" if row["period_type"] in stage_rank else row["period_type"]
+            rank = stage_rank.get(row["period_type"], 0)
+            key = (row["yyyymm"], ptype, item)
+            if key in by_key and rank < by_rank[key]:
+                continue
+            by_key[key] = (value, row["yoy_pct"])
+            by_rank[key] = rank
+        for (yyyymm, ptype, item), (value, published) in sorted(by_key.items()):
+            ago = by_key.get((_year_ago(yyyymm), ptype, item))
+            yoy = f"{(value / ago[0] - 1.0) * 100.0:.2f}" if ago and ago[0] else ""
+            out.append([yyyymm, ptype, "press_release", item, f"{value:.0f}",
+                        f"{ago[0]:.0f}" if ago else "", yoy, published])
+
+    ts_path = JAPAN_DIR / "time_series.csv"
+    if ts_path.exists():
+        by_ts: dict[tuple, float] = {}
+        for row in read_csv_dicts(ts_path):
+            value = _f(row["value_jpy_k"])
+            if value is None or not row["yyyymm"]:
+                continue
+            label = row["name"] or row["code"] or row["series"]
+            item = f"{row['imex'] or '?'}:{label}"
+            by_ts[(row["yyyymm"], row["series"], item)] = value
+        for (yyyymm, series, item), value in sorted(by_ts.items()):
+            ago = by_ts.get((_year_ago(yyyymm), series, item))
+            yoy = f"{(value / ago - 1.0) * 100.0:.2f}" if ago else ""
+            out.append([yyyymm, "MONTH", f"timeseries:{series}", item,
+                        f"{value / 1000.0:.0f}", f"{ago / 1000.0:.0f}" if ago else "",
+                        yoy, ""])
+
+    hs_path = JAPAN_DIR / "trade_monthly_hs.csv"
+    if hs_path.exists():
+        sums: dict[tuple, float] = {}
+        for row in read_csv_dicts(hs_path):
+            value = _f(row["value_jpy_k"])
+            if value is None or not row["yyyymm"]:
+                continue
+            for prefix in prefixes:
+                if row["hs_code"].startswith(prefix):
+                    key = (row["yyyymm"], row["imex"], row["stage"], prefix)
+                    sums[key] = sums.get(key, 0.0) + value
+        # One stage per (month, direction, prefix): DETAILED beats PROV9.
+        best: dict[tuple, tuple[str, float]] = {}
+        for (yyyymm, imex, stage, prefix), value in sums.items():
+            rank = {"DETAILED": 2, "PROV9": 1}.get(stage, 0)
+            cur = best.get((yyyymm, imex, prefix))
+            if cur is None or rank > {"DETAILED": 2, "PROV9": 1}.get(cur[0], 0):
+                best[(yyyymm, imex, prefix)] = (stage, value)
+        for (yyyymm, imex, prefix), (stage, value) in sorted(best.items()):
+            ago = best.get((_year_ago(yyyymm), imex, prefix))
+            yoy = f"{(value / ago[1] - 1.0) * 100.0:.2f}" if ago and ago[1] else ""
+            out.append([yyyymm, "MONTH", f"estat_hs:{stage}", f"{imex}:HS{prefix}",
+                        f"{value / 1000.0:.0f}", f"{ago[1] / 1000.0:.0f}" if ago else "",
+                        yoy, ""])
+    return out
+
+
+def japan_highlights(jp: list[list], limit: int = 60) -> list[list]:
+    """Rows worth printing: for each source, only its newest period, and only
+    totals, configured press-release items and the HS-prefix sums.
+
+    The cap trims from the tail (time-series commodity rows, which come last
+    in the table) so the press-release totals at the head always print."""
+    items_of_interest, _ = _japan_interest()
+    latest: dict[tuple, str] = {}
+    for row in jp:
+        key = (row[1], row[2].split(":")[0])
+        latest[key] = max(latest.get(key, ""), row[0])
+    keep: list[list] = []
+    for row in jp:
+        if row[0] != latest[(row[1], row[2].split(":")[0])]:
+            continue
+        if row[2] == "timeseries:world_total":
+            continue  # duplicated by 総額 in the commodity series
+        item = row[3]
+        if item.endswith("AREA Grand Total"):
+            continue  # same number as the TOTAL section
+        if row[2].startswith("estat_hs") or "TOTAL" in item.upper() or "総額" in item:
+            keep.append(row)
+        elif any(tag.lower() in item.lower() for tag in items_of_interest):
+            keep.append(row)
+    return keep[:limit]
+
+# --- United States ----------------------------------------------------------
+
+def us_signals() -> list[list]:
+    """Per (month, direction, code, country): value, YoY from the store, and
+    the country's share of that code's all-countries total. Country groupings
+    (SUMMARY_LVL other than the detail level) are kept in the store but not
+    in the derived table, so shares do not double count."""
+    path = US_DIR / "trade_monthly_hs.csv"
+    if not path.exists():
+        return []
+    rows = read_csv_dicts(path)
+    levels = {r["summary_lvl"] for r in rows}
+    detail_level = "DET" if "DET" in levels else ""
+    by_key: dict[tuple, dict] = {}
+    totals: dict[tuple, float] = {}
+    for r in rows:
+        value = _f(r["value_usd"])
+        if value is None:
+            continue
+        if r["cty_code"] == "-":
+            totals[(r["yyyymm"], r["imex"], r["code"])] = value
+            continue
+        if detail_level and r["summary_lvl"] and r["summary_lvl"] != detail_level:
+            continue
+        by_key[(r["yyyymm"], r["imex"], r["code"], r["cty_code"])] = {
+            "value": value, "name": r["cty_name"], "qty1": r["qty1"], "unit1": r["unit1"]}
+    out: list[list] = []
+    for (yyyymm, imex, code, cty), rec in sorted(by_key.items()):
+        ago = by_key.get((_year_ago(yyyymm), imex, code, cty))
+        total = totals.get((yyyymm, imex, code))
+        yoy = f"{(rec['value'] / ago['value'] - 1.0) * 100.0:.2f}" if ago and ago["value"] else ""
+        share = f"{100.0 * rec['value'] / total:.1f}" if total else ""
+        out.append([yyyymm, imex, code, cty, rec["name"], f"{rec['value'] / 1000.0:.0f}",
+                    f"{ago['value'] / 1000.0:.0f}" if ago else "", yoy, share,
+                    rec["qty1"], rec["unit1"]])
+    for (yyyymm, imex, code), value in sorted(totals.items()):
+        ago = totals.get((_year_ago(yyyymm), imex, code))
+        yoy = f"{(value / ago - 1.0) * 100.0:.2f}" if ago else ""
+        out.append([yyyymm, imex, code, "-", "ALL COUNTRIES", f"{value / 1000.0:.0f}",
+                    f"{ago / 1000.0:.0f}" if ago else "", yoy, "100.0", "", ""])
+    return out
+
+
+def us_highlights(us: list[list], limit: int = 80) -> list[list]:
+    """Newest month only: every code's all-countries total plus the top
+    origins for the configured share codes."""
+    if not us:
+        return []
+    cfg = json.loads((CONFIG_DIR / "us_endpoints.json").read_text("utf-8"))
+    share_codes = set(cfg.get("origin_share_codes", []))
+    latest = max(r[0] for r in us)
+    keep: list[list] = []
+    for imex in ("I", "E"):
+        for code in sorted(share_codes):
+            top = sorted((r for r in us if r[0] == latest and r[1] == imex
+                          and r[2] == code and r[3] != "-"),
+                         key=lambda r: -float(r[5] or 0))[:6]
+            keep += top
+    keep += [r for r in us if r[0] == latest and r[3] == "-"]
+    return keep[:limit]
+
+
 # --- Report -----------------------------------------------------------------
 
-def render_report(tw: list[list], kr: list[list]) -> str:
+def render_report(tw: list[list], kr: list[list], jp: list[list] | None = None,
+                  us: list[list] | None = None) -> str:
+    jp = jp or []
+    us = us or []
     lines = [
-        "# Demand-signal snapshot: Taiwan monthly revenue + Korea exports",
+        "# Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan + U.S. trade",
         "",
         f"_Generated {dt.date.today().isoformat()} by `signals/compute_signals.py`._",
         "_Derived data; the underlying records in `data/` are the source of truth._",
@@ -191,6 +398,28 @@ def render_report(tw: list[list], kr: list[list]) -> str:
         lines += ["## Korea exports (KCS)", "", "_No data stored yet — set "
                   "`DATA_GO_KR_API_KEY` and run `python -m signals.korea_customs "
                   "monthly-latest`._", ""]
+    if jp:
+        lines += ["## Japan trade (MOF / Customs) — supply side", "",
+                  "| Period | Window | Source | Item | JPY m | YoY % (store) | YoY % (published) |",
+                  "|---|---|---|---|---:|---:|---:|"]
+        for row in japan_highlights(jp):
+            lines.append(f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} | {row[4]} | "
+                         f"{row[6]} | {row[7]} |")
+        lines.append("")
+    else:
+        lines += ["## Japan trade (MOF / Customs)", "", "_No data stored yet — run "
+                  "`python -m signals.japan_customs flash`._", ""]
+    if us:
+        lines += ["## U.S. trade by HTS code (Census) — demand side", "",
+                  "| Period | I/E | Code | Country | USD k | YoY % | Share of code % |",
+                  "|---|---|---|---|---:|---:|---:|"]
+        for row in us_highlights(us):
+            lines.append(f"| {row[0]} | {row[1]} | {row[2]} | {row[4]} | {row[5]} | "
+                         f"{row[7]} | {row[8]} |")
+        lines.append("")
+    else:
+        lines += ["## U.S. trade (Census)", "", "_No data stored yet — set "
+                  "`CENSUS_API_KEY` and run `python -m signals.us_census monthly`._", ""]
     lines += [
         "---",
         "Validation status (constitution §21): raw government data, "
@@ -204,12 +433,17 @@ def main(_argv: list[str]) -> int:
     months = load_taiwan_months()
     tw = taiwan_signals(months)
     kr = korea_signals()
+    jp = japan_signals()
+    us = us_signals()
     DERIVED_DIR.mkdir(parents=True, exist_ok=True)
     write_csv(DERIVED_DIR / "taiwan_signals.csv", TAIWAN_SIGNAL_HEADER, tw)
     write_csv(DERIVED_DIR / "korea_signals.csv", KOREA_SIGNAL_HEADER, kr)
-    (DERIVED_DIR / "latest_report.md").write_text(render_report(tw, kr), "utf-8")
+    write_csv(DERIVED_DIR / "japan_signals.csv", JAPAN_SIGNAL_HEADER, jp)
+    write_csv(DERIVED_DIR / "us_signals.csv", US_SIGNAL_HEADER, us)
+    (DERIVED_DIR / "latest_report.md").write_text(render_report(tw, kr, jp, us), "utf-8")
     print(f"taiwan_signals: {len(tw)} rows over {len(months)} months; "
-          f"korea_signals: {len(kr)} rows; report written.")
+          f"korea_signals: {len(kr)} rows; japan_signals: {len(jp)} rows; "
+          f"us_signals: {len(us)} rows; report written.")
     return 0
 
 

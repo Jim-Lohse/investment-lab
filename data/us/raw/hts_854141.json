@@ -1,0 +1,29 @@
+[ {
+  "htsno" : "8541.41.00.00",
+  "statisticalSuffix" : "00",
+  "description" : "Light-emitting diodes (LED)",
+  "htscode" : null,
+  "indent" : "2",
+  "footnotes" : [ {
+    "columns" : [ "other" ],
+    "marker" : "1",
+    "value" : "See 9903.90.08. ",
+    "type" : "endnote"
+  } ],
+  "units" : [ "No." ],
+  "tariff" : null,
+  "unique" : null,
+  "hasHighlight" : null,
+  "highlightHtsNo" : null,
+  "highlightStatSuffix" : null,
+  "type" : null,
+  "effectivePeriod" : null,
+  "quotaQuantity" : null,
+  "additionalDuties" : null,
+  "general" : "Free",
+  "other" : "20%",
+  "special" : "",
+  "status" : null,
+  "htmlStatNote" : null,
+  "selector" : "htsno"
+} ]

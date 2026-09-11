@@ -1,0 +1,42 @@
+code,htsno,description,unit1,unit2,general,retrieved_at
+280461,2804.61.00.00,Containing by weight not less than 99.99 percent of silicon,kg,,Free,2026-09-11
+381800,3818.00.00,"Chemical elements doped for use in electronics, in the form of discs, wafers or similar forms; chemical compounds doped for use in electronics",,,Free,2026-09-11
+381800,3818.00.00.10,"Gallium arsenide wafers, doped",kg,,,2026-09-11
+381800,3818.00.00.20,"Polycrystalline silicon wafers, doped",kg,,,2026-09-11
+381800,3818.00.00.30,"Silicon carbide wafers, doped",kg,,,2026-09-11
+381800,3818.00.00.40,"Round (circular) shaped, as described in statistical note 2 to this chapter",kg,,,2026-09-11
+381800,3818.00.00.45,"Pseudo-square or rectangular in shape, as described in statistical note 3 to this chapter",kg,,,2026-09-11
+381800,3818.00.00.50,Other,kg,,,2026-09-11
+381800,3818.00.00.91,Other,kg,,,2026-09-11
+848610,8486.10.00.00,Machines and apparatus for the manufacture of boules or wafers,No.,,Free,2026-09-11
+848620,8486.20.00.00,Machines and apparatus for the manufacture of semiconductor devices or of electronic integrated circuits,No.,,Free,2026-09-11
+848620,9902.16.96,"Electrical cables and cable bundles for a voltage not exceeding 1,000 V, fitted with connectors (provided for in subheading 8544.42.90), the foregoing of a kind used with machines and apparatus for the manufacture or inspection of semiconductor devices of subheading 8486.20.00 or with optical instruments and appliances for inspecting semiconductor wafers of 9031.41.00",,,Free,2026-09-11
+848640,8486.40.00,Machines and apparatus specified in note 11(C) to this chapter,,,Free,2026-09-11
+848640,8486.40.00.10,For the manufacture or repair of masks and reticles,No.,,,2026-09-11
+848640,8486.40.00.20,For assembling semiconductor devices or electronic integrated circuits,No.,,,2026-09-11
+848640,8486.40.00.30,"For lifting, handling, loading or unloading of boules, wafers, semiconductor devices, electronic integrated circuits and flat panel displays",No.,,,2026-09-11
+848690,3923.10.20.00,"Specially shaped or fitted for the conveyance or packing of semiconductor wafers, masks or reticles of subheadings 3923.10 or 8486.90",kg,,Free,2026-09-11
+848690,8486.90.00.00,Parts and accessories,No.,,Free,2026-09-11
+851762,8517.62.00,"Machines for the reception, conversion and transmission or regeneration of voice, images or other data, including switching and routing apparatus",,,Free,2026-09-11
+851762,8517.62.00.10,"Modems, of a kind used with data processing machines of heading 8471",No.,,,2026-09-11
+851762,8517.62.00.20,Switching and routing apparatus,No.,,,2026-09-11
+851762,8517.62.00.90,Other,No.,,,2026-09-11
+8517620090,8517.62.00.90,Other,No.,,,2026-09-11
+851779,8517.79.00.00,Other,No.,,Free,2026-09-11
+854110,8541.10.00,"Diodes, other than photosensitive or light-emitting diodes (LED)",,,Free,2026-09-11
+854110,8541.10.00.40,"Unmounted chips, dice and wafers",No.,,,2026-09-11
+854110,8541.10.00.50,Zener,No.,,,2026-09-11
+854110,8541.10.00.60,Microwave,No.,,,2026-09-11
+854110,8541.10.00.70,With a maximum current of 0.5 A or less,No.,,,2026-09-11
+854110,8541.10.00.80,Other,No.,,,2026-09-11
+854141,8541.41.00.00,Light-emitting diodes (LED),No.,,Free,2026-09-11
+854149,8541.49,Other:,,,,2026-09-11
+854470,8544.70.00.00,Optical fiber cables,Fiber m,,Free,2026-09-11
+900110,9001.10.00,"Optical fibers, optical fiber bundles and cables",,,6.7%,2026-09-11
+900110,9001.10.00.30,"For transmission of voice, data or video communications",m,,,2026-09-11
+900110,9001.10.00.50,Plastic optical fibers,m,,,2026-09-11
+900110,9001.10.00.70,Other,m,,,2026-09-11
+900110,9001.10.00.75,Plastic optical fiber bundles and cables,Fiber m,,,2026-09-11
+900110,9001.10.00.85,Other,Fiber m,,,2026-09-11
+901320,9013.20.00.00,"Lasers, other than laser diodes",No.,,Free,2026-09-11
+901380,9013.80,"Other devices, appliances and instruments:",,,,2026-09-11
