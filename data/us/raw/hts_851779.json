@@ -1,6 +1,24 @@
-{
-  "timestamp" : 1789166642845,
-  "status" : 404,
-  "error" : "Not Found",
-  "path" : "/reststop/searchByNumber"
-}
+[ {
+  "htsno" : "8517.79.00.00",
+  "statisticalSuffix" : "00",
+  "description" : "Other",
+  "htscode" : null,
+  "indent" : "2",
+  "footnotes" : [ ],
+  "units" : [ "No." ],
+  "tariff" : null,
+  "unique" : null,
+  "hasHighlight" : null,
+  "highlightHtsNo" : null,
+  "highlightStatSuffix" : null,
+  "type" : null,
+  "effectivePeriod" : null,
+  "quotaQuantity" : null,
+  "additionalDuties" : null,
+  "general" : "Free",
+  "other" : "35%",
+  "special" : "",
+  "status" : null,
+  "htmlStatNote" : null,
+  "selector" : "htsno"
+} ]

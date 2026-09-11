@@ -1,6 +1,14 @@
-{
-  "timestamp" : 1789166643997,
-  "status" : 404,
-  "error" : "Not Found",
-  "path" : "/reststop/searchByNumber"
-}
+[ {
+  "htsno" : "9013.80",
+  "indent" : "1",
+  "description" : "Other devices, appliances and instruments:",
+  "superior" : null,
+  "units" : [ ],
+  "general" : "",
+  "special" : "",
+  "other" : "",
+  "footnotes" : [ ],
+  "quotaQuantity" : "",
+  "additionalDuties" : "",
+  "addiitionalDuties" : null
+} ]
