@@ -546,3 +546,71 @@ class TestSignals(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestIntel(unittest.TestCase):
+    """signals/intel.py: diff of derived tables and threshold flags."""
+
+    def _write(self, directory, name, rows):
+        from signals import compute_signals as cs
+        header = {"taiwan": cs.TAIWAN_SIGNAL_HEADER, "korea": cs.KOREA_SIGNAL_HEADER,
+                  "japan": cs.JAPAN_SIGNAL_HEADER, "us": cs.US_SIGNAL_HEADER}[name]
+        common.write_csv(Path(directory) / f"{name}_signals.csv", header, rows)
+
+    def test_diff_and_flags(self):
+        from signals import intel
+        with tempfile.TemporaryDirectory() as tmp:
+            prev, cur = Path(tmp) / "prev", Path(tmp) / "cur"
+            prev.mkdir(); cur.mkdir()
+            jp_old = ["2026-06", "MONTH", "press_release", "E:SEMICON MACHINERY ETC",
+                      "400000", "", "", "12.0"]
+            jp_new = ["2026-07", "MONTH", "press_release", "E:SEMICON MACHINERY ETC",
+                      "494437", "", "", "40.9"]
+            jp_ts = ["2026-07", "MONTH", "timeseries:world_exports_by_commodity",
+                     "E:半導体等製造装置", "493950", "350000", "41.13", ""]
+            jp_minor = ["2026-07", "MONTH", "press_release", "E:FISH", "1000", "", "", "99.0"]
+            self._write(prev, "japan", [jp_old])
+            self._write(cur, "japan", [jp_old, jp_new, jp_ts, jp_minor])
+            us_rows = [
+                ["2026-06", "I", "8517620090", "-", "ALL COUNTRIES", "6000000", "", "", "100.0", "", ""],
+                ["2026-06", "I", "8517620090", "5490", "THAILAND", "2000000", "", "", "33.3", "", ""],
+                ["2026-07", "I", "8517620090", "-", "ALL COUNTRIES", "7000000", "4500000", "55.56", "100.0", "", ""],
+                ["2026-07", "I", "8517620090", "5490", "THAILAND", "2800000", "1400000", "100.00", "40.0", "", ""],
+                ["2026-07", "I", "8517620090", "5230", "OMAN", "20", "5", "300.00", "0.0", "", ""],
+            ]
+            self._write(prev, "us", us_rows[:2])
+            self._write(cur, "us", us_rows)
+            self._write(prev, "korea", [["2026-07", "FULL", "exp:TOTAL", "90000000", "", ""]])
+            self._write(cur, "korea", [["2026-07", "FULL", "exp:TOTAL", "91000000", "", ""]])
+            diff = intel.diff_tables(prev, cur)
+            self.assertEqual(diff["japan"]["groups"], {("2026-07", "MONTH"): {"new": 3, "revised": 0}})
+            self.assertEqual(diff["korea"]["groups"], {("2026-07", "FULL"): {"new": 0, "revised": 1}})
+            self.assertTrue(diff["taiwan"]["baseline"])
+            flags = intel.flags_for(diff)
+            labels = {(f["source"], f["item"], f["kind"]) for f in flags}
+            # Press-release row flags on the published YoY; the time-series
+            # duplicate and the non-interest item do not; OMAN is immaterial.
+            self.assertIn(("japan", "MONTH press_release E:SEMICON MACHINERY ETC", "yoy"), labels)
+            self.assertNotIn(("japan", "MONTH timeseries:world_exports_by_commodity E:半導体等製造装置", "yoy"), labels)
+            self.assertNotIn(("japan", "MONTH press_release E:FISH", "yoy"), labels)
+            self.assertIn(("us", "I 8517620090 ALL COUNTRIES", "yoy"), labels)
+            self.assertIn(("us", "I 8517620090 THAILAND", "yoy"), labels)
+            self.assertIn(("us", "I 8517620090 THAILAND", "share"), labels)
+            self.assertFalse(any(f["item"].endswith("OMAN") for f in flags))
+            markdown, subject = intel.render(diff, flags, "2026-09-12")
+            self.assertEqual(subject, "3 new print groups, 1 revised, 4 flags")
+            self.assertIn("## FLAGS (4)", markdown)
+            self.assertIn("| korea | 2026-07 | FULL | 0 | 1 |", markdown)
+            self.assertIn("taiwan: no previous snapshot", markdown)
+
+    def test_no_change_subject(self):
+        from signals import intel
+        with tempfile.TemporaryDirectory() as tmp:
+            prev, cur = Path(tmp) / "prev", Path(tmp) / "cur"
+            prev.mkdir(); cur.mkdir()
+            row = ["2026-07", "FULL", "exp:TOTAL", "90000000", "", ""]
+            self._write(prev, "korea", [row]); self._write(cur, "korea", [row])
+            diff = intel.diff_tables(prev, cur)
+            markdown, subject = intel.render(diff, intel.flags_for(diff), "2026-09-12")
+            self.assertEqual(subject, "no new prints")
+            self.assertIn("## No new prints this run", markdown)

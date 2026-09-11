@@ -185,8 +185,25 @@ jobs:
             python -m signals.us_census monthly
           fi
 
+      - name: Snapshot the previous derived tables (baseline for the diff)
+        run: |
+          rm -rf "$RUNNER_TEMP/derived_prev"
+          mkdir -p "$RUNNER_TEMP/derived_prev"
+          cp data/derived/*.csv "$RUNNER_TEMP/derived_prev/" 2>/dev/null || true
+
       - name: Recompute derived signals
         run: python -m signals.compute_signals
+
+      # What changed this run: new prints, revisions and threshold flags.
+      # Written to data/derived/whats_new.md, to the run's job summary (the
+      # Actions run page), and into the commit subject. The daily intelligence
+      # brief (a Claude Routine) reads whats_new.md to write the What / So what
+      # / What now sections.
+      - name: Diff against the previous run and flag watch items
+        id: intel
+        run: |
+          python -m signals.intel --previous "$RUNNER_TEMP/derived_prev" | tee "$RUNNER_TEMP/intel.out"
+          echo "subject=$(tail -n 1 "$RUNNER_TEMP/intel.out")" >> "$GITHUB_OUTPUT"
 
       - name: Commit and push if data changed
         run: |
@@ -197,7 +214,7 @@ jobs:
           fi
           git config user.name "signals-bot"
           git config user.email "actions@users.noreply.github.com"
-          git commit -m "signals: data update $(date -u +%F)"
+          git commit -m "signals: data update $(date -u +%F): ${{ steps.intel.outputs.subject }}"
           for delay in 2 4 8 16 0; do
             git push && exit 0
             [ "$delay" = "0" ] && exit 1
