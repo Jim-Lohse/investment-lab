@@ -87,3 +87,38 @@ Structural caveats, all documented in the sources:
 
 Effort estimate: comparable to the Japan leg's second half (parsers are
 JSON, not XML/CSV, and documented), one capture round in Actions.
+
+## Commercial and third-party sources (assessed 2026-09-11)
+
+Classified per constitution §8.1. None of these is a government dataset;
+they sit beside the customs legs, not inside them.
+
+| Source | §8.1 class | Access | Adds | Bounds |
+|---|---|---|---|---|
+| Panjiva (S&P), ImportGenius, Descartes Datamyne | aggregator of CBP ocean manifests | Paid; free pages show counts and a sample record | Shipper→consignee pairs (e.g. Fabrinet→JDSU history, WIN Semi→Lumentum) | **Ocean only.** InP substrates, laser chips and transceivers move by air, so these platforms miss most of the flow that matters. Not "every container" |
+| LightCounting | independent financial/technical research | Paid reports; free press releases | Transceiver unit and $ forecasts, lasers per module | Estimates, not records; T3-T4 on the recognition clock |
+| Cignal AI | independent technical research | Paid; free blog with policy and capacity analysis | Component and transport tracking, FCC-ban analysis | Same |
+| Yole Group | independent technical research | Paid; free press releases | InP/GaAs wafer market shares, 2/3/6-inch line output | Same; annual cadence |
+| TrendForce | independent research | Paid; frequent free press releases | Bottleneck and export-control commentary | Same; press releases are usable as dated quotes |
+| SemiAnalysis | independent research | Paid newsletter | Hyperscaler procurement, fab allocation | Same |
+| Rosenblatt, Morgan Stanley "capacity trackers" | sell-side | Broker accounts only | Laser-revenue capacity math | Consensus reference (T3), not evidence |
+| Veeco order backlog | company filing | Free via SEC (edgar-tools) | Leading read on InP laser capacity adds (MOCVD, ion-beam tools) | Veeco sells into many end markets; backlog is not all InP |
+| AXT (AXTI) InP substrate revenue | company filing | Free via SEC | Merchant InP substrate volume; China export-permit delays disclosed in filings | Substrates made in China; permit regime dominates 2025-26 prints |
+| JX Advanced Metals, Sumitomo Electric | company filing (TSE) | Free, Japanese disclosures | InP substrate capacity plans | No SEC record; no quarterly substrate line |
+| Commerce BIS | primary regulatory record | Rules and entity list only | Export-control scope on equipment to China | Publishes no shipment data; the public view of licensed exports is Census export statistics |
+| China MOFCOM InP export permits (Feb 2025 controls) | primary regulatory record | Announcements only | Explains AXT and Coherent supply commentary | No data feed |
+
+What of this can be pipelined for free, in order of value:
+1. **SEC XBRL via edgar-tools**: Veeco backlog and MOCVD commentary, AXT
+   substrate revenue and permit status, Fabrinet customer concentration,
+   Coherent/Lumentum segment revenue. Quarterly, firsthand, already
+   connected. Fits the constitution's "company filing" class.
+2. **Japan e-Stat 品別国別表** (commodity by country) for HS 3818 and 8541
+   exports to the USA: the customs record of JX/Sumitomo substrate flows to
+   Coherent's and Lumentum's U.S. fabs. Same e-Stat navigation as the
+   built 統計品別表 path, different tclass1. Not yet built.
+3. **Press-release scrapes** of Cignal AI, TrendForce, Yole, LightCounting
+   as dated, attributed quotes in a `data/research_notes/` log, never as
+   numbers in the derived tables.
+4. Bills of lading only if a paid subscription exists, and only for ocean
+   equipment shipments (MOCVD tools, chambers), not for optics.
