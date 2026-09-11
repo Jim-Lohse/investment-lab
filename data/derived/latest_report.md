@@ -91,9 +91,50 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | 2026-07 | MONTH | estat_hs:PROV9 | I:HS9001 | 35553 |  |  |
 | 2026-07 | MONTH | estat_hs:PROV9 | I:HS9013 | 10915 |  |  |
 
-## U.S. trade (Census)
+## U.S. trade by HTS code (Census) — demand side
 
-_No data stored yet — set `CENSUS_API_KEY` and run `python -m signals.us_census monthly`._
+| Period | I/E | Code | Country | USD k | YoY % | Share of code % |
+|---|---|---|---|---:|---:|---:|
+| 2026-07 | E | 381800 | ALL COUNTRIES | 180582 |  | 100.0 |
+| 2026-07 | E | 848620 | ALL COUNTRIES | 1163939 |  | 100.0 |
+| 2026-07 | E | 854141 | ALL COUNTRIES | 72552 |  | 100.0 |
+| 2026-07 | E | 854149 | ALL COUNTRIES | 83632 |  | 100.0 |
+| 2026-07 | I | 280461 | ALL COUNTRIES | 6458 |  | 100.0 |
+| 2026-07 | I | 381800 | ALL COUNTRIES | 178327 |  | 100.0 |
+| 2026-07 | I | 848610 | ALL COUNTRIES | 44662 |  | 100.0 |
+| 2026-07 | I | 848620 | ALL COUNTRIES | 665569 |  | 100.0 |
+| 2026-07 | I | 848640 | ALL COUNTRIES | 240575 |  | 100.0 |
+| 2026-07 | I | 848690 | ALL COUNTRIES | 396914 |  | 100.0 |
+| 2026-07 | I | 851762 | ALL COUNTRIES | 12406596 |  | 100.0 |
+| 2026-07 | I | 8517620090 | ALL COUNTRIES | 7143769 |  | 100.0 |
+| 2026-07 | I | 851779 | ALL COUNTRIES | 221678 |  | 100.0 |
+| 2026-07 | I | 854110 | ALL COUNTRIES | 56652 |  | 100.0 |
+| 2026-07 | I | 854141 | ALL COUNTRIES | 58543 |  | 100.0 |
+| 2026-07 | I | 854149 | ALL COUNTRIES | 81145 |  | 100.0 |
+| 2026-07 | I | 854470 | ALL COUNTRIES | 543288 |  | 100.0 |
+| 2026-07 | I | 900110 | ALL COUNTRIES | 70909 |  | 100.0 |
+| 2026-07 | I | 901320 | ALL COUNTRIES | 85398 |  | 100.0 |
+| 2026-07 | I | 901380 | ALL COUNTRIES | 148984 |  | 100.0 |
+| 2026-07 | I | 381800 | TAIWAN | 54260 |  | 30.4 |
+| 2026-07 | I | 381800 | JAPAN | 49367 |  | 27.7 |
+| 2026-07 | I | 381800 | KOREA, SOUTH | 19315 |  | 10.8 |
+| 2026-07 | I | 381800 | GERMANY | 9455 |  | 5.3 |
+| 2026-07 | I | 381800 | CHINA | 8529 |  | 4.8 |
+| 2026-07 | I | 381800 | SINGAPORE | 8202 |  | 4.6 |
+| 2026-07 | I | 8517620090 | THAILAND | 2855291 |  | 40.0 |
+| 2026-07 | I | 8517620090 | VIETNAM | 1485863 |  | 20.8 |
+| 2026-07 | I | 8517620090 | TAIWAN | 723469 |  | 10.1 |
+| 2026-07 | I | 8517620090 | MALAYSIA | 574341 |  | 8.0 |
+| 2026-07 | I | 8517620090 | MEXICO | 499092 |  | 7.0 |
+| 2026-07 | I | 8517620090 | CHINA | 328800 |  | 4.6 |
+| 2026-07 | I | 854141 | CHINA | 11820 |  | 20.2 |
+| 2026-07 | I | 854141 | JAPAN | 11104 |  | 19.0 |
+| 2026-07 | I | 854141 | TAIWAN | 10751 |  | 18.4 |
+| 2026-07 | I | 854141 | MALAYSIA | 7520 |  | 12.8 |
+| 2026-07 | I | 854141 | GERMANY | 6214 |  | 10.6 |
+| 2026-07 | I | 854141 | THAILAND | 3506 |  | 6.0 |
+| 2026-07 | E | 381800 | OMAN | 40046 |  | 22.2 |
+| 2026-07 | E | 381800 | MALAYSIA | 25394 |  | 14.1 |
 
 ---
 Validation status (constitution §21): raw government data, mechanically aggregated. Tier 1 screening input only; not a thesis, not advice.
