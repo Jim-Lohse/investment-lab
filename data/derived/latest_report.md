@@ -1,6 +1,6 @@
-# Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan trade
+# Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan + U.S. trade
 
-_Generated 2026-09-02 by `signals/compute_signals.py`._
+_Generated 2026-09-11 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
 ## Taiwan monthly revenue — 2026-07
@@ -90,6 +90,10 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | 2026-07 | MONTH | estat_hs:PROV9 | I:HS854470 | 3449 |  |  |
 | 2026-07 | MONTH | estat_hs:PROV9 | I:HS9001 | 35553 |  |  |
 | 2026-07 | MONTH | estat_hs:PROV9 | I:HS9013 | 10915 |  |  |
+
+## U.S. trade (Census)
+
+_No data stored yet — set `CENSUS_API_KEY` and run `python -m signals.us_census monthly`._
 
 ---
 Validation status (constitution §21): raw government data, mechanically aggregated. Tier 1 screening input only; not a thesis, not advice.

@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import datetime as dt
 
 from signals import (common, compute_signals, japan_customs, korea_customs,
-                     korea_tradedata, taiwan_mops)
+                     korea_tradedata, taiwan_mops, us_census)
 
 OPEN_CSV = """出表日期,資料年月,公司代號,公司名稱,產業別,營業收入-當月營收,營業收入-上月營收,營業收入-去年當月營收,營業收入-上月比較增減(%),營業收入-去年同月增減(%),累計營業收入-當月累計營收,累計營業收入-去年累計營收,累計營業收入-前期比較增減(%),備註
 1150810,11507,2330,台積電,半導體業,320000000,290000000,256000000,10.34,25.00,2100000000,1600000000,31.25,-
@@ -426,6 +426,93 @@ class TestJapan(unittest.TestCase):
                          ("MONTH", "E:SEMICON MACHINERY ETC", "40.90", "40.9"))
         hs = [r for r in out if r[2].startswith("estat_hs") and r[0] == "2026-06"][0]
         self.assertEqual((hs[3], hs[4], hs[6]), ("E:HS8486", "3", "50.00"))  # DETAILED wins over PROV9
+
+
+# Census International Trade API shape (documented list-of-lists; header row first).
+US_CENSUS_JSON = [
+    ["CTY_CODE", "CTY_NAME", "GEN_VAL_MO", "CON_VAL_MO", "GEN_QY1_MO", "UNIT_QY1",
+     "AIR_VAL_MO", "VES_VAL_MO", "I_COMMODITY_SDESC", "SUMMARY_LVL", "I_COMMODITY",
+     "COMM_LVL", "YEAR", "MONTH"],
+    ["-", "TOTAL FOR ALL COUNTRIES", "900000000", "880000000", "1200000", "NO",
+     "850000000", "50000000", "TRANSMISSION APPARATUS, OTHER", "DET", "8517620090",
+     "HS10", "2026", "07"],
+    ["5700", "CHINA", "300000000", "290000000", "400000", "NO", "280000000", "20000000",
+     "TRANSMISSION APPARATUS, OTHER", "DET", "8517620090", "HS10", "2026", "07"],
+    ["5490", "THAILAND", "200000000", "200000000", "250000", "NO", "199000000", "1000000",
+     "TRANSMISSION APPARATUS, OTHER", "DET", "8517620090", "HS10", "2026", "07"],
+    ["0014", "ASIA", "650000000", "640000000", "800000", "NO", "600000000", "50000000",
+     "TRANSMISSION APPARATUS, OTHER", "CGP", "8517620090", "HS10", "2026", "07"],
+]
+
+US_HTS_JSON = {"HTSDataSet": [
+    {"htsno": "8517.62.00", "indent": "2", "description": "Machines for the reception, conversion and transmission or regeneration of voice, images or other data, including switching and routing apparatus", "general": "Free", "unit1": "", "unit2": ""},
+    {"htsno": "8517.62.00.90", "indent": "3", "description": "Other", "general": "", "unit1": "No.", "unit2": ""},
+]}
+
+
+class TestUSCensus(unittest.TestCase):
+    def test_parse_rows(self):
+        rows = us_census.parse_census_rows(US_CENSUS_JSON, "I", "8517620090", "HS10",
+                                           "2026-07", "2026-09-11")
+        self.assertEqual(len(rows), 4)
+        total = rows[0]
+        self.assertEqual((total["cty_code"], total["value_usd"], total["value_cons_usd"]),
+                         ("-", "900000000", "880000000"))
+        china = rows[1]
+        self.assertEqual((china["cty_name"], china["qty1"], china["unit1"],
+                          china["air_value_usd"], china["summary_lvl"]),
+                         ("CHINA", "400000", "NO", "280000000", "DET"))
+        self.assertIn('"I_COMMODITY": "8517620090"', china["extra_json"])
+        self.assertEqual(us_census.parse_census_rows([], "I", "x", "HS10", "2026-07", "d"), [])
+
+    def test_export_value_field(self):
+        payload = [["CTY_CODE", "CTY_NAME", "ALL_VAL_MO", "QTY_1_MO", "UNIT_QY1"],
+                   ["5880", "JAPAN", "12345", "7", "NO"]]
+        rows = us_census.parse_census_rows(payload, "E", "854141", "HS6", "2026-07", "d")
+        self.assertEqual((rows[0]["value_usd"], rows[0]["qty1"]), ("12345", "7"))
+
+    def test_bad_variable_detection(self):
+        requested = ["CTY_CODE", "VES_VAL_MO", "SUMMARY_LVL"]
+        self.assertEqual(us_census.bad_variable(
+            "error: unknown variable 'VES_VAL_MO'", requested), "VES_VAL_MO")
+        self.assertEqual(us_census.bad_variable("error: missing required variable/predicate: time",
+                                                requested), "")
+
+    def test_hts_snapshot_and_dotting(self):
+        self.assertEqual(us_census._dotted("8517620090"), "8517.62.00.90")
+        self.assertEqual(us_census._dotted("851762"), "8517.62")
+        rows = us_census.parse_hts_payload(US_HTS_JSON, "8517620090", "d")
+        self.assertEqual([r["htsno"] for r in rows], ["8517.62.00", "8517.62.00.90"])
+        self.assertEqual(rows[1]["unit1"], "No.")
+
+    def test_default_range(self):
+        # On 2026-09-11 the newest published month is July (released Sept 3).
+        self.assertEqual(us_census._default_range(dt.date(2026, 9, 11)), ("2026-04", "2026-07"))
+
+    def test_us_signal_share_and_yoy(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            def row(yyyymm, cty, name, lvl, value):
+                return [yyyymm, "I", "8517620090", "HS10", cty, name, lvl, value, "", "",
+                        "", "", "", "", "{}", "d"]
+            common.write_csv(Path(tmp) / "trade_monthly_hs.csv", us_census.TRADE_HEADER, [
+                row("2025-07", "-", "TOTAL FOR ALL COUNTRIES", "DET", "600000000"),
+                row("2025-07", "5700", "CHINA", "DET", "300000000"),
+                row("2026-07", "-", "TOTAL FOR ALL COUNTRIES", "DET", "900000000"),
+                row("2026-07", "5700", "CHINA", "DET", "300000000"),
+                row("2026-07", "5490", "THAILAND", "DET", "200000000"),
+                row("2026-07", "0014", "ASIA", "CGP", "650000000"),
+            ])
+            orig = compute_signals.US_DIR
+            compute_signals.US_DIR = Path(tmp)
+            try:
+                out = compute_signals.us_signals()
+            finally:
+                compute_signals.US_DIR = orig
+        by = {(r[0], r[3]): r for r in out}
+        self.assertNotIn(("2026-07", "0014"), by)             # grouping excluded
+        self.assertEqual(by[("2026-07", "5700")][7], "0.00")   # China flat YoY
+        self.assertEqual(by[("2026-07", "5700")][8], "33.3")   # share of code
+        self.assertEqual(by[("2026-07", "-")][7], "50.00")     # total YoY
 
 
 class TestSignals(unittest.TestCase):

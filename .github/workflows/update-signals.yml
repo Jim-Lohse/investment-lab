@@ -11,6 +11,7 @@ name: update-signals
 #   Japan press releases:   first 10 days ~28th (08:50 JST), first 20 days
 #                           ~7th of next month, monthly ~20th of next month,
 #                           detailed/e-Stat CSVs ~end of next month
+#   U.S. Census trade:      ~5 weeks after month end (FT-900 schedule)
 # The fetchers are idempotent and no-op when nothing new is published,
 # so a daily cron is safe and catches late filers and revisions.
 
@@ -51,7 +52,15 @@ on:
         required: false
         default: ""
       japan_only:
-        description: "Set to any value to skip the Taiwan and Korea steps (keeps tradedata.go.kr's manual-run budget intact)"
+        description: "Set to any value to skip the Taiwan, Korea and U.S. steps (keeps tradedata.go.kr's manual-run budget intact)"
+        required: false
+        default: ""
+      us_only:
+        description: "Set to any value to run only the U.S. Census steps"
+        required: false
+        default: ""
+      us_backfill:
+        description: "Backfill U.S. Census months, e.g. 2013-01:2026-07 (one-time; ~20 calls per month)"
         required: false
         default: ""
 
@@ -77,23 +86,23 @@ jobs:
       # Sources are independent: a failure in one is a visible red step but
       # must not block fetching the others.
       - name: Fetch Taiwan monthly revenue (current month)
-        if: ${{ github.event.inputs.japan_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' }}
         continue-on-error: true
         run: python -m signals.taiwan_mops current
 
       - name: Backfill Taiwan archive (manual runs only)
-        if: ${{ github.event.inputs.taiwan_backfill != '' && github.event.inputs.japan_only == '' }}
+        if: ${{ github.event.inputs.taiwan_backfill != '' && github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' }}
         run: |
           RANGE="${{ github.event.inputs.taiwan_backfill }}"
           python -m signals.taiwan_mops backfill "${RANGE%%:*}" "${RANGE##*:}"
 
       - name: Fetch Korea tradedata.go.kr dashboard (no key required)
-        if: ${{ github.event.inputs.japan_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' }}
         continue-on-error: true
         run: python -m signals.korea_tradedata dashboard
 
       - name: Fetch Korea tradedata.go.kr by-item flash (no key required)
-        if: ${{ github.event.inputs.japan_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' }}
         continue-on-error: true
         run: |
           if [ -n "${{ github.event.inputs.korea_items_range }}" ]; then
@@ -104,14 +113,14 @@ jobs:
           fi
 
       - name: Capture tradedata pages for parser development (manual runs only)
-        if: ${{ github.event.inputs.capture_pages != '' && github.event.inputs.japan_only == '' }}
+        if: ${{ github.event.inputs.capture_pages != '' && github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' }}
         continue-on-error: true
         run: |
           python -m signals.korea_tradedata capture
           python -m signals.korea_tradedata probe
 
       - name: Fetch Korea Customs data
-        if: ${{ github.event.inputs.japan_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' }}
         continue-on-error: true
         env:
           DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
@@ -132,11 +141,12 @@ jobs:
       # Japan: static files on customs.go.jp + e-Stat CSVs, no key. Each
       # sub-source is its own step so one drifting schema is one red step.
       - name: Capture Japan sources for parser development (manual runs only)
-        if: ${{ github.event.inputs.japan_capture != '' }}
+        if: ${{ github.event.inputs.japan_capture != '' && github.event.inputs.us_only == '' }}
         continue-on-error: true
         run: python -m signals.japan_customs capture
 
       - name: Fetch Japan press-release windows (10-day, 20-day, monthly)
+        if: ${{ github.event.inputs.us_only == '' }}
         continue-on-error: true
         run: |
           if [ -n "${{ github.event.inputs.japan_flash_backfill }}" ]; then
@@ -147,12 +157,33 @@ jobs:
           fi
 
       - name: Fetch Japan time-series CSVs
+        if: ${{ github.event.inputs.us_only == '' }}
         continue-on-error: true
         run: python -m signals.japan_customs timeseries
 
       - name: Fetch Japan e-Stat monthly HS-level CSVs
+        if: ${{ github.event.inputs.us_only == '' }}
         continue-on-error: true
         run: python -m signals.japan_customs estat
+
+      # U.S.: Census International Trade API (free key) + keyless HTS snapshot.
+      - name: Snapshot HTS code descriptions (keyless)
+        if: ${{ github.event.inputs.japan_only == '' }}
+        continue-on-error: true
+        run: python -m signals.us_census hts
+
+      - name: Fetch U.S. Census monthly trade by HTS code
+        if: ${{ github.event.inputs.japan_only == '' }}
+        continue-on-error: true
+        env:
+          CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
+        run: |
+          if [ -n "${{ github.event.inputs.us_backfill }}" ]; then
+            RANGE="${{ github.event.inputs.us_backfill }}"
+            python -m signals.us_census backfill "${RANGE%%:*}" "${RANGE##*:}"
+          else
+            python -m signals.us_census monthly
+          fi
 
       - name: Recompute derived signals
         run: python -m signals.compute_signals
