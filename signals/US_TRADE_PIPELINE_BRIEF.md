@@ -1,4 +1,9 @@
-# Brief: U.S. trade leg for the optical-interconnect names (scoped, not built)
+# Brief: U.S. trade leg for the optical-interconnect names
+
+**Status (2026-09-11): built.** `signals/us_census.py`, config in
+`signals/config/us_endpoints.json`, steps in `update-signals.yml`, history
+backfilled 2024-01 to 2026-07 (40,489 rows), HTS descriptions snapshotted
+in `data/us/hts_codes.csv`. Findings from the live payloads are at the end.
 
 Scoped 2026-09-11 against live documentation. Companion to
 `JAPAN_PIPELINE_BRIEF.md`; the build pattern is the same (config-driven
@@ -122,3 +127,19 @@ What of this can be pipelined for free, in order of value:
    numbers in the derived tables.
 4. Bills of lading only if a paid subscription exists, and only for ocean
    equipment shipments (MOCVD tools, chambers), not for optics.
+
+## Built (2026-09-11)
+
+- Census API accepted every requested variable on the first call; 204 marks
+  unpublished months; zero-trade partner rows are dropped at parse time.
+- Exports use HS6 only: the 10-digit import suffix 8517.62.0090 has no
+  Schedule B twin and returns nothing on the export endpoint.
+- HTS REST API: the documented `reststop/exportList?from=&to=&format=JSON`
+  endpoint works; `searchByNumber` (seen in third-party posts) is a 404.
+- 3818.00.00 carries a U.S. statistical suffix for GaAs wafers
+  (3818.00.00.10); InP wafers sit in the "Other" suffixes. Worth adding the
+  10-digit import codes if GaAs versus InP flow matters.
+- 8517.62.0090 is a basket (switches, routers, modems, transceivers):
+  $7.1bn of July 2026 imports. Read the origin mix and growth, not the level.
+- Runtime: ~20 seconds per month of 21 codes; the 27-month backfill took
+  18 minutes and ~570 calls without throttling.
