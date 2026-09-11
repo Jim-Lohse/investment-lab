@@ -14,6 +14,10 @@ Filled by the scheduled `update-signals` workflow (see `signals/README.md`).
   XML, MOF time-series CSVs, e-Stat CSVs) and `japan/raw/pages/` the index and
   listing pages the fetchers navigate; `python -m signals.japan_customs
   reparse` rebuilds the three tables from `raw/` after a parser fix.
+- `us/trade_monthly_hs.csv` (U.S. dollars) — append-only rows per (month,
+  direction, HTS code, partner country), first write wins; `us/raw/` keeps
+  every Census JSON response and the HTS snapshots; `python -m
+  signals.us_census reparse` rebuilds the table from `raw/`.
 - `derived/` — recomputed outputs (`taiwan_signals.csv`, `korea_signals.csv`,
-  `japan_signals.csv`, `latest_report.md`). Derived, disposable, regenerated
+  `japan_signals.csv`, `us_signals.csv`, `latest_report.md`). Derived, disposable, regenerated
   every run.

@@ -327,7 +327,7 @@ def us_signals() -> list[list]:
     return out
 
 
-def us_highlights(us: list[list], limit: int = 40) -> list[list]:
+def us_highlights(us: list[list], limit: int = 80) -> list[list]:
     """Newest month only: every code's all-countries total plus the top
     origins for the configured share codes."""
     if not us:
@@ -335,13 +335,14 @@ def us_highlights(us: list[list], limit: int = 40) -> list[list]:
     cfg = json.loads((CONFIG_DIR / "us_endpoints.json").read_text("utf-8"))
     share_codes = set(cfg.get("origin_share_codes", []))
     latest = max(r[0] for r in us)
-    keep = [r for r in us if r[0] == latest and r[3] == "-"]
+    keep: list[list] = []
     for imex in ("I", "E"):
-        for code in share_codes:
+        for code in sorted(share_codes):
             top = sorted((r for r in us if r[0] == latest and r[1] == imex
                           and r[2] == code and r[3] != "-"),
                          key=lambda r: -float(r[5] or 0))[:6]
             keep += top
+    keep += [r for r in us if r[0] == latest and r[3] == "-"]
     return keep[:limit]
 
 

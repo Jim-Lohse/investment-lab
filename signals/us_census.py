@@ -116,13 +116,16 @@ def parse_census_rows(payload, imex: str, code: str, comm_lvl: str, yyyymm: str,
         value = parse_number(first(VALUE_FIELDS))
         if value is None:
             continue
+        qty = parse_number(first(QTY_FIELDS))
+        if value == 0 and not qty:
+            continue  # Census lists every partner; zero-trade rows carry nothing
         rows.append({
             "yyyymm": yyyymm, "imex": imex, "code": code, "comm_lvl": comm_lvl,
             "cty_code": cty_code, "cty_name": fields.get("CTY_NAME", "").strip(),
             "summary_lvl": fields.get("SUMMARY_LVL", "").strip(),
             "value_usd": fmt(value),
             "value_cons_usd": fmt(parse_number(first(CONS_FIELDS))),
-            "qty1": fmt(parse_number(first(QTY_FIELDS))),
+            "qty1": fmt(qty),
             "unit1": fields.get("UNIT_QY1", "").strip(),
             "air_value_usd": fmt(parse_number(fields.get("AIR_VAL_MO"))),
             "vessel_value_usd": fmt(parse_number(fields.get("VES_VAL_MO"))),
@@ -188,7 +191,11 @@ def _dotted(code: str) -> str:
 
 
 def fetch_hts_codes() -> int:
-    """Keyless snapshot of HTS descriptions for every configured code."""
+    """Keyless snapshot of HTS descriptions for every configured code.
+
+    Tries each configured endpoint template in order (the export-by-range
+    endpoint is the documented one; keyword search is the fallback) and
+    keeps the first that returns JSON rows for the code."""
     cfg = _load_config()
     retrieved_at = dt.date.today().isoformat()
     codes = sorted({c for section in ("imports", "exports")
@@ -196,16 +203,26 @@ def fetch_hts_codes() -> int:
     rows: list[dict] = []
     problems: list[str] = []
     for code in codes:
-        url = cfg["hts_api"]["search_by_number_url"].format(code=_dotted(code))
-        resp = _get(url, {}, "")
-        _save_raw(f"hts_{code}.json", resp.content)
-        if resp.status_code != 200:
-            problems.append(f"{code}: HTTP {resp.status_code}")
-            continue
-        try:
-            rows += parse_hts_payload(resp.json(), code, retrieved_at)
-        except ValueError:
-            problems.append(f"{code}: not JSON")
+        got: list[dict] = []
+        last = ""
+        for template in cfg["hts_api"]["url_templates"]:
+            url = template.format(code=_dotted(code), code6=_dotted(code[:6]))
+            resp = _get(url, {}, "")
+            _save_raw(f"hts_{code}.json", resp.content)
+            last = f"HTTP {resp.status_code}"
+            if resp.status_code != 200:
+                continue
+            try:
+                got = parse_hts_payload(resp.json(), code, retrieved_at)
+            except ValueError:
+                last = "not JSON"
+                continue
+            if got:
+                break
+        if got:
+            rows += got
+        else:
+            problems.append(f"{code}: {last}")
         time.sleep(0.5)
     if rows:
         write_csv(OUT_DIR / "hts_codes.csv", HTS_HEADER,

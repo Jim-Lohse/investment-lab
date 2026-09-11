@@ -30,13 +30,16 @@ Action.
 | `signals/taiwan_mops.py` | Fetch current month (open-data CSV, no key) and historical archive (Big5 HTML) |
 | `signals/korea_customs.py` | Fetch monthly HS-code trade + 10/20-day flash via data.go.kr APIs |
 | `signals/japan_customs.py` | Fetch MOF press-release XML (10/20-day totals, monthly commodity breakdown), keyless time-series CSVs and e-Stat 9-digit commodity CSVs |
+| `signals/us_census.py` | Fetch U.S. Census monthly imports/exports by HTS code and partner country (free key) plus a keyless HTS description snapshot |
 | `signals/compute_signals.py` | Aggregate YoY / median / breadth per watch group; snapshot report |
 | `signals/config/watchgroups.json` | Taiwan ticker groups (AI compute, server ODM, power/cooling, robotics motion) |
 | `signals/config/korea_endpoints.json` | Korea endpoint config incl. HS codes (8542 semis, 8486 semi equipment, 8479 robots) |
 | `signals/config/japan_endpoints.json` | Japan endpoints (URL patterns, stage codes, e-Stat navigation), HS prefixes and principal-commodity codes |
+| `signals/config/us_endpoints.json` | Census/HTS endpoints, requested variables, the HTS codes tracked (transceivers, laser diodes, fibre, wafers, equipment) |
 | `data/taiwan/monthly_revenue/` | One normalized CSV per month & market (thousand TWD) |
 | `data/korea/` | Append-only long tables + verbatim raw API responses |
 | `data/japan/` | Append-only long tables + verbatim raw XML/CSV/HTML payloads (`raw/`) |
+| `data/us/` | Append-only long table by (month, direction, code, country) + verbatim Census JSON (`raw/`) |
 | `data/derived/` | Recomputed signals + `latest_report.md` (regenerated each run) |
 | `tests/test_signals.py` | Offline parser/math tests (`python -m unittest discover tests`) |
 
@@ -127,12 +130,36 @@ first 20 days ~7th of the next month, monthly provisional ~20th of the next
 month, detailed ~end of the next month (09:30). See
 [calend_e.htm](https://www.customs.go.jp/toukei/calendar/calend_e.htm).
 
+**United States — one free key.** Register at
+[api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html)
+(instant, by email), store the key as the `CENSUS_API_KEY` repository secret.
+
+```bash
+CENSUS_API_KEY=... python -m signals.us_census monthly          # last four published months
+CENSUS_API_KEY=... python -m signals.us_census backfill 2013-01 2026-07
+python -m signals.us_census hts                                 # keyless code descriptions
+python -m signals.us_census reparse                             # rebuild from data/us/raw/
+```
+
+The Census International Trade API is the official U.S. customs statistic
+(CBP collects, Census compiles; USITC DataWeb redistributes the same table).
+Monthly data land 34-36 days after month end. One call per code per month per
+direction returns every partner country with general and consumption value,
+quantity, and the air/vessel split; `data/us/trade_monthly_hs.csv` keeps one
+row per country, `data/derived/us_signals.csv` adds YoY and each country's
+share of the code. Codes are in `us_endpoints.json`; note that 8517.62.0090,
+where CBP classifies optical transceivers, is a broad basket that also holds
+switches, routers and modems, so the read is in origin mix and growth, not
+in the level. Exports use HS6 only because Schedule B numbers differ from
+import HTS at ten digits.
+
 **Automation.** `.github/workflows/update-signals.yml` runs daily at 07:30 UTC
 (after Taipei/Seoul/Tokyo publish times), fetches whatever is newly published,
 recomputes `data/derived/`, and commits only when data changed. Manual runs
 accept backfill ranges; the `japan_only` input skips the Taiwan and Korea
 steps so a Japan-only dispatch does not spend tradedata.go.kr's manual-run
-budget, and `japan_capture` snapshots every Japan source raw.
+budget, `us_only` does the same for the Census steps, `us_backfill` walks
+history one year at a time, and `japan_capture` snapshots every Japan source raw.
 
 ## What the signals mean (and don't)
 

@@ -442,6 +442,8 @@ US_CENSUS_JSON = [
      "TRANSMISSION APPARATUS, OTHER", "DET", "8517620090", "HS10", "2026", "07"],
     ["0014", "ASIA", "650000000", "640000000", "800000", "NO", "600000000", "50000000",
      "TRANSMISSION APPARATUS, OTHER", "CGP", "8517620090", "HS10", "2026", "07"],
+    ["5230", "OMAN", "0", "0", "0", "0", "NO", "0", "0",
+     "TRANSMISSION APPARATUS, OTHER", "DET", "8517620090", "HS10", "2026", "07"],
 ]
 
 US_HTS_JSON = {"HTSDataSet": [
@@ -454,7 +456,7 @@ class TestUSCensus(unittest.TestCase):
     def test_parse_rows(self):
         rows = us_census.parse_census_rows(US_CENSUS_JSON, "I", "8517620090", "HS10",
                                            "2026-07", "2026-09-11")
-        self.assertEqual(len(rows), 4)
+        self.assertEqual(len(rows), 4)  # zero-trade OMAN row dropped
         total = rows[0]
         self.assertEqual((total["cty_code"], total["value_usd"], total["value_cons_usd"]),
                          ("-", "900000000", "880000000"))

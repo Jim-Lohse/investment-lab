@@ -17,16 +17,44 @@
   "census": {
     "imports_url": "https://api.census.gov/data/timeseries/intltrade/imports/hs",
     "exports_url": "https://api.census.gov/data/timeseries/intltrade/exports/hs",
-    "imports_get": ["CTY_CODE", "CTY_NAME", "GEN_VAL_MO", "CON_VAL_MO", "GEN_QY1_MO",
-                    "CON_QY1_MO", "UNIT_QY1", "AIR_VAL_MO", "VES_VAL_MO",
-                    "I_COMMODITY_SDESC", "SUMMARY_LVL"],
-    "exports_get": ["CTY_CODE", "CTY_NAME", "ALL_VAL_MO", "QTY_1_MO", "UNIT_QY1",
-                    "AIR_VAL_MO", "VES_VAL_MO", "E_COMMODITY_SDESC", "SUMMARY_LVL"],
+    "imports_get": [
+      "CTY_CODE",
+      "CTY_NAME",
+      "GEN_VAL_MO",
+      "CON_VAL_MO",
+      "GEN_QY1_MO",
+      "CON_QY1_MO",
+      "UNIT_QY1",
+      "AIR_VAL_MO",
+      "VES_VAL_MO",
+      "I_COMMODITY_SDESC",
+      "SUMMARY_LVL"
+    ],
+    "exports_get": [
+      "CTY_CODE",
+      "CTY_NAME",
+      "ALL_VAL_MO",
+      "QTY_1_MO",
+      "UNIT_QY1",
+      "AIR_VAL_MO",
+      "VES_VAL_MO",
+      "E_COMMODITY_SDESC",
+      "SUMMARY_LVL"
+    ],
     "_get_note": "If the API rejects a variable (HTTP 400 naming it), the fetcher drops it and retries once, so a renamed field costs one call, not the run.",
-    "comm_lvl_by_length": {"2": "HS2", "4": "HS4", "6": "HS6", "10": "HS10"}
+    "comm_lvl_by_length": {
+      "2": "HS2",
+      "4": "HS4",
+      "6": "HS6",
+      "10": "HS10"
+    }
   },
   "hts_api": {
-    "search_by_number_url": "https://hts.usitc.gov/reststop/searchByNumber?query={code}"
+    "_comment": "USITC HTS REST API (no auth). exportList returns the schedule rows in a code range; search is keyword-based. Both documented in the HTS user guide; the searchByNumber path seen in third-party posts returned 404 on 2026-09-11.",
+    "url_templates": [
+      "https://hts.usitc.gov/reststop/exportList?from={code6}&to={code6}&format=JSON&styles=false",
+      "https://hts.usitc.gov/reststop/search?keyword={code}"
+    ]
   },
   "codes": {
     "_comment": [
@@ -37,7 +65,7 @@
       "puts laser diodes with LEDs (8541.41) per CBP HQ 088628."
     ],
     "imports": {
-      "8517620090": "Optical transceivers and other reception/conversion/transmission machines (CBP N336394, N302251)",
+      "8517620090": "Machines for reception/conversion/transmission NESOI - a broad basket (switches, routers, modems, transceivers); transceivers are inside it, not all of it (CBP N336394, N302251)",
       "851762": "HS6 total: machines for reception, conversion and transmission of data",
       "851779": "Parts of 8517 apparatus incl. TOSA/ROSA (was 8517.70; ruling N041692)",
       "854141": "Light-emitting diodes incl. laser diodes",
@@ -55,14 +83,20 @@
       "848690": "Parts and accessories of 8486"
     },
     "exports": {
+      "_comment": "Exports use Schedule B numbers, which differ from import HTS at 10 digits; HS6 is shared, so export codes are 6-digit only.",
+      "851762": "Machines for reception/conversion/transmission incl. optical transceivers",
       "854141": "LEDs incl. laser diodes (AAOI Sugar Land, Coherent Sherman chip exports)",
       "854149": "Other photosensitive devices",
-      "8517620090": "Optical transceivers and other",
       "848620": "Semiconductor manufacturing machines (Japan cross-check)",
       "381800": "Doped wafers"
     }
   },
-  "origin_share_codes": ["8517620090", "854141", "381800"],
+  "origin_share_codes": [
+    "8517620090",
+    "854141",
+    "381800",
+    "848620"
+  ],
   "countries_of_interest": {
     "_comment": "Census 4-digit country codes; used only to label the report, every country is stored.",
     "5700": "CHINA",
