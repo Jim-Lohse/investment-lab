@@ -50,6 +50,11 @@ _Derived data; the underlying records in `data/` are the source of truth._
 
 | Period | Window | Source | Item | JPY m | YoY % (store) | YoY % (published) |
 |---|---|---|---|---:|---:|---:|
+| 2026-07 | D20 | press_release | BAL:Grand Total | 37102 |  | -71.90 |
+| 2026-07 | D20 | press_release | E:Grand Total | 7231361 |  | 20.40 |
+| 2026-07 | D20 | press_release | I:Grand Total | 7194259 |  | 22.50 |
+| 2026-07 | MONTH | press_release | BAL:Grand Total | -638344 |  | 308.50 |
+| 2026-07 | MONTH | press_release | E:(IC) | 659368 |  | 52 |
 | 2026-07 | MONTH | press_release | E:ELECTRICAL MEASURING | 228432 |  | 26.80 |
 | 2026-07 | MONTH | press_release | E:Grand Total | 11509374 |  | 23.20 |
 | 2026-07 | MONTH | press_release | E:SCIENTIFIC, OPTICAL INST | 271075 |  | 16.50 |

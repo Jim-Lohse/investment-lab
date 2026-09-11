@@ -154,11 +154,17 @@ def parse_hts_payload(payload, code: str, retrieved_at: str) -> list[dict]:
     for item in items or []:
         if not isinstance(item, dict) or not item.get("htsno"):
             continue
+        # The live exportList payload carries units as a list ("units": ["No."]);
+        # older docs show unit1/unit2 scalars, kept as a fallback.
+        units = item.get("units")
+        if not isinstance(units, list):
+            units = [item.get("unit1"), item.get("unit2")]
+        units = [str(u or "").strip() for u in units] + ["", ""]
         rows.append({
             "code": code, "htsno": str(item.get("htsno", "")).strip(),
             "description": re.sub(r"\s+", " ", str(item.get("description", ""))).strip(),
-            "unit1": str(item.get("unit1", "") or "").strip(),
-            "unit2": str(item.get("unit2", "") or "").strip(),
+            "unit1": units[0],
+            "unit2": units[1],
             "general": str(item.get("general", "") or "").strip(),
             "retrieved_at": retrieved_at,
         })
@@ -296,6 +302,7 @@ def fetch_monthly(start_iso: str | None = None, end_iso: str | None = None) -> i
     added_total = 0
     problems: list[str] = []
     for month in month_range(start_iso, end_iso):
+        month_rows: list[dict] = []
         for imex, section in (("I", "imports"), ("E", "exports")):
             for code in cfg["codes"][section]:
                 if code.startswith("_"):
@@ -308,19 +315,46 @@ def fetch_monthly(start_iso: str | None = None, end_iso: str | None = None) -> i
                 if not rows:
                     print(f"  {imex} {code} {month}: no rows (not published or no trade)")
                     continue
-                added = append_dedup_csv(OUT_DIR / "trade_monthly_hs.csv", TRADE_HEADER,
-                                         rows, TRADE_KEY)
-                print(f"  {imex} {code} {month}: {len(rows)} rows, {added} new")
-                added_total += added
+                print(f"  {imex} {code} {month}: {len(rows)} rows")
+                month_rows += rows
                 time.sleep(0.5)
+        # One store rewrite per month, not per (code, month): the store is
+        # tens of thousands of rows and append_dedup_csv rewrites it whole.
+        if month_rows:
+            added = append_dedup_csv(OUT_DIR / "trade_monthly_hs.csv", TRADE_HEADER,
+                                     month_rows, TRADE_KEY)
+            print(f"  {month}: {len(month_rows)} rows fetched, {added} new")
+            added_total += added
     if problems:
         raise RuntimeError("census: " + "; ".join(problems[:10])
                            + (f"; +{len(problems) - 10} more" if len(problems) > 10 else ""))
     return added_total
 
 
+def reparse_hts() -> None:
+    """Rebuild data/us/hts_codes.csv from the raw hts_*.json on disk."""
+    retrieved_at = dt.date.today().isoformat()
+    rows: list[dict] = []
+    for path in sorted(RAW_DIR.glob("hts_*.json")):
+        match = re.fullmatch(r"hts_(\d+)\.json", path.name)
+        if not match:
+            continue
+        try:
+            payload = json.loads(path.read_bytes() or b"[]")
+        except ValueError:
+            continue
+        rows += parse_hts_payload(payload, match.group(1), retrieved_at)
+    if rows:
+        write_csv(OUT_DIR / "hts_codes.csv", HTS_HEADER,
+                  [[r[c] for c in HTS_HEADER] for r in rows])
+        print(f"hts_codes.csv: rebuilt with {len(rows)} rows")
+
+
 def reparse() -> None:
-    """Rebuild data/us/trade_monthly_hs.csv from the raw JSON on disk."""
+    """Rebuild data/us/trade_monthly_hs.csv (and hts_codes.csv) from the raw
+    JSON on disk. Row order follows the raw file names, so a reparse after a
+    fetch reorders the store without changing its content."""
+    reparse_hts()
     retrieved_at = dt.date.today().isoformat()
     cfg = _load_config()
     rows: list[dict] = []

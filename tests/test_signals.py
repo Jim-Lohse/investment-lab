@@ -405,6 +405,12 @@ class TestJapan(unittest.TestCase):
                       "SEMICON MACHINERY ETC", "157063", "-10.2"),
                 press("2026-07", "MONTH_PROV", "4", "ja", "COMMODITY", "E", "世界",
                       "半導体等製造装置", "494437", "40.9"),
+                # 2026-06: the detailed stage appended BEFORE a provisional
+                # re-fetch; the detailed value must still win.
+                press("2026-06", "MONTH_DP", "5", "en", "TOTAL", "E", "WORLD",
+                      "EXPORT TOTAL", "9500000", "5.0"),
+                press("2026-06", "MONTH_PROV", "4", "en", "TOTAL", "E", "WORLD",
+                      "EXPORT TOTAL", "9400000", "4.0"),
             ])
             common.write_csv(Path(tmp) / "trade_monthly_hs.csv", japan_customs.HS_HEADER, [
                 ["2025-06", "E", "848610000", "DETAILED", "1000", "", "", "", "", "a", "d"],
@@ -420,7 +426,9 @@ class TestJapan(unittest.TestCase):
             finally:
                 compute_signals.JAPAN_DIR = orig
         press_rows = [r for r in out if r[2] == "press_release"]
-        self.assertEqual(len(press_rows), 2)  # ja rows and by-country tables excluded
+        self.assertEqual(len(press_rows), 3)  # ja rows and by-country tables excluded
+        june = [r for r in press_rows if r[0] == "2026-06"][0]
+        self.assertEqual((june[1], june[4], june[7]), ("MONTH", "9500000", "5.0"))
         latest = [r for r in press_rows if r[0] == "2026-07"][0]
         self.assertEqual((latest[1], latest[3], latest[6], latest[7]),
                          ("MONTH", "E:SEMICON MACHINERY ETC", "40.90", "40.9"))
@@ -442,14 +450,19 @@ US_CENSUS_JSON = [
      "TRANSMISSION APPARATUS, OTHER", "DET", "8517620090", "HS10", "2026", "07"],
     ["0014", "ASIA", "650000000", "640000000", "800000", "NO", "600000000", "50000000",
      "TRANSMISSION APPARATUS, OTHER", "CGP", "8517620090", "HS10", "2026", "07"],
-    ["5230", "OMAN", "0", "0", "0", "0", "NO", "0", "0",
+    ["5230", "OMAN", "0", "0", "0", "NO", "0", "0",
      "TRANSMISSION APPARATUS, OTHER", "DET", "8517620090", "HS10", "2026", "07"],
 ]
 
-US_HTS_JSON = {"HTSDataSet": [
-    {"htsno": "8517.62.00", "indent": "2", "description": "Machines for the reception, conversion and transmission or regeneration of voice, images or other data, including switching and routing apparatus", "general": "Free", "unit1": "", "unit2": ""},
-    {"htsno": "8517.62.00.90", "indent": "3", "description": "Other", "general": "", "unit1": "No.", "unit2": ""},
-]}
+# Shape of the live hts.usitc.gov exportList payload (a bare list; units is a
+# list or null), captured 2026-09-11.
+US_HTS_JSON = [
+    {"htsno": "8517.62.00", "statisticalSuffix": "", "indent": "2",
+     "description": "Machines for the reception, conversion and transmission or regeneration of voice, images or other data, including switching and routing apparatus",
+     "general": "Free", "units": None, "footnotes": []},
+    {"htsno": "8517.62.00.90", "statisticalSuffix": "90", "indent": "3",
+     "description": "Other", "general": "", "units": ["No."], "footnotes": []},
+]
 
 
 class TestUSCensus(unittest.TestCase):

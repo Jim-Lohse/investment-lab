@@ -29,7 +29,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-from .common import CONFIG_DIR, DATA_DIR, read_csv_dicts, write_csv
+from .common import CONFIG_DIR, DATA_DIR, prev_year_month, read_csv_dicts, write_csv
 
 TAIWAN_DIR = DATA_DIR / "taiwan" / "monthly_revenue"
 KOREA_DIR = DATA_DIR / "korea"
@@ -170,8 +170,7 @@ def korea_signals() -> list[list]:
 
 # --- Japan ------------------------------------------------------------------
 
-def _year_ago(yyyymm: str) -> str:
-    return f"{int(yyyymm[:4]) - 1}{yyyymm[4:]}"
+_year_ago = prev_year_month  # "2026-07" -> "2025-07"
 
 
 def _japan_interest() -> tuple[list[str], list[str]]:
@@ -190,14 +189,20 @@ def japan_signals() -> list[list]:
     yen, the CSV sources thousand yen.
     """
     out: list[list] = []
-    items_of_interest, prefixes = _japan_interest()
+    _, prefixes = _japan_interest()
 
     press_path = JAPAN_DIR / "press_release.csv"
     if press_path.exists():
         press = read_csv_dicts(press_path)
         langs = {r["lang"] for r in press}
         lang = "en" if "en" in langs else (sorted(langs)[0] if langs else "")
+        # The two monthly stages collapse to one period type; the later stage
+        # (MONTH_DP, detailed/9-digit provisional) wins over MONTH_PROV
+        # regardless of the order rows were appended to the store.
+        # 10/20-day windows are separate period types.
+        stage_rank = {"MONTH_PROV": 1, "MONTH_DP": 2}
         by_key: dict[tuple, tuple[float, str]] = {}
+        by_rank: dict[tuple, int] = {}
         for row in press:
             value = _f(row["value_jpy_m"])
             if value is None or not row["yyyymm"] or row["lang"] != lang:
@@ -207,10 +212,13 @@ def japan_signals() -> list[list]:
             item = f"{row['imex'] or '?'}:{row['name']}"
             if row["section"] == "AREA":
                 item = f"{row['imex']}:AREA {row['name']}"
-            # Later stages of the same month overwrite earlier ones (MONTH_DP
-            # beats MONTH_PROV); 10/20-day windows are separate period types.
-            by_key[(row["yyyymm"], row["period_type"].replace("MONTH_DP", "MONTH")
-                    .replace("MONTH_PROV", "MONTH"), item)] = (value, row["yoy_pct"])
+            ptype = "MONTH" if row["period_type"] in stage_rank else row["period_type"]
+            rank = stage_rank.get(row["period_type"], 0)
+            key = (row["yyyymm"], ptype, item)
+            if key in by_key and rank < by_rank[key]:
+                continue
+            by_key[key] = (value, row["yoy_pct"])
+            by_rank[key] = rank
         for (yyyymm, ptype, item), (value, published) in sorted(by_key.items()):
             ago = by_key.get((_year_ago(yyyymm), ptype, item))
             yoy = f"{(value / ago[0] - 1.0) * 100.0:.2f}" if ago and ago[0] else ""
@@ -261,9 +269,12 @@ def japan_signals() -> list[list]:
     return out
 
 
-def japan_highlights(jp: list[list], limit: int = 40) -> list[list]:
+def japan_highlights(jp: list[list], limit: int = 60) -> list[list]:
     """Rows worth printing: for each source, only its newest period, and only
-    totals, configured press-release items and the HS-prefix sums."""
+    totals, configured press-release items and the HS-prefix sums.
+
+    The cap trims from the tail (time-series commodity rows, which come last
+    in the table) so the press-release totals at the head always print."""
     items_of_interest, _ = _japan_interest()
     latest: dict[tuple, str] = {}
     for row in jp:
@@ -282,7 +293,7 @@ def japan_highlights(jp: list[list], limit: int = 40) -> list[list]:
             keep.append(row)
         elif any(tag.lower() in item.lower() for tag in items_of_interest):
             keep.append(row)
-    return keep[-limit:]
+    return keep[:limit]
 
 # --- United States ----------------------------------------------------------
 

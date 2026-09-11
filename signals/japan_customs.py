@@ -680,11 +680,7 @@ def reparse() -> None:
     retrieved_at = dt.date.today().isoformat()
 
     press_rows: list[dict] = []
-    seen: set[str] = set()
     for path in sorted(RAW_DIR.glob("press_*.xml")):
-        if path.name in seen:
-            continue
-        seen.add(path.name)
         match = re.fullmatch(r"press_(\d{6})(\d)(en|ja)\.xml", path.name)
         if not match:
             continue
