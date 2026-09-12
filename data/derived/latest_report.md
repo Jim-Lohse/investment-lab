@@ -1,6 +1,6 @@
 # Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan + U.S. trade
 
-_Generated 2026-09-11 by `signals/compute_signals.py`._
+_Generated 2026-09-12 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
 ## Taiwan monthly revenue — 2026-08
@@ -52,9 +52,6 @@ _2026-07 ai_compute agg YoY: 42.67%_
 
 | Period | Window | Source | Item | JPY m | YoY % (store) | YoY % (published) |
 |---|---|---|---|---:|---:|---:|
-| 2026-07 | D20 | press_release | BAL:Grand Total | 37102 |  | -71.90 |
-| 2026-07 | D20 | press_release | E:Grand Total | 7231361 |  | 20.40 |
-| 2026-07 | D20 | press_release | I:Grand Total | 7194259 |  | 22.50 |
 | 2026-07 | MONTH | press_release | BAL:Grand Total | -638344 |  | 308.50 |
 | 2026-07 | MONTH | press_release | E:(IC) | 659368 |  | 52 |
 | 2026-07 | MONTH | press_release | E:ELECTRICAL MEASURING | 228432 |  | 26.80 |
@@ -72,6 +69,9 @@ _2026-07 ai_compute agg YoY: 42.67%_
 | 2026-08 | D10 | press_release | BAL:Grand Total | 217306 |  | -50 |
 | 2026-08 | D10 | press_release | E:Grand Total | 3678584 |  | 15.50 |
 | 2026-08 | D10 | press_release | I:Grand Total | 3461278 |  | 25.80 |
+| 2026-08 | D20 | press_release | BAL:Grand Total | -1119533 |  | 100.70 |
+| 2026-08 | D20 | press_release | E:Grand Total | 6050366 |  | 18 |
+| 2026-08 | D20 | press_release | I:Grand Total | 7169899 |  | 26.10 |
 | 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:半導体等製造装置 | 493950 | 40.75 |  |
 | 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:半導体等電子部品 | 862099 | 49.07 |  |
 | 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:科学光学機器 | 271075 | 16.48 |  |

@@ -253,6 +253,9 @@ period,period_type,source,item,value_jpy_m,value_jpy_m_year_ago,yoy_pct,yoy_pct_
 2026-08,D10,press_release,BAL:Grand Total,217306,,,-50
 2026-08,D10,press_release,E:Grand Total,3678584,,,15.50
 2026-08,D10,press_release,I:Grand Total,3461278,,,25.80
+2026-08,D20,press_release,BAL:Grand Total,-1119533,,,100.70
+2026-08,D20,press_release,E:Grand Total,6050366,,,18
+2026-08,D20,press_release,I:Grand Total,7169899,,,26.10
 1979-01,MONTH,timeseries:world_total,E:Exp-Total,1192541,,,
 1979-01,MONTH,timeseries:world_total,I:Imp-Total,1476341,,,
 1979-02,MONTH,timeseries:world_total,E:Exp-Total,1547064,,,
