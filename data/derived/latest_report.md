@@ -14,7 +14,7 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | network_interconnect | 3 | 56.53 | 53.99 | 100.0 |
 | photonics_epi | 2 | 115.32 | 126.03 | 100.0 |
 | photonics_cpo | 8 | 62.59 | 43.63 | 100.0 |
-| all_listed | 1954 | 53.36 | 15.26 | 72.3 |
+| all_listed | 1958 | 53.21 | 15.21 | 72.4 |
 
 _2026-07 ai_compute agg YoY: 42.67%_
 
@@ -146,6 +146,7 @@ _2026-07 ai_compute agg YoY: 42.67%_
 | 2026-07 | E | 854141 | HONG KONG | 5217 | -30.62 | 7.2 |
 | 2026-07 | E | 381800 | ALL COUNTRIES | 180582 | 18.29 | 100.0 |
 | 2026-07 | E | 848620 | ALL COUNTRIES | 1163939 | -8.05 | 100.0 |
+| 2026-07 | E | 851762 | ALL COUNTRIES | 2792290 | 29.75 | 100.0 |
 | 2026-07 | E | 854141 | ALL COUNTRIES | 72552 | -9.45 | 100.0 |
 | 2026-07 | E | 854149 | ALL COUNTRIES | 83632 | 2.24 | 100.0 |
 | 2026-07 | I | 280461 | ALL COUNTRIES | 6458 | -58.55 | 100.0 |
