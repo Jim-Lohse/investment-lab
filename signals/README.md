@@ -104,12 +104,15 @@ Flags are screening arithmetic (constitution §21, Tier 1): they open watch
 items, never decision windows (§13.7).
 
 **Daily intelligence brief.** A Claude Routine ("Trade-signals intelligence
-brief") fires every day after the second scheduled run, reads the data
-commits since the previous brief and `whats_new.md`, and posts the What / So
-what / What now (due outs) brief as a comment on the standing GitHub issue
-"Trade-signal intelligence log", with a push and email notification. Days
-with no new prints post nothing. The brief follows the convention in the
-repository's `CLAUDE.md`; actionable items appear first under an ACTION line.
+brief") fires every day at 13:05 UTC, after the second scheduled run, reads
+the data commits since the previous brief and their `whats_new.md`, and
+writes the What / So what / What now (due outs) brief to
+`data/derived/intel/YYYY-MM-DD.md` on `main` (commit subject
+`intel: brief DATE: ACTION: …` or `… no action items`), with a push and
+email notification carrying the same text. Issue #3 ("Trade-signal
+intelligence log") is the standing pointer. Days with no new prints produce
+nothing. The brief follows the convention in the repository's `CLAUDE.md`;
+actionable items appear first under an ACTION line.
 
 **Japan — works immediately, no key.** Three keyless sources, each its own
 workflow step so one drifting schema is one red step:
