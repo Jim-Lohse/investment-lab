@@ -32,6 +32,7 @@ Action.
 | `signals/japan_customs.py` | Fetch MOF press-release XML (10/20-day totals, monthly commodity breakdown), keyless time-series CSVs and e-Stat 9-digit commodity CSVs |
 | `signals/us_census.py` | Fetch U.S. Census monthly imports/exports by HTS code and partner country (free key) plus a keyless HTS description snapshot |
 | `signals/compute_signals.py` | Aggregate YoY / median / breadth per watch group; snapshot report |
+| `signals/intel.py` | Diff the derived tables against the previous run; flag watch items; feed the daily brief |
 | `signals/config/watchgroups.json` | Taiwan ticker groups (AI compute, server ODM, power/cooling, robotics motion) |
 | `signals/config/korea_endpoints.json` | Korea endpoint config incl. HS codes (8542 semis, 8486 semi equipment, 8479 robots) |
 | `signals/config/japan_endpoints.json` | Japan endpoints (URL patterns, stage codes, e-Stat navigation), HS prefixes and principal-commodity codes |
@@ -91,6 +92,26 @@ only — the by-item semiconductor breakout needs either the data.go.kr API key
 (preferred) or a parser extension against the portal's item page, whose raw
 HTML the workflow's `capture_pages` input snapshots into
 `data/korea/raw/pages/` for that purpose.
+
+**What changed, every run.** After `compute_signals`, the workflow runs
+`python -m signals.intel --previous <snapshot>` against the pre-run copy of
+`data/derived/`. It writes `data/derived/whats_new.md` (new prints per
+source and window, revised rows, and threshold flags: |YoY| >= 25% on a
+headline row, a U.S. origin's share of its code moving >= 5 points month over
+month), appends the same markdown to the Actions run page (job summary), and
+puts a one-line subject on the data commit ("2 new print groups, 3 flags").
+Flags are screening arithmetic (constitution §21, Tier 1): they open watch
+items, never decision windows (§13.7).
+
+**Daily intelligence brief.** A Claude Routine ("Trade-signals intelligence
+brief") fires every day at 13:05 UTC, after the second scheduled run, reads
+the data commits since the previous brief and their `whats_new.md`, and
+writes the What / So what / What now (due outs) brief. Delivery: a push and
+email notification carrying the brief, and, when the Routine's session has
+GitHub tools, the same text as a comment on issue #3 ("Trade-signal
+intelligence log"). Days with no new prints produce nothing. The brief
+follows the convention in the repository's `CLAUDE.md`; actionable items
+appear first under an ACTION line.
 
 **Japan — works immediately, no key.** Three keyless sources, each its own
 workflow step so one drifting schema is one red step:
