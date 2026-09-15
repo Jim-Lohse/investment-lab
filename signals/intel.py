@@ -203,8 +203,16 @@ def flags_for(diff: dict) -> list[dict]:
                     continue  # immaterial origin: noise, not a watch item
                 threshold = US_ORIGIN_YOY_PCT
             if yoy is not None and abs(yoy) >= threshold:
+                detail = f"{yoy:+.1f}% YoY"
+                # For Japan, say straight away how much of that is the yen, so
+                # the brief can grade a currency-driven print as noise.
+                yoy_usd = _f(row.get("yoy_pct_usd"))
+                fx_pt = _f(row.get("fx_effect_pt"))
+                if yoy_usd is not None:
+                    detail += f" ({yoy_usd:+.1f}% in USD"
+                    detail += f", {fx_pt:+.1f} pt currency)" if fx_pt is not None else ")"
                 flags.append({"source": name, "period": key[0], "item": label,
-                              "kind": "yoy", "detail": f"{yoy:+.1f}% YoY",
+                              "kind": "yoy", "detail": detail,
                               "value": row.get(value_col, "")})
             if name == "us" and row["cty_code"] != "-":
                 share = _f(row.get("share_of_code_pct"))

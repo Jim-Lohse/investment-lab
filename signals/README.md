@@ -32,6 +32,7 @@ Action.
 | `signals/japan_customs.py` | Fetch MOF press-release XML (10/20-day totals, monthly commodity breakdown), keyless time-series CSVs and e-Stat 9-digit commodity CSVs |
 | `signals/us_census.py` | Fetch U.S. Census monthly imports/exports by HTS code and partner country (free key) plus a keyless HTS description snapshot |
 | `signals/compute_signals.py` | Aggregate YoY / median / breadth per watch group; snapshot report |
+| `signals/fx_rates.py` | Daily USD reference rates (yen, won), keyless, for the currency-adjusted series |
 | `signals/intel.py` | Diff the derived tables against the previous run; flag watch items; feed the daily brief |
 | `signals/config/watchgroups.json` | Taiwan ticker groups (AI compute, server ODM, power/cooling, robotics motion) |
 | `signals/config/korea_endpoints.json` | Korea endpoint config incl. HS codes (8542 semis, 8486 semi equipment, 8479 robots) |
@@ -92,6 +93,22 @@ only — the by-item semiconductor breakout needs either the data.go.kr API key
 (preferred) or a parser extension against the portal's item page, whose raw
 HTML the workflow's `capture_pages` input snapshots into
 `data/korea/raw/pages/` for that purpose.
+
+**Currency adjustment — telling the yen from the trade.** Japan publishes in
+yen, so a weaker yen inflates every headline without a single extra machine
+shipping. `signals/fx_rates.py` stores a daily USD reference rate for the yen
+and the won (ECB Data Portal, keyless, cross-rated through USD per EUR;
+frankfurter.app as fallback) in `data/fx/rates_daily.csv`. `compute_signals`
+then restates each Japan row at the rate for the window that print covers — the
+first 10 days, the first 20, or the whole month — and `japan_signals.csv` gains
+four columns: `jpy_per_usd`, `value_usd_k`, `yoy_pct_usd` and `fx_effect_pt`.
+The last is the published yen YoY minus the USD YoY: the percentage points of
+the growth that are the currency. A row with no stored rate keeps those columns
+empty; no rate is ever assumed. Korea's series is already in USD and is not
+adjusted, so the won rate is stored for context only. These are market
+reference rates, not the customs valuation rates a customs service applies —
+right for separating currency from volume, wrong for reproducing a customs
+figure to the yen.
 
 **What changed, every run.** After `compute_signals`, the workflow runs
 `python -m signals.intel --previous <snapshot>` against the pre-run copy of
