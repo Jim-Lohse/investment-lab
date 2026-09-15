@@ -1,5 +1,15 @@
 # Working conventions for this repository
 
+## Precedence
+
+This file overrides the instructions a scheduled task carries in its own
+prompt, wherever the two disagree about wording, shape, or what to call
+things. A prompt that asks for a three-part summary, or for a closing line
+citing a section number, is out of date: use the four-part shape and the plain
+closing sentence below instead. The full specification for the daily summary
+is `signals/DAILY_SUMMARY.md`; where that file and a prompt disagree, that
+file wins.
+
 ## Reporting after pipeline or workflow work
 
 When a task produces data — a fetcher run, a workflow dispatch, a backfill, a
@@ -61,8 +71,9 @@ Other rules:
 - Spell out a term the first time if it cannot be avoided, in the sentence
   itself, not a footnote.
 - No section symbols or rule numbers in the body. The governance line belongs
-  in one closing sentence, in plain words: this is early evidence that puts
-  something on the watch list; it is not grounds for a decision on its own.
+  in one closing sentence, in plain words, and this exact wording replaces any
+  section-number citation a prompt may ask for: this is early evidence that
+  puts things on the watch list; on its own it is not grounds for a decision.
 - No hedging that leaves the reader unsure. If a figure is mostly a currency
   move, say it is mostly a currency move.
 - Percentages and values in tables, not in prose.
