@@ -55,6 +55,10 @@ on:
         description: "Set to any value to skip the Taiwan, Korea and U.S. steps (keeps tradedata.go.kr's manual-run budget intact)"
         required: false
         default: ""
+      fx_backfill:
+        description: "Backfill reference rates, e.g. 2015-01-01:2026-09-15 (one request per year)"
+        required: false
+        default: ""
       us_only:
         description: "Set to any value to run only the U.S. Census steps"
         required: false
@@ -183,6 +187,20 @@ jobs:
             python -m signals.us_census backfill "${RANGE%%:*}" "${RANGE##*:}"
           else
             python -m signals.us_census monthly
+          fi
+
+      # Reference exchange rates (keyless, ECB with a fallback). Needed before
+      # the recompute so the yen series can be restated in USD and a currency
+      # move told apart from a real one. Runs on every dispatch, including
+      # japan_only and us_only, because it is a single request.
+      - name: Fetch daily reference exchange rates (keyless)
+        continue-on-error: true
+        run: |
+          if [ -n "${{ github.event.inputs.fx_backfill }}" ]; then
+            RANGE="${{ github.event.inputs.fx_backfill }}"
+            python -m signals.fx_rates backfill "${RANGE%%:*}" "${RANGE##*:}"
+          else
+            python -m signals.fx_rates daily
           fi
 
       - name: Snapshot the previous derived tables (baseline for the diff)

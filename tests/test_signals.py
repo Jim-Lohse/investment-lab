@@ -614,3 +614,109 @@ class TestIntel(unittest.TestCase):
             markdown, subject = intel.render(diff, intel.flags_for(diff), "2026-09-12")
             self.assertEqual(subject, "no new prints")
             self.assertIn("## No new prints this run", markdown)
+
+
+# ECB SDMX csvdata shape: units of the currency per EUR, one row per (ccy, day).
+# 2026-07-01 is complete; 2026-07-02 has no USD leg (a holiday in the fixture),
+# so no cross rate can be formed for it.
+FX_ECB_CSV = (
+    "KEY,FREQ,CURRENCY,CURRENCY_DENOM,EXR_TYPE,EXR_SUFFIX,TIME_PERIOD,OBS_VALUE,OBS_STATUS\n"
+    "EXR.D.JPY.EUR.SP00.A,D,JPY,EUR,SP00,A,2026-07-01,167.50,A\n"
+    "EXR.D.KRW.EUR.SP00.A,D,KRW,EUR,SP00,A,2026-07-01,1534.00,A\n"
+    "EXR.D.USD.EUR.SP00.A,D,USD,EUR,SP00,A,2026-07-01,1.1800,A\n"
+    "EXR.D.JPY.EUR.SP00.A,D,JPY,EUR,SP00,A,2026-07-02,167.80,A\n"
+    "EXR.D.KRW.EUR.SP00.A,D,KRW,EUR,SP00,A,2026-07-02,1535.00,A\n"
+    "EXR.D.JPY.EUR.SP00.A,D,JPY,EUR,SP00,A,2026-07-15,169.00,A\n"
+    "EXR.D.USD.EUR.SP00.A,D,USD,EUR,SP00,A,2026-07-15,1.2000,A\n"
+)
+
+FX_FRANKFURTER_JSON = {
+    "amount": 1.0, "base": "USD", "start_date": "2026-07-01", "end_date": "2026-07-02",
+    "rates": {"2026-07-01": {"JPY": 141.95, "KRW": 1300.0},
+              "2026-07-02": {"JPY": 142.10, "KRW": 1301.5, "GBP": 0.79}},
+}
+
+
+class TestFxRates(unittest.TestCase):
+    """signals/fx_rates.py: cross rates, fallback shape, window averaging."""
+
+    def test_parse_ecb_cross_rate(self):
+        from signals import fx_rates
+        rows = fx_rates.parse_ecb_csv(FX_ECB_CSV, "d", ["JPY", "KRW"])
+        by = {(r["date"], r["quote"]): r for r in rows}
+        # 167.50 yen per EUR / 1.18 USD per EUR = 141.95 yen per USD
+        self.assertAlmostEqual(float(by[("2026-07-01", "JPY")]["rate_per_usd"]), 141.95, places=2)
+        self.assertAlmostEqual(float(by[("2026-07-01", "KRW")]["rate_per_usd"]), 1300.00, places=2)
+        self.assertAlmostEqual(float(by[("2026-07-15", "JPY")]["rate_per_usd"]), 140.83, places=2)
+        # No USD leg on 07-02, so no cross rate is invented for that date.
+        self.assertNotIn(("2026-07-02", "JPY"), by)
+        self.assertEqual({r["source"] for r in rows}, {"ecb"})
+        # USD itself is never stored as a quote against itself.
+        self.assertNotIn("USD", {r["quote"] for r in rows})
+
+    def test_parse_ecb_rejects_wrong_shape(self):
+        from signals import fx_rates
+        self.assertEqual(fx_rates.parse_ecb_csv("not,a,rate,file\n1,2,3,4\n", "d", ["JPY"]), [])
+        self.assertEqual(fx_rates.parse_ecb_csv("", "d", ["JPY"]), [])
+
+    def test_parse_frankfurter(self):
+        from signals import fx_rates
+        rows = fx_rates.parse_frankfurter_json(FX_FRANKFURTER_JSON, "d", ["JPY", "KRW"])
+        self.assertEqual(len(rows), 4)  # GBP is not a configured quote
+        by = {(r["date"], r["quote"]): float(r["rate_per_usd"]) for r in rows}
+        self.assertAlmostEqual(by[("2026-07-02", "JPY")], 142.10, places=2)
+        self.assertEqual({r["source"] for r in rows}, {"frankfurter"})
+
+    def test_window_average_matches_the_published_window(self):
+        from signals import fx_rates
+        rates = {"JPY": {"2026-07-03": 140.0, "2026-07-08": 142.0,   # inside days 1-10
+                         "2026-07-17": 150.0,                        # inside 1-20 only
+                         "2026-07-28": 160.0}}                       # month only
+        self.assertAlmostEqual(fx_rates.window_average(rates, "JPY", "2026-07", "D10"), 141.0)
+        self.assertAlmostEqual(fx_rates.window_average(rates, "JPY", "2026-07", "D20"), 144.0)
+        self.assertAlmostEqual(fx_rates.window_average(rates, "JPY", "2026-07", "MONTH"), 148.0)
+        # A month with nothing stored returns None rather than a guess.
+        self.assertIsNone(fx_rates.window_average(rates, "JPY", "2025-07", "MONTH"))
+        self.assertIsNone(fx_rates.window_average(rates, "KRW", "2026-07", "MONTH"))
+
+    def test_japan_signals_separate_currency_from_trade(self):
+        """A 40% yen rise on a 10% weaker yen is ~27% in USD, ~13 pt currency."""
+        from signals import compute_signals, fx_rates
+        with tempfile.TemporaryDirectory() as tmp:
+            common.write_csv(Path(tmp) / "press_release.csv", japan_customs.PRESS_HEADER, [
+                [m, "MONTH_PROV", "4", "en", "COMMODITY", "E", "WORLD",
+                 "SEMICON MACHINERY ETC", "", v, "", "", "", "", "", "", "", "{}", "d"]
+                for m, v in (("2025-07", "350000"), ("2026-07", "490000"))
+            ])
+            fx = Path(tmp) / "rates_daily.csv"
+            common.write_csv(fx, fx_rates.RATES_HEADER, [
+                ["2025-07-15", "JPY", "140.00", "ecb", "d"],
+                ["2026-07-15", "JPY", "154.00", "ecb", "d"],
+            ])
+            orig_jp, orig_fx = compute_signals.JAPAN_DIR, fx_rates.OUT_DIR
+            compute_signals.JAPAN_DIR, fx_rates.OUT_DIR = Path(tmp), Path(tmp)
+            try:
+                out = compute_signals.japan_signals()
+            finally:
+                compute_signals.JAPAN_DIR, fx_rates.OUT_DIR = orig_jp, orig_fx
+        row = [r for r in out if r[0] == "2026-07" and r[2] == "press_release"][0]
+        self.assertEqual(len(row), len(compute_signals.JAPAN_SIGNAL_HEADER))
+        self.assertEqual(row[6], "40.00")           # yen YoY, as published
+        self.assertEqual(row[8], "154.00")          # rate used for the window
+        self.assertEqual(row[9], "3181818")         # 490,000m yen in USD k
+        self.assertEqual(row[10], "27.27")          # USD YoY: the real move
+        self.assertEqual(row[11], "12.73")          # the yen's share, in points
+
+    def test_japan_signals_leave_currency_blank_without_rates(self):
+        from signals import compute_signals, fx_rates
+        with tempfile.TemporaryDirectory() as tmp:
+            common.write_csv(Path(tmp) / "press_release.csv", japan_customs.PRESS_HEADER, [
+                ["2026-07", "MONTH_PROV", "4", "en", "TOTAL", "E", "WORLD", "EXPORT TOTAL",
+                 "", "490000", "", "", "", "", "", "", "", "{}", "d"]])
+            orig_jp, orig_fx = compute_signals.JAPAN_DIR, fx_rates.OUT_DIR
+            compute_signals.JAPAN_DIR, fx_rates.OUT_DIR = Path(tmp), Path(tmp)
+            try:
+                out = compute_signals.japan_signals()
+            finally:
+                compute_signals.JAPAN_DIR, fx_rates.OUT_DIR = orig_jp, orig_fx
+        self.assertEqual(out[0][8:], ["", "", "", ""])

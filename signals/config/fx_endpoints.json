@@ -1,0 +1,61 @@
+{
+  "_comment": [
+    "Daily reference exchange rates, keyless, so the yen- and won-denominated",
+    "trade series can be restated in USD and a currency move can be separated",
+    "from a real change in trade.",
+    "",
+    "Primary: the ECB Data Portal's SDMX REST service (data-api.ecb.europa.eu),",
+    "no key, no registration. Series EXR/D.<CCY>.EUR.SP00.A is the daily euro",
+    "foreign-exchange reference rate: units of <CCY> per 1 EUR, fixed at 14:15",
+    "CET on TARGET business days. Requesting D.JPY+KRW+USD.EUR.SP00.A returns",
+    "all three in one response, and the cross rate this pipeline stores is",
+    "    <CCY> per USD = (<CCY> per EUR) / (USD per EUR)",
+    "computed per date, so only dates carrying every leg are stored.",
+    "Weekends and TARGET holidays have no observation; window averages below",
+    "average the business days actually present.",
+    "",
+    "Fallback: frankfurter.app, a keyless wrapper over the same ECB rates. It",
+    "is a redistributor, not the primary record (constitution 8.1), so it is",
+    "only used when the ECB endpoint fails, and the store records which source",
+    "each row came from.",
+    "",
+    "Caveat worth keeping in mind when reading the adjusted series: these are",
+    "market reference rates, not the customs conversion rates a customs service",
+    "applies when it values a shipment. Japan Customs publishes its own weekly",
+    "rate at https://www.customs.go.jp/tetsuduki/kawase/ . For separating a",
+    "currency move from a volume move the market rate is the right instrument;",
+    "for reproducing a customs valuation to the yen it is not."
+  ],
+  "quotes": {
+    "JPY": "Japanese yen per USD — restates the MOF trade series",
+    "KRW": "Korean won per USD — context only; the KCS series is already USD"
+  },
+  "history_start": "2015-01-01",
+  "_history_start_note": [
+    "The ECB series reaches back to 1999, and Japan's time-series CSVs reach",
+    "back to 1979, so the USD restatement is blank for the early history by",
+    "design. 2015 gives a decade of same-window comparables, which is more",
+    "than any live watch item needs; widen it with the workflow's fx_backfill",
+    "input if a longer run is ever wanted."
+  ],
+  "sources": [
+    {
+      "name": "ecb",
+      "kind": "ecb_sdmx_csv",
+      "url_template": "https://data-api.ecb.europa.eu/service/data/EXR/D.{quotes}+USD.EUR.SP00.A?startPeriod={start}&endPeriod={end}&format=csvdata",
+      "_note": "csvdata carries a header row; the parser reads CURRENCY, TIME_PERIOD and OBS_VALUE by name, so extra SDMX columns are harmless."
+    },
+    {
+      "name": "frankfurter",
+      "kind": "frankfurter_json",
+      "url_template": "https://api.frankfurter.app/{start}..{end}?base=USD&symbols={quotes}",
+      "_note": "Already quoted per USD, so no cross-rate step. Returns {\"rates\": {\"YYYY-MM-DD\": {\"JPY\": 0.0, ...}}}."
+    },
+    {
+      "name": "frankfurter_v1",
+      "kind": "frankfurter_json",
+      "url_template": "https://api.frankfurter.dev/v1/{start}..{end}?base=USD&symbols={quotes}",
+      "_note": "Newer host for the same service, in case the .app domain is retired."
+    }
+  ]
+}

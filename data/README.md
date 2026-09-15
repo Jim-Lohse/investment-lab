@@ -18,6 +18,12 @@ Filled by the scheduled `update-signals` workflow (see `signals/README.md`).
   direction, HTS code, partner country), first write wins; `us/raw/` keeps
   every Census JSON response and the HTS snapshots; `python -m
   signals.us_census reparse` rebuilds the table from `raw/`.
+- `fx/rates_daily.csv` — daily USD reference rates (yen, won) from the ECB
+  Data Portal, keyless, cross-rated through USD per EUR; append-only, first
+  write wins, with the source named per row. `fx/raw/` keeps the payloads and
+  `python -m signals.fx_rates reparse` rebuilds the table from them. Used to
+  restate the yen series in USD so a currency move can be told from a real one.
+  Market reference rates, not customs valuation rates.
 - `derived/` — recomputed outputs (`taiwan_signals.csv`, `korea_signals.csv`,
-  `japan_signals.csv`, `us_signals.csv`, `latest_report.md`). Derived, disposable, regenerated
-  every run.
+  `japan_signals.csv`, `us_signals.csv`, `whats_new.md`, `latest_report.md`).
+  Derived, disposable, regenerated every run.

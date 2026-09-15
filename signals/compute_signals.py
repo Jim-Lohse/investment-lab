@@ -29,6 +29,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+from . import fx_rates
 from .common import CONFIG_DIR, DATA_DIR, prev_year_month, read_csv_dicts, write_csv
 
 TAIWAN_DIR = DATA_DIR / "taiwan" / "monthly_revenue"
@@ -48,6 +49,11 @@ KOREA_SIGNAL_HEADER = [
 JAPAN_SIGNAL_HEADER = [
     "period", "period_type", "source", "item", "value_jpy_m",
     "value_jpy_m_year_ago", "yoy_pct", "yoy_pct_published",
+    # Currency-adjusted view: the same series restated at the reference rate
+    # for the window each print covers. fx_effect_pt is the yen YoY minus the
+    # USD YoY — the percentage points of the published growth that are the
+    # currency rather than the trade. Blank where no rate is stored.
+    "jpy_per_usd", "value_usd_k", "yoy_pct_usd", "fx_effect_pt",
 ]
 US_SIGNAL_HEADER = [
     "period", "imex", "code", "cty_code", "cty_name", "value_usd_k",
@@ -266,6 +272,45 @@ def japan_signals() -> list[list]:
             out.append([yyyymm, "MONTH", f"estat_hs:{stage}", f"{imex}:HS{prefix}",
                         f"{value / 1000.0:.0f}", f"{ago[1] / 1000.0:.0f}" if ago else "",
                         yoy, ""])
+    return _attach_fx(out)
+
+
+def _attach_fx(rows: list[list]) -> list[list]:
+    """Append the four currency columns to each Japan row.
+
+    Values are million yen; the store's rate is yen per USD averaged over the
+    window the print covers (first 10 days, first 20, or the whole month), so a
+    flash print converts on the rate that applied to it. A row with no stored
+    rate keeps empty columns — never an assumed rate.
+    """
+    rates = fx_rates.load_rates()
+    if not rates.get("JPY"):
+        return [row + ["", "", "", ""] for row in rows]
+    cache: dict[tuple, float | None] = {}
+
+    def rate_for(yyyymm: str, period_type: str) -> float | None:
+        key = (yyyymm, period_type)
+        if key not in cache:
+            cache[key] = fx_rates.window_average(rates, "JPY", yyyymm, period_type)
+        return cache[key]
+
+    out: list[list] = []
+    for row in rows:
+        yyyymm, period_type = row[0], row[1]
+        value, value_ago, yoy = _f(row[4]), _f(row[5]), _f(row[6])
+        rate = rate_for(yyyymm, period_type)
+        rate_ago = rate_for(prev_year_month(yyyymm), period_type)
+        usd = f"{value * 1000.0 / rate:.0f}" if value is not None and rate else ""
+        yoy_usd = fx_pt = ""
+        if value is not None and value_ago and rate and rate_ago:
+            now_usd = value * 1000.0 / rate
+            ago_usd = value_ago * 1000.0 / rate_ago
+            if ago_usd:
+                yoy_usd_value = (now_usd / ago_usd - 1.0) * 100.0
+                yoy_usd = f"{yoy_usd_value:.2f}"
+                if yoy is not None:
+                    fx_pt = f"{yoy - yoy_usd_value:.2f}"
+        out.append(row + [f"{rate:.2f}" if rate else "", usd, yoy_usd, fx_pt])
     return out
 
 
@@ -400,11 +445,20 @@ def render_report(tw: list[list], kr: list[list], jp: list[list] | None = None,
                   "monthly-latest`._", ""]
     if jp:
         lines += ["## Japan trade (MOF / Customs) — supply side", "",
-                  "| Period | Window | Source | Item | JPY m | YoY % (store) | YoY % (published) |",
-                  "|---|---|---|---|---:|---:|---:|"]
+                  "_YoY in yen is what MOF publishes. YoY in USD restates the same "
+                  "series at the reference rate for that window; FX pt is the "
+                  "difference, the share of the published growth that is the "
+                  "currency rather than the trade._", "",
+                  "| Period | Window | Source | Item | JPY m | YoY % (yen) | "
+                  "YoY % (USD) | FX pt | YoY % (MOF) |",
+                  "|---|---|---|---|---:|---:|---:|---:|---:|"]
         for row in japan_highlights(jp):
             lines.append(f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} | {row[4]} | "
-                         f"{row[6]} | {row[7]} |")
+                         f"{row[6]} | {row[10]} | {row[11]} | {row[7]} |")
+        rates = sorted({(r[0], r[8]) for r in jp if r[8]})
+        if rates:
+            lines.append(f"\n_Reference rate, newest window stored: "
+                         f"{rates[-1][1]} yen per USD ({rates[-1][0]})._")
         lines.append("")
     else:
         lines += ["## Japan trade (MOF / Customs)", "", "_No data stored yet — run "
