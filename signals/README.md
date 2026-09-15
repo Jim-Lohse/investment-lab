@@ -120,15 +120,15 @@ puts a one-line subject on the data commit ("2 new print groups, 3 flags").
 Flags are screening arithmetic (constitution §21, Tier 1): they open watch
 items, never decision windows (§13.7).
 
-**Daily intelligence brief.** A Claude Routine ("Trade-signals intelligence
-brief") fires every day at 13:05 UTC, after the second scheduled run, reads
-the data commits since the previous brief and their `whats_new.md`, and
-writes the What / So what / What now (due outs) brief. Delivery: a push and
-email notification carrying the brief, and, when the Routine's session has
-GitHub tools, the same text as a comment on issue #3 ("Trade-signal
-intelligence log"). Days with no new prints produce nothing. The brief
-follows the convention in the repository's `CLAUDE.md`; actionable items
-appear first under an ACTION line.
+**Daily intelligence summary.** A Claude Routine fires every weekday at 19:30
+UTC, after the second scheduled run. Its prompt is a short pointer; the whole
+specification lives in `signals/DAILY_SUMMARY.md` in this repository, so the
+wording, shape and rules are changed with a commit rather than by editing the
+Routine in a browser. The summary reads the data commits since the previous
+one, judges each flag as act now, keep watching or ignore, and posts to issue
+#3 with a push and email notification carrying the same text. It is one page,
+plain English, in four parts: Bottom line, What, So what, What now. Days with
+no new figures produce nothing.
 
 **Japan — works immediately, no key.** Three keyless sources, each its own
 workflow step so one drifting schema is one red step:
