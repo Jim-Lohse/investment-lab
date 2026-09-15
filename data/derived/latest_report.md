@@ -54,26 +54,26 @@ _YoY in yen is what MOF publishes. YoY in USD restates the same series at the re
 
 | Period | Window | Source | Item | JPY m | YoY % (yen) | YoY % (USD) | FX pt | YoY % (MOF) |
 |---|---|---|---|---:|---:|---:|---:|---:|
-| 2026-07 | MONTH | press_release | BAL:Grand Total | -638344 |  |  |  | 308.50 |
-| 2026-07 | MONTH | press_release | E:(IC) | 659368 |  |  |  | 52 |
-| 2026-07 | MONTH | press_release | E:ELECTRICAL MEASURING | 228432 |  |  |  | 26.80 |
-| 2026-07 | MONTH | press_release | E:Grand Total | 11509374 |  |  |  | 23.20 |
-| 2026-07 | MONTH | press_release | E:SCIENTIFIC, OPTICAL INST | 271075 |  |  |  | 16.50 |
-| 2026-07 | MONTH | press_release | E:SEMICON MACHINERY ETC | 493950 |  |  |  | 40.70 |
-| 2026-07 | MONTH | press_release | E:SEMICONDUCTORS ETC | 862099 |  |  |  | 49.10 |
-| 2026-07 | MONTH | press_release | E:TELEPHONY, TELEGRAPHY | 34047 |  |  |  | 20.60 |
-| 2026-07 | MONTH | press_release | I:(IC) | 493295 |  |  |  | 92.60 |
-| 2026-07 | MONTH | press_release | I:ELECTRICAL MEASURING | 112202 |  |  |  | 31.50 |
-| 2026-07 | MONTH | press_release | I:Grand Total | 12147718 |  |  |  | 27.90 |
-| 2026-07 | MONTH | press_release | I:SCIENTIFIC, OPTICAL INST | 244216 |  |  |  | 10.50 |
-| 2026-07 | MONTH | press_release | I:SEMICONDUCTORS ETC | 547093 |  |  |  | 79.70 |
-| 2026-07 | MONTH | press_release | I:TELEPHONY, TELEGRAPHY | 461870 |  |  |  | 48.20 |
-| 2026-08 | D10 | press_release | BAL:Grand Total | 217306 |  |  |  | -50 |
-| 2026-08 | D10 | press_release | E:Grand Total | 3678584 |  |  |  | 15.50 |
-| 2026-08 | D10 | press_release | I:Grand Total | 3461278 |  |  |  | 25.80 |
-| 2026-08 | D20 | press_release | BAL:Grand Total | -1119533 |  |  |  | 100.70 |
-| 2026-08 | D20 | press_release | E:Grand Total | 6050366 |  |  |  | 18 |
-| 2026-08 | D20 | press_release | I:Grand Total | 7169899 |  |  |  | 26.10 |
+| 2026-07 | MONTH | press_release | BAL:Grand Total | -638344 | 438.95 | 387.23 | 51.72 | 308.50 |
+| 2026-07 | MONTH | press_release | E:(IC) | 659368 | 51.95 | 37.37 | 14.58 | 52 |
+| 2026-07 | MONTH | press_release | E:ELECTRICAL MEASURING | 228432 | 26.81 | 14.64 | 12.17 | 26.80 |
+| 2026-07 | MONTH | press_release | E:Grand Total | 11509374 | 22.97 | 11.17 | 11.80 | 23.20 |
+| 2026-07 | MONTH | press_release | E:SCIENTIFIC, OPTICAL INST | 271075 | 16.47 | 5.29 | 11.18 | 16.50 |
+| 2026-07 | MONTH | press_release | E:SEMICON MACHINERY ETC | 493950 | 40.75 | 27.24 | 13.51 | 40.70 |
+| 2026-07 | MONTH | press_release | E:SEMICONDUCTORS ETC | 862099 | 49.07 | 34.76 | 14.31 | 49.10 |
+| 2026-07 | MONTH | press_release | E:TELEPHONY, TELEGRAPHY | 34047 | 20.59 | 9.02 | 11.57 | 20.60 |
+| 2026-07 | MONTH | press_release | I:(IC) | 493295 | 92.65 | 74.16 | 18.49 | 92.60 |
+| 2026-07 | MONTH | press_release | I:ELECTRICAL MEASURING | 112202 | 31.62 | 18.99 | 12.63 | 31.50 |
+| 2026-07 | MONTH | press_release | I:Grand Total | 12147718 | 28.17 | 15.87 | 12.30 | 27.90 |
+| 2026-07 | MONTH | press_release | I:SCIENTIFIC, OPTICAL INST | 244216 | 10.48 | -0.12 | 10.60 | 10.50 |
+| 2026-07 | MONTH | press_release | I:SEMICONDUCTORS ETC | 547093 | 79.71 | 62.46 | 17.25 | 79.70 |
+| 2026-07 | MONTH | press_release | I:TELEPHONY, TELEGRAPHY | 461870 | 48.19 | 33.97 | 14.22 | 48.20 |
+| 2026-08 | D10 | press_release | BAL:Grand Total | 217306 | -51.62 | -54.60 | 2.98 | -50 |
+| 2026-08 | D10 | press_release | E:Grand Total | 3678584 | 15.50 | 8.39 | 7.11 | 15.50 |
+| 2026-08 | D10 | press_release | I:Grand Total | 3461278 | 26.52 | 18.73 | 7.79 | 25.80 |
+| 2026-08 | D20 | press_release | BAL:Grand Total | -1119533 | 111.83 | 97.36 | 14.47 | 100.70 |
+| 2026-08 | D20 | press_release | E:Grand Total | 6050366 | 17.93 | 9.87 | 8.06 | 18 |
+| 2026-08 | D20 | press_release | I:Grand Total | 7169899 | 26.70 | 18.04 | 8.66 | 26.10 |
 | 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:半導体等製造装置 | 493950 | 40.75 | 27.24 | 13.51 |  |
 | 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:半導体等電子部品 | 862099 | 49.07 | 34.76 | 14.31 |  |
 | 2026-07 | MONTH | timeseries:world_exports_by_commodity | E:科学光学機器 | 271075 | 16.48 | 5.30 | 11.18 |  |
