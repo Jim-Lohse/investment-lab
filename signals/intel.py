@@ -295,10 +295,13 @@ def render(diff: dict, flags: list[dict], today: str) -> tuple[str, str]:
                              f"{new.get(value_col, '')} |")
             lines.append("")
     lines += ["---",
-              f"Flag thresholds: |YoY| >= {FLAG_YOY_PCT:.0f}% on a headline row; U.S. origin "
-              f"share moving >= {FLAG_SHARE_PT:.0f} pt month over month. Screening arithmetic "
-              "(constitution §21, Tier 1). Flags open watch items, never decision windows "
-              "(§13.7). The daily intelligence brief grades them.", ""]
+              "How to read this. A flag is raised when a headline figure grew or shrank by "
+              f"{FLAG_YOY_PCT:.0f}% or more against the same month a year earlier, or when a "
+              f"country's share of what the United States bought moved by {FLAG_SHARE_PT:.0f} "
+              "points or more in a single month. That is arithmetic, not judgement: a flag "
+              "says a number moved, not that the move matters. The daily summary decides "
+              "which ones matter. Flags are early evidence that put things on the watch "
+              "list; on their own they are not grounds for a decision.", ""]
     if n_groups == 0 and not flags:
         subject = "no new prints"
     else:
