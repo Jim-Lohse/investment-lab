@@ -101,6 +101,26 @@ they do:
 - Japan's shipments of chip materials against United States purchases of the
   same.
 
+### How Japan and the United States compare, measured
+
+Tested 2026-09-15 over 27 months of chip-making equipment (Japan's "SEMICON
+MACHINERY ETC" to the United States, against United States purchases of
+customs codes 8486.10, .20, .40 and .90 from Japan):
+
+- **The levels never match.** The United States records about 23% more than
+  Japan reports sending, consistently. No shipping delay explains it: shifting
+  the months by one or two does not improve the match. The cause is a
+  definition difference — the United States counts goods by where they were
+  made, Japan by where they were sent, so a Japanese machine shipped via a
+  third country appears in one record and not the other.
+- **The growth rates do track**, at 0.87 on a scale where 1.0 is perfect.
+- **Single months still disagree badly.** In July 2026 Japan reported 21%
+  growth while the United States reported a slight fall.
+
+So use the two together to confirm a trend over three months or more. Never
+present them as confirming or contradicting each other on a single month, and
+never remark on the size gap as though it were news.
+
 ## Step 3. Write it
 
 Plain English. Short sentences. No italics. **One page maximum**, about 500
