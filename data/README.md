@@ -23,7 +23,9 @@ Filled by the scheduled `update-signals` workflow (see `signals/README.md`).
   write wins, with the source named per row. `fx/raw/` keeps the payloads and
   `python -m signals.fx_rates reparse` rebuilds the table from them. Used to
   restate the yen series in USD so a currency move can be told from a real one.
-  Market reference rates, not customs valuation rates.
+  Market reference rates; Japan Customs' own valuation rate is computed from
+  them rather than stored, since customs law defines it as the market average
+  from two weeks earlier.
 - `derived/` — recomputed outputs (`taiwan_signals.csv`, `korea_signals.csv`,
   `japan_signals.csv`, `us_signals.csv`, `whats_new.md`, `latest_report.md`).
   Derived, disposable, regenerated every run.

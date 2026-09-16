@@ -60,32 +60,44 @@
   ],
   "japan_customs": {
     "_comment": [
-      "Japan Customs publishes the exchange rates it applies when valuing a",
-      "shipment (税関長公示レート). They are fixed weekly, from an average of",
-      "an earlier period, and apply to the whole week — so they lag the market",
-      "by design. Japan's published trade values in yen embed these rates, not",
-      "the market rate, wherever an invoice was in foreign currency.",
+      "Japan Customs fixes the exchange rate it applies when valuing a",
+      "shipment (税関長公示レート). Japan's published yen trade values embed",
+      "that rate, not the market rate, wherever an invoice was in foreign",
+      "currency — so it is the technically correct deflator for Japan's own",
+      "figures, and the market rate is the right instrument for asking what a",
+      "flow is worth in dollars today. The pipeline carries both.",
       "",
-      "That makes them the technically correct deflator for Japan's own yen",
-      "figures, and the market rate the right instrument for asking what a",
-      "flow is worth in dollars today. The pipeline stores both and says which",
-      "is which; it does not silently swap one for the other.",
+      "The rate is not fetched. Customs law defines it exactly: the rate for",
+      "the week of an import declaration is the average of the actual market",
+      "rate over the week TWO WEEKS EARLIER (関税定率法第4条の7; 施行規則第1条),",
+      "weeks running Sunday to Saturday. The pipeline already stores daily",
+      "market rates, so it computes the customs rate from them rather than",
+      "scraping 50 PDFs a year. The customs series therefore reaches as far",
+      "back as the market series does.",
       "",
-      "The page layout is not known from the build sandbox (customs.go.jp is",
-      "unreachable there), so `capture-customs` snapshots the index pages and",
-      "any weekly-rate pages they link to into data/fx/raw/pages/, and the",
-      "parser is written against those payloads. Candidate index URLs below",
-      "are tried in order; whichever answer is saved."
+      "Verified 2026-09-16 against three published rates for the US dollar:",
+      "  week of 2025-07-27  published 148.12  computed 148.26  (+0.09%)",
+      "  week of 2025-09-07  published 147.36  computed 147.39  (+0.02%)",
+      "  week of 2025-10-26  published 151.20  computed 151.49  (+0.19%)",
+      "The residual is the fixing convention: Japan Customs averages the Tokyo",
+      "interbank spot mid rate, the stored series is the ECB's daily fix. Close",
+      "enough to separate a currency move from a volume move; not exact enough",
+      "to reproduce a customs valuation to the yen. For that read the official",
+      "PDF for the week — the authority, not this computation."
     ],
-    "index_urls": [
-      "https://www.customs.go.jp/tetsuduki/kawase/index.htm",
-      "https://www.customs.go.jp/tetsuduki/kawase/",
-      "https://www.customs.go.jp/english/tariff/kawase/index.htm"
-    ],
-    "link_pattern": "kawase",
-    "max_linked_pages": 8,
+    "rule": {
+      "week_starts_on": "sunday",
+      "source_week_offset": -2,
+      "_note": "Rate applying in week W = mean market rate over week W-2."
+    },
+    "official_pages": {
+      "index_ja": "https://www.customs.go.jp/tetsuzuki/kawase/index.htm",
+      "index_en": "https://www.customs.go.jp/english/kawase/index_e.htm",
+      "weekly_pdf_template": "https://www.customs.go.jp/tetsuzuki/kawase/kawase{year}/kouji-rate{start}-{end}.pdf",
+      "_pdf_note": "start and end are YYYYMMDD of the applicable week, Sunday to Saturday; {year} is the year the week starts in. The path is tetsuzuki, not tetsuduki."
+    },
     "quotes": [
-      "USD"
+      "JPY"
     ]
   }
 }

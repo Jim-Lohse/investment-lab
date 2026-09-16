@@ -54,6 +54,11 @@ JAPAN_SIGNAL_HEADER = [
     # USD YoY — the percentage points of the published growth that are the
     # currency rather than the trade. Blank where no rate is stored.
     "jpy_per_usd", "value_usd_k", "yoy_pct_usd", "fx_effect_pt",
+    # The same restatement at the rate Japan Customs actually applied when it
+    # valued these shipments, which its yen figures embed. It lags the market
+    # by two weeks by law, so the two USD growth rates differ a little; when
+    # they differ a lot, the choice of rate is itself worth knowing about.
+    "jpy_per_usd_customs", "yoy_pct_usd_customs",
 ]
 US_SIGNAL_HEADER = [
     "period", "imex", "code", "cty_code", "cty_name", "value_usd_k",
@@ -285,14 +290,22 @@ def _attach_fx(rows: list[list]) -> list[list]:
     """
     rates = fx_rates.load_rates()
     if not rates.get("JPY"):
-        return [row + ["", "", "", ""] for row in rows]
+        return [row + ["", "", "", "", "", ""] for row in rows]
     cache: dict[tuple, float | None] = {}
+    customs_cache: dict[tuple, float | None] = {}
 
     def rate_for(yyyymm: str, period_type: str) -> float | None:
         key = (yyyymm, period_type)
         if key not in cache:
             cache[key] = fx_rates.window_average(rates, "JPY", yyyymm, period_type)
         return cache[key]
+
+    def customs_for(yyyymm: str, period_type: str) -> float | None:
+        key = (yyyymm, period_type)
+        if key not in customs_cache:
+            customs_cache[key] = fx_rates.customs_window_average(
+                rates, "JPY", yyyymm, period_type)
+        return customs_cache[key]
 
     out: list[list] = []
     for row in rows:
@@ -310,7 +323,15 @@ def _attach_fx(rows: list[list]) -> list[list]:
                 yoy_usd = f"{yoy_usd_value:.2f}"
                 if yoy is not None:
                     fx_pt = f"{yoy - yoy_usd_value:.2f}"
-        out.append(row + [f"{rate:.2f}" if rate else "", usd, yoy_usd, fx_pt])
+        c_rate = customs_for(yyyymm, period_type)
+        c_rate_ago = customs_for(prev_year_month(yyyymm), period_type)
+        yoy_usd_customs = ""
+        if value is not None and value_ago and c_rate and c_rate_ago:
+            ago_usd = value_ago * 1000.0 / c_rate_ago
+            if ago_usd:
+                yoy_usd_customs = f"{((value * 1000.0 / c_rate) / ago_usd - 1.0) * 100.0:.2f}"
+        out.append(row + [f"{rate:.2f}" if rate else "", usd, yoy_usd, fx_pt,
+                          f"{c_rate:.2f}" if c_rate else "", yoy_usd_customs])
     return out
 
 

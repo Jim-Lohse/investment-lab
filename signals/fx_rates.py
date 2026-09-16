@@ -20,7 +20,7 @@ Usage:
     python -m signals.fx_rates daily                  # last 10 days, idempotent
     python -m signals.fx_rates daily 2026-01-01 2026-09-15
     python -m signals.fx_rates backfill 2015-01-01 2026-09-15
-    python -m signals.fx_rates capture-customs        # snapshot Japan Customs pages
+    python -m signals.fx_rates customs 2026-09-16     # customs rate for that week
     python -m signals.fx_rates reparse
 """
 
@@ -277,68 +277,68 @@ def reparse() -> None:
 
 # --- Japan Customs valuation rates ------------------------------------------
 
-def capture_customs() -> None:
-    """Snapshot the Japan Customs rate pages for parser development.
+def _week_start(day: dt.date) -> dt.date:
+    """The Sunday that begins the customs week containing `day`."""
+    return day - dt.timedelta(days=(day.weekday() + 1) % 7)
 
-    customs.go.jp is unreachable from the build sandbox, so this runs in CI and
-    commits the payloads under data/fx/raw/pages/. It fetches each candidate
-    index page, then follows the links on it that look like weekly-rate pages,
-    so one run is usually enough to see the real markup.
+
+def customs_rate_for_day(rates: dict[str, dict[str, float]], quote: str,
+                         day: dt.date, offset_weeks: int = -2) -> float | None:
+    """The rate Japan Customs applies on `day`, computed from market rates.
+
+    Customs law sets the rate for a week to the average market rate over the
+    week two weeks earlier, so it is derived rather than fetched. Returns None
+    when the source week has no stored rate — never a guess.
     """
-    cfg = _load_config().get("japan_customs")
-    if not cfg:
-        print("no japan_customs section configured")
-        return
-    PAGES_DIR.mkdir(parents=True, exist_ok=True)
-    pattern = cfg.get("link_pattern", "kawase")
-    seen: set[str] = set()
-    saved = 0
-    for index_url in cfg["index_urls"]:
+    by_date = rates.get(quote.upper())
+    if not by_date:
+        return None
+    source_start = _week_start(day) + dt.timedelta(weeks=offset_weeks)
+    source_end = source_start + dt.timedelta(days=6)
+    lo, hi = source_start.isoformat(), source_end.isoformat()
+    values = [rate for date, rate in by_date.items() if lo <= date <= hi]
+    return sum(values) / len(values) if values else None
+
+
+def customs_window_average(rates: dict[str, dict[str, float]], quote: str,
+                           yyyymm: str, period_type: str = "MONTH") -> float | None:
+    """Mean customs rate over the days a published window covers.
+
+    Averaged per calendar day rather than per business day, because a customs
+    rate applies to every day of its week, weekends included.
+    """
+    if len(yyyymm) < 7:
+        return None
+    year, month = int(yyyymm[:4]), int(yyyymm[5:7])
+    first, last = WINDOW_DAYS.get(period_type, (1, 31))
+    values: list[float] = []
+    for day_number in range(first, last + 1):
         try:
-            resp = http_get(index_url, retries=1)
-        except Exception as err:  # noqa: BLE001 - try the next candidate
-            print(f"index {index_url}: {type(err).__name__}: {err}")
-            continue
-        name = "customs_index_" + str(len(seen)) + ".html"
-        (PAGES_DIR / name).write_bytes(resp.content[:2_000_000])
-        saved += 1
-        print(f"captured pages/{name}: {len(resp.content)} bytes from {index_url}")
-        text = resp.content.decode("utf-8", "replace")
-        links = _links_matching(text, index_url, pattern)
-        for link in links[: int(cfg.get("max_linked_pages", 8))]:
-            if link in seen:
-                continue
-            seen.add(link)
-            try:
-                page = http_get(link, retries=1)
-            except Exception as err:  # noqa: BLE001
-                print(f"  link {link}: {type(err).__name__}: {err}")
-                continue
-            leaf = re.sub(r"[^A-Za-z0-9._-]", "_", link.rsplit("/", 1)[-1] or "page")
-            (PAGES_DIR / f"customs_{leaf}").write_bytes(page.content[:2_000_000])
-            saved += 1
-            print(f"  captured pages/customs_{leaf}: {len(page.content)} bytes")
-            time.sleep(1.0)
-        if links:
-            break  # the first index that yielded links is enough
-    if not saved:
-        raise RuntimeError("japan customs: nothing captured from any index URL")
+            day = dt.date(year, month, day_number)
+        except ValueError:
+            break  # ran past the end of a short month
+        rate = customs_rate_for_day(rates, quote, day)
+        if rate:
+            values.append(rate)
+    return sum(values) / len(values) if values else None
 
 
-def _links_matching(html: str, base_url: str, pattern: str) -> list[str]:
-    """Absolute URLs of hrefs on the page whose target contains `pattern`."""
-    out: list[str] = []
-    for href in re.findall(r'href=["\']([^"\'>]+)["\']', html, re.I):
-        if pattern.lower() not in href.lower():
-            continue
-        out.append(urljoin(base_url, href))
-    # Preserve order, drop duplicates and anything that is not a page.
-    keep: list[str] = []
-    for url in out:
-        if url in keep or url.endswith((".css", ".js", ".png", ".gif", ".jpg")):
-            continue
-        keep.append(url)
-    return keep
+def print_customs_week(date_iso: str | None = None) -> None:
+    """Print the computed customs rate for a week, to compare by eye against
+    the official PDF. The PDF is the authority; this is the check."""
+    cfg = _load_config().get("japan_customs", {})
+    day = dt.date.fromisoformat(date_iso) if date_iso else dt.date.today()
+    rates = load_rates()
+    start = _week_start(day)
+    end = start + dt.timedelta(days=6)
+    for quote in cfg.get("quotes", ["JPY"]):
+        rate = customs_rate_for_day(rates, quote, day)
+        shown = f"{rate:.2f}" if rate else "not computed (no stored market rate)"
+        print(f"week {start}..{end}  {quote} per USD, computed: {shown}")
+    template = cfg.get("official_pages", {}).get("weekly_pdf_template", "")
+    if template:
+        print("official rate for that week: " + template.format(
+            year=start.year, start=start.strftime("%Y%m%d"), end=end.strftime("%Y%m%d")))
 
 
 def main(argv: list[str]) -> int:
@@ -353,8 +353,8 @@ def main(argv: list[str]) -> int:
             print(__doc__)
             return 2
         backfill(argv[1], argv[2])
-    elif cmd == "capture-customs":
-        capture_customs()
+    elif cmd == "customs":
+        print_customs_week(argv[1] if len(argv) > 1 else None)
     elif cmd == "reparse":
         reparse()
     else:
