@@ -57,5 +57,47 @@
       "url_template": "https://api.frankfurter.dev/v1/{start}..{end}?base=USD&symbols={quotes}",
       "_note": "Newer host for the same service, in case the .app domain is retired."
     }
-  ]
+  ],
+  "japan_customs": {
+    "_comment": [
+      "Japan Customs fixes the exchange rate it applies when valuing a",
+      "shipment (税関長公示レート). Japan's published yen trade values embed",
+      "that rate, not the market rate, wherever an invoice was in foreign",
+      "currency — so it is the technically correct deflator for Japan's own",
+      "figures, and the market rate is the right instrument for asking what a",
+      "flow is worth in dollars today. The pipeline carries both.",
+      "",
+      "The rate is not fetched. Customs law defines it exactly: the rate for",
+      "the week of an import declaration is the average of the actual market",
+      "rate over the week TWO WEEKS EARLIER (関税定率法第4条の7; 施行規則第1条),",
+      "weeks running Sunday to Saturday. The pipeline already stores daily",
+      "market rates, so it computes the customs rate from them rather than",
+      "scraping 50 PDFs a year. The customs series therefore reaches as far",
+      "back as the market series does.",
+      "",
+      "Verified 2026-09-16 against three published rates for the US dollar:",
+      "  week of 2025-07-27  published 148.12  computed 148.26  (+0.09%)",
+      "  week of 2025-09-07  published 147.36  computed 147.39  (+0.02%)",
+      "  week of 2025-10-26  published 151.20  computed 151.49  (+0.19%)",
+      "The residual is the fixing convention: Japan Customs averages the Tokyo",
+      "interbank spot mid rate, the stored series is the ECB's daily fix. Close",
+      "enough to separate a currency move from a volume move; not exact enough",
+      "to reproduce a customs valuation to the yen. For that read the official",
+      "PDF for the week — the authority, not this computation."
+    ],
+    "rule": {
+      "week_starts_on": "sunday",
+      "source_week_offset": -2,
+      "_note": "Rate applying in week W = mean market rate over week W-2."
+    },
+    "official_pages": {
+      "index_ja": "https://www.customs.go.jp/tetsuzuki/kawase/index.htm",
+      "index_en": "https://www.customs.go.jp/english/kawase/index_e.htm",
+      "weekly_pdf_template": "https://www.customs.go.jp/tetsuzuki/kawase/kawase{year}/kouji-rate{start}-{end}.pdf",
+      "_pdf_note": "start and end are YYYYMMDD of the applicable week, Sunday to Saturday; {year} is the year the week starts in. The path is tetsuzuki, not tetsuduki."
+    },
+    "quotes": [
+      "JPY"
+    ]
+  }
 }

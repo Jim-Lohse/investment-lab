@@ -105,10 +105,21 @@ four columns: `jpy_per_usd`, `value_usd_k`, `yoy_pct_usd` and `fx_effect_pt`.
 The last is the published yen YoY minus the USD YoY: the percentage points of
 the growth that are the currency. A row with no stored rate keeps those columns
 empty; no rate is ever assumed. Korea's series is already in USD and is not
-adjusted, so the won rate is stored for context only. These are market
-reference rates, not the customs valuation rates a customs service applies —
-right for separating currency from volume, wrong for reproducing a customs
-figure to the yen.
+adjusted, so the won rate is stored for context only.
+
+Two rates, both carried. The market rate answers what a flow is worth in
+dollars today. Japan Customs applies its own rate when it values a shipment,
+and Japan's yen figures embed that one — so `jpy_per_usd_customs` and
+`yoy_pct_usd_customs` restate the series at it. The customs rate is not
+fetched: customs law fixes a week's rate at the average market rate of the week
+two weeks earlier, so it is computed from the stored daily rates, which also
+means it reaches back as far as they do. Verified against three published
+weeks to within 0.2%; the residual is the fixing convention. The official
+weekly PDF remains the authority — `python -m signals.fx_rates customs
+<date>` prints the computed rate for that week and the URL to check it against.
+In practice the two USD growth rates land within about a point of each other,
+so the choice of rate rarely changes a reading; when it does, that is worth
+knowing.
 
 **What changed, every run.** After `compute_signals`, the workflow runs
 `python -m signals.intel --previous <snapshot>` against the pre-run copy of

@@ -706,6 +706,45 @@ class TestFxRates(unittest.TestCase):
         self.assertEqual(row[9], "3181818")         # 490,000m yen in USD k
         self.assertEqual(row[10], "27.27")          # USD YoY: the real move
         self.assertEqual(row[11], "12.73")          # the yen's share, in points
+        # The customs rate is the market average from two weeks earlier, and
+        # the fixture stores one rate per year, so both years resolve to it.
+        self.assertEqual(row[12], "154.00")
+        self.assertEqual(row[13], "27.27")
+
+    def test_customs_rate_is_the_market_average_two_weeks_earlier(self):
+        """Japan Customs fixes a week's rate from the market two weeks before."""
+        from signals import fx_rates
+        # 2025-09-07 is a Sunday; its customs week draws on 2025-08-24..08-30.
+        rates = {"JPY": {"2025-08-25": 147.0, "2025-08-26": 147.5,
+                         "2025-08-27": 147.2, "2025-08-28": 147.6,
+                         "2025-08-29": 147.7,
+                         # Inside the applicable week itself: must be ignored.
+                         "2025-09-08": 160.0, "2025-09-09": 161.0}}
+        import datetime as dt
+        for day in ("2025-09-07", "2025-09-10", "2025-09-13"):
+            rate = fx_rates.customs_rate_for_day(rates, "JPY", dt.date.fromisoformat(day))
+            self.assertAlmostEqual(rate, 147.4, places=2,
+                                   msg=f"{day} should use the 2025-08-24 week")
+        # Two weeks later the source window has moved on to the week of
+        # 2025-09-07, so the same fixture yields the later pair instead.
+        self.assertAlmostEqual(fx_rates.customs_rate_for_day(
+            rates, "JPY", dt.date.fromisoformat("2025-09-21")), 160.5, places=2)
+        # A week whose source window holds nothing computes to nothing.
+        self.assertIsNone(fx_rates.customs_rate_for_day(
+            rates, "JPY", dt.date.fromisoformat("2026-05-10")))
+        self.assertIsNone(fx_rates.customs_rate_for_day(
+            rates, "USD", dt.date.fromisoformat("2025-09-10")))
+
+    def test_customs_window_average_covers_every_day_of_the_window(self):
+        from signals import fx_rates
+        # Two source weeks feed September 2026's first ten days.
+        rates = {"JPY": {"2026-08-18": 150.0, "2026-08-19": 150.0,
+                         "2026-08-25": 160.0, "2026-08-26": 160.0}}
+        # Sept 1-5 sit in the week starting Aug 30, sourced from Aug 16;
+        # Sept 6-10 sit in the week starting Sept 6, sourced from Aug 23.
+        avg = fx_rates.customs_window_average(rates, "JPY", "2026-09", "D10")
+        self.assertAlmostEqual(avg, 155.0, places=2)
+        self.assertIsNone(fx_rates.customs_window_average(rates, "JPY", "2024-01"))
 
     def test_japan_signals_leave_currency_blank_without_rates(self):
         from signals import compute_signals, fx_rates
@@ -719,4 +758,4 @@ class TestFxRates(unittest.TestCase):
                 out = compute_signals.japan_signals()
             finally:
                 compute_signals.JAPAN_DIR, fx_rates.OUT_DIR = orig_jp, orig_fx
-        self.assertEqual(out[0][8:], ["", "", "", ""])
+        self.assertEqual(out[0][8:], ["", "", "", "", "", ""])

@@ -79,6 +79,12 @@ figure alongside the yen one. The yen figure alone overstates what really
 happened. Korea and United States figures are already in dollars and need no
 such adjustment.
 
+Two further columns, `jpy_per_usd_customs` and `yoy_pct_usd_customs`, restate
+the same figures at the rate Japan Customs applied when it valued the
+shipments. Report the ordinary dollar figure; mention the customs one only if
+the two growth rates differ by more than about two points, which would mean the
+choice of exchange rate is itself changing the reading.
+
 ## Step 2. Judge every flag
 
 Each flag in `whats_new.md` gets exactly one verdict:
