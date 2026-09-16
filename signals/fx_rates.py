@@ -20,6 +20,7 @@ Usage:
     python -m signals.fx_rates daily                  # last 10 days, idempotent
     python -m signals.fx_rates daily 2026-01-01 2026-09-15
     python -m signals.fx_rates backfill 2015-01-01 2026-09-15
+    python -m signals.fx_rates capture-customs        # snapshot Japan Customs pages
     python -m signals.fx_rates reparse
 """
 
@@ -29,14 +30,18 @@ import csv
 import datetime as dt
 import io
 import json
+import re
 import sys
+import time
 from pathlib import Path
+from urllib.parse import urljoin
 
 from .common import (CONFIG_DIR, DATA_DIR, append_dedup_csv, fmt, http_get,
                      parse_number, write_csv)
 
 OUT_DIR = DATA_DIR / "fx"
 RAW_DIR = OUT_DIR / "raw"
+PAGES_DIR = RAW_DIR / "pages"
 
 RATES_HEADER = ["date", "quote", "rate_per_usd", "source", "retrieved_at"]
 RATES_KEY = ["date", "quote"]
@@ -270,6 +275,72 @@ def reparse() -> None:
         print("rates_daily.csv: removed (no raw payloads)")
 
 
+# --- Japan Customs valuation rates ------------------------------------------
+
+def capture_customs() -> None:
+    """Snapshot the Japan Customs rate pages for parser development.
+
+    customs.go.jp is unreachable from the build sandbox, so this runs in CI and
+    commits the payloads under data/fx/raw/pages/. It fetches each candidate
+    index page, then follows the links on it that look like weekly-rate pages,
+    so one run is usually enough to see the real markup.
+    """
+    cfg = _load_config().get("japan_customs")
+    if not cfg:
+        print("no japan_customs section configured")
+        return
+    PAGES_DIR.mkdir(parents=True, exist_ok=True)
+    pattern = cfg.get("link_pattern", "kawase")
+    seen: set[str] = set()
+    saved = 0
+    for index_url in cfg["index_urls"]:
+        try:
+            resp = http_get(index_url, retries=1)
+        except Exception as err:  # noqa: BLE001 - try the next candidate
+            print(f"index {index_url}: {type(err).__name__}: {err}")
+            continue
+        name = "customs_index_" + str(len(seen)) + ".html"
+        (PAGES_DIR / name).write_bytes(resp.content[:2_000_000])
+        saved += 1
+        print(f"captured pages/{name}: {len(resp.content)} bytes from {index_url}")
+        text = resp.content.decode("utf-8", "replace")
+        links = _links_matching(text, index_url, pattern)
+        for link in links[: int(cfg.get("max_linked_pages", 8))]:
+            if link in seen:
+                continue
+            seen.add(link)
+            try:
+                page = http_get(link, retries=1)
+            except Exception as err:  # noqa: BLE001
+                print(f"  link {link}: {type(err).__name__}: {err}")
+                continue
+            leaf = re.sub(r"[^A-Za-z0-9._-]", "_", link.rsplit("/", 1)[-1] or "page")
+            (PAGES_DIR / f"customs_{leaf}").write_bytes(page.content[:2_000_000])
+            saved += 1
+            print(f"  captured pages/customs_{leaf}: {len(page.content)} bytes")
+            time.sleep(1.0)
+        if links:
+            break  # the first index that yielded links is enough
+    if not saved:
+        raise RuntimeError("japan customs: nothing captured from any index URL")
+
+
+def _links_matching(html: str, base_url: str, pattern: str) -> list[str]:
+    """Absolute URLs of hrefs on the page whose target contains `pattern`."""
+    out: list[str] = []
+    for href in re.findall(r'href=["\']([^"\'>]+)["\']', html, re.I):
+        if pattern.lower() not in href.lower():
+            continue
+        out.append(urljoin(base_url, href))
+    # Preserve order, drop duplicates and anything that is not a page.
+    keep: list[str] = []
+    for url in out:
+        if url in keep or url.endswith((".css", ".js", ".png", ".gif", ".jpg")):
+            continue
+        keep.append(url)
+    return keep
+
+
 def main(argv: list[str]) -> int:
     if not argv:
         print(__doc__)
@@ -282,6 +353,8 @@ def main(argv: list[str]) -> int:
             print(__doc__)
             return 2
         backfill(argv[1], argv[2])
+    elif cmd == "capture-customs":
+        capture_customs()
     elif cmd == "reparse":
         reparse()
     else:

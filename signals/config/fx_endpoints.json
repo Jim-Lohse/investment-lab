@@ -57,5 +57,35 @@
       "url_template": "https://api.frankfurter.dev/v1/{start}..{end}?base=USD&symbols={quotes}",
       "_note": "Newer host for the same service, in case the .app domain is retired."
     }
-  ]
+  ],
+  "japan_customs": {
+    "_comment": [
+      "Japan Customs publishes the exchange rates it applies when valuing a",
+      "shipment (税関長公示レート). They are fixed weekly, from an average of",
+      "an earlier period, and apply to the whole week — so they lag the market",
+      "by design. Japan's published trade values in yen embed these rates, not",
+      "the market rate, wherever an invoice was in foreign currency.",
+      "",
+      "That makes them the technically correct deflator for Japan's own yen",
+      "figures, and the market rate the right instrument for asking what a",
+      "flow is worth in dollars today. The pipeline stores both and says which",
+      "is which; it does not silently swap one for the other.",
+      "",
+      "The page layout is not known from the build sandbox (customs.go.jp is",
+      "unreachable there), so `capture-customs` snapshots the index pages and",
+      "any weekly-rate pages they link to into data/fx/raw/pages/, and the",
+      "parser is written against those payloads. Candidate index URLs below",
+      "are tried in order; whichever answer is saved."
+    ],
+    "index_urls": [
+      "https://www.customs.go.jp/tetsuduki/kawase/index.htm",
+      "https://www.customs.go.jp/tetsuduki/kawase/",
+      "https://www.customs.go.jp/english/tariff/kawase/index.htm"
+    ],
+    "link_pattern": "kawase",
+    "max_linked_pages": 8,
+    "quotes": [
+      "USD"
+    ]
+  }
 }

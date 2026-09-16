@@ -59,6 +59,10 @@ on:
         description: "Backfill reference rates, e.g. 2015-01-01:2026-09-15 (one request per year)"
         required: false
         default: ""
+      fx_capture_customs:
+        description: "Set to any value to snapshot Japan Customs rate pages into data/fx/raw/pages/"
+        required: false
+        default: ""
       us_only:
         description: "Set to any value to run only the U.S. Census steps"
         required: false
@@ -202,6 +206,11 @@ jobs:
           else
             python -m signals.fx_rates daily
           fi
+
+      - name: Capture Japan Customs rate pages for parser development (manual runs only)
+        if: ${{ github.event.inputs.fx_capture_customs != '' }}
+        continue-on-error: true
+        run: python -m signals.fx_rates capture-customs
 
       - name: Snapshot the previous derived tables (baseline for the diff)
         run: |
