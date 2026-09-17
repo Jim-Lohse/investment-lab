@@ -1,10 +1,14 @@
-# THE INVESTMENT LAB — VERSION 2.2.1
+# THE INVESTMENT LAB — VERSION 2.3.0
+
+### Label: "Return on Capital in Service" amendment, applied 2026-09-17
 
 ## Research Governance, Experimental Control, and Validation
 
 ### STATUS
 
-This document supersedes the Constraint Alpha Lab v2.1 and all conflicting provisions of Version 1. The name change is deliberate: the laboratory's scope now covers all three return engines of the Idea Generation Operating System (quality compounders and serial acquirers, binding-constraint repricing, special situations), not constraint theses alone. Constraint analysis remains a core discipline; it is no longer the definition of the lab.
+This document supersedes Version 2.2.1, the Constraint Alpha Lab v2.1, and all conflicting provisions of Version 1. The name change from Constraint Alpha Lab was deliberate: the laboratory's scope covers all three return engines of the Idea Generation Operating System (quality compounders and serial acquirers, binding-constraint repricing, special situations), not constraint theses alone. Constraint analysis remains a core discipline; it is no longer the definition of the lab.
+
+Version 2.3.0 is a narrow change with one purpose: to let one set of rules screen both the compounder engine and the bottleneck engine, rather than splitting the lab into two competing documents. The lab is not forked. Where the two engines genuinely differ — how price is tested — the document now carries two paragraphs instead of two constitutions.
 
 ### CHANGE LOG FROM v2.1
 
@@ -26,6 +30,22 @@ This document supersedes the Constraint Alpha Lab v2.1 and all conflicting provi
 A1. Masking principle, "evidence in, verdicts out" (Section 18): run records separate evidence from verdicts; blind reruns receive evidence-only packets in separated agent contexts.
 A2. Calendar Gate (Section 13.6): dated decision windows may not lapse silently; explicit act/pass/extend decision required on or before expiry. Founding precedent: GMED closed with explicit PASS 2026-07-29.
 A3. Window-evidence rule (Section 13.7): a Tier 1 scan opens watch items only; a dated decision window requires Tier 2 evidence in hand before it opens. Codifies the GMED structural lesson.
+
+### AMENDMENTS v2.2.1 → v2.3.0 (applied 2026-09-17)
+
+B1. The Financial Translation pillar (Section 10.2) is now scored on return on capital in service instead of free cash flow.
+
+Return on capital in service means yearly operating profit after tax divided by the money already working in the business — plants and equipment that are running, plus working capital. Money spent on plants that are not open yet is left out of that figure. On a balance sheet it usually sits in a line called construction in progress or assets under construction.
+
+Reason for the change: free cash flow asks whether cash came out of the business this year. That question automatically fails any company halfway through building new capacity, which is exactly what a bottleneck company looks like. Return on capital in service asks a better question — how well does the money already committed actually earn? A good compounder passes it. A bottleneck company earning well on its existing certified capacity passes it. A company spending heavily while earning poorly on what it already owns fails it, and that is the case worth cutting.
+
+B2. Gate -1 (Section 3) now states the bottleneck-engine size band, which v2.2.1 required but never wrote down. The band is $2B and up with no ceiling, paired with a purity test: the bottleneck business must be a separately reported segment worth roughly 30 percent or more of revenue or operating profit. A ceiling is the wrong tool here, because size is not what dilutes a conglomerate. The purity test is the right tool.
+
+B3. Two price tests, one per engine, are written down in Section 22.5. A compounder can be tested against the earnings it already produces. A bottleneck company cannot, because the earnings that matter come from capacity that is not yet running. This is the only place the two engines genuinely need different rules.
+
+B4. Section 22 is new: the sector-agnostic universe screen. It runs the mechanical parts of Gate -1, the two kill questions, and the cheap-kill test across the whole investable field, in order from cheapest test to most expensive, so the field is reduced before any judgment work begins. It exists because every prior candidate list started from a theme, which decides the answer before the work starts.
+
+B5. Section 17, mandatory baseline 1 (one mechanical screen) is now satisfied by Screen 1.0 in Section 22.
 
 ---
 
@@ -79,7 +99,11 @@ Before any research begins, a candidate must pass a universe filter. This is the
 Requirements, set per engine and reviewed annually:
 
 - Minimum liquidity. ADV means average daily volume — here, average daily dollar volume: the total dollar value of the stock that changes hands on a typical day (shares traded times price, averaged over roughly the trailing 30-90 days). Its purpose is to guarantee you can enter and exit without your own orders moving the price against you; illiquid names penalize you twice, on the way in and the way out. Rule: a full intended position must be buildable or exitable within five trading days while never exceeding 10 percent of ADV on any single day. Example: a stock trading $20 million per day supports 10% x $20M x 5 days = $10 million of position capacity, so any realistic personal position passes. A microcap trading $300,000 per day supports only $150,000 over five days, so a $200,000 intended position fails the filter and the name is not researched.
-- Market-cap band appropriate to the engine (for example, the Conviction Compounder band of $10-80B; constraint and special-situation engines may define wider bands but must state them).
+- Market-value band, stated per engine (v2.3.0):
+  - Compounder engine: $10-80B.
+  - Bottleneck engine: $2B and up, no ceiling, plus the purity test below. The floor exists for data coverage and governance quality, not for trade size.
+  - Purity test for the bottleneck engine: the business that owns the bottleneck must be a segment the company reports separately, worth roughly 30 percent or more of revenue or operating profit. A company where the interesting business is buried inside a much larger unrelated one does not qualify, however good that small business is. This is what keeps diversified giants out; a size ceiling would not do that job, because size is not what dilutes them.
+  - Special-situation engine: band stated at the time the situation is opened, because the relevant size depends on the event.
 - Listing and accounting jurisdiction standards: audited financials under IFRS or US GAAP or a jurisdiction explicitly accepted in writing; ADR vs local-line preference stated per name.
 - Custody and account fit: the security must be holdable in an account the mandate permits (Roth for volatile no-yield names, taxable for cash-return names, per the standing account-placement rule).
 - No security under active sanctions exposure or with unresolvable beneficial-ownership opacity.
@@ -181,7 +205,7 @@ Seven additive pillars. Failure Risk is deliberately excluded from the sum (see 
 | Claim Reality | Is the constraint, compounding engine, or event path genuine and economically material? | 15% |
 | Control and Capture | Can the company control the advantage and retain the economics? | 15% |
 | Duration | How long can the advantage and scarcity persist? | 10% |
-| Financial Translation | Does the advantage create free cash flow and attractive incremental returns? | 15% |
+| Financial Translation | Does the money already committed to this business earn a high return, and does that flow to owners? | 15% |
 | Mispricing | What specifically does the market misunderstand, and why is it knowable now? | 15% |
 | Valuation and Payoff | Is the probability-weighted prospective return attractive at today's price? | 20% |
 | Implementability | Can the position be owned efficiently within the portfolio and mandate? | 10% |
@@ -196,7 +220,15 @@ Control and Capture — 2: high market share but customers can qualify substitut
 
 Duration — 2: capacity response or substitution already announced and funded. 5: advantage likely holds 2-3 years; the erosion path is identifiable. 8: structural barriers to replication credibly exceed 5 years, with the eventual erosion mechanism named anyway.
 
-Financial Translation — 2: advantage visible in revenue but not margins or cash; heavy reinvestment needs with unclear returns. 5: advantage visible in gross margin, partially reaching FCF. 8: advantage flows to FCF with high incremental returns on capital, and management's allocation record supports retention.
+Financial Translation (rewritten in v2.3.0) — scored on return on capital in service.
+
+How to compute it: operating profit after tax for the year, divided by the money already working in the business. The money already working means plants and equipment in service plus working capital. Money spent on plants not yet open is excluded from the bottom of that fraction; on the balance sheet it usually sits in a line called construction in progress or assets under construction. Use a three-year average so a single weak year does not decide the score. Where the figure cannot be separated cleanly from the filings, say so and score the pillar as uncertain rather than guessing.
+
+- 2: return on capital in service below the company's cost of capital, or the advantage shows up in revenue but never reaches margins.
+- 5: return on capital in service in the low teens, with part of the advantage reaching cash.
+- 8: return on capital in service comfortably above 15 percent, new money going in at similar or better rates, and management's allocation record supports keeping it that way.
+
+Note on cash, which this replaces: free cash flow is still reported for every candidate and still matters. Under this pillar it is evidence, not the test. A company spending heavily on new capacity can show negative free cash flow this year and still score 8, provided the capacity it already runs earns well. A company earning poorly on what it already owns cannot score 8 no matter how much cash happens to come out this year. The reason for the change is that the old wording failed mid-build companies automatically, and mid-build is the normal condition of a bottleneck owner.
 
 Mispricing — 2: "market underappreciates" with no mechanism; the idea is on the cover of the theme. 5: identifiable gap (segment buried in a conglomerate, estimates lagging a disclosed inflection) with partial recognition underway. 8: specific, checkable disagreement with consensus, an identified reason the market is wrong (structural seller, coverage gap, complexity), and a recognition path.
 
@@ -318,7 +350,7 @@ Gate F — Portfolio and Process (absorbs 12, 13). Two variants: (i) several ind
 
 Two mandatory baselines per research cycle:
 
-1. One mechanical screen appropriate to the engine (quality, valuation, or momentum/revision).
+1. One mechanical screen appropriate to the engine. From v2.3.0 this is satisfied by Screen 1.0 (Section 22), which covers the compounder and bottleneck engines in one pass.
 2. The named human baseline: Jim's own competent three-hour analysis of the same candidate, done before seeing the lab's full output.
 
 The remaining baselines (market-cap benchmark, equal-weight universe, the other screens, consensus view) rotate quarterly as calibration exercises rather than running on every idea.
@@ -359,6 +391,69 @@ Tier 3 / real-capital sign-offs: Evidence Auditor, Statistical Skeptic, Fundamen
 
 Every output states its validation status: architecturally reviewed; synthetic-gate tested; historically tested; forward tested; independently audited; empirically validated. Never use a stronger label than the evidence supports. Until historical and forward testing complete, the standing status is: "Architecturally reviewed and synthetic-gate tested; not yet empirically validated."
 
+## 22. SCREEN 1.0 — THE SECTOR-FREE UNIVERSE SCREEN (v2.3.0)
+
+### 22.1 What this is and why it exists
+
+Every candidate list before this section started from a theme. Starting from a theme decides much of the answer before the work begins, and it cannot tell you what you never looked at. Screen 1.0 runs the mechanical parts of the lab across the whole investable field, with no sector or theme chosen in advance, and hands back a short list for judgment work.
+
+When to run it: quarterly, and after any market fall of roughly 10 percent or more.
+
+When not to run it: on a single name someone brought you. That is Tier 1 triage, not a screen.
+
+What it does not do: it cannot answer whether a company owns the scarce thing in its supply chain, what the market is missing, or whether the position duplicates something already owned. Those are judgment questions and are answered on survivors.
+
+### 22.2 Stage 1 — the field
+
+- Listings: US, Canada, and European markets reachable through the broker in use. State the list each time it is run.
+- Market value: $2B and up, per the Gate -1 bands in Section 3.
+- Ordinary common shares only. Drop preferred shares and duplicate over-the-counter lines of foreign companies, which appear in raw screener output as if they were separate companies.
+- Trading volume sufficient to satisfy the Gate -1 liquidity rule.
+- Audited under US GAAP or IFRS.
+
+### 22.3 Stage 2 — hard cuts, cheapest test first
+
+These four are pass or fail. Order matters: each one is cheaper than the one after it.
+
+1. Ruin check. Cut if shareholder equity is negative, if net debt exceeds 4x yearly operating profit before depreciation, or if the auditors have raised doubt about the company continuing to operate.
+2. Return on capital in service (Section 10.2 definition), three-year average of 12 percent or better. This is the single largest cut and the one that lets both engines through.
+3. Earnings quality. Cut if reported profit and cash profit have diverged by more than about 10 percent on average over three years. This is the Hammond and IQVIA lesson: a wide, persistent gap means the profit is an accounting result.
+4. Dilution. Cut if the share count has risen over three years. A business funded by issuing shares transfers the return to the new holders.
+
+### 22.4 Stage 3 — ranked, not cut
+
+These four are matters of degree. Score each from 0 to 10 and sort; hard lines here throw away names that miss by a hair.
+
+5. What the price already assumes. Compare the growth today's price requires against the best sustained five-year growth anyone in that industry has actually delivered. This requires a reference list of best-ever industry growth rates, built once by hand and reused. It is the highest-value piece of preparation in the whole screen, because it converts "this looks expensive" into "this price requires something no company here has ever done."
+6. Crowding. Penalize a name that has a 2x leveraged single-stock exchange-traded fund, or that is up more than 60 percent over twelve months.
+7. Coverage. Penalize heavy analyst coverage, above roughly 25 analysts. This is a rough stand-in: heavy coverage does not prove a fair price, it just makes an information gap less likely.
+8. Overlap. Penalize any name whose main economic driver is already carried elsewhere in the portfolio, including through funds.
+
+Stop at the top 40.
+
+### 22.5 The price test, by engine
+
+This is the one place the two engines need different rules.
+
+Compounder engine: estimated yearly return is the free-cash-flow yield plus sustainable growth, with growth capped at the company's own three-year organic rate and never above 12 percent. Free-cash-flow yield means the cash left after running and maintaining the business, divided by market value. Example: a 6 percent cash yield with 7 percent growth is roughly 13 percent a year. The bar is 15 percent; names between 10 and 15 percent go on a second list.
+
+Bottleneck engine: today's price cannot be tested against today's earnings, because the earnings that matter come from capacity that is not running yet. Test instead by writing out what the whole company would be worth at a stated exit multiple once the capacity is running, against the profit before depreciation that capacity is expected to produce, and compare that to today's price. State the exit multiple and the year in writing, because those two assumptions carry the answer. This is the method used for NKT on 2026-08-18.
+
+### 22.6 First judgment step on survivors: how much of next year is already committed
+
+Both engines rest on visibility. They just source it differently. Ask one question of every survivor: what share of next year's revenue is already committed?
+
+- A compounder answers with repeat business: subscriptions, renewals, consumables, replacement cycles.
+- A bottleneck company answers with signed contracts, disclosed in filings as remaining performance obligations or backlog.
+
+This figure is not in screening databases and must be read from the filings, which is why it is the first judgment step rather than a screen filter. Read it three ways, per the backlog tool adopted 2026-08-16: signed contracts divided by yearly revenue; whether the contract book is growing at least as fast as the spending; and whether it grew again at the latest report. One flat quarter is noise. Two in a row is a signal.
+
+Where a company publishes no backlog at all, use the three fallback checks from the same tool: customer prepayments, inventory growth against sales growth, and the customers' own signed-contract numbers one layer up the chain.
+
+### 22.7 Output
+
+Each run produces: the date, the field definition used, the count surviving each stage, the ranked top 40, and the names cut at stage 2 with the test that cut them. Cut names are kept, not discarded, so that a later run can show when a name starts passing a test it used to fail.
+
 ---
 
 # APPENDIX A — SEEDED POINT-IN-TIME CASE ROSTER
@@ -383,4 +478,4 @@ Case 8 — Samsung C&T stale alert. Tests: Section 13.5 staleness rule; review-c
 
 Sequencing recommendation: run Cases 2 and 8 first (cheap, clear correct answers, one positive and one negative control), then 4 (starts the live calibration clock), then 1 and 3 (the richest), then 5-7.
 
-END OF DOCUMENT — VERSION 2.2.1
+END OF DOCUMENT — VERSION 2.3.0
