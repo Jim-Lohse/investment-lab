@@ -1,6 +1,6 @@
 # The Investment Lab
 
-A research-governance constitution for single-name equity research. Version 2.2.1.
+A research-governance constitution for single-name equity research. Version 2.3.0.
 
 ## What this is
 
@@ -12,7 +12,7 @@ Two design commitments distinguish it:
 
 1. Process metrics before returns. Section 19 (the Process-Metrics Principle) explicitly forbids grading the lab on paper P&L in its first year, in either direction. At realistic idea flow, near-term returns are statistically indistinguishable from luck. The near-term validation currency is calibration curves, thesis-accuracy rates, and gate behavior. Returns are the long-term currency.
 
-2. Amendment from case law. The constitution changes only when its own operation produces a documented failure or near-failure. Every amendment in the changelog cites the specific case that produced it. Version 2.2.1's three amendments (a masking principle, a calendar gate against silently lapsing decision windows, and an evidence floor for opening dated windows) each trace to a named precedent from the lab's own records.
+2. Amendment from case law. The constitution changes only when its own operation produces a documented failure or near-failure. Every amendment in the changelog cites the specific case that produced it. Version 2.2.1's three amendments (a masking principle, a calendar gate against silently lapsing decision windows, and an evidence floor for opening dated windows) each trace to a named precedent from the lab's own records. Version 2.3.0 follows the same rule: it exists because the free-cash-flow test kept failing companies for being mid-build, which is the normal condition of the bottleneck companies the lab is meant to find.
 
 ## What this is not
 
@@ -22,13 +22,19 @@ Two design commitments distinguish it:
 
 ## Status
 
-Version 2.2.1, applied 2026-07-30. Under open validation: the point-in-time case roster (Appendix A) is being executed, and the live calibration ledger is accumulating its first scored forecasts. Two Appendix A cases reference live positions and are de-identified until those positions close; the de-identification is itself an application of the document's disclosure discipline.
+Version 2.3.0, applied 2026-09-17. Under open validation: the point-in-time case roster (Appendix A) is being executed, and the live calibration ledger is accumulating its first scored forecasts. Two Appendix A cases reference live positions and are de-identified until those positions close; the de-identification is itself an application of the document's disclosure discipline.
+
+What changed in 2.3.0, in plain terms:
+
+- The scorecard pillar that used to ask whether cash came out of the business this year now asks how well the money already working in the business earns, leaving out plants that are not open yet. One test now covers both quality compounders and bottleneck owners, so the lab stays one document instead of splitting into two.
+- The size band for the bottleneck engine is written down for the first time: $2B and up, no ceiling, plus a requirement that the bottleneck business be a separately reported segment worth roughly 30 percent or more of the company.
+- A new Section 22 adds a screen that runs across the whole investable field with no sector chosen in advance, in order from cheapest test to most expensive.
 
 Worked case files will be added to this repository as their redaction passes complete, beginning with a closed case that resolved as an explicit pass — published precisely because a documented "no" is a stronger demonstration of process than a documented win.
 
 ## Structure
 
-- `investment-lab-constitution.md` — the full constitution: purpose and authority, tiered rigor, research controls (independence, masking, evidence genealogy, base rates), scorecard and value-capture waterfall, decision and risk discipline (exit rules, calibration, committee), and the validation program (synthetic gates, baselines, point-in-time and forward tracks), with the seeded case roster as Appendix A.
+- `investment-lab-constitution.md` — the full constitution: purpose and authority, tiered rigor, research controls (independence, masking, evidence genealogy, base rates), scorecard and value-capture waterfall, decision and risk discipline (exit rules, calibration, committee), the validation program (synthetic gates, baselines, point-in-time and forward tracks), and the sector-free universe screen, with the seeded case roster as Appendix A.
 - `signals/` — free primary-source demand and supply signals: Taiwan MOPS monthly revenue (filed by the 10th), Korea Customs 10/20-day exports with semiconductor breakout, and Japan MOF/Customs trade statistics (10/20-day totals, monthly principal-commodity breakdown, 9-digit HS tables) for the semiconductor-equipment and optical-component supply response, fetched on a schedule into `data/` and aggregated into YoY/breadth series. Tier 1 screening input under the constitution; see `signals/README.md`.
 
 ## License
