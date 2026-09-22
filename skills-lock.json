@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "browser-act-skill-forge": {
+      "source": "browser-act/skills",
+      "sourceType": "github",
+      "skillPath": "browser-act-skill-forge/SKILL.md",
+      "computedHash": "b9072a0fc5e1deee6eb698e7372f05abd750afc6d2d809f366a33d9277033bd9"
+    }
+  }
+}
