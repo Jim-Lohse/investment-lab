@@ -1,0 +1,70 @@
+{
+  "_comment": [
+    "CFTC Commitments of Traders (COT) via the CFTC Public Reporting Environment,",
+    "a Socrata site at publicreporting.cftc.gov. Weekly positions as of Tuesday,",
+    "published Friday 15:30 ET (shifted by federal holidays).",
+    "",
+    "Two routes to the same rows:",
+    "  soda3: POST https://publicreporting.cftc.gov/api/v3/views/{dataset}/query.json",
+    "         JSON body {query, page: {pageNumber, pageSize}, includeSynthetic}.",
+    "         Socrata's SODA3 docs (dev.socrata.com/docs/queries, checked",
+    "         2026-09-24) say query requests must carry an app token or be",
+    "         authenticated. Set CFTC_APP_TOKEN (sent as X-App-Token) to use it.",
+    "  soda2: GET https://publicreporting.cftc.gov/resource/{dataset}.json?$query=...",
+    "         Keyless (lower throttling limit per IP). Verified returning Gold",
+    "         rows for 6dca-aqww and 72hh-3qpy on 2026-09-24.",
+    "The fetcher tries soda3 first when a token is set, otherwise soda2 first,",
+    "and falls back to the other route on 401/403 or a network failure.",
+    "",
+    "Filter on cftc_contract_market_code, not cftc_commodity_code: the commodity",
+    "code is padded inconsistently ('088' on 2022 rows, '088 ' with a trailing",
+    "space on 2026 rows), so WHERE cftc_commodity_code = '088' silently returns",
+    "only the older weeks. contract_market_name",
+    "'GOLD' is exact today, but one commodity can list on several exchanges,",
+    "and the six-character market code (088691 = COMEX gold) names one contract."
+  ],
+  "base_url": "https://publicreporting.cftc.gov",
+  "soda3_path": "/api/v3/views/{dataset}/query.json",
+  "soda2_path": "/resource/{dataset}.json",
+  "page_size": 1000,
+  "reports": {
+    "legacy_fut": {
+      "dataset": "6dca-aqww",
+      "title": "Legacy - Futures Only",
+      "verified": "2026-09-24"
+    },
+    "disagg_fut": {
+      "dataset": "72hh-3qpy",
+      "title": "Disaggregated - Futures Only",
+      "verified": "2026-09-24"
+    },
+    "tff_fut": {
+      "dataset": "gpe5-46if",
+      "title": "Traders in Financial Futures - Futures Only",
+      "verified": ""
+    },
+    "legacy_combined": {
+      "dataset": "jun7-fc8e",
+      "title": "Legacy - Futures and Options Combined",
+      "verified": ""
+    },
+    "disagg_combined": {
+      "dataset": "kh3c-gbw2",
+      "title": "Disaggregated - Futures and Options Combined",
+      "verified": ""
+    },
+    "tff_combined": {
+      "dataset": "yw9f-hn96",
+      "title": "Traders in Financial Futures - Futures and Options Combined",
+      "verified": ""
+    }
+  },
+  "_reports_note": [
+    "An empty 'verified' means the dataset id is the one CFTC documents but no",
+    "live row has been checked from this pipeline yet. The parser keeps every",
+    "field in extra_json, so a surprise field name loses nothing."
+  ],
+  "markets": {
+    "088691": "Gold, COMEX (100 troy oz)"
+  }
+}
