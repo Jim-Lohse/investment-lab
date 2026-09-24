@@ -1,0 +1,453 @@
+<title>Macro Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #fbfaf7;
+  --ink: #16181c;
+  --ink-2: #4b4f57;
+  --ink-3: #85888f;
+  --rule: #e3e0d7;
+  --rule-strong: #c9c4b6;
+  --grid: #efece5;
+  --gold: #8f6b22;
+  --s1: #2c5ea8;
+  --s1-soft: rgba(44, 94, 168, 0.10);
+  --s2: #b8781c;
+  --neg: #a33a3a;
+  --neg-soft: rgba(163, 58, 58, 0.12);
+  --chip-bg: #f1eee6;
+  --focus: #2c5ea8;
+  --tip-bg: #16181c;
+  --tip-ink: #fbfaf7;
+  --panel: #fbfaf7;
+  --display: "Libre Caslon Display", "Baskerville", "Times New Roman", serif;
+  --body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121418;
+    --ink: #eceae4;
+    --ink-2: #b9b6ad;
+    --ink-3: #85837c;
+    --rule: #2a2c31;
+    --rule-strong: #43444a;
+    --grid: #202227;
+    --gold: #c9a45c;
+    --s1: #4f86d9;
+    --s1-soft: rgba(79, 134, 217, 0.16);
+    --s2: #b8801f;
+    --neg: #d97474;
+    --neg-soft: rgba(217, 116, 116, 0.16);
+    --chip-bg: #1d1f24;
+    --focus: #7fa6dd;
+    --tip-bg: #eceae4;
+    --tip-ink: #121418;
+    --panel: #121418;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121418;
+  --ink: #eceae4;
+  --ink-2: #b9b6ad;
+  --ink-3: #85837c;
+  --rule: #2a2c31;
+  --rule-strong: #43444a;
+  --grid: #202227;
+  --gold: #c9a45c;
+  --s1: #4f86d9;
+  --s1-soft: rgba(79, 134, 217, 0.16);
+  --s2: #b8801f;
+  --neg: #d97474;
+  --neg-soft: rgba(217, 116, 116, 0.16);
+  --chip-bg: #1d1f24;
+  --focus: #7fa6dd;
+  --tip-bg: #eceae4;
+  --tip-ink: #121418;
+  --panel: #121418;
+}
+
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1000px; margin: 0 auto; padding-inline: 20px; padding-block: 44px 72px; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(44px, 8vw, 72px); line-height: 1; letter-spacing: -0.01em; }
+h2 { font-size: 30px; line-height: 1.15; }
+p { margin: 0; }
+.num { font-variant-numeric: tabular-nums lining-nums; }
+.label { font: 600 11px/1.3 var(--body); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+.muted { color: var(--ink-3); }
+
+/* Masthead */
+header.top { display: grid; gap: 16px; padding-bottom: 22px; border-bottom: 3px double var(--rule-strong); }
+header.top .standfirst { font-size: 18px; color: var(--ink-2); max-width: 60ch; }
+.stamp { display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 13px; color: var(--ink-3); }
+
+/* Takeaways */
+.takeaways { display: grid; gap: 18px; }
+.takeaways ol { list-style: none; margin: 0; padding: 0; display: grid; }
+.takeaways li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 8px; padding-block: 14px; border-top: 1px solid var(--rule); font-size: 18px; line-height: 1.55; }
+.takeaways li:last-child { border-bottom: 1px solid var(--rule); }
+.takeaways li .n { display: block; width: 16px; height: 1px; background: var(--gold); margin-top: 0.8em; }
+
+/* Sections */
+section.panel { display: grid; gap: 22px; min-width: 0; }
+.panel-head { display: grid; gap: 8px; padding-bottom: 14px; border-bottom: 1px solid var(--rule-strong); }
+.panel-head .row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.explainer { color: var(--ink-2); font-size: 15px; max-width: 70ch; }
+.takeaway { display: grid; gap: 6px; max-width: 72ch; }
+.takeaway p { font-size: 17px; line-height: 1.6; }
+.takeaway p + p { margin-top: 2px; }
+
+/* Rates */
+.figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.figure { display: grid; gap: 4px; align-content: start; }
+.figure .v { font-family: var(--display); font-size: 48px; line-height: 1.05; font-variant-numeric: lining-nums tabular-nums; }
+.figure .d { font-size: 14px; color: var(--ink-2); }
+.swatch { display: inline-block; width: 14px; height: 2px; vertical-align: middle; margin-right: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--rule-strong); border-radius: 2px; color: var(--ink-2); width: fit-content; }
+.chip.neg { border-color: var(--neg); color: var(--neg); background: var(--neg-soft); }
+.chip svg { width: 12px; height: 12px; }
+.charts { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; }
+.chart-box { display: grid; gap: 8px; min-width: 0; }
+.chart-box .cap { font-size: 13px; color: var(--ink-2); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13px; color: var(--ink-2); min-height: 20px; }
+
+/* Rows */
+.rows { display: grid; }
+.row { display: grid; grid-template-columns: minmax(0, 1.5fr) 120px minmax(0, 1.25fr) minmax(0, 1fr) 150px; gap: 20px; align-items: center; padding-block: 16px; border-top: 1px solid var(--rule); }
+.row:first-child { border-top: 0; }
+.row .name { font-weight: 600; font-size: 15px; }
+.row .note { font-size: 13px; color: var(--ink-3); margin-top: 2px; line-height: 1.45; }
+.row .asof { font-size: 12px; color: var(--ink-3); margin-top: 4px; }
+.row .value { font-family: var(--display); font-size: 24px; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.changes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.changes div { display: grid; text-align: right; }
+.changes .k { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.changes .c { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rank { display: grid; gap: 6px; font-size: 12px; color: var(--ink-2); line-height: 1.4; }
+.meter { position: relative; height: 1px; background: var(--rule-strong); margin-block: 6px; }
+.meter i { position: absolute; top: -4px; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); transform: translateX(-4px); }
+.spark { width: 100%; height: 46px; display: block; }
+
+.trade-row { display: grid; grid-template-columns: minmax(0, 1.4fr) 130px minmax(0, 1.6fr); gap: 20px; align-items: center; padding-block: 16px; border-top: 1px solid var(--rule); }
+.trade-row:first-child { border-top: 0; }
+.trade-row .big { font-family: var(--display); font-size: 30px; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.trade-row .sub { font-size: 14px; color: var(--ink-2); }
+
+.glossary { display: grid; gap: 10px; font-size: 14px; color: var(--ink-2); max-width: 72ch; }
+.glossary b { color: var(--ink); font-weight: 600; }
+footer { display: grid; gap: 10px; font-size: 14px; color: var(--ink-2); padding-top: 18px; border-top: 3px double var(--rule-strong); }
+footer .closing { font-family: var(--display); font-size: 20px; color: var(--ink); }
+code { font-size: 0.92em; }
+
+.tip { position: fixed; z-index: 10; pointer-events: none; background: var(--tip-bg); color: var(--tip-ink); font: 500 12px/1.4 var(--body); font-variant-numeric: tabular-nums; padding: 7px 10px; border-radius: 3px; white-space: nowrap; }
+svg text { fill: var(--ink-3); font: 11px var(--body); font-variant-numeric: tabular-nums; }
+svg .gridline { stroke: var(--grid); stroke-width: 1; }
+svg .zero { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 3 3; }
+svg .xhair { stroke: var(--ink-3); stroke-width: 1; }
+svg:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+a { color: inherit; }
+
+@media (max-width: 860px) {
+  .charts { grid-template-columns: minmax(0, 1fr); }
+  .row { grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; }
+  .row .changes, .row .rank, .row .spark-cell { grid-column: 1 / -1; }
+  .changes div { text-align: left; }
+  .trade-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .trade-row .sub { grid-column: 1 / -1; }
+  .figures { gap: 20px; }
+}
+@media (max-width: 600px) {
+  .wrap { gap: 44px; padding-block: 32px 56px; }
+  .figures { grid-template-columns: minmax(0, 1fr); }
+  .figure .v { font-size: 40px; }
+  .takeaways li { font-size: 17px; grid-template-columns: 26px minmax(0, 1fr); }
+  h2 { font-size: 26px; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="label">Investment Lab · Private</span>
+    <h1>Macro Watch</h1>
+    <p class="standfirst">Where interest rates, the dollar, gold, oil, stocks and global trade stand, and how they have moved over the last month, quarter and year.</p>
+    <div class="stamp" id="stamp"></div>
+  </header>
+
+  <section class="takeaways" aria-labelledby="tk-h">
+    <div class="panel-head"><span class="label">In brief</span><h2 id="tk-h">This week's takeaways</h2></div>
+    <ol id="headlines"></ol>
+  </section>
+
+  <main id="panels" style="display:grid;gap:64px"></main>
+
+  <section class="panel" aria-labelledby="how-h">
+    <div class="panel-head"><span class="label">Reference</span><h2 id="how-h">How to read this page</h2></div>
+    <div class="glossary">
+      <p><b>4W, 13W, 52W.</b> Change over the last 4 weeks (about a month), 13 weeks (a quarter) and 52 weeks (a year).</p>
+      <p><b>bp.</b> A basis point, one hundredth of a percentage point. A yield moving from 4.71% to 4.96% has risen 25 bp.</p>
+      <p><b>Net position.</b> Futures contracts betting on a rise minus contracts betting on a fall, as of Tuesday, published Friday by the CFTC. Institutions are pension funds, mutual funds and insurers; hedge funds are the fast-moving speculators. Shown for context: the lab's test found it does not lead prices.</p>
+      <p><b>Higher than X% of weeks.</b> Where the latest reading sits among every earlier weekly reading, so 90% means near the top of its own history.</p>
+      <p><b>4-week move bigger than X%.</b> How this month's move compares with every earlier 4-week move in the same series. Above 90% is unusually large.</p>
+      <p>Tap or hover any chart to read its values.</p>
+    </div>
+  </section>
+
+  <footer id="footer"></footer>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const DATA = /*__DASHBOARD_DATA__*/null;
+
+const $ = (sel, el = document) => el.querySelector(sel);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmtDate = (iso) => { if (!iso) return ""; const [y, m, d] = iso.split("-").map(Number); return d ? `${MONTHS[m-1]} ${d}, ${y}` : `${MONTHS[m-1]} ${y}`; };
+const sign = (v) => (v > 0 ? "+" : v < 0 ? "−" : "");
+const group = (v, dp = 0) => Math.abs(v).toLocaleString("en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp });
+
+function fmtValue(it) {
+  const v = it.value;
+  if (v == null) return "–";
+  switch (it.unit) {
+    case "%": return `${v.toFixed(2)}%`;
+    case "percentage points": return `${sign(v)}${Math.abs(v).toFixed(2)} pts`;
+    case "USD": return `$${group(v, 2)}`;
+    case "tonnes": return `${group(v, 1)} t`;
+    case "contracts": return `${sign(v)}${group(v)}`;
+    default: return String(v);
+  }
+}
+function fmtChange(it, c) {
+  if (c == null) return "–";
+  if (it.change_kind === "pct") return `${sign(c)}${Math.abs(c).toFixed(1)}%`;
+  if (it.unit === "%" || it.unit === "percentage points") return `${sign(c)}${Math.round(Math.abs(c) * 100)} bp`;
+  if (it.unit === "contracts") return `${sign(c)}${Math.abs(c) >= 10000 ? group(c / 1000, 0) + "k" : group(c)}`;
+  return `${sign(c)}${group(c, 2)}`;
+}
+function fmtPoint(it, v) {
+  if (it.unit === "%") return `${v.toFixed(2)}%`;
+  if (it.unit === "percentage points") return `${sign(v)}${Math.abs(v).toFixed(2)} pts`;
+  if (it.unit === "USD") return `$${group(v, 2)}`;
+  if (it.unit === "tonnes") return `${group(v, 1)} t`;
+  if (it.unit === "contracts") return `${sign(v)}${group(v)}`;
+  return String(v);
+}
+
+/* ---------- Charts: one scale per chart, hover crosshair + tooltip ---------- */
+const NS = "http://www.w3.org/2000/svg";
+const tip = $("#tip");
+function el(tag, attrs, parent) { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; }
+
+function niceTicks(lo, hi, n = 4) {
+  const span = hi - lo || 1, raw = span / n, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= raw) || mag * 10;
+  const out = []; for (let t = Math.ceil(lo / step) * step; t <= hi + 1e-9; t += step) out.push(+t.toFixed(10));
+  return out;
+}
+
+/* series: [{points:[[date,v],...], color, label}] */
+function lineChart(svg, series, opt) {
+  // Draw at the element's real pixel size, so dots stay round and text unstretched.
+  const W = Math.max(120, Math.round(svg.clientWidth || opt.width || 520));
+  const H = Math.round(svg.clientHeight || opt.height || 200);
+  const m = opt.margin || { t: 10, r: 12, b: 22, l: 40 };
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const all = series.flatMap((s) => s.points.map((p) => p[1]));
+  if (!all.length) return;
+  let lo = Math.min(...all, opt.includeZero ? 0 : Infinity), hi = Math.max(...all, opt.includeZero ? 0 : -Infinity);
+  const pad = (hi - lo) * 0.08 || 0.5; lo -= pad; hi += pad;
+  const n = series[0].points.length;
+  const x = (i) => m.l + (i / Math.max(1, n - 1)) * (W - m.l - m.r);
+  const y = (v) => m.t + (1 - (v - lo) / (hi - lo)) * (H - m.t - m.b);
+  if (opt.axes) {
+    for (const t of niceTicks(lo, hi)) {
+      el("line", { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t), class: "gridline" }, svg);
+      const lab = el("text", { x: m.l - 6, y: y(t) + 4, "text-anchor": "end" }, svg);
+      lab.textContent = opt.tickFmt ? opt.tickFmt(t) : t;
+    }
+    const pts = series[0].points;
+    const years = [];
+    pts.forEach((p, i) => { const yr = p[0].slice(0, 4); if (i === 0 || pts[i - 1][0].slice(0, 4) !== yr) years.push([i, yr]); });
+    years.slice(1).forEach(([i, yr]) => { const t = el("text", { x: x(i), y: H - 6, "text-anchor": "middle" }, svg); t.textContent = yr; });
+  }
+  if (opt.includeZero && lo < 0 && hi > 0) el("line", { x1: m.l, x2: W - m.r, y1: y(0), y2: y(0), class: "zero" }, svg);
+  const id = "c" + Math.random().toString(36).slice(2, 8);
+  for (const s of series) {
+    const d = s.points.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join("");
+    if (s.fill) {
+      const base = opt.includeZero ? y(Math.max(lo, Math.min(hi, 0))) : H - m.b;
+      const area = `${d}L${x(n - 1).toFixed(1)},${base}L${x(0).toFixed(1)},${base}Z`;
+      if (s.splitAtZero && lo < 0 && hi > 0) {
+        const cp = el("clipPath", { id: id + "a" }, svg); el("rect", { x: 0, y: 0, width: W, height: y(0) }, cp);
+        const cn = el("clipPath", { id: id + "b" }, svg); el("rect", { x: 0, y: y(0), width: W, height: H }, cn);
+        el("path", { d: area, style: `fill:${s.fill};stroke:none`, "clip-path": `url(#${id}a)` }, svg);
+        el("path", { d: area, style: `fill:${s.negFill};stroke:none`, "clip-path": `url(#${id}b)` }, svg);
+      } else {
+        el("path", { d: area, style: `fill:${s.fill};stroke:none` }, svg);
+      }
+    }
+    el("path", { d, style: `fill:none;stroke:${s.color}`, "stroke-width": opt.stroke || 2, "stroke-linejoin": "round", "stroke-linecap": "round", "vector-effect": "non-scaling-stroke" }, svg);
+    const last = s.points[n - 1];
+    if (last) el("circle", { cx: x(n - 1), cy: y(last[1]), r: opt.dot || 3.5, style: `fill:${s.color};stroke:var(--panel)`, "stroke-width": 1.5, "vector-effect": "non-scaling-stroke" }, svg);
+  }
+  const xh = el("line", { y1: m.t, y2: H - m.b, class: "xhair", visibility: "hidden", "vector-effect": "non-scaling-stroke" }, svg);
+  const show = (clientX) => {
+    const r = svg.getBoundingClientRect();
+    const px = ((clientX - r.left) / r.width) * W;
+    const i = Math.max(0, Math.min(n - 1, Math.round(((px - m.l) / (W - m.l - m.r)) * (n - 1))));
+    xh.setAttribute("x1", x(i)); xh.setAttribute("x2", x(i)); xh.setAttribute("visibility", "visible");
+    const lines = [`Week of ${fmtDate(series[0].points[i][0])}`].concat(series.map((s) => `${s.label ? s.label + ": " : ""}${opt.fmt(s.points[i][1])}`));
+    tip.innerHTML = lines.map(esc).join("<br>");
+    tip.hidden = false;
+    const tr = tip.getBoundingClientRect();
+    const left = Math.min(window.innerWidth - tr.width - 8, Math.max(8, r.left + (x(i) / W) * r.width + 12));
+    tip.style.left = left + "px";
+    tip.style.top = Math.max(8, r.top - tr.height - 6) + "px";
+  };
+  const hide = () => { xh.setAttribute("visibility", "hidden"); tip.hidden = true; };
+  svg.addEventListener("pointermove", (e) => show(e.clientX));
+  svg.addEventListener("pointerdown", (e) => show(e.clientX));
+  svg.addEventListener("pointerleave", hide);
+  svg.tabIndex = 0;
+  svg.addEventListener("keydown", (e) => {
+    const r = svg.getBoundingClientRect();
+    svg._i = Math.max(0, Math.min(n - 1, (svg._i ?? n - 1) + (e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0)));
+    show(r.left + (x(svg._i) / W) * r.width);
+  });
+  svg.addEventListener("blur", hide);
+}
+
+/* ---------- Panels ---------- */
+const ICON_WARN = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1 11 10.5H1Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6 4.6v2.6M6 8.7v.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+
+function changesHtml(it) {
+  return `<div class="changes">${["4w", "13w", "52w"].map((k) => `<div><span class="k">${k}</span><span class="c">${esc(fmtChange(it, it.changes[k]))}</span></div>`).join("")}</div>`;
+}
+function rankHtml(it) {
+  if (it.rank_pct == null) return `<div class="rank"></div>`;
+  const mv = it.move4_rank_pct != null
+    ? `<span>4-week move bigger than ${it.move4_rank_pct}% of past 4-week moves</span>` : "";
+  return `<div class="rank"><span>Higher than ${it.rank_pct}% of weeks since ${it.since.slice(0, 4)}</span><div class="meter" role="img" aria-label="${it.rank_pct} percent"><i style="left:${it.rank_pct}%"></i></div>${mv}</div>`;
+}
+
+function takeawayHtml(p) {
+  if (!p.takeaway || !p.takeaway.length) return "";
+  return `<div class="takeaway"><span class="label">Takeaway</span>${p.takeaway.map((t) => `<p>${esc(t)}</p>`).join("")}</div>`;
+}
+function headHtml(p, eyebrow) {
+  return `<div class="panel-head"><span class="label">${esc(eyebrow)}</span><h2>${esc(p.title)}</h2>${p.explainer ? `<p class="explainer">${esc(p.explainer)}</p>` : ""}</div>`;
+}
+
+function ratesPanel(p) {
+  const y2 = p.items.find((i) => i.name.startsWith("2-year")), y10 = p.items.find((i) => i.name.startsWith("10-year"));
+  const g = p.items.find((i) => i.name.includes("minus 2-year")), g3 = p.items.find((i) => i.name.includes("minus 3-month"));
+  const sec = document.createElement("section");
+  sec.className = "panel";
+  if (!y2 || !y10 || !g) {
+    sec.innerHTML = `${headHtml(p, "Rates")}<p class="explainer">No Treasury data stored yet.</p>`;
+    return sec;
+  }
+  const inv = g.value < 0;
+  const streak = g.streak ? `${g.streak.positive ? "Positive" : "Negative"} since ${fmtDate(g.streak.since)}` : "";
+  sec.innerHTML = `
+    ${headHtml(p, "Rates · as of " + fmtDate(y10.as_of))}
+    ${takeawayHtml(p)}
+    <div class="figures">
+      <div class="figure"><span class="label"><span class="swatch" style="background:var(--s1)"></span>2-year yield</span><span class="v">${fmtValue(y2)}</span><span class="d">${fmtChange(y2, y2.changes["13w"])} over 13 weeks · ${fmtChange(y2, y2.changes["52w"])} over 52</span></div>
+      <div class="figure"><span class="label"><span class="swatch" style="background:var(--s2)"></span>10-year yield</span><span class="v">${fmtValue(y10)}</span><span class="d">${fmtChange(y10, y10.changes["13w"])} over 13 weeks · ${fmtChange(y10, y10.changes["52w"])} over 52</span></div>
+      <div class="figure"><span class="label">Gap, 10-year minus 2-year</span><span class="v">${fmtValue(g)}</span>
+        ${inv ? `<span class="chip neg">${ICON_WARN}Inverted curve</span>` : `<span class="chip">Normal curve</span>`}
+        <span class="d">${esc(streak)}</span></div>
+    </div>
+    <div class="charts">
+      <div class="chart-box"><span class="cap">2-year and 10-year yields, weekly, last three years</span>
+        <div class="legend"><span><span class="swatch" style="background:var(--s1)"></span>2-year</span><span><span class="swatch" style="background:var(--s2)"></span>10-year</span></div>
+        <svg class="big" id="yieldChart" role="img" aria-label="2-year and 10-year Treasury yields, weekly" style="width:100%;height:220px"></svg></div>
+      <div class="chart-box"><span class="cap">Gap, 10-year minus 2-year. Below the dashed line means inverted.</span>
+        <div class="legend"><span>&nbsp;</span></div>
+        <svg id="gapChart" role="img" aria-label="Gap between 10-year and 2-year yields, weekly" style="width:100%;height:220px"></svg></div>
+    </div>
+    <div class="rows" id="rateRows"></div>`;
+  const rows = $("#rateRows", sec);
+  for (const it of [y2, y10, g, g3].filter(Boolean)) rows.appendChild(itemRow(it));
+  requestAnimationFrame(() => {
+    lineChart($("#yieldChart", sec), [
+      { points: y2.chart, color: "var(--s1)", label: "2-year" },
+      { points: y10.chart, color: "var(--s2)", label: "10-year" },
+    ], { axes: true, height: 220, fmt: (v) => `${v.toFixed(2)}%`, tickFmt: (t) => `${t}%` });
+    lineChart($("#gapChart", sec), [
+      { points: g.chart, color: "var(--s1)", fill: "var(--s1-soft)", negFill: "var(--neg-soft)", splitAtZero: true, label: "Gap" },
+    ], { axes: true, includeZero: true, height: 220, fmt: (v) => fmtPoint(g, v), tickFmt: (t) => t.toFixed(1) });
+  });
+  return sec;
+}
+
+function itemRow(it) {
+  const row = document.createElement("div");
+  row.className = "row";
+  row.innerHTML = `
+    <div><div class="name">${esc(it.name)}</div>${it.note ? `<div class="note">${esc(it.note)}</div>` : ""}<div class="asof">As of ${esc(fmtDate(it.as_of))}</div></div>
+    <div class="value">${esc(fmtValue(it))}</div>
+    ${changesHtml(it)}
+    ${rankHtml(it)}
+    <div class="spark-cell"><svg class="spark" role="img" aria-label="${esc(it.name)}, weekly, last three years"></svg></div>`;
+  requestAnimationFrame(() => lineChart($(".spark", row), [{ points: it.chart, color: "var(--s1)", fill: "var(--s1-soft)" }],
+    { width: 300, height: 44, margin: { t: 5, r: 5, b: 5, l: 3 }, stroke: 1.75, dot: 3, fmt: (v) => fmtPoint(it, v) }));
+  return row;
+}
+
+function marketPanel(p) {
+  const sec = document.createElement("section");
+  sec.className = "panel";
+  sec.innerHTML = `${headHtml(p, "Markets")}${takeawayHtml(p)}<div class="rows"></div>`;
+  const rows = $(".rows", sec);
+  p.items.forEach((it) => rows.appendChild(itemRow(it)));
+  return sec;
+}
+
+function tradePanel(p) {
+  const sec = document.createElement("section");
+  sec.className = "panel";
+  sec.innerHTML = `${headHtml(p, "Trade")}${takeawayHtml(p)}<div class="rows"></div>`;
+  const rows = $(".rows", sec);
+  for (const it of p.items) {
+    const r = document.createElement("div");
+    r.className = "trade-row";
+    const pct = (v) => (v == null ? "–" : `${sign(v)}${Math.abs(v).toFixed(1)}%`);
+    const usd = it.value_usd != null ? ` · ${pct(it.value_usd)} measured in U.S. dollars` : "";
+    const prev = it.previous ? `Before that (${fmtDate(it.previous.period)}, ${it.previous.window}): ${pct(it.previous.value)}` : "";
+    r.innerHTML = `
+      <div><div class="name" style="font-weight:600">${esc(it.name)}</div><div class="muted" style="font-size:13px;line-height:1.45;margin-top:2px">${esc(it.note)}</div></div>
+      <div class="big">${esc(pct(it.value))}</div>
+      <div class="sub">${esc(fmtDate(it.period))}, ${esc(it.window)}, compared with the same period last year${esc(usd)}.<br>${esc(prev)}</div>`;
+    rows.appendChild(r);
+  }
+  return sec;
+}
+
+function render() {
+  $("#panels").innerHTML = "";
+  if (!DATA) { $("#panels").innerHTML = '<section class="panel"><p>No data embedded. Run <code>python -m signals.macro_dashboard</code>.</p></section>'; return; }
+  $("#stamp").innerHTML = `<span>Updated ${esc(fmtDate(DATA.generated))}</span><span>Refreshed every Friday evening, U.S. Eastern time</span><span>For situational awareness</span>`;
+  $("#headlines").innerHTML = (DATA.headlines || []).map((h) => `<li><span class="n" aria-hidden="true"></span><span>${esc(h)}</span></li>`).join("");
+  const root = $("#panels");
+  for (const p of DATA.panels) {
+    root.appendChild(p.id === "rates" ? ratesPanel(p) : p.id === "trade" ? tradePanel(p) : marketPanel(p));
+  }
+  $("#footer").innerHTML = `<p class="closing">${esc(DATA.closing)}</p><p>Sources: U.S. Treasury daily yield curve; CFTC Commitments of Traders; fund prices; SPDR Gold Trust daily holdings; Taiwan MOPS, Korea Customs and Japan Ministry of Finance trade statistics. Numbers computed in the investment-lab repository, <code>signals/macro_dashboard.py</code>.</p>`;
+}
+render();
+let lastW = window.innerWidth, timer;
+window.addEventListener("resize", () => {
+  if (window.innerWidth === lastW) return;  // ignore height-only changes (phone toolbars)
+  lastW = window.innerWidth;
+  clearTimeout(timer);
+  timer = setTimeout(render, 150);
+});
+</script>

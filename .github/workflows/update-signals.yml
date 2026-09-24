@@ -76,6 +76,10 @@ on:
         description: "Set to any value to run only the CFTC Commitments of Traders step"
         required: false
         default: ""
+      treasury_backfill:
+        description: "Backfill Treasury yields from a start year, e.g. 1990 (one request per year)"
+        required: false
+        default: ""
       cftc_backfill:
         description: "Backfill every watched CFTC COT market from a start date, e.g. 2006-06-13 (TFF and disaggregated history begin then)"
         required: false
@@ -239,6 +243,25 @@ jobs:
           python -m signals.cftc_cot flows
           python -m signals.cftc_cot brief
 
+      # Daily prices for SPY, QQQ, UUP, GLD, USO and GLD's gold holdings
+      # (keyless), for testing whether CFTC positioning shifts come before
+      # moves and flows in those funds (signals/cftc_leadlag.py).
+      - name: Fetch fund prices and GLD holdings (keyless)
+        continue-on-error: true
+        run: python -m signals.etf_prices fetch
+
+      # U.S. Treasury daily par yield curve (keyless): 2-year, 10-year and the
+      # gaps between them, for the macro dashboard's rates panel.
+      - name: Fetch Treasury yields (keyless)
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          if [ -n "${{ github.event.inputs.treasury_backfill }}" ]; then
+            python -u -m signals.treasury_yields backfill "${{ github.event.inputs.treasury_backfill }}"
+          else
+            python -u -m signals.treasury_yields latest
+          fi
+
       - name: Snapshot the previous derived tables (baseline for the diff)
         run: |
           rm -rf "$RUNNER_TEMP/derived_prev"
@@ -247,6 +270,11 @@ jobs:
 
       - name: Recompute derived signals
         run: python -m signals.compute_signals
+
+      # The weekly macro dashboard's numbers and page, from the tables above.
+      - name: Build the macro dashboard
+        continue-on-error: true
+        run: python -m signals.macro_dashboard
 
       # What changed this run: new prints, revisions and threshold flags.
       # Written to data/derived/whats_new.md, to the run's job summary (the
