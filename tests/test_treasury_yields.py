@@ -47,6 +47,15 @@ class TreasuryParserTests(unittest.TestCase):
         self.assertIsNone(rows["2026-09-22"]["y2y"])     # '.' means missing, never zero
         self.assertIsNone(rows["2026-09-22"]["gap_2s10s"])
 
+    def test_stuck_download_is_abandoned(self):
+        import time as _t
+        from unittest import mock
+        with mock.patch.object(T, "_get_text", side_effect=lambda url, d: _t.sleep(30)):
+            start = _t.monotonic()
+            with self.assertRaises(TimeoutError):
+                T.get_text("https://example.invalid/", deadline=0.2)
+            self.assertLess(_t.monotonic() - start, 10)
+
     def test_garbage_is_empty(self):
         self.assertEqual(T.parse_treasury_csv("<html>error</html>"), [])
 

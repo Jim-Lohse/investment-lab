@@ -118,6 +118,32 @@ def _store_row(r: dict, source: str) -> dict:
 
 
 def get_text(url: str, deadline: float) -> str:
+    """Download `url`, abandoning it after `deadline` seconds of wall-clock
+    time whatever it is stuck on (name lookup, connect, a trickling reply).
+
+    The download runs in a daemon thread; if it has not finished in time the
+    caller gets TimeoutError and the thread is left to die with the process.
+    """
+    import threading
+    box: dict = {}
+
+    def work():
+        try:
+            box["text"] = _get_text(url, deadline)
+        except Exception as err:  # noqa: BLE001 - handed back to the caller
+            box["err"] = err
+
+    t = threading.Thread(target=work, daemon=True)
+    t.start()
+    t.join(deadline + 5)
+    if t.is_alive():
+        raise TimeoutError(f"no response within {deadline:.0f} s")
+    if "err" in box:
+        raise box["err"]
+    return box["text"]
+
+
+def _get_text(url: str, deadline: float) -> str:
     """GET with a hard limit on the whole download, not just on each read.
 
     requests' timeout applies per socket read, so a server that trickles bytes
@@ -149,6 +175,7 @@ def fetch_years(years: list[int]) -> int:
     fetched, failed = 0, []
     missed_years = []
     for i, year in enumerate(years):
+        print(f"  treasury {year}: fetching", flush=True)
         url = cfg["year_csv_template"].format(year=year)
         try:
             rows = parse_treasury_csv(get_text(url, deadline=30))
@@ -172,28 +199,49 @@ def fetch_years(years: list[int]) -> int:
         if len(years) > 1:
             time.sleep(1.0)  # polite pause between yearly files
     if missed_years:
-        wanted = {str(y) for y in missed_years}
-        try:
-            rows = parse_fred_csv(get_text(cfg["fred_csv_url"], deadline=120))
-            added = 0
-            for r in rows:
-                # FRED only fills days Treasury did not supply this run or before.
-                if r["date"][:4] in wanted and store.get(r["date"], {}).get("source") != "treasury":
-                    store[r["date"]] = _store_row(r, "fred")
-                    added += 1
-            fetched += added
-            print(f"  FRED fallback: {added} days for {len(wanted)} year(s) Treasury did not supply")
-        except Exception as err:  # noqa: BLE001
-            failed.append(f"FRED fallback: {type(err).__name__}: {err}")
+        store, failed = _merge_fred(store, missed_years, failed)
+        fetched += sum(1 for r in store.values() if r.get("source") == "fred"
+                       and r["date"][:4] in {str(y) for y in missed_years})
     if store:
         write_csv(OUT, HEADER, [[store[d][k] for k in HEADER] for d in sorted(store)])
     last = max(store) if store else "none"
-    print(f"treasury_daily.csv: {len(store)} days, {fetched} fetched this run, latest {last}")
+    print(f"treasury_daily.csv: {len(store)} days, {fetched} fetched this run, latest {last}",
+          flush=True)
     if failed:
-        print("  failed: " + "; ".join(failed))
+        print("  failed: " + "; ".join(failed), flush=True)
         if not fetched:
             raise RuntimeError("treasury: no year fetched")
     return fetched
+
+
+def fetch_fred(years: list[int]) -> int:
+    """Fill the given years from FRED, never overwriting a Treasury row."""
+    store, failed = _merge_fred(_read_store(), years, [])
+    if store:
+        write_csv(OUT, HEADER, [[store[d][k] for k in HEADER] for d in sorted(store)])
+    n = sum(1 for r in store.values() if r.get("source") == "fred")
+    print(f"treasury_daily.csv after FRED: {len(store)} days ({n} from FRED)"
+          + (f"; failed: {'; '.join(failed)}" if failed else ""), flush=True)
+    return n
+
+
+def _merge_fred(store: dict, years: list[int], failed: list[str]):
+    cfg = _load_config()
+    wanted = {str(y) for y in years}
+    print(f"  FRED: fetching {len(wanted)} year(s)", flush=True)
+    try:
+        rows = parse_fred_csv(get_text(cfg["fred_csv_url"], deadline=120))
+        added = 0
+        for r in rows:
+            # FRED only fills days Treasury has not supplied.
+            if r["date"][:4] in wanted and store.get(r["date"], {}).get("source") != "treasury":
+                store[r["date"]] = _store_row(r, "fred")
+                added += 1
+        print(f"  FRED: {added} days added", flush=True)
+    except Exception as err:  # noqa: BLE001
+        failed.append(f"FRED: {type(err).__name__}: {err}")
+        print(f"  FRED: {type(err).__name__}: {err}", flush=True)
+    return store, failed
 
 
 def main(argv: list[str]) -> int:
@@ -203,7 +251,10 @@ def main(argv: list[str]) -> int:
         fetch_years(years)
     elif argv[:1] == ["backfill"]:
         start = int(argv[1]) if len(argv) > 1 else 1990
-        fetch_years(list(range(start, today.year + 1)))
+        # History from FRED in one request (Treasury stalls on long walks from
+        # cloud runners), then this year from Treasury, which wins where it answers.
+        fetch_fred(list(range(start, today.year + 1)))
+        fetch_years([today.year])
     else:
         print(__doc__)
         return 2
