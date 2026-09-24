@@ -38,7 +38,8 @@ Action.
 | `signals/config/watchgroups.json` | Taiwan ticker groups (AI compute, server ODM, power/cooling, robotics motion) |
 | `signals/config/korea_endpoints.json` | Korea endpoint config incl. HS codes (8542 semis, 8486 semi equipment, 8479 robots) |
 | `signals/config/japan_endpoints.json` | Japan endpoints (URL patterns, stage codes, e-Stat navigation), HS prefixes and principal-commodity codes |
-| `signals/config/cftc_endpoints.json` | CFTC report dataset ids (legacy, disaggregated, TFF), both API routes, tracked contract market codes (088691 COMEX gold) |
+| `signals/config/cftc_endpoints.json` | CFTC report dataset ids, both API routes, the watch list by contract code (S&P 500 and Nasdaq-100 E-minis and the dollar index from TFF; COMEX gold and NYMEX WTI from disaggregated), the headline series for the weekly brief |
+| `signals/CFTC_WEEKLY_SUMMARY.md` | Specification for the weekly CFTC intelligence summary (schedule, send-once rules, research action vs situational awareness) |
 | `signals/config/us_endpoints.json` | Census/HTS endpoints, requested variables, the HTS codes tracked (transceivers, laser diodes, fibre, wafers, equipment) |
 | `data/taiwan/monthly_revenue/` | One normalized CSV per month & market (thousand TWD) |
 | `data/korea/` | Append-only long tables + verbatim raw API responses |
@@ -205,13 +206,35 @@ switches, routers and modems, so the read is in origin mix and growth, not
 in the level. Exports use HS6 only because Schedule B numbers differ from
 import HTS at ten digits.
 
+**CFTC positioning — works immediately, no key.** Who holds the futures that
+stand in for SPY, QQQ, UUP, GLD and USO, long and short, each week.
+`signals/cftc_cot.py` reads the CFTC's Socrata API at publicreporting.cftc.gov
+(keyless SODA 2.1; SODA 3.0 if `CFTC_APP_TOKEN` is set) for the markets in the
+config's watch list, keyed by contract code because the CFTC renamed contracts
+in February 2022. Equity indices and the dollar use the Traders in Financial
+Futures report (institutions vs hedge funds); gold and crude use the
+disaggregated report (managed money). `flows` adds the weekly change in net
+and flags moves bigger than 90% of the series' earlier weekly moves, ranked
+against earlier weeks only; `brief` writes the latest week for the headline
+series. History runs from 2006-06-13.
+
+```bash
+python -m signals.cftc_cot latest                 # last 10 weeks, every watched market
+python -m signals.cftc_cot backfill 2006-06-13    # full history
+python -m signals.cftc_cot flows && python -m signals.cftc_cot brief
+```
+
+The workflow fetches it every run and in a CFTC-only run Friday 21:30 UTC,
+after the 15:30 ET release. A weekly summary built on it (Notion page plus
+email) is specified in `signals/CFTC_WEEKLY_SUMMARY.md`.
+
 **Automation.** `.github/workflows/update-signals.yml` runs daily at 07:30 UTC
 (after Taipei/Seoul/Tokyo publish times), fetches whatever is newly published,
 recomputes `data/derived/`, and commits only when data changed. Manual runs
 accept backfill ranges; the `japan_only` input skips the Taiwan and Korea
 steps so a Japan-only dispatch does not spend tradedata.go.kr's manual-run
 budget, `us_only` does the same for the Census steps, `us_backfill` walks
-history one year at a time, and `japan_capture` snapshots every Japan source raw.
+history one year at a time, `japan_capture` snapshots every Japan source raw, `cftc_only` runs just the CFTC step, and `cftc_backfill` takes a start date.
 
 ## What the signals mean (and don't)
 
