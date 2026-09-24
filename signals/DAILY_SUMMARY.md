@@ -70,6 +70,9 @@ Otherwise read, in this order:
   a one-month jump. These files are large; reading through GitHub tools, fetch
   only what a flag actually needs.
 
+Leave the CFTC files (`data/cftc/`, `data/derived/cftc_*`) out: they have
+their own weekly summary, specified in `signals/CFTC_WEEKLY_SUMMARY.md`.
+
 ### Columns worth knowing
 
 In `japan_signals.csv`, `yoy_pct` is growth measured in yen, `yoy_pct_usd` is
