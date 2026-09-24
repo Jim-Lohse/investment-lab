@@ -257,9 +257,9 @@ jobs:
         timeout-minutes: 10
         run: |
           if [ -n "${{ github.event.inputs.treasury_backfill }}" ]; then
-            python -m signals.treasury_yields backfill "${{ github.event.inputs.treasury_backfill }}"
+            python -u -m signals.treasury_yields backfill "${{ github.event.inputs.treasury_backfill }}"
           else
-            python -m signals.treasury_yields latest
+            python -u -m signals.treasury_yields latest
           fi
 
       - name: Snapshot the previous derived tables (baseline for the diff)

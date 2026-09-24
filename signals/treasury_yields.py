@@ -41,7 +41,9 @@ import json
 import sys
 import time
 
-from .common import CONFIG_DIR, DATA_DIR, fmt, http_get, parse_number, write_csv
+import requests
+
+from .common import CONFIG_DIR, DATA_DIR, USER_AGENT, fmt, parse_number, write_csv
 
 OUT = DATA_DIR / "rates" / "treasury_daily.csv"
 HEADER = ["date", "y3m", "y2y", "y5y", "y10y", "y30y", "gap_2s10s", "gap_3m10y", "source"]
@@ -115,6 +117,25 @@ def _store_row(r: dict, source: str) -> dict:
     return out
 
 
+def get_text(url: str, deadline: float) -> str:
+    """GET with a hard limit on the whole download, not just on each read.
+
+    requests' timeout applies per socket read, so a server that trickles bytes
+    (as Treasury's does for some cloud runners) can hold a request open far
+    longer; this reads in chunks and gives up once `deadline` seconds pass.
+    """
+    start = time.monotonic()
+    with requests.get(url, stream=True, timeout=min(20, deadline),
+                      headers={"User-Agent": USER_AGENT, "Accept": "*/*"}) as resp:
+        resp.raise_for_status()
+        chunks = []
+        for chunk in resp.iter_content(chunk_size=65536):
+            chunks.append(chunk)
+            if time.monotonic() - start > deadline:
+                raise TimeoutError(f"download exceeded {deadline:.0f} s")
+        return b"".join(chunks).decode(resp.encoding or "utf-8", "replace")
+
+
 def _read_store() -> dict[str, dict]:
     if not OUT.exists():
         return {}
@@ -130,9 +151,10 @@ def fetch_years(years: list[int]) -> int:
     for i, year in enumerate(years):
         url = cfg["year_csv_template"].format(year=year)
         try:
-            rows = parse_treasury_csv(http_get(url, retries=1, timeout=20).text)
+            rows = parse_treasury_csv(get_text(url, deadline=30))
         except Exception as err:  # noqa: BLE001 - one bad year must not stop the walk
             failed.append(f"{year}: {type(err).__name__}: {err}")
+            print(f"  treasury {year}: {type(err).__name__}: {err}", flush=True)
             missed_years.append(year)
             if i == 0 and len(years) > 3:
                 # The first year failing usually means the site is refusing this
@@ -152,7 +174,7 @@ def fetch_years(years: list[int]) -> int:
     if missed_years:
         wanted = {str(y) for y in missed_years}
         try:
-            rows = parse_fred_csv(http_get(cfg["fred_csv_url"], retries=2, timeout=60).text)
+            rows = parse_fred_csv(get_text(cfg["fred_csv_url"], deadline=120))
             added = 0
             for r in rows:
                 # FRED only fills days Treasury did not supply this run or before.
