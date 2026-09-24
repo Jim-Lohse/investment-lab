@@ -263,5 +263,75 @@ class TransportTests(unittest.TestCase):
                          ["SELECT * LIMIT 2 OFFSET 0", "SELECT * LIMIT 2 OFFSET 2"])
 
 
+class FlagTests(unittest.TestCase):
+    WATCH = {"tff_fut": {"13874A": "E-mini S&P 500"}}
+
+    def _series(self, nets):
+        start = cftc_cot.dt.date(2020, 1, 7)
+        return [{"report": "tff_fut", "market_code": "13874A",
+                 "trader_group": "leveraged_money",
+                 "report_date": (start + cftc_cot.dt.timedelta(weeks=i)).isoformat(),
+                 "long": "", "short": "", "net": str(n), "open_interest": "1000"}
+                for i, n in enumerate(nets)]
+
+    def test_no_rank_until_a_year_of_history(self):
+        nets = [0, 1] * 20  # 39 weekly moves, below MIN_HISTORY
+        flows = cftc_cot.compute_flows(self._series(nets), self.WATCH)
+        self.assertTrue(all(f["move_rank_pct"] == "" and f["flag"] == "" for f in flows))
+
+    def test_large_move_is_flagged_against_earlier_weeks_only(self):
+        nets = [0, 1] * 30 + [101]  # 60 moves of 1, then a move of 100
+        flows = cftc_cot.compute_flows(self._series(nets), self.WATCH)
+        last = flows[-1]
+        self.assertEqual(last["move_rank_pct"], "100")
+        self.assertIn("unusual_move", last["flag"])
+        self.assertIn("extreme_net", last["flag"])
+        # A later week never changes an earlier week's rank (no look-ahead).
+        earlier = cftc_cot.compute_flows(self._series(nets[:-1]), self.WATCH)
+        self.assertEqual([f["move_rank_pct"] for f in earlier],
+                         [f["move_rank_pct"] for f in flows[:-1]])
+
+    def test_ordinary_move_is_not_flagged(self):
+        nets = list(range(0, 120, 2))  # every move is exactly 2
+        flows = cftc_cot.compute_flows(self._series(nets), self.WATCH)
+        self.assertNotIn("unusual_move", flows[-1]["flag"])
+
+
+class BriefTests(unittest.TestCase):
+    HEAD = [{"report": "tff_fut", "code": "13874A", "group": "asset_manager",
+             "name": "S&P 500 (SPY)", "who": "Institutions"}]
+
+    @staticmethod
+    def _flow(date):
+        return {"report": "tff_fut", "market_code": "13874A",
+                "trader_group": "asset_manager", "report_date": date, "net": "10",
+                "net_change": "1", "move_rank_pct": "50", "net_rank_pct": "60",
+                "flag": "unusual_move"}
+
+    def test_current_on_saturday_after_friday_release(self):
+        text = cftc_cot.build_brief([self._flow("2026-09-22")], self.HEAD,
+                                    cftc_cot.dt.date(2026, 9, 26))
+        self.assertIn("Status: current", text)
+        self.assertIn("unusual move", text)
+
+    def test_stale_when_saturday_has_no_new_week(self):
+        text = cftc_cot.build_brief([self._flow("2026-09-15")], self.HEAD,
+                                    cftc_cot.dt.date(2026, 9, 26))
+        self.assertIn("Status: STALE", text)
+
+    def test_midweek_expects_previous_tuesday(self):
+        text = cftc_cot.build_brief([self._flow("2026-09-15")], self.HEAD,
+                                    cftc_cot.dt.date(2026, 9, 24))
+        self.assertIn("Status: current", text)
+
+    def test_missing_series_is_shown_not_filled(self):
+        head = self.HEAD + [{"report": "disagg_fut", "code": "088691",
+                             "group": "managed_money", "name": "Gold (GLD)",
+                             "who": "Hedge funds"}]
+        text = cftc_cot.build_brief([self._flow("2026-09-22")], head,
+                                    cftc_cot.dt.date(2026, 9, 26))
+        self.assertIn("| Gold (GLD) | Hedge funds | missing |", text)
+
+
 if __name__ == "__main__":
     unittest.main()

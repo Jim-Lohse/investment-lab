@@ -32,12 +32,14 @@ Usage:
     python -m signals.cftc_cot backfill 2006-06-13           # every watched market
     python -m signals.cftc_cot backfill 2015-01-01 disagg_fut 088691
     python -m signals.cftc_cot flows
+    python -m signals.cftc_cot brief [YYYY-MM-DD]            # data/derived/cftc_brief.md
     python -m signals.cftc_cot query legacy_fut "SELECT * WHERE contract_market_name = 'GOLD' ORDER BY report_date_as_yyyy_mm_dd DESC LIMIT 10"
     python -m signals.cftc_cot reparse
 """
 
 from __future__ import annotations
 
+import bisect
 import csv
 import datetime as dt
 import json
@@ -56,7 +58,17 @@ POSITIONS_HEADER = ["report", "report_date", "market_code", "market_and_exchange
 POSITIONS_KEY = ["report", "report_date", "market_code", "trader_group"]
 
 FLOWS_HEADER = ["report", "market_code", "label", "trader_group", "report_date",
-                "long", "short", "net", "net_change", "open_interest", "net_pct_oi"]
+                "long", "short", "net", "net_change", "open_interest", "net_pct_oi",
+                "move_rank_pct", "net_rank_pct", "flag"]
+
+# A weekly move is "unusual" when it is bigger (either direction) than this
+# share of the series' own earlier weekly moves; a net position is at an
+# "extreme" when it sits above or below this share of its earlier weeks.
+# Ranks use only weeks before the one being ranked, never later ones, and need
+# MIN_HISTORY earlier weeks before any flag is raised.
+MOVE_FLAG_PCT = 90.0
+NET_EXTREME_PCT = 95.0
+MIN_HISTORY = 52
 DATE_FIELD = "report_date_as_yyyy_mm_dd"
 
 # Trader groups per report family: (long field, short field, spread field).
@@ -322,6 +334,8 @@ def compute_flows(rows: list[dict], watch: dict[str, dict[str, str]]) -> list[di
     for (report, code, group), recs in sorted(series.items()):
         recs.sort(key=lambda r: r["report_date"])
         prev = None
+        past_moves: list[float] = []  # sorted |net_change| of earlier weeks
+        past_nets: list[float] = []   # sorted net of earlier weeks
         for r in recs:
             net = parse_number(r["net"])
             oi = parse_number(r["open_interest"])
@@ -332,6 +346,14 @@ def compute_flows(rows: list[dict], watch: dict[str, dict[str, str]]) -> list[di
                 prev_net = parse_number(prev["net"])
                 if 5 <= gap <= 9 and prev_net is not None:
                     change = net - prev_net
+            move_rank = _rank(past_moves, abs(change)) if change is not None else None
+            net_rank = _rank(past_nets, net) if net is not None else None
+            flags = []
+            if move_rank is not None and move_rank >= MOVE_FLAG_PCT:
+                flags.append("unusual_move")
+            if net_rank is not None and (net_rank >= NET_EXTREME_PCT
+                                         or net_rank <= 100 - NET_EXTREME_PCT):
+                flags.append("extreme_net")
             out.append({
                 "report": report, "market_code": code,
                 "label": watch[report][code], "trader_group": group,
@@ -339,9 +361,24 @@ def compute_flows(rows: list[dict], watch: dict[str, dict[str, str]]) -> list[di
                 "net": r["net"], "net_change": fmt(change),
                 "open_interest": r["open_interest"],
                 "net_pct_oi": f"{100 * net / oi:.1f}" if net is not None and oi else "",
+                "move_rank_pct": f"{move_rank:.0f}" if move_rank is not None else "",
+                "net_rank_pct": f"{net_rank:.0f}" if net_rank is not None else "",
+                "flag": " ".join(flags),
             })
+            if change is not None:
+                bisect.insort(past_moves, abs(change))
+            if net is not None:
+                bisect.insort(past_nets, net)
             prev = r
     return out
+
+
+def _rank(history: list[float], value: float) -> float | None:
+    """Share of earlier values strictly below `value`, in percent; None until
+    there is enough history to mean anything."""
+    if len(history) < MIN_HISTORY:
+        return None
+    return 100.0 * bisect.bisect_left(history, value) / len(history)
 
 
 def write_flows() -> int:
@@ -374,6 +411,66 @@ def reparse() -> None:
     print(f"positions.csv: rebuilt with {added} rows")
 
 
+# --- Weekly brief -------------------------------------------------------------
+
+def build_brief(flows: list[dict], headline: list[dict], today: dt.date) -> str:
+    """Markdown facts for the latest week: one row per headline series.
+
+    Plain facts only, computed here so the written summary never has to
+    recompute them. The staleness line compares the latest week with the most
+    recent Tuesday that should already be published (Friday release).
+    """
+    by_series: dict[tuple, list[dict]] = {}
+    for f in flows:
+        by_series.setdefault((f["report"], f["market_code"], f["trader_group"]), []).append(f)
+    latest = max((f["report_date"] for f in flows), default="")
+    lines = [f"# CFTC positioning brief, week of {latest or 'n/a'}", ""]
+    # Most recent Tuesday whose report is due by now. It is published Friday
+    # afternoon, so from Tuesday to Friday the week before is the one due; a
+    # Friday-evening run that already has this week's rows still reads current.
+    tuesday = today - dt.timedelta(days=(today.weekday() - 1) % 7)
+    if today.weekday() in (1, 2, 3, 4):
+        tuesday -= dt.timedelta(days=7)
+    expected = tuesday.isoformat()
+    status = "current" if latest >= expected else "STALE"
+    lines += [f"- Latest week in the data: {latest or 'none'}",
+              f"- Latest week that should be published by {today.isoformat()}: {expected}",
+              f"- Status: {status}", ""]
+    lines += ["| Market | Who | Net | Change from last week | Move bigger than % of past weekly moves "
+              "| Net higher than % of past weeks | Net a year earlier | Flag |",
+              "|---|---|---|---|---|---|---|---|"]
+    for h in headline:
+        recs = by_series.get((h["report"], h["code"], h["group"]), [])
+        row = next((r for r in recs if r["report_date"] == latest), None)
+        if row is None:
+            lines.append(f"| {h['name']} | {h['who']} | missing | | | | | |")
+            continue
+        cutoff = (dt.date.fromisoformat(latest) - dt.timedelta(days=364)).isoformat()
+        year_ago = [r for r in recs if r["report_date"] <= cutoff]
+        ya = f"{year_ago[-1]['net']} ({year_ago[-1]['report_date']})" if year_ago else ""
+        lines.append(f"| {h['name']} | {h['who']} | {row['net']} | {row['net_change']} "
+                     f"| {row['move_rank_pct']} | {row['net_rank_pct']} | {ya} "
+                     f"| {row['flag'].replace('_', ' ')} |")
+    lines += ["", f"Flags: 'unusual move' = weekly change bigger than {MOVE_FLAG_PCT:.0f}% of that "
+              f"series' earlier weekly moves; 'extreme net' = net above {NET_EXTREME_PCT:.0f}% or "
+              f"below {100 - NET_EXTREME_PCT:.0f}% of its earlier weeks. Ranks use only earlier "
+              "weeks, from 2006-06-13.", ""]
+    return "\n".join(lines)
+
+
+def write_brief(today: dt.date | None = None) -> None:
+    src = DATA_DIR / "derived" / "cftc_flows.csv"
+    if not src.exists():
+        print("cftc brief: no cftc_flows.csv yet")
+        return
+    with src.open(encoding="utf-8", newline="") as fh:
+        flows = list(csv.DictReader(fh))
+    text = build_brief(flows, _load_config().get("headline", []), today or dt.date.today())
+    out = DATA_DIR / "derived" / "cftc_brief.md"
+    out.write_text(text, encoding="utf-8")
+    print(text)
+
+
 def main(argv: list[str]) -> int:
     if not argv:
         print(__doc__)
@@ -385,6 +482,8 @@ def main(argv: list[str]) -> int:
         fetch_watch(rest[0], rest[1] if len(rest) > 1 else None, rest[2:] or None)
     elif cmd == "flows":
         write_flows()
+    elif cmd == "brief":
+        write_brief(dt.date.fromisoformat(rest[0]) if rest else None)
     elif cmd == "query" and len(rest) == 2:
         rows, route = run_query(rest[0], rest[1])
         print(json.dumps(rows, indent=1))

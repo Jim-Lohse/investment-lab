@@ -44,7 +44,7 @@ Action.
 | `data/korea/` | Append-only long tables + verbatim raw API responses |
 | `data/japan/` | Append-only long tables + verbatim raw XML/CSV/HTML payloads (`raw/`) |
 | `data/us/` | Append-only long table by (month, direction, code, country) + verbatim Census JSON (`raw/`) |
-| `data/cftc/` | Append-only positions table + verbatim JSON payloads (`raw/`) |
+| `data/cftc/` | Append-only positions table + verbatim JSON payloads (`raw/`); derived `cftc_flows.csv` (weekly net change, move and level ranks, flags) and `cftc_brief.md` (latest week, headline series) in `data/derived/` |
 | `data/derived/` | Recomputed signals + `latest_report.md` (regenerated each run) |
 | `tests/test_signals.py` | Offline parser/math tests (`python -m unittest discover tests`) |
 

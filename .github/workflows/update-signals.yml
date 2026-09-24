@@ -21,6 +21,11 @@ on:
     # Second attempt: tradedata.go.kr connectivity from cloud runners flaps,
     # and fetchers are idempotent, so a later retry window is free insurance.
     - cron: "30 12 * * *"
+    # CFTC Commitments of Traders only: the weekly report is published Friday
+    # 15:30 ET (19:30 UTC in summer, 20:30 UTC in winter). 21:30 UTC lands
+    # after it in both, so the week's positioning is in the repo Friday
+    # evening instead of Saturday morning. Runs the CFTC step alone.
+    - cron: "30 21 * * 5"
   workflow_dispatch:
     inputs:
       taiwan_backfill:
@@ -82,6 +87,9 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    env:
+      # True for a manual cftc_only run and for the Friday-evening schedule.
+      CFTC_ONLY: ${{ github.event.inputs.cftc_only != '' || github.event.schedule == '30 21 * * 5' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -98,23 +106,23 @@ jobs:
       # Sources are independent: a failure in one is a visible red step but
       # must not block fetching the others.
       - name: Fetch Taiwan monthly revenue (current month)
-        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: python -m signals.taiwan_mops current
 
       - name: Backfill Taiwan archive (manual runs only)
-        if: ${{ github.event.inputs.taiwan_backfill != '' && github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.taiwan_backfill != '' && github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         run: |
           RANGE="${{ github.event.inputs.taiwan_backfill }}"
           python -m signals.taiwan_mops backfill "${RANGE%%:*}" "${RANGE##*:}"
 
       - name: Fetch Korea tradedata.go.kr dashboard (no key required)
-        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: python -m signals.korea_tradedata dashboard
 
       - name: Fetch Korea tradedata.go.kr by-item flash (no key required)
-        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: |
           if [ -n "${{ github.event.inputs.korea_items_range }}" ]; then
@@ -125,14 +133,14 @@ jobs:
           fi
 
       - name: Capture tradedata pages for parser development (manual runs only)
-        if: ${{ github.event.inputs.capture_pages != '' && github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.capture_pages != '' && github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: |
           python -m signals.korea_tradedata capture
           python -m signals.korea_tradedata probe
 
       - name: Fetch Korea Customs data
-        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         env:
           DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
@@ -153,12 +161,12 @@ jobs:
       # Japan: static files on customs.go.jp + e-Stat CSVs, no key. Each
       # sub-source is its own step so one drifting schema is one red step.
       - name: Capture Japan sources for parser development (manual runs only)
-        if: ${{ github.event.inputs.japan_capture != '' && github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.japan_capture != '' && github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: python -m signals.japan_customs capture
 
       - name: Fetch Japan press-release windows (10-day, 20-day, monthly)
-        if: ${{ github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: |
           if [ -n "${{ github.event.inputs.japan_flash_backfill }}" ]; then
@@ -169,23 +177,23 @@ jobs:
           fi
 
       - name: Fetch Japan time-series CSVs
-        if: ${{ github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: python -m signals.japan_customs timeseries
 
       - name: Fetch Japan e-Stat monthly HS-level CSVs
-        if: ${{ github.event.inputs.us_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.us_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: python -m signals.japan_customs estat
 
       # U.S.: Census International Trade API (free key) + keyless HTS snapshot.
       - name: Snapshot HTS code descriptions (keyless)
-        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: python -m signals.us_census hts
 
       - name: Fetch U.S. Census monthly trade by HTS code
-        if: ${{ github.event.inputs.japan_only == '' && github.event.inputs.cftc_only == '' }}
+        if: ${{ github.event.inputs.japan_only == '' && env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         env:
           CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
@@ -202,7 +210,7 @@ jobs:
       # move told apart from a real one. Runs on every dispatch, including
       # japan_only and us_only, because it is a single request.
       - name: Fetch daily reference exchange rates (keyless)
-        if: ${{ github.event.inputs.cftc_only == '' }}
+        if: ${{ env.CFTC_ONLY != 'true' }}
         continue-on-error: true
         run: |
           if [ -n "${{ github.event.inputs.fx_backfill }}" ]; then
@@ -229,6 +237,7 @@ jobs:
             python -m signals.cftc_cot latest
           fi
           python -m signals.cftc_cot flows
+          python -m signals.cftc_cot brief
 
       - name: Snapshot the previous derived tables (baseline for the diff)
         run: |

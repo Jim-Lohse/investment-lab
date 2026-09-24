@@ -92,5 +92,68 @@
     "Which report for which asset: equity indices, currencies and rates use TFF",
     "(dealer / asset manager / leveraged money); physical commodities use",
     "disaggregated (producer / swap dealer / managed money)."
+  ],
+  "headline": [
+    {
+      "report": "tff_fut",
+      "code": "13874A",
+      "group": "asset_manager",
+      "name": "S&P 500 (SPY)",
+      "who": "Institutions"
+    },
+    {
+      "report": "tff_fut",
+      "code": "13874A",
+      "group": "leveraged_money",
+      "name": "S&P 500 (SPY)",
+      "who": "Hedge funds"
+    },
+    {
+      "report": "tff_fut",
+      "code": "209742",
+      "group": "asset_manager",
+      "name": "Nasdaq-100 (QQQ)",
+      "who": "Institutions"
+    },
+    {
+      "report": "tff_fut",
+      "code": "209742",
+      "group": "leveraged_money",
+      "name": "Nasdaq-100 (QQQ)",
+      "who": "Hedge funds"
+    },
+    {
+      "report": "tff_fut",
+      "code": "098662",
+      "group": "asset_manager",
+      "name": "Dollar index (UUP)",
+      "who": "Institutions"
+    },
+    {
+      "report": "tff_fut",
+      "code": "098662",
+      "group": "leveraged_money",
+      "name": "Dollar index (UUP)",
+      "who": "Hedge funds"
+    },
+    {
+      "report": "disagg_fut",
+      "code": "088691",
+      "group": "managed_money",
+      "name": "Gold (GLD)",
+      "who": "Hedge funds"
+    },
+    {
+      "report": "disagg_fut",
+      "code": "067651",
+      "group": "managed_money",
+      "name": "Crude oil (USO)",
+      "who": "Hedge funds"
+    }
+  ],
+  "_headline_note": [
+    "The series the weekly brief reports, in order. 'Institutions' is the",
+    "TFF asset-manager group (pension funds, mutual funds, insurers); 'Hedge",
+    "funds' is TFF leveraged money or disaggregated managed money."
   ]
 }
