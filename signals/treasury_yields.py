@@ -9,7 +9,12 @@ usually because it expects a slowdown. The 3-month-to-10-year gap is the
 version most Federal Reserve research uses.
 
 Source: the U.S. Treasury's daily par yield curve (keyless, primary record),
-one CSV per calendar year:
+one CSV per calendar year. Fallback: FRED (St. Louis Fed), which republishes
+the same Treasury series (DGS3MO, DGS2, DGS5, DGS10, DGS30) in one keyless CSV
+covering the whole history; used for any day Treasury did not supply, and the
+source of each row is recorded. Treasury's site throttles some cloud runners,
+so its requests fail fast rather than hang.
+Treasury file:
   https://home.treasury.gov/resource-center/data-chart-center/interest-rates/
   daily-treasury-rates.csv/{year}/all?type=daily_treasury_yield_curve&...
 Columns are found by header name ("3 Mo", "2 Yr", "10 Yr", ...), never by
@@ -39,7 +44,8 @@ import time
 from .common import CONFIG_DIR, DATA_DIR, fmt, http_get, parse_number, write_csv
 
 OUT = DATA_DIR / "rates" / "treasury_daily.csv"
-HEADER = ["date", "y3m", "y2y", "y5y", "y10y", "y30y", "gap_2s10s", "gap_3m10y"]
+HEADER = ["date", "y3m", "y2y", "y5y", "y10y", "y30y", "gap_2s10s", "gap_3m10y", "source"]
+FRED_IDS = {"y3m": "DGS3MO", "y2y": "DGS2", "y5y": "DGS5", "y10y": "DGS10", "y30y": "DGS30"}
 TENORS = {"y3m": "3 mo", "y2y": "2 yr", "y5y": "5 yr", "y10y": "10 yr", "y30y": "30 yr"}
 
 
@@ -75,6 +81,40 @@ def parse_treasury_csv(text: str) -> list[dict]:
     return rows
 
 
+def parse_fred_csv(text: str) -> list[dict]:
+    """FRED fredgraph CSV (first column the date, one column per series id,
+    '.' or blank for a missing day) -> rows in the same shape as Treasury's."""
+    reader = csv.DictReader(io.StringIO(text.lstrip("\ufeff")))
+    if not reader.fieldnames:
+        return []
+    date_col = reader.fieldnames[0]
+    cols = {name.strip().upper(): name for name in reader.fieldnames}
+    rows = []
+    for rec in reader:
+        day = (rec.get(date_col) or "").strip()
+        if len(day) != 10 or day[4] != "-":
+            continue
+        row = {"date": day}
+        for key, sid in FRED_IDS.items():
+            src = cols.get(sid)
+            row[key] = parse_number(rec.get(src)) if src else None
+        if row["y2y"] is None and row["y10y"] is None:
+            continue  # a holiday row with no readings
+        row["gap_2s10s"] = (row["y10y"] - row["y2y"]
+                            if row["y10y"] is not None and row["y2y"] is not None else None)
+        row["gap_3m10y"] = (row["y10y"] - row["y3m"]
+                            if row["y10y"] is not None and row["y3m"] is not None else None)
+        rows.append(row)
+    return rows
+
+
+def _store_row(r: dict, source: str) -> dict:
+    out = {k: (r[k] if k == "date" else fmt(round(r[k], 4)) if r[k] is not None else "")
+           for k in HEADER if k != "source"}
+    out["source"] = source
+    return out
+
+
 def _read_store() -> dict[str, dict]:
     if not OUT.exists():
         return {}
@@ -86,22 +126,43 @@ def fetch_years(years: list[int]) -> int:
     cfg = _load_config()
     store = _read_store()
     fetched, failed = 0, []
-    for year in years:
+    missed_years = []
+    for i, year in enumerate(years):
         url = cfg["year_csv_template"].format(year=year)
         try:
-            rows = parse_treasury_csv(http_get(url).text)
+            rows = parse_treasury_csv(http_get(url, retries=1, timeout=20).text)
         except Exception as err:  # noqa: BLE001 - one bad year must not stop the walk
             failed.append(f"{year}: {type(err).__name__}: {err}")
+            missed_years.append(year)
+            if i == 0 and len(years) > 3:
+                # The first year failing usually means the site is refusing this
+                # runner: skip the rest and let FRED supply the history.
+                missed_years = list(years)
+                break
             continue
         if not rows:
             failed.append(f"{year}: no rows parsed")
+            missed_years.append(year)
             continue
         for r in rows:
-            store[r["date"]] = {k: (r[k] if k == "date" else fmt(round(r[k], 4))
-                                    if r[k] is not None else "") for k in HEADER}
+            store[r["date"]] = _store_row(r, "treasury")
         fetched += len(rows)
         if len(years) > 1:
             time.sleep(1.0)  # polite pause between yearly files
+    if missed_years:
+        wanted = {str(y) for y in missed_years}
+        try:
+            rows = parse_fred_csv(http_get(cfg["fred_csv_url"], retries=2, timeout=60).text)
+            added = 0
+            for r in rows:
+                # FRED only fills days Treasury did not supply this run or before.
+                if r["date"][:4] in wanted and store.get(r["date"], {}).get("source") != "treasury":
+                    store[r["date"]] = _store_row(r, "fred")
+                    added += 1
+            fetched += added
+            print(f"  FRED fallback: {added} days for {len(wanted)} year(s) Treasury did not supply")
+        except Exception as err:  # noqa: BLE001
+            failed.append(f"FRED fallback: {type(err).__name__}: {err}")
     if store:
         write_csv(OUT, HEADER, [[store[d][k] for k in HEADER] for d in sorted(store)])
     last = max(store) if store else "none"

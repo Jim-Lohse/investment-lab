@@ -36,6 +36,17 @@ class TreasuryParserTests(unittest.TestCase):
         self.assertIsNone(r["y30y"])
         self.assertAlmostEqual(r["gap_2s10s"], 0.22, places=6)
 
+    def test_fred_fallback_format(self):
+        text = ("observation_date,DGS3MO,DGS2,DGS5,DGS10,DGS30\n"
+                "2026-09-21,4.17,4.76,4.83,4.96,5.29\n"
+                "2026-09-07,,,,,\n"
+                "2026-09-22,4.16,.,4.83,4.96,5.29\n")
+        rows = {r["date"]: r for r in T.parse_fred_csv(text)}
+        self.assertNotIn("2026-09-07", rows)            # holiday row dropped
+        self.assertAlmostEqual(rows["2026-09-21"]["gap_2s10s"], 0.20, places=6)
+        self.assertIsNone(rows["2026-09-22"]["y2y"])     # '.' means missing, never zero
+        self.assertIsNone(rows["2026-09-22"]["gap_2s10s"])
+
     def test_garbage_is_empty(self):
         self.assertEqual(T.parse_treasury_csv("<html>error</html>"), [])
 

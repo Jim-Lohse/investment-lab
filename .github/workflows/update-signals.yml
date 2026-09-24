@@ -254,6 +254,7 @@ jobs:
       # gaps between them, for the macro dashboard's rates panel.
       - name: Fetch Treasury yields (keyless)
         continue-on-error: true
+        timeout-minutes: 10
         run: |
           if [ -n "${{ github.event.inputs.treasury_backfill }}" ]; then
             python -m signals.treasury_yields backfill "${{ github.event.inputs.treasury_backfill }}"

@@ -263,12 +263,158 @@ def trade_item(name, rows, period_key, value_key, window_key, note) -> dict:
                           "value": parse_number(prev.get(value_key))} if prev else None)}
 
 
+# --- Takeaways ---------------------------------------------------------------
+# Plain sentences built from the numbers by fixed rules, so the wording is the
+# same week to week and never goes beyond what the data says. Descriptive
+# only: no buy or sell language.
+
+MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August",
+          "September", "October", "November", "December"]
+
+
+def month_year(iso: str) -> str:
+    y, m = iso[:4], int(iso[5:7])
+    return f"{MONTHS[m - 1]} {y}"
+
+
+def bp(change_pts: float | None) -> str:
+    """Percentage-point change as basis points, e.g. 0.24 -> '24 bp'."""
+    return f"{abs(round(change_pts * 100))} bp" if change_pts is not None else "an unknown amount"
+
+
+def moved(c: float | None, unit: str) -> str:
+    if c is None:
+        return "has no comparison yet"
+    if abs(c) < (0.05 if unit == "pts" else 0.5):
+        return "is little changed"
+    word = "up" if c > 0 else "down"
+    return f"is {word} {bp(c)}" if unit == "pts" else f"is {word} {abs(c):.1f}%"
+
+
+def find(items: list[dict], prefix: str) -> dict | None:
+    return next((i for i in items if i["name"].startswith(prefix)), None)
+
+
+def rates_takeaway(p: dict) -> list[str]:
+    y2, y10 = find(p["items"], "2-year"), find(p["items"], "10-year")
+    g = find(p["items"], "Gap: 10-year minus 2-year")
+    if not (y2 and y10 and g):
+        return []
+    c2, c10 = y2["changes"]["13w"], y10["changes"]["13w"]
+    out = [f"The 2-year yield is {y2['value']:.2f}% and {moved(c2, 'pts')} over 13 weeks; "
+           f"the 10-year is {y10['value']:.2f}% and {moved(c10, 'pts')}."]
+    since = f" since {month_year(g['streak']['since'])}" if g.get("streak") else ""
+    if g["value"] >= 0:
+        out.append(f"The 10-year pays {g['value']:.2f} percentage points more than the 2-year, "
+                   f"so the curve is not inverted; it has been positive{since}.")
+    else:
+        out.append(f"The 2-year pays {abs(g['value']):.2f} points more than the 10-year: the curve "
+                   f"is inverted{since}. Markets are pricing rate cuts ahead, usually because they "
+                   f"expect the economy to slow.")
+    gc = g["changes"]["13w"]
+    if gc is not None and c2 is not None and c10 is not None:
+        if gc <= -0.15:
+            why = ("short-term rates rose faster than long-term ones, which usually means markets "
+                   "expect the Federal Reserve to keep rates high" if c2 > 0 else
+                   "long-term rates fell faster than short-term ones, which usually means markets "
+                   "expect slower growth ahead")
+            out.append(f"The gap narrowed by {bp(gc)} over 13 weeks (a flattening curve): {why}.")
+        elif gc >= 0.15:
+            why = ("short-term rates fell faster, which usually means markets expect rate cuts"
+                   if c2 < 0 else
+                   "long-term rates rose faster, which often reflects worries about inflation or "
+                   "heavy government borrowing")
+            out.append(f"The gap widened by {bp(gc)} over 13 weeks (a steepening curve): {why}.")
+        else:
+            out.append("The shape of the curve barely changed over 13 weeks.")
+    return out
+
+
+def market_takeaway(p: dict) -> list[str]:
+    out = []
+    for it in p["items"]:
+        c13, c52 = it["changes"]["13w"], it["changes"]["52w"]
+        big = it.get("move4_rank_pct") is not None and it["move4_rank_pct"] >= 90
+        if it["unit"] == "USD":
+            s = f"{it['name']} {moved(c13, '%')} over 13 weeks"
+            s += f" and {abs(c52):.1f}% {'higher' if c52 >= 0 else 'lower'} than a year ago." if c52 is not None else "."
+            if big:
+                s += (f" Its latest 4-week move is larger than {it['move4_rank_pct']}% of past "
+                      f"4-week moves, which is unusually large.")
+            out.append(s)
+        elif it["unit"] == "tonnes":
+            c4 = it["changes"]["4w"]
+            if c4 is not None:
+                flow = "money flowing in" if c4 > 0 else "money flowing out"
+                s = f"Gold held by GLD {moved(c4, '%')} over 4 weeks: {flow}."
+                if big:
+                    s += (f" That is larger than {it['move4_rank_pct']}% of past 4-week moves. "
+                          f"In the lab's test, flows this strong tended to keep going the same way "
+                          f"for several weeks.")
+                out.append(s)
+        elif it["unit"] == "contracts" and it.get("rank_pct") is not None:
+            r = it["rank_pct"]
+            if r >= 90 or r <= 10:
+                side = "long (betting on a rise)" if it["value"] > 0 else "short (betting on a fall)"
+                where = f"higher than {r}%" if r >= 90 else f"lower than {100 - r}%"
+                out.append(f"{it['name']}: net {side}, {where} of weeks since "
+                           f"{it['since'][:4]}, a crowded position. Crowding shows where a sharp "
+                           f"reversal could start, not when.")
+    return out
+
+
+def trade_takeaway(p: dict) -> list[str]:
+    parts = []
+    for it in p["items"]:
+        if it.get("value") is None:
+            continue
+        country = it["name"].split(":")[0]
+        s = f"{country} {abs(it['value']):.0f}% {'higher' if it['value'] >= 0 else 'lower'}"
+        if it.get("value_usd") is not None:
+            s += f" ({abs(it['value_usd']):.0f}% in U.S. dollars)"
+        parts.append(s)
+    if not parts:
+        return []
+    out = ["Compared with the same period last year: " + "; ".join(parts) + "."]
+    jp = find(p["items"], "Japan")
+    if jp and jp.get("value_usd") is not None and jp["value"] - jp["value_usd"] >= 3:
+        out.append(f"About {jp['value'] - jp['value_usd']:.0f} points of Japan's export growth "
+                   f"is only the weaker yen; the dollar figure is the truer read of demand.")
+    return out
+
+
+def headlines(panels: list[dict]) -> list[str]:
+    """The few takeaways worth reading first: the curve, then anything unusual."""
+    out = []
+    rates = next((p for p in panels if p["id"] == "rates"), None)
+    if rates and rates.get("takeaway"):
+        out.extend(rates["takeaway"][:2])
+    for p in panels:
+        if p["id"] in ("rates", "trade"):
+            continue
+        out.extend(t for t in p.get("takeaway", []) if "unusually large" in t
+                   or "crowded" in t or "tended to keep going" in t)
+    trade = next((p for p in panels if p["id"] == "trade"), None)
+    if trade and trade.get("takeaway"):
+        out.append(trade["takeaway"][0])
+    if len(out) <= 3:
+        out.append("No other series made an unusually large move over the past four weeks.")
+    return out[:6]
+
+
 # --- Build ------------------------------------------------------------------
 
 def build(today: dt.date | None = None) -> dict:
     today = today or dt.date.today()
+    panels = [rates_panel(), *market_panels(), trade_panel()]
+    for p in panels:
+        p["takeaway"] = (rates_takeaway(p) if p["id"] == "rates" else
+                         trade_takeaway(p) if p["id"] == "trade" else market_takeaway(p))
+        if p["id"] not in ("rates", "trade") and not p["takeaway"]:
+            p["takeaway"] = ["No unusually large moves or crowded positions here this week."]
     return {"generated": today.isoformat(),
-            "panels": [rates_panel(), *market_panels(), trade_panel()],
+            "headlines": headlines(panels),
+            "panels": panels,
             "closing": ("This is early evidence that puts things on the watch list; on its own "
                         "it is not grounds for a decision.")}
 
