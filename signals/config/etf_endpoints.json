@@ -20,6 +20,7 @@
   "yahoo_template": "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?period1={start}&period2={end}&interval=1d&events=div%7Csplit&includeAdjustedClose=true",
   "stooq_template": "https://stooq.com/q/d/l/?s={ticker}.us&i=d",
   "gld_archive_urls": [
+    "https://api.spdrgoldshares.com/api/v1/historical-archive?product=gld&exchange=NYSE&lang=en",
     "https://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_US_archive_EN.xlsx",
     "https://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_US_archive_EN.csv"
   ],

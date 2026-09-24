@@ -98,6 +98,11 @@ class GldPayloadTests(unittest.TestCase):
         self.assertEqual(etf_prices.archive_links(html, "https://www.spdrgoldshares.com/usa/gld/"),
                          ["https://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_US_archive_EN.xlsx"])
 
+    def test_archive_api_link_found_and_unescaped(self):
+        html = '<a href="https://api.spdrgoldshares.com/api/v1/historical-archive?product=gld&amp;exchange=NYSE&amp;lang=en">XLSX</a>'
+        self.assertEqual(etf_prices.archive_links(html, "https://www.spdrgoldshares.com/usa/gld/"),
+                         ["https://api.spdrgoldshares.com/api/v1/historical-archive?product=gld&exchange=NYSE&lang=en"])
+
     def test_csv_bytes(self):
         self.assertEqual(len(etf_prices.parse_gld_payload(GLD.encode())), 2)
 

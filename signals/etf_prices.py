@@ -172,11 +172,15 @@ def parse_gld_rows(all_rows: list[list[str]]) -> list[dict]:
 
 def archive_links(html: str, base: str) -> list[str]:
     """Links on the GLD page that look like the historical archive file."""
+    from html import unescape
     from urllib.parse import urljoin
     out = []
     for href in re.findall(r"""href\s*=\s*["']([^"']+)["']""", html, flags=re.I):
+        href = unescape(href)
         low = href.lower()
-        if "archive" in low and any(ext in low for ext in (".xlsx", ".xls", ".csv")):
+        # The archive is served by an API endpoint, not a file with an extension.
+        if "historical-archive" in low or (
+                "archive" in low and any(ext in low for ext in (".xlsx", ".xls", ".csv"))):
             out.append(urljoin(base, href))
     return out
 
