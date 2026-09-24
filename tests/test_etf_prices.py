@@ -30,9 +30,23 @@ Date,GLD Close,LBMA Gold Price,NAV per GLD in Gold,NAV/share at 10.30 a.m. NYT,I
 """
 
 
-def make_xlsx(rows):
-    """A minimal one-sheet .xlsx: strings go to the shared-strings table."""
-    shared, index, xml_rows = [], {}, []
+def make_xlsx(*sheets):
+    """A minimal .xlsx, one argument per sheet: strings go to the shared-strings table."""
+    shared, index, sheet_xml = [], {}, []
+    for rows in sheets:
+        sheet_xml.append(_sheet_xml(rows, shared, index))
+    ns = 'xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"'
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as zf:
+        zf.writestr("xl/sharedStrings.xml",
+                    f"<sst {ns}>" + "".join(f"<si><t>{t}</t></si>" for t in shared) + "</sst>")
+        for i, xml in enumerate(sheet_xml, 1):
+            zf.writestr(f"xl/worksheets/sheet{i}.xml", xml)
+    return buf.getvalue()
+
+
+def _sheet_xml(rows, shared, index):
+    xml_rows = []
     for r, row in enumerate(rows, 1):
         cells = []
         for c, v in enumerate(row):
@@ -46,13 +60,7 @@ def make_xlsx(rows):
                 cells.append(f'<c r="{ref}"><v>{v}</v></c>')
         xml_rows.append(f'<row r="{r}">{"".join(cells)}</row>')
     ns = 'xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"'
-    buf = io.BytesIO()
-    with zipfile.ZipFile(buf, "w") as zf:
-        zf.writestr("xl/sharedStrings.xml",
-                    f"<sst {ns}>" + "".join(f"<si><t>{t}</t></si>" for t in shared) + "</sst>")
-        zf.writestr("xl/worksheets/sheet1.xml",
-                    f"<worksheet {ns}><sheetData>{''.join(xml_rows)}</sheetData></worksheet>")
-    return buf.getvalue()
+    return f"<worksheet {ns}><sheetData>{''.join(xml_rows)}</sheetData></worksheet>"
 
 
 class EtfParserTests(unittest.TestCase):
@@ -88,6 +96,19 @@ class GldPayloadTests(unittest.TestCase):
         rows = etf_prices.parse_gld_payload(content)
         self.assertEqual([r["date"] for r in rows], ["2026-09-14", "2026-09-16"])
         self.assertEqual(rows[1]["tonnes"], "967.32")
+
+    def test_real_layout_disclaimer_sheet_then_history(self):
+        # Mirrors the 2026-09 archive: a disclaimer sheet, then the history
+        # with "Ounces of Gold per Share" before "Total Ounces of Gold in the Trust".
+        content = make_xlsx(
+            [["Disclaimer"], ["Some legal text"]],
+            [["Date", "Closing Price", "Ounces of Gold per Share", "Total Ounces of Gold in the Trust",
+              "Tonnes of Gold"],
+             ["18-Nov-2004", 44.38, 0.1, 260000.0, 8.09],
+             ["22-Sep-2026", 400.07, 0.0917, 33950837.86, 1055.98]])
+        rows = etf_prices.parse_gld_payload(content)
+        self.assertEqual([r["date"] for r in rows], ["2004-11-18", "2026-09-22"])
+        self.assertEqual((rows[1]["tonnes"], rows[1]["ounces"]), ("1055.98", "33950837.86"))
 
     def test_pdf_bar_list_is_rejected(self):
         self.assertEqual(etf_prices.parse_gld_payload(b"%PDF-1.5 bar list"), [])

@@ -33,7 +33,13 @@ Statistics, per signal and horizon:
            of its own past, minus after the bottom fifth
   halves   rho in 2006-2015 and 2016-2026 separately
 A result counts as "consistent" only with |t| >= 2.5 AND the same sign in both
-halves. With 8 series x 4 signals x 4 horizons (plus GLD flows) about 7
+halves.
+
+Control test (GLD flows only, where a flow series exists): the forward change
+in GLD's gold holdings is regressed on the CFTC signal together with two things
+already known on the entry day, GLD's own holdings change and its price return
+over the previous four weeks, with Newey-West t-statistics. A signal that only
+repeats what those already say shows up here as no longer significant. With 8 series x 4 signals x 4 horizons (plus GLD flows) about 7
 results would pass |t| >= 2 by chance alone, so the stricter bar matters.
 
 This is an information test, not a trading backtest: it measures whether the
@@ -290,11 +296,96 @@ def run() -> list[dict]:
     return results
 
 
+# --- Control test: does the signal add to what is already known? ------------
+
+def _invert(m: list[list[float]]) -> list[list[float]]:
+    n = len(m)
+    a = [row[:] + [1.0 if i == j else 0.0 for j in range(n)] for i, row in enumerate(m)]
+    for c in range(n):
+        p = max(range(c, n), key=lambda r: abs(a[r][c]))
+        a[c], a[p] = a[p], a[c]
+        pv = a[c][c]
+        a[c] = [v / pv for v in a[c]]
+        for r in range(n):
+            if r != c:
+                f = a[r][c]
+                a[r] = [x - f * y for x, y in zip(a[r], a[c])]
+    return [row[n:] for row in a]
+
+
+def ols_nw(x_rows: list[list[float]], y: list[float], lag: int) -> tuple[list[float], list[float]]:
+    """OLS with an intercept; coefficients and Newey-West t-statistics."""
+    x = [[1.0] + r for r in x_rows]
+    n, k = len(y), len(x[0])
+    xtx_inv = _invert([[sum(x[i][a] * x[i][b] for i in range(n)) for b in range(k)] for a in range(k)])
+    xty = [sum(x[i][a] * y[i] for i in range(n)) for a in range(k)]
+    b = [sum(xtx_inv[a][c] * xty[c] for c in range(k)) for a in range(k)]
+    e = [y[i] - sum(x[i][a] * b[a] for a in range(k)) for i in range(n)]
+    u = [[x[i][a] * e[i] for a in range(k)] for i in range(n)]
+    s = [[sum(u[i][a] * u[i][c] for i in range(n)) for c in range(k)] for a in range(k)]
+    for lg in range(1, lag + 1):
+        w = 1 - lg / (lag + 1)
+        for a in range(k):
+            for c in range(k):
+                s[a][c] += w * sum(u[i][a] * u[i - lg][c] + u[i][c] * u[i - lg][a]
+                                   for i in range(lg, n))
+    v = [[sum(xtx_inv[a][p] * sum(s[p][q] * xtx_inv[q][c] for q in range(k)) for p in range(k))
+          for c in range(k)] for a in range(k)]
+    return b, [b[a] / math.sqrt(v[a][a]) if v[a][a] > 0 else float("nan") for a in range(k)]
+
+
+def controlled_gld(sig_rows: list[dict], gld: tuple, price: tuple, signal: str, h: int) -> dict:
+    """Forward GLD holdings change on the signal, past 4-week holdings change and
+    past 4-week price return, all standardized; everything known at entry."""
+    xs, ys = [], []
+    for r in sig_rows:
+        if r[signal] is None:
+            continue
+        t = dt.date.fromisoformat(r["date"])
+        entry = value_on_or_after(gld, (t + dt.timedelta(days=6)).isoformat())
+        if entry is None:
+            continue
+        day = dt.date.fromisoformat(entry[0])
+        exit_ = value_on_or_after(gld, (day + dt.timedelta(days=7 * h)).isoformat())
+        past = value_on_or_after(gld, (day - dt.timedelta(days=28)).isoformat())
+        p_now = value_on_or_after(price, entry[0])
+        p_past = value_on_or_after(price, (day - dt.timedelta(days=28)).isoformat())
+        if not (exit_ and past and p_now and p_past):
+            continue
+        ys.append(math.log(exit_[1] / entry[1]))
+        xs.append([r[signal], math.log(entry[1] / past[1]), math.log(p_now[1] / p_past[1])])
+    if len(ys) < 100:
+        return {}
+    cols = [_standardize(list(c)) for c in zip(*xs)]
+    b, t = ols_nw([list(r) for r in zip(*cols)], _standardize(ys), lag=h)
+    return {"n": len(ys), "coef_signal": b[1], "t_signal": t[1],
+            "t_past_flow": t[2], "t_past_price": t[3]}
+
+
 def _f(v, digits=3) -> str:
     return "" if v is None or (isinstance(v, float) and math.isnan(v)) else f"{v:.{digits}f}"
 
 
-def write(results: list[dict]) -> None:
+def run_controls() -> list[dict]:
+    with (DERIVED / "cftc_flows.csv").open(encoding="utf-8", newline="") as fh:
+        flows = list(csv.DictReader(fh))
+    gld = load_gld(DATA_DIR / "flows" / "gld_holdings.csv")
+    prices = load_prices(DATA_DIR / "prices" / "etf_daily.csv")
+    if not gld or "GLD" not in prices:
+        return []
+    recs = [f for f in flows if (f["report"], f["market_code"], f["trader_group"])
+            == ("disagg_fut", "088691", "managed_money")]
+    sig = build_signals(recs)
+    out = []
+    for s in ("chg1", "chg4", "crowd"):
+        for h in HORIZONS:
+            res = controlled_gld(sig, gld, prices["GLD"], s, h)
+            if res:
+                out.append({"signal": s, "horizon_weeks": h, **res})
+    return out
+
+
+def write(results: list[dict], controls: list[dict] | None = None) -> None:
     write_csv(DERIVED / "cftc_leadlag.csv", RESULT_HEADER,
               [[_f(r[c]) if isinstance(r[c], float) else r[c] for c in RESULT_HEADER]
                for r in results])
@@ -315,6 +406,17 @@ def write(results: list[dict]) -> None:
                          f"{_f(r['rho_2016_2026'])} |")
     else:
         lines.append("No combination passes the bar.")
+    if controls:
+        lines += ["", "## GLD flows: what the CFTC signal adds beyond what is already known", "",
+                  "Forward change in GLD's gold holdings regressed on the signal together with "
+                  "GLD's own holdings change and price return over the four weeks before entry "
+                  "(both published daily). Newey-West t-statistics.", "",
+                  "| Signal | Weeks ahead | n | t, CFTC signal | t, past GLD flow | t, past GLD price |",
+                  "|---|---|---|---|---|---|"]
+        for c in controls:
+            lines.append(f"| {c['signal']} | {c['horizon_weeks']} | {c['n']} | "
+                         f"{_f(c['t_signal'], 2)} | {_f(c['t_past_flow'], 2)} | "
+                         f"{_f(c['t_past_price'], 2)} |")
     lines += ["", "Full table: `data/derived/cftc_leadlag.csv`. Method and caveats: the "
               "docstring of `signals/cftc_leadlag.py`.", ""]
     (DERIVED / "cftc_leadlag.md").write_text("\n".join(lines), encoding="utf-8")
@@ -322,7 +424,7 @@ def write(results: list[dict]) -> None:
 
 
 def main(argv: list[str]) -> int:
-    write(run())
+    write(run(), run_controls())
     return 0
 
 

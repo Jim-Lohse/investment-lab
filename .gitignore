@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 IBKR_SLEEVE_PILOT.md
 .DS_Store
+# Full-history payloads re-sent every run; the tables in data/prices and
+# data/flows are the record (see signals/etf_prices.py).
+data/prices/raw/
+data/flows/raw/

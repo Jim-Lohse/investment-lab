@@ -15,7 +15,11 @@ Sources (keyless, see signals/config/etf_endpoints.json):
 Output (rebuilt from the raw payloads each run, so a revision is picked up):
   data/prices/etf_daily.csv   — date, ticker, close, adj_close, source
   data/flows/gld_holdings.csv — date, tonnes, ounces
-  data/prices/raw/, data/flows/raw/ — the payloads as fetched
+  data/prices/raw/, data/flows/raw/ — the payloads as fetched. Not committed
+      (git-ignored): each is the full history re-sent every day, about 4.5 MB
+      a run, and the tables above are the record. A payload the parser cannot
+      read is copied to data/flows/debug/, which is committed, so a format
+      change can be inspected.
 
 Usage:
     python -m signals.etf_prices fetch
@@ -81,8 +85,8 @@ def parse_stooq_csv(text: str, ticker: str) -> list[dict]:
     return rows
 
 
-def xlsx_rows(content: bytes) -> list[list[str]]:
-    """First worksheet of an .xlsx as rows of cell text, stdlib only.
+def xlsx_sheets(content: bytes) -> list[list[list[str]]]:
+    """Every worksheet of an .xlsx as rows of cell text, stdlib only.
 
     Reads the shared-strings table and sheet1's cells; numbers come back as
     their stored text. Dates stored as Excel serial numbers are left as
@@ -95,8 +99,13 @@ def xlsx_rows(content: bytes) -> list[list[str]]:
             root = ElementTree.fromstring(zf.read("xl/sharedStrings.xml"))
             for si in root.findall("m:si", ns):
                 shared.append("".join(t.text or "" for t in si.iter(f"{{{ns['m']}}}t")))
-        sheets = sorted(n for n in zf.namelist() if re.match(r"xl/worksheets/sheet\d+\.xml$", n))
-        root = ElementTree.fromstring(zf.read(sheets[0]))
+        names = sorted((n for n in zf.namelist() if re.match(r"xl/worksheets/sheet\d+\.xml$", n)),
+                       key=lambda n: int(re.search(r"(\d+)\.xml$", n).group(1)))
+        roots = [ElementTree.fromstring(zf.read(n)) for n in names]
+    return [_sheet_rows(root, shared, ns) for root in roots]
+
+
+def _sheet_rows(root, shared: list[str], ns: dict) -> list[list[str]]:
     rows = []
     for row in root.iter(f"{{{ns['m']}}}row"):
         cells: dict[int, str] = {}
@@ -127,8 +136,12 @@ def _col_index(ref: str) -> int:
 
 def parse_gld_payload(content: bytes) -> list[dict]:
     """GLD archive in whatever form the site serves: xlsx, csv, or (rejected) a PDF."""
-    if content[:2] == b"PK":
-        return parse_gld_rows(xlsx_rows(content))
+    if content[:2] == b"PK":  # the history sits on a later sheet, after a disclaimer
+        for sheet in xlsx_sheets(content):
+            rows = parse_gld_rows(sheet)
+            if rows:
+                return rows
+        return []
     if content[:4] == b"%PDF":
         return []  # the daily bar list, not the history
     text = content.decode("utf-8-sig", "replace")
@@ -156,7 +169,9 @@ def parse_gld_rows(all_rows: list[list[str]]) -> list[dict]:
     header = [h.strip().lower() for h in next(reader)]
     i_date = header.index(next(h for h in header if h.startswith("date")))
     i_tonnes = next((i for i, h in enumerate(header) if "tonne" in h), None)
-    i_oz = next((i for i, h in enumerate(header) if "ounce" in h), None)
+    # "Total Ounces of Gold in the Trust", not "Ounces of Gold per Share".
+    i_oz = next((i for i, h in enumerate(header) if "ounce" in h and "total" in h),
+                next((i for i, h in enumerate(header) if "ounce" in h and "share" not in h), None))
     rows = []
     for rec in reader:
         if len(rec) <= max(i_date, i_tonnes or 0, i_oz or 0):
@@ -230,8 +245,11 @@ def fetch() -> None:
     candidates = list(cfg["gld_archive_urls"])
     try:  # the page's own "Historical Archive" link, tried first
         page = http_get(cfg["gld_page_url"])
-        (FLOWS_DIR / "raw" / "gld_page.html").write_bytes(page.content)
-        candidates = archive_links(page.text, cfg["gld_page_url"]) + candidates
+        found = archive_links(page.text, cfg["gld_page_url"])
+        if not found:  # the page changed: keep it for inspection
+            (FLOWS_DIR / "debug").mkdir(parents=True, exist_ok=True)
+            (FLOWS_DIR / "debug" / "gld_page.html").write_bytes(page.content)
+        candidates = found + candidates
     except Exception as err:  # noqa: BLE001
         print(f"  GLD page {cfg['gld_page_url']}: {type(err).__name__}: {err}")
     for url in dict.fromkeys(candidates):
@@ -247,7 +265,8 @@ def fetch() -> None:
         print(f"  GLD holdings {url}: HTTP {resp.status_code}, not a readable history "
               f"({resp.content[:8]!r})")
         if resp.content[:2] == b"PK":  # a spreadsheet the parser could not read: keep it
-            (FLOWS_DIR / "raw" / "gld_archive_unparsed.xlsx").write_bytes(resp.content)
+            (FLOWS_DIR / "debug").mkdir(parents=True, exist_ok=True)
+            (FLOWS_DIR / "debug" / "gld_archive_unparsed.xlsx").write_bytes(resp.content)
     if not got_gld:
         failed.append("GLD holdings")
     reparse()
