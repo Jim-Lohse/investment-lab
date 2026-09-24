@@ -1,0 +1,17 @@
+{
+  "_comment": [
+    "Daily prices for the funds the CFTC markets stand in for, and GLD's",
+    "daily gold holdings, for signals/cftc_leadlag.py. All keyless.",
+    "Yahoo's chart API returns an adjusted close (dividends and splits folded",
+    "in); stooq is the fallback, and its close is already adjusted.",
+    "GLD's archive is the trust's own daily record of gold held; a change in",
+    "tonnes is shares created or redeemed, i.e. money in or out. SPY, QQQ, USO",
+    "and UUP publish only today's shares outstanding, so they have no free",
+    "flow history and are tested against price only."
+  ],
+  "start": "2006-01-01",
+  "tickers": ["SPY", "QQQ", "UUP", "GLD", "USO"],
+  "yahoo_template": "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?period1={start}&period2={end}&interval=1d&events=div%7Csplit&includeAdjustedClose=true",
+  "stooq_template": "https://stooq.com/q/d/l/?s={ticker}.us&i=d",
+  "gld_archive_url": "https://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_US_archive_EN.csv"
+}

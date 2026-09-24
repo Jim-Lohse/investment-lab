@@ -239,6 +239,13 @@ jobs:
           python -m signals.cftc_cot flows
           python -m signals.cftc_cot brief
 
+      # Daily prices for SPY, QQQ, UUP, GLD, USO and GLD's gold holdings
+      # (keyless), for testing whether CFTC positioning shifts come before
+      # moves and flows in those funds (signals/cftc_leadlag.py).
+      - name: Fetch fund prices and GLD holdings (keyless)
+        continue-on-error: true
+        run: python -m signals.etf_prices fetch
+
       - name: Snapshot the previous derived tables (baseline for the diff)
         run: |
           rm -rf "$RUNNER_TEMP/derived_prev"
