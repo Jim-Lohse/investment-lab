@@ -62,12 +62,21 @@ read only what the workflow committed.
 
 Follow `CLAUDE.md` (four sections Bottom line, What, So what, What now; plain words; numbers in tables; about one page; its exact closing sentence). No italics anywhere. Words: say "institutions (pension funds, mutual funds, insurers)" for asset managers and "hedge funds" for leveraged money and managed money. Explain "net" once: contracts betting on a rise minus contracts betting on a fall.
 
+Purpose: macro awareness for tracking trends over weeks to months. A lead-lag
+test on 2006-2026 history (`data/derived/cftc_leadlag.md`) found that CFTC
+positioning does not lead the funds' prices at 1-4 weeks, so positioning moves
+are reported for awareness, never as signals.
+
 Every row in the What table gets an Action column, and every item is one of exactly two labels:
 
-- "Research action". Use it for: a series flagged "unusual move" or "extreme net"; a series flagged in the previous week's page that moved the same way again (say "second week running" and put it on the watch list); a previous page's What-now item that this week's data resolves (say whether it was confirmed or turned out to be noise). A research action is only ever one of: re-check next week, add to or remove from the watch list, list which of Jim's holdings are exposed, or compare with another signal in the repo. Never suggest buying, selling, sizing or timing a position.
-- "Situational awareness only": everything else.
+- "Research action", only for:
+  - gold flows: "Gold held by GLD" in `data/derived/macro_dashboard.json` with `move4_rank_pct` of 90 or more (a 4-week move in or out bigger than 90% of past 4-week moves). This is the one early-warning pattern the test supported: money moving into or out of GLD tends to keep moving the same way for weeks.
+  - a truly extreme position: a series flagged "extreme net" (above 95% or below 5% of its own history).
+  - the yield curve changing sides: the 10-year-minus-2-year gap in the dashboard crossing zero since the previous page (turning inverted, or turning positive again).
+  A research action is only ever one of: re-check next week, add to or remove from the watch list, list which of Jim's holdings are exposed, or compare with another signal in the repo. Never suggest buying, selling, sizing or timing a position.
+- "Situational awareness only": everything else, including positioning flagged "unusual move". Mention unusual moves as notable in So what, but label them situational awareness only.
 
-The Bottom line names every research action first. If there are none, it says plainly that this week is for situational awareness only.
+The Bottom line names every research action first. If there are none, it says plainly that this week is for situational awareness only. It also gives one plain sentence on the yield curve (the 2-year, the 10-year and the gap, from the dashboard's rates panel).
 
 In So what, cover the relevant caveats in plain words:
 
@@ -81,14 +90,19 @@ What now: a table (Owner Claude or Jim, what, what would close it). Claude owns 
 
 ## Delivery
 
+0. Refresh the macro dashboard: run `python -m signals.macro_dashboard`, then publish `data/derived/macro_dashboard.html` to the dashboard's existing URL (named in the Routine prompt) with the Artifact tool, as an update to that URL, never as a new page. If publishing fails, carry on and say so in the closing message.
 1. Create the Notion page in the data source: Name "Week of D: <short headline>", Week = D, Verdict = "Research action" if any row has one, otherwise "Situational awareness only", Flags = the markets with a research action, Emailed unchecked. Use Notion-flavored markdown: an orange callout for the Bottom line (gray if situational awareness only), `<table header-row="true">` tables, research-action rows with `color="orange_bg"`. End with a source line naming `data/derived/cftc_flows.csv`.
-2. Send the email with the Gmail send tool to the address in the Routine prompt. Subject: "CFTC weekly intelligence, week of D: research action (<markets>)", or "CFTC weekly intelligence, week of D: situational awareness only". Use htmlBody with the same four sections, inline-styled tables, research-action rows shaded #fff4e5, and a link to the Notion page. Also include a plain-text body.
+2. Send the email with the Gmail send tool to the address in the Routine prompt. Subject: "CFTC weekly intelligence, week of D: research action (<markets>)", or "CFTC weekly intelligence, week of D: situational awareness only". Use htmlBody with the same four sections, inline-styled tables, research-action rows shaded #fff4e5, a link to the Notion page, and a link to the macro dashboard. Also include a plain-text body.
 3. Set Emailed on the Notion page to checked.
 
 If the email fails, leave Emailed unchecked and say so in your closing message. If Notion fails, still send the email and say the page could not be saved.
 
-The run ends with three lines: what was sent (or why nothing was), the Notion
-page link, and any failure.
+The run ends with four lines: what was sent (or why nothing was), the Notion
+page link, whether the dashboard was republished, and any failure.
+
+The dashboard is refreshed on every run that writes a full summary. A run that
+sends nothing (the week was already delivered, or the report is late) leaves
+the dashboard as it is.
 
 ## Why the numbers are computed in code
 

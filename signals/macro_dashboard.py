@@ -82,11 +82,30 @@ def value_weeks_ago(wk: list[tuple[str, float]], weeks: int) -> float | None:
 
 
 def rank_pct(wk: list[tuple[str, float]], value: float) -> float | None:
-    """Share of all weekly readings in the history strictly below `value`."""
-    hist = sorted(v for _, v in wk)
+    """Share of earlier weekly readings strictly below `value` (the latest week,
+    which holds `value` itself, is left out)."""
+    hist = sorted(v for _, v in wk[:-1])
     if len(hist) < 52:
         return None
     return round(100.0 * bisect.bisect_left(hist, value) / len(hist))
+
+
+def move_rank(wk: list[tuple[str, float]], change: str) -> float | None:
+    """How big the latest 4-week move is (either direction) against every
+    earlier 4-week move in the series, as a share of those moves it exceeds."""
+    vals = [v for _, v in wk]
+    moves = []
+    for i in range(4, len(vals)):
+        a, b = vals[i - 4], vals[i]
+        if change == "pct":
+            if a:
+                moves.append(abs(b / a - 1))
+        else:
+            moves.append(abs(b - a))
+    if len(moves) < 53:
+        return None
+    latest, earlier = moves[-1], sorted(moves[:-1])
+    return round(100.0 * bisect.bisect_left(earlier, latest) / len(earlier))
 
 
 def describe(name: str, series: list[tuple[str, float]], unit: str,
@@ -111,6 +130,7 @@ def describe(name: str, series: list[tuple[str, float]], unit: str,
         else:
             item["changes"][label] = round(last - past, 4)
     item["change_kind"] = change
+    item["move4_rank_pct"] = move_rank(wk, change)
     item["chart"] = [[d, round(v, 4)] for d, v in wk[-CHART_WEEKS:]]
     return item
 
