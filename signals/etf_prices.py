@@ -246,6 +246,8 @@ def fetch() -> None:
             break
         print(f"  GLD holdings {url}: HTTP {resp.status_code}, not a readable history "
               f"({resp.content[:8]!r})")
+        if resp.content[:2] == b"PK":  # a spreadsheet the parser could not read: keep it
+            (FLOWS_DIR / "raw" / "gld_archive_unparsed.xlsx").write_bytes(resp.content)
     if not got_gld:
         failed.append("GLD holdings")
     reparse()
