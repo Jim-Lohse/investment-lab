@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import io
 import sys
 import unittest
+import zipfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -28,6 +30,31 @@ Date,GLD Close,LBMA Gold Price,NAV per GLD in Gold,NAV/share at 10.30 a.m. NYT,I
 """
 
 
+def make_xlsx(rows):
+    """A minimal one-sheet .xlsx: strings go to the shared-strings table."""
+    shared, index, xml_rows = [], {}, []
+    for r, row in enumerate(rows, 1):
+        cells = []
+        for c, v in enumerate(row):
+            ref = f"{chr(65 + c)}{r}"
+            if isinstance(v, str):
+                index.setdefault(v, len(shared))
+                if index[v] == len(shared):
+                    shared.append(v)
+                cells.append(f'<c r="{ref}" t="s"><v>{index[v]}</v></c>')
+            else:
+                cells.append(f'<c r="{ref}"><v>{v}</v></c>')
+        xml_rows.append(f'<row r="{r}">{"".join(cells)}</row>')
+    ns = 'xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"'
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as zf:
+        zf.writestr("xl/sharedStrings.xml",
+                    f"<sst {ns}>" + "".join(f"<si><t>{t}</t></si>" for t in shared) + "</sst>")
+        zf.writestr("xl/worksheets/sheet1.xml",
+                    f"<worksheet {ns}><sheetData>{''.join(xml_rows)}</sheetData></worksheet>")
+    return buf.getvalue()
+
+
 class EtfParserTests(unittest.TestCase):
     def test_yahoo_uses_local_dates_and_drops_missing_days(self):
         rows = etf_prices.parse_yahoo_chart(YAHOO, "SPY")
@@ -47,6 +74,26 @@ class EtfParserTests(unittest.TestCase):
         self.assertEqual([r["date"] for r in rows], ["2026-09-14", "2026-09-16"])
         self.assertEqual(rows[1]["tonnes"], "967.32")
         self.assertEqual(rows[0]["ounces"], "31000000.50")
+
+
+class GldPayloadTests(unittest.TestCase):
+    def test_xlsx_with_excel_serial_dates(self):
+        content = make_xlsx([
+            ["SPDR Gold Trust"],
+            ["Date", "GLD Close", "Total Net Asset Value Ounces in the Trust",
+             "Total Net Asset Value Tonnes in the Trust"],
+            [46279, 361.2, 31000000.5, 964.21],
+            ["15-Sep-2026", "HOLIDAY", "", ""],
+            [46281, 362.0, 31100000, 967.32]])
+        rows = etf_prices.parse_gld_payload(content)
+        self.assertEqual([r["date"] for r in rows], ["2026-09-14", "2026-09-16"])
+        self.assertEqual(rows[1]["tonnes"], "967.32")
+
+    def test_pdf_bar_list_is_rejected(self):
+        self.assertEqual(etf_prices.parse_gld_payload(b"%PDF-1.5 bar list"), [])
+
+    def test_csv_bytes(self):
+        self.assertEqual(len(etf_prices.parse_gld_payload(GLD.encode())), 2)
 
 
 if __name__ == "__main__":

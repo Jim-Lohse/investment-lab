@@ -10,8 +10,22 @@
     "flow history and are tested against price only."
   ],
   "start": "2006-01-01",
-  "tickers": ["SPY", "QQQ", "UUP", "GLD", "USO"],
+  "tickers": [
+    "SPY",
+    "QQQ",
+    "UUP",
+    "GLD",
+    "USO"
+  ],
   "yahoo_template": "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?period1={start}&period2={end}&interval=1d&events=div%7Csplit&includeAdjustedClose=true",
   "stooq_template": "https://stooq.com/q/d/l/?s={ticker}.us&i=d",
-  "gld_archive_url": "https://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_US_archive_EN.csv"
+  "gld_archive_urls": [
+    "https://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_US_archive_EN.xlsx",
+    "https://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_US_archive_EN.csv"
+  ],
+  "_gld_note": [
+    "As of 2026-09-24 the .csv address serves the daily gold bar list (a PDF),",
+    "not the history; the site's 'Historical Archive (XLSX)' link is tried first.",
+    "Payloads are recognised by content (xlsx, csv, pdf), never by file name."
+  ]
 }

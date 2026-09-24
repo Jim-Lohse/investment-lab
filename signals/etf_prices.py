@@ -28,7 +28,10 @@ import csv
 import datetime as dt
 import io
 import json
+import re
 import sys
+import zipfile
+from xml.etree import ElementTree
 
 from .common import CONFIG_DIR, DATA_DIR, fmt, http_get, parse_number, write_csv
 
@@ -78,19 +81,78 @@ def parse_stooq_csv(text: str, ticker: str) -> list[dict]:
     return rows
 
 
+def xlsx_rows(content: bytes) -> list[list[str]]:
+    """First worksheet of an .xlsx as rows of cell text, stdlib only.
+
+    Reads the shared-strings table and sheet1's cells; numbers come back as
+    their stored text. Dates stored as Excel serial numbers are left as
+    numbers here and converted by _parse_date.
+    """
+    ns = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+    with zipfile.ZipFile(io.BytesIO(content)) as zf:
+        shared: list[str] = []
+        if "xl/sharedStrings.xml" in zf.namelist():
+            root = ElementTree.fromstring(zf.read("xl/sharedStrings.xml"))
+            for si in root.findall("m:si", ns):
+                shared.append("".join(t.text or "" for t in si.iter(f"{{{ns['m']}}}t")))
+        sheets = sorted(n for n in zf.namelist() if re.match(r"xl/worksheets/sheet\d+\.xml$", n))
+        root = ElementTree.fromstring(zf.read(sheets[0]))
+    rows = []
+    for row in root.iter(f"{{{ns['m']}}}row"):
+        cells: dict[int, str] = {}
+        for c in row.findall("m:c", ns):
+            ref = c.get("r", "")
+            col = _col_index(ref)
+            v = c.find("m:v", ns)
+            if v is None or v.text is None:
+                inline = c.find("m:is", ns)
+                text = "".join(t.text or "" for t in inline.iter(f"{{{ns['m']}}}t")) if inline is not None else ""
+            elif c.get("t") == "s":
+                text = shared[int(v.text)]
+            else:
+                text = v.text
+            cells[col] = text
+        if cells:
+            rows.append([cells.get(i, "") for i in range(max(cells) + 1)])
+    return rows
+
+
+def _col_index(ref: str) -> int:
+    letters = "".join(ch for ch in ref if ch.isalpha())
+    n = 0
+    for ch in letters:
+        n = n * 26 + (ord(ch.upper()) - 64)
+    return n - 1
+
+
+def parse_gld_payload(content: bytes) -> list[dict]:
+    """GLD archive in whatever form the site serves: xlsx, csv, or (rejected) a PDF."""
+    if content[:2] == b"PK":
+        return parse_gld_rows(xlsx_rows(content))
+    if content[:4] == b"%PDF":
+        return []  # the daily bar list, not the history
+    text = content.decode("utf-8-sig", "replace")
+    return parse_gld_rows(list(csv.reader(text.splitlines())))
+
+
 def parse_gld_archive(text: str) -> list[dict]:
-    """GLD daily archive CSV -> date, tonnes, ounces.
+    """GLD daily archive CSV text -> date, tonnes, ounces."""
+    return parse_gld_rows(list(csv.reader(text.splitlines())))
+
+
+def parse_gld_rows(all_rows: list[list[str]]) -> list[dict]:
+    """GLD daily archive rows -> date, tonnes, ounces.
 
     The file has a few preamble lines, then a header row naming the columns.
     Columns are found by name ("Date", "Tonnes", "Ounces"), not position, and
     days marked as holidays or with no figure are dropped rather than filled.
     """
-    lines = text.splitlines()
-    start = next((i for i, line in enumerate(lines)
-                  if line.lower().lstrip('"').startswith("date") and "tonne" in line.lower()), None)
+    start = next((i for i, row in enumerate(all_rows)
+                  if row and row[0].strip().lower().startswith("date")
+                  and any("tonne" in c.lower() for c in row)), None)
     if start is None:
         return []
-    reader = csv.reader(lines[start:])
+    reader = iter(all_rows[start:])
     header = [h.strip().lower() for h in next(reader)]
     i_date = header.index(next(h for h in header if h.startswith("date")))
     i_tonnes = next((i for i, h in enumerate(header) if "tonne" in h), None)
@@ -110,6 +172,8 @@ def parse_gld_archive(text: str) -> list[dict]:
 
 def _parse_date(text: str) -> str | None:
     text = text.strip()
+    if re.fullmatch(r"\d{5}(\.0+)?", text):  # Excel serial date
+        return (dt.date(1899, 12, 30) + dt.timedelta(days=int(float(text)))).isoformat()
     for pattern in ("%d-%b-%Y", "%d-%b-%y", "%Y-%m-%d", "%m/%d/%Y", "%d/%m/%Y"):
         try:
             return dt.datetime.strptime(text, pattern).date().isoformat()
@@ -147,12 +211,21 @@ def fetch() -> None:
                 print(f"  {ticker} stooq: {type(err).__name__}: {err}")
         if not got:
             failed.append(ticker)
-    try:
-        resp = http_get(cfg["gld_archive_url"])
-        (FLOWS_DIR / "raw" / "gld_archive.csv").write_bytes(resp.content)
-    except Exception as err:  # noqa: BLE001
+    got_gld = False
+    for url in cfg["gld_archive_urls"]:
+        try:
+            resp = http_get(url)
+        except Exception as err:  # noqa: BLE001
+            print(f"  GLD holdings {url}: {type(err).__name__}: {err}")
+            continue
+        if parse_gld_payload(resp.content):
+            (FLOWS_DIR / "raw" / "gld_archive.bin").write_bytes(resp.content)
+            got_gld = True
+            break
+        print(f"  GLD holdings {url}: HTTP {resp.status_code}, not a readable history "
+              f"({resp.content[:8]!r})")
+    if not got_gld:
         failed.append("GLD holdings")
-        print(f"  GLD holdings: {type(err).__name__}: {err}")
     reparse()
     if failed:
         print("etf_prices: failed for " + ", ".join(failed))
@@ -176,9 +249,9 @@ def reparse() -> None:
     for r in rows:
         counts[r["ticker"]] = counts.get(r["ticker"], 0) + 1
     print(f"etf_daily.csv: {len(rows)} rows {counts}")
-    gld_raw = FLOWS_DIR / "raw" / "gld_archive.csv"
+    gld_raw = FLOWS_DIR / "raw" / "gld_archive.bin"
     if gld_raw.exists():
-        gld = parse_gld_archive(gld_raw.read_text("utf-8-sig", "replace"))
+        gld = parse_gld_payload(gld_raw.read_bytes())
         if gld:
             write_csv(FLOWS_DIR / "gld_holdings.csv", GLD_HEADER,
                       [[r[c] for c in GLD_HEADER] for r in gld])
