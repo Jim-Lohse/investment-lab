@@ -1,0 +1,500 @@
+"""CFTC Commitments of Traders: who holds the futures, long and short, each week.
+
+Every Tuesday the CFTC records the positions large traders hold in each U.S.
+futures market and publishes them on Friday. For gold (COMEX, market code
+088691) that says how many contracts speculative funds ("managed money") hold
+long versus short, against the producers and swap dealers on the other side.
+
+Source: the CFTC Public Reporting Environment, a Socrata site. Two routes to
+the same rows (see signals/config/cftc_endpoints.json):
+
+  soda3  POST /api/v3/views/{dataset}/query.json with a SoQL body.
+         Socrata documents an app token as required here; set CFTC_APP_TOKEN.
+  soda2  GET /resource/{dataset}.json?$query=... — keyless.
+
+With no token the keyless route goes first; with one, SODA3 goes first. Either
+falls back to the other on a refusal (401/403) or a network failure.
+
+Which markets: the "watch" section of the config — equity index and currency
+futures from the TFF report (asset managers vs leveraged funds), commodities
+from the disaggregated report (managed money), each keyed by contract code.
+
+Output:
+  data/cftc/positions.csv     — append-only, first print wins: report, date,
+                                market, trader group, long/short/spread/net
+  data/cftc/raw/              — the JSON payloads, so a parser fix can be replayed
+  data/derived/cftc_flows.csv — rebuilt each run: net and its change from the
+                                previous week, per watched market and group
+
+Usage:
+    python -m signals.cftc_cot latest                        # last 10 weeks, every watched market
+    python -m signals.cftc_cot latest tff_fut 13874A
+    python -m signals.cftc_cot backfill 2006-06-13           # every watched market
+    python -m signals.cftc_cot backfill 2015-01-01 disagg_fut 088691
+    python -m signals.cftc_cot flows
+    python -m signals.cftc_cot brief [YYYY-MM-DD]            # data/derived/cftc_brief.md
+    python -m signals.cftc_cot query legacy_fut "SELECT * WHERE contract_market_name = 'GOLD' ORDER BY report_date_as_yyyy_mm_dd DESC LIMIT 10"
+    python -m signals.cftc_cot reparse
+"""
+
+from __future__ import annotations
+
+import bisect
+import csv
+import datetime as dt
+import json
+import os
+import sys
+
+from .common import (CONFIG_DIR, DATA_DIR, HTTPStatusError, append_dedup_csv,
+                     fmt, http_request, parse_number, write_csv)
+
+OUT_DIR = DATA_DIR / "cftc"
+RAW_DIR = OUT_DIR / "raw"
+
+POSITIONS_HEADER = ["report", "report_date", "market_code", "market_and_exchange",
+                    "trader_group", "long", "short", "spread", "net",
+                    "open_interest", "retrieved_at"]
+POSITIONS_KEY = ["report", "report_date", "market_code", "trader_group"]
+
+FLOWS_HEADER = ["report", "market_code", "label", "trader_group", "report_date",
+                "long", "short", "net", "net_change", "open_interest", "net_pct_oi",
+                "move_rank_pct", "net_rank_pct", "flag"]
+
+# A weekly move is "unusual" when it is bigger (either direction) than this
+# share of the series' own earlier weekly moves; a net position is at an
+# "extreme" when it sits above or below this share of its earlier weeks.
+# Ranks use only weeks before the one being ranked, never later ones, and need
+# MIN_HISTORY earlier weeks before any flag is raised.
+MOVE_FLAG_PCT = 90.0
+NET_EXTREME_PCT = 95.0
+MIN_HISTORY = 52
+DATE_FIELD = "report_date_as_yyyy_mm_dd"
+
+# Trader groups per report family: (long field, short field, spread field).
+# Field names are copied from live rows (2026-09-24), typos included — the
+# CFTC spells it "noncomm_postions_spread_all" and "swap__positions_short_all".
+# TFF (checked on the E-mini S&P 500, 2026-09-24) drops the "_all" suffix on
+# the asset-manager and leveraged-money fields but keeps it on dealer fields.
+GROUP_FIELDS = {
+    "legacy": {
+        "noncommercial": ("noncomm_positions_long_all", "noncomm_positions_short_all",
+                          "noncomm_postions_spread_all"),
+        "commercial": ("comm_positions_long_all", "comm_positions_short_all", None),
+        "nonreportable": ("nonrept_positions_long_all", "nonrept_positions_short_all", None),
+    },
+    "disagg": {
+        "producer_merchant": ("prod_merc_positions_long", "prod_merc_positions_short", None),
+        "swap_dealer": ("swap_positions_long_all", "swap__positions_short_all",
+                        "swap__positions_spread_all"),
+        "managed_money": ("m_money_positions_long_all", "m_money_positions_short_all",
+                          "m_money_positions_spread"),
+        "other_reportable": ("other_rept_positions_long", "other_rept_positions_short",
+                             "other_rept_positions_spread"),
+        "nonreportable": ("nonrept_positions_long_all", "nonrept_positions_short_all", None),
+    },
+    "tff": {
+        "dealer": ("dealer_positions_long_all", "dealer_positions_short_all",
+                   "dealer_positions_spread_all"),
+        "asset_manager": ("asset_mgr_positions_long", "asset_mgr_positions_short",
+                          "asset_mgr_positions_spread"),
+        "leveraged_money": ("lev_money_positions_long", "lev_money_positions_short",
+                            "lev_money_positions_spread"),
+        "other_reportable": ("other_rept_positions_long", "other_rept_positions_short",
+                             "other_rept_positions_spread"),
+        "nonreportable": ("nonrept_positions_long_all", "nonrept_positions_short_all", None),
+    },
+}
+
+
+def _load_config() -> dict:
+    return json.loads((CONFIG_DIR / "cftc_endpoints.json").read_text("utf-8"))
+
+
+def watch_list(cfg: dict | None = None) -> dict[str, dict[str, str]]:
+    """{report: {market code: label}} from the config's watch section."""
+    cfg = cfg or _load_config()
+    return {r: dict(m) for r, m in cfg.get("watch", {}).items() if not r.startswith("_")}
+
+
+def _dataset(cfg: dict, report: str) -> str:
+    try:
+        return cfg["reports"][report]["dataset"]
+    except KeyError:
+        known = ", ".join(sorted(cfg["reports"]))
+        raise ValueError(f"unknown report {report!r}; known: {known}") from None
+
+
+# --- SoQL -------------------------------------------------------------------
+
+def soql_literal(value: str) -> str:
+    """Quote a string for SoQL: single quotes, embedded quotes doubled."""
+    return "'" + str(value).replace("'", "''") + "'"
+
+
+def build_query(market_codes: list[str], since: str | None = None,
+                until: str | None = None, limit: int | None = None) -> str:
+    """SoQL for the given contract markets, newest first.
+
+    Filters on cftc_contract_market_code because cftc_commodity_code is padded
+    inconsistently ('088' on older rows, '088 ' on recent ones), so an equality
+    test on '088' silently drops the recent weeks.
+    `id` breaks ties so paging is stable.
+    """
+    if not market_codes:
+        raise ValueError("at least one market code is required")
+    codes = ", ".join(soql_literal(c) for c in market_codes)
+    where = [f"cftc_contract_market_code IN ({codes})"]
+    if since:
+        where.append(f"{DATE_FIELD} >= {soql_literal(since + 'T00:00:00')}")
+    if until:
+        where.append(f"{DATE_FIELD} <= {soql_literal(until + 'T00:00:00')}")
+    soql = f"SELECT * WHERE {' AND '.join(where)} ORDER BY {DATE_FIELD} DESC, id"
+    if limit:
+        soql += f" LIMIT {int(limit)}"
+    return soql
+
+
+# --- Transport --------------------------------------------------------------
+
+# page_number=None runs the query exactly as written, with no paging added.
+
+def _soda3(cfg: dict, dataset: str, soql: str, token: str,
+           page_number: int | None, page_size: int) -> list[dict]:
+    url = cfg["base_url"] + cfg["soda3_path"].format(dataset=dataset)
+    body: dict = {"query": soql, "includeSynthetic": False}
+    if page_number is not None:
+        body["page"] = {"pageNumber": page_number, "pageSize": page_size}
+    headers = {"X-App-Token": token} if token else {}
+    return _rows(http_request("POST", url, json_body=body, headers=headers).json())
+
+
+def _soda2(cfg: dict, dataset: str, soql: str, token: str,
+           page_number: int | None, page_size: int) -> list[dict]:
+    url = cfg["base_url"] + cfg["soda2_path"].format(dataset=dataset)
+    if page_number is not None:
+        soql = f"{soql} LIMIT {page_size} OFFSET {(page_number - 1) * page_size}"
+    headers = {"X-App-Token": token} if token else {}
+    return _rows(http_request("GET", url, params={"$query": soql}, headers=headers).json())
+
+
+def _rows(payload) -> list[dict]:
+    """Both routes answer with a JSON array of flat records; anything else is
+    an error envelope and is raised, never read as zero rows."""
+    if isinstance(payload, list) and all(isinstance(r, dict) for r in payload):
+        return payload
+    raise RuntimeError(f"cftc: unexpected response shape: {str(payload)[:300]}")
+
+
+def _routes(token: str) -> list[tuple[str, object]]:
+    if token:
+        return [("soda3", _soda3), ("soda2", _soda2)]
+    return [("soda2", _soda2), ("soda3", _soda3)]
+
+
+def run_query(report: str, soql: str, *, paginate: bool = False,
+              token: str | None = None) -> tuple[list[dict], str]:
+    """Run a SoQL query against a report. Returns (rows, route used).
+
+    With paginate=False the query runs once, as written (its own LIMIT
+    applies; with none, the server's default page). With paginate=True pages
+    are walked until a short one, so the query must not carry its own LIMIT.
+    """
+    cfg = _load_config()
+    dataset = _dataset(cfg, report)
+    token = os.environ.get("CFTC_APP_TOKEN", "") if token is None else token
+    page_size = int(cfg.get("page_size", 1000))
+    problems: list[str] = []
+    for name, route in _routes(token):
+        try:
+            if not paginate:
+                return route(cfg, dataset, soql, token, None, page_size), name
+            rows: list[dict] = []
+            page = 1
+            while True:
+                batch = route(cfg, dataset, soql, token, page, page_size)
+                rows += batch
+                if len(batch) < page_size:
+                    return rows, name
+                page += 1
+        except HTTPStatusError as err:
+            if err.status not in (401, 403):
+                raise  # a 400 is a bad query; the other route would refuse it too
+            problems.append(f"{name}: {err}")
+        except RuntimeError as err:
+            problems.append(f"{name}: {err}")
+    raise RuntimeError("cftc: every route failed — " + "; ".join(problems))
+
+
+# --- Parsing ----------------------------------------------------------------
+
+def report_family(report: str) -> str:
+    return report.split("_", 1)[0]
+
+
+def normalize(report: str, records: list[dict], retrieved_at: str) -> list[dict]:
+    """Raw COT records -> one row per (date, market, trader group).
+
+    A group whose long or short field is absent is skipped, not zero-filled:
+    a missing field means the mapping is wrong, and a zero would read as a
+    real position.
+    """
+    groups = GROUP_FIELDS.get(report_family(report), {})
+    rows: list[dict] = []
+    for rec in records:
+        date = str(rec.get(DATE_FIELD, ""))[:10]
+        code = str(rec.get("cftc_contract_market_code", "")).strip()
+        if not date or not code:
+            continue
+        for group, (f_long, f_short, f_spread) in groups.items():
+            long_ = parse_number(rec.get(f_long))
+            short = parse_number(rec.get(f_short))
+            if long_ is None or short is None:
+                continue
+            spread = parse_number(rec.get(f_spread)) if f_spread else None
+            rows.append({
+                "report": report, "report_date": date, "market_code": code,
+                "market_and_exchange": str(rec.get("market_and_exchange_names", "")).strip(),
+                "trader_group": group, "long": fmt(long_), "short": fmt(short),
+                "spread": fmt(spread), "net": fmt(long_ - short),
+                "open_interest": fmt(parse_number(rec.get("open_interest_all"))),
+                "retrieved_at": retrieved_at,
+            })
+    return rows
+
+
+# --- Fetching ---------------------------------------------------------------
+
+def _save_raw(report: str, label: str, records: list[dict]) -> None:
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    path = RAW_DIR / f"{report}_{label}.json"
+    path.write_text(json.dumps(records, indent=1, sort_keys=True), encoding="utf-8")
+
+
+def fetch(report: str, market_codes: list[str], since: str | None = None,
+          until: str | None = None) -> int:
+    soql = build_query(market_codes, since, until)
+    records, route = run_query(report, soql, paginate=True)
+    retrieved_at = dt.date.today().isoformat()
+    label = f"{'-'.join(market_codes)}_{since or 'start'}_{until or retrieved_at}"
+    _save_raw(report, label, records)
+    rows = normalize(report, records, retrieved_at)
+    added = append_dedup_csv(OUT_DIR / "positions.csv", POSITIONS_HEADER, rows,
+                             POSITIONS_KEY)
+    latest = max((r["report_date"] for r in rows), default="none")
+    print(f"cftc {report} {','.join(market_codes)} via {route}: {len(records)} records, "
+          f"{len(rows)} group rows, {added} new, latest {latest}")
+    return added
+
+
+def fetch_watch(since: str, report: str | None = None,
+                market_codes: list[str] | None = None) -> int:
+    """Fetch every watched (report, markets) pair, or one report if named.
+    One failing report is reported and skipped, not fatal to the others."""
+    watch = watch_list()
+    if report:
+        watch = {report: {c: "" for c in (market_codes or watch.get(report, {}))}}
+    total, failed = 0, []
+    for rep, markets in watch.items():
+        if not markets:
+            continue
+        try:
+            total += fetch(rep, list(markets), since)
+        except Exception as err:  # noqa: BLE001
+            failed.append(rep)
+            print(f"  cftc {rep} failed ({type(err).__name__}: {err}); continuing")
+    if failed and len(failed) == len(watch):
+        raise RuntimeError("cftc: every report failed")
+    return total
+
+
+def latest(report: str | None = None, market_codes: list[str] | None = None,
+           weeks: int = 10) -> int:
+    since = (dt.date.today() - dt.timedelta(weeks=weeks)).isoformat()
+    return fetch_watch(since, report, market_codes)
+
+
+# --- Weekly change in net position ------------------------------------------
+
+def compute_flows(rows: list[dict], watch: dict[str, dict[str, str]]) -> list[dict]:
+    """Net position and its change from the previous week, per watched series.
+
+    net_change is left blank when the previous stored week is more than nine
+    days earlier (the first week, or a week that was never published), so a
+    change is never measured across a missing week. A holiday can move the
+    as-of day off Tuesday, so 6- and 8-day spacings (22 of them since 2006)
+    still count as consecutive weeks. It counts contracts, not
+    dollars: a week's change mixes new money with price-driven hedging.
+    """
+    series: dict[tuple, list[dict]] = {}
+    for r in rows:
+        if r["market_code"] in watch.get(r["report"], {}):
+            series.setdefault((r["report"], r["market_code"], r["trader_group"]), []).append(r)
+    out: list[dict] = []
+    for (report, code, group), recs in sorted(series.items()):
+        recs.sort(key=lambda r: r["report_date"])
+        prev = None
+        past_moves: list[float] = []  # sorted |net_change| of earlier weeks
+        past_nets: list[float] = []   # sorted net of earlier weeks
+        for r in recs:
+            net = parse_number(r["net"])
+            oi = parse_number(r["open_interest"])
+            change = None
+            if prev is not None and net is not None:
+                gap = (dt.date.fromisoformat(r["report_date"])
+                       - dt.date.fromisoformat(prev["report_date"])).days
+                prev_net = parse_number(prev["net"])
+                if 5 <= gap <= 9 and prev_net is not None:
+                    change = net - prev_net
+            move_rank = _rank(past_moves, abs(change)) if change is not None else None
+            net_rank = _rank(past_nets, net) if net is not None else None
+            flags = []
+            if move_rank is not None and move_rank >= MOVE_FLAG_PCT:
+                flags.append("unusual_move")
+            if net_rank is not None and (net_rank >= NET_EXTREME_PCT
+                                         or net_rank <= 100 - NET_EXTREME_PCT):
+                flags.append("extreme_net")
+            out.append({
+                "report": report, "market_code": code,
+                "label": watch[report][code], "trader_group": group,
+                "report_date": r["report_date"], "long": r["long"], "short": r["short"],
+                "net": r["net"], "net_change": fmt(change),
+                "open_interest": r["open_interest"],
+                "net_pct_oi": f"{100 * net / oi:.1f}" if net is not None and oi else "",
+                "move_rank_pct": f"{move_rank:.0f}" if move_rank is not None else "",
+                "net_rank_pct": f"{net_rank:.0f}" if net_rank is not None else "",
+                "flag": " ".join(flags),
+            })
+            if change is not None:
+                bisect.insort(past_moves, abs(change))
+            if net is not None:
+                bisect.insort(past_nets, net)
+            prev = r
+    return out
+
+
+def _rank(history: list[float], value: float) -> float | None:
+    """Share of earlier values strictly below `value`, in percent; None until
+    there is enough history to mean anything."""
+    if len(history) < MIN_HISTORY:
+        return None
+    return 100.0 * bisect.bisect_left(history, value) / len(history)
+
+
+def write_flows() -> int:
+    """data/derived/cftc_flows.csv, rebuilt from positions.csv each run."""
+    src = OUT_DIR / "positions.csv"
+    if not src.exists():
+        print("cftc flows: no positions.csv yet")
+        return 0
+    with src.open(encoding="utf-8", newline="") as fh:
+        rows = list(csv.DictReader(fh))
+    flows = compute_flows(rows, watch_list())
+    write_csv(DATA_DIR / "derived" / "cftc_flows.csv", FLOWS_HEADER,
+              [[f[c] for c in FLOWS_HEADER] for f in flows])
+    print(f"cftc_flows.csv: {len(flows)} rows")
+    return len(flows)
+
+
+def reparse() -> None:
+    """Rebuild data/cftc/positions.csv from the raw payloads on disk."""
+    cfg = _load_config()
+    retrieved_at = dt.date.today().isoformat()
+    rows: list[dict] = []
+    for path in sorted(RAW_DIR.glob("*.json")) if RAW_DIR.exists() else []:
+        report = next((r for r in cfg["reports"] if path.name.startswith(r + "_")), None)
+        if report:
+            rows += normalize(report, json.loads(path.read_text("utf-8")), retrieved_at)
+    out = OUT_DIR / "positions.csv"
+    write_csv(out, POSITIONS_HEADER, [])
+    added = append_dedup_csv(out, POSITIONS_HEADER, rows, POSITIONS_KEY)
+    print(f"positions.csv: rebuilt with {added} rows")
+
+
+# --- Weekly brief -------------------------------------------------------------
+
+def build_brief(flows: list[dict], headline: list[dict], today: dt.date) -> str:
+    """Markdown facts for the latest week: one row per headline series.
+
+    Plain facts only, computed here so the written summary never has to
+    recompute them. The staleness line compares the latest week with the most
+    recent Tuesday that should already be published (Friday release).
+    """
+    by_series: dict[tuple, list[dict]] = {}
+    for f in flows:
+        by_series.setdefault((f["report"], f["market_code"], f["trader_group"]), []).append(f)
+    latest = max((f["report_date"] for f in flows), default="")
+    lines = [f"# CFTC positioning brief, week of {latest or 'n/a'}", ""]
+    # Most recent Tuesday whose report is due by now. It is published Friday
+    # afternoon, so from Tuesday to Friday the week before is the one due; a
+    # Friday-evening run that already has this week's rows still reads current.
+    tuesday = today - dt.timedelta(days=(today.weekday() - 1) % 7)
+    if today.weekday() in (1, 2, 3, 4):
+        tuesday -= dt.timedelta(days=7)
+    expected = tuesday.isoformat()
+    status = "current" if latest >= expected else "STALE"
+    lines += [f"- Latest week in the data: {latest or 'none'}",
+              f"- Latest week that should be published by {today.isoformat()}: {expected}",
+              f"- Status: {status}", ""]
+    lines += ["| Market | Who | Net | Change from last week | Move bigger than % of past weekly moves "
+              "| Net higher than % of past weeks | Net a year earlier | Flag |",
+              "|---|---|---|---|---|---|---|---|"]
+    for h in headline:
+        recs = by_series.get((h["report"], h["code"], h["group"]), [])
+        row = next((r for r in recs if r["report_date"] == latest), None)
+        if row is None:
+            lines.append(f"| {h['name']} | {h['who']} | missing | | | | | |")
+            continue
+        cutoff = (dt.date.fromisoformat(latest) - dt.timedelta(days=364)).isoformat()
+        year_ago = [r for r in recs if r["report_date"] <= cutoff]
+        ya = f"{year_ago[-1]['net']} ({year_ago[-1]['report_date']})" if year_ago else ""
+        lines.append(f"| {h['name']} | {h['who']} | {row['net']} | {row['net_change']} "
+                     f"| {row['move_rank_pct']} | {row['net_rank_pct']} | {ya} "
+                     f"| {row['flag'].replace('_', ' ')} |")
+    lines += ["", f"Flags: 'unusual move' = weekly change bigger than {MOVE_FLAG_PCT:.0f}% of that "
+              f"series' earlier weekly moves; 'extreme net' = net above {NET_EXTREME_PCT:.0f}% or "
+              f"below {100 - NET_EXTREME_PCT:.0f}% of its earlier weeks. Ranks use only earlier "
+              "weeks, from 2006-06-13.", ""]
+    return "\n".join(lines)
+
+
+def write_brief(today: dt.date | None = None) -> None:
+    src = DATA_DIR / "derived" / "cftc_flows.csv"
+    if not src.exists():
+        print("cftc brief: no cftc_flows.csv yet")
+        return
+    with src.open(encoding="utf-8", newline="") as fh:
+        flows = list(csv.DictReader(fh))
+    text = build_brief(flows, _load_config().get("headline", []), today or dt.date.today())
+    out = DATA_DIR / "derived" / "cftc_brief.md"
+    out.write_text(text, encoding="utf-8")
+    print(text)
+
+
+def main(argv: list[str]) -> int:
+    if not argv:
+        print(__doc__)
+        return 2
+    cmd, rest = argv[0], argv[1:]
+    if cmd == "latest":
+        latest(rest[0] if rest else None, rest[1:] or None)
+    elif cmd == "backfill" and rest:
+        fetch_watch(rest[0], rest[1] if len(rest) > 1 else None, rest[2:] or None)
+    elif cmd == "flows":
+        write_flows()
+    elif cmd == "brief":
+        write_brief(dt.date.fromisoformat(rest[0]) if rest else None)
+    elif cmd == "query" and len(rest) == 2:
+        rows, route = run_query(rest[0], rest[1])
+        print(json.dumps(rows, indent=1))
+        print(f"{len(rows)} rows via {route}", file=sys.stderr)
+    elif cmd == "reparse":
+        reparse()
+    else:
+        print(__doc__)
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

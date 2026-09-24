@@ -45,6 +45,44 @@ def http_get(url: str, *, params: dict | None = None, retries: int = 3,
     raise RuntimeError(f"GET {url} failed after {retries + 1} attempts: {last_err}")
 
 
+class HTTPStatusError(RuntimeError):
+    """A definitive (non-retryable) HTTP error, carrying the status code."""
+
+    def __init__(self, message: str, status: int) -> None:
+        super().__init__(message)
+        self.status = status
+
+
+def http_request(method: str, url: str, *, params: dict | None = None,
+                 json_body: dict | None = None, headers: dict | None = None,
+                 retries: int = 3, backoff: float = 2.0,
+                 timeout: float = 60.0) -> requests.Response:
+    """GET or POST with the same backoff as http_get, but a 4xx other than
+    429 fails at once as HTTPStatusError: retrying a refusal wastes the
+    caller's time and the server's rate budget, and the caller may want to
+    fall back to another route on it."""
+    merged = {"User-Agent": USER_AGENT, "Accept": "application/json"}
+    merged.update(headers or {})
+    last_err: Exception | None = None
+    for attempt in range(retries + 1):
+        try:
+            resp = requests.request(method, url, params=params, json=json_body,
+                                    headers=merged, timeout=timeout)
+        except (requests.ConnectionError, requests.Timeout) as err:
+            last_err = err
+        else:
+            if resp.status_code < 400:
+                return resp
+            if resp.status_code not in (429, 500, 502, 503, 504):
+                raise HTTPStatusError(
+                    f"{method} {url}: HTTP {resp.status_code}: {resp.text[:300]}",
+                    resp.status_code)
+            last_err = requests.HTTPError(f"HTTP {resp.status_code}", response=resp)
+        if attempt < retries:
+            time.sleep(backoff * (2 ** attempt))
+    raise RuntimeError(f"{method} {url} failed after {retries + 1} attempts: {last_err}")
+
+
 # --- Date helpers -----------------------------------------------------------
 
 def roc_to_iso_month(roc: str) -> str:

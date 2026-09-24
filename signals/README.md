@@ -32,16 +32,19 @@ Action.
 | `signals/japan_customs.py` | Fetch MOF press-release XML (10/20-day totals, monthly commodity breakdown), keyless time-series CSVs and e-Stat 9-digit commodity CSVs |
 | `signals/us_census.py` | Fetch U.S. Census monthly imports/exports by HTS code and partner country (free key) plus a keyless HTS description snapshot |
 | `signals/compute_signals.py` | Aggregate YoY / median / breadth per watch group; snapshot report |
+| `signals/cftc_cot.py` | CFTC Commitments of Traders via the Socrata API at publicreporting.cftc.gov (keyless SODA 2.1 GET; SODA 3.0 POST when `CFTC_APP_TOKEN` is set): TFF for S&P 500, Nasdaq-100 and dollar-index futures, disaggregated for gold and crude; long/short/net per trader group and the week-over-week change in net (`data/derived/cftc_flows.csv`) |
 | `signals/fx_rates.py` | Daily USD reference rates (yen, won), keyless, for the currency-adjusted series |
 | `signals/intel.py` | Diff the derived tables against the previous run; flag watch items; feed the daily brief |
 | `signals/config/watchgroups.json` | Taiwan ticker groups (AI compute, server ODM, power/cooling, robotics motion) |
 | `signals/config/korea_endpoints.json` | Korea endpoint config incl. HS codes (8542 semis, 8486 semi equipment, 8479 robots) |
 | `signals/config/japan_endpoints.json` | Japan endpoints (URL patterns, stage codes, e-Stat navigation), HS prefixes and principal-commodity codes |
+| `signals/config/cftc_endpoints.json` | CFTC report dataset ids (legacy, disaggregated, TFF), both API routes, tracked contract market codes (088691 COMEX gold) |
 | `signals/config/us_endpoints.json` | Census/HTS endpoints, requested variables, the HTS codes tracked (transceivers, laser diodes, fibre, wafers, equipment) |
 | `data/taiwan/monthly_revenue/` | One normalized CSV per month & market (thousand TWD) |
 | `data/korea/` | Append-only long tables + verbatim raw API responses |
 | `data/japan/` | Append-only long tables + verbatim raw XML/CSV/HTML payloads (`raw/`) |
 | `data/us/` | Append-only long table by (month, direction, code, country) + verbatim Census JSON (`raw/`) |
+| `data/cftc/` | Append-only positions table + verbatim JSON payloads (`raw/`); derived `cftc_flows.csv` (weekly net change, move and level ranks, flags) and `cftc_brief.md` (latest week, headline series) in `data/derived/` |
 | `data/derived/` | Recomputed signals + `latest_report.md` (regenerated each run) |
 | `tests/test_signals.py` | Offline parser/math tests (`python -m unittest discover tests`) |
 
