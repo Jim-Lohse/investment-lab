@@ -32,7 +32,7 @@ Action.
 | `signals/japan_customs.py` | Fetch MOF press-release XML (10/20-day totals, monthly commodity breakdown), keyless time-series CSVs and e-Stat 9-digit commodity CSVs |
 | `signals/us_census.py` | Fetch U.S. Census monthly imports/exports by HTS code and partner country (free key) plus a keyless HTS description snapshot |
 | `signals/compute_signals.py` | Aggregate YoY / median / breadth per watch group; snapshot report |
-| `signals/cftc_cot.py` | CFTC Commitments of Traders via the Socrata API at publicreporting.cftc.gov (keyless SODA 2.1 GET; SODA 3.0 POST when `CFTC_APP_TOKEN` is set), normalized to long/short/net per trader group |
+| `signals/cftc_cot.py` | CFTC Commitments of Traders via the Socrata API at publicreporting.cftc.gov (keyless SODA 2.1 GET; SODA 3.0 POST when `CFTC_APP_TOKEN` is set): TFF for S&P 500, Nasdaq-100 and dollar-index futures, disaggregated for gold and crude; long/short/net per trader group and the week-over-week change in net (`data/derived/cftc_flows.csv`) |
 | `signals/fx_rates.py` | Daily USD reference rates (yen, won), keyless, for the currency-adjusted series |
 | `signals/intel.py` | Diff the derived tables against the previous run; flag watch items; feed the daily brief |
 | `signals/config/watchgroups.json` | Taiwan ticker groups (AI compute, server ODM, power/cooling, robotics motion) |

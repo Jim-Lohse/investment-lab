@@ -41,7 +41,7 @@
     "tff_fut": {
       "dataset": "gpe5-46if",
       "title": "Traders in Financial Futures - Futures Only",
-      "verified": ""
+      "verified": "2026-09-24"
     },
     "legacy_combined": {
       "dataset": "jun7-fc8e",
@@ -64,7 +64,33 @@
     "live row has been checked from this pipeline yet. The parser keeps every",
     "field in extra_json, so a surprise field name loses nothing."
   ],
-  "markets": {
-    "088691": "Gold, COMEX (100 troy oz)"
-  }
+  "watch": {
+    "legacy_fut": {
+      "088691": "Gold, COMEX (GLD proxy)"
+    },
+    "disagg_fut": {
+      "088691": "Gold, COMEX (GLD proxy)",
+      "067651": "WTI crude oil, NYMEX (USO proxy)"
+    },
+    "tff_fut": {
+      "13874A": "E-mini S&P 500, CME (SPY proxy)",
+      "209742": "Nasdaq-100 E-mini, CME (QQQ proxy)",
+      "098662": "U.S. Dollar Index, ICE (UUP proxy)"
+    }
+  },
+  "_watch_note": [
+    "Keyed by the six-character contract market code, which has stayed fixed",
+    "while CFTC renamed contracts in February 2022. Checked 2026-09-24:",
+    "  13874A  'E-MINI S&P 500'  (was 'E-MINI S&P 500 STOCK INDEX')",
+    "  209742  'NASDAQ MINI'     (was 'NASDAQ-100 STOCK INDEX (MINI)')",
+    "  098662  'USD INDEX'       (was 'U.S. DOLLAR INDEX')",
+    "  067651  'WTI-PHYSICAL'    (was 'CRUDE OIL, LIGHT SWEET')",
+    "Traps: 'CRUDE OIL, LIGHT SWEET-WTI' (067411) is the ICE Futures Europe",
+    "contract, not the NYMEX one USO holds; 138741 is the retired full-size S&P",
+    "contract (last report 2021-09-14); 209741 is the retired full-size Nasdaq",
+    "contract (last report 2015-06-16).",
+    "Which report for which asset: equity indices, currencies and rates use TFF",
+    "(dealer / asset manager / leveraged money); physical commodities use",
+    "disaggregated (producer / swap dealer / managed money)."
+  ]
 }

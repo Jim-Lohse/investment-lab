@@ -57,6 +57,31 @@ DISAGG_GOLD = {
 }
 
 
+# E-mini S&P 500, TFF futures only, 2026-08-11 (market 13874A).
+TFF_ES = {
+    "id": "26081113874AF",
+    "market_and_exchange_names": "E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE",
+    "report_date_as_yyyy_mm_dd": "2026-08-11T00:00:00.000",
+    "contract_market_name": "E-MINI S&P 500",
+    "cftc_contract_market_code": "13874A",
+    "open_interest_all": "2119506",
+    "dealer_positions_long_all": "216163",
+    "dealer_positions_short_all": "995795",
+    "dealer_positions_spread_all": "61405",
+    "asset_mgr_positions_long": "1154700",
+    "asset_mgr_positions_short": "206219",
+    "asset_mgr_positions_spread": "95003",
+    "lev_money_positions_long": "205744",
+    "lev_money_positions_short": "486190",
+    "lev_money_positions_spread": "61420",
+    "other_rept_positions_long": "52037",
+    "other_rept_positions_short": "71600",
+    "other_rept_positions_spread": "471",
+    "nonrept_positions_long_all": "272563",
+    "nonrept_positions_short_all": "141403",
+}
+
+
 class FakeResponse:
     def __init__(self, status: int, payload):
         self.status_code = status
@@ -115,8 +140,60 @@ class NormalizeTests(unittest.TestCase):
         rows = cftc_cot.normalize("disagg_fut", [rec], "2026-09-24")
         self.assertNotIn("managed_money", {r["trader_group"] for r in rows})
 
+    def test_tff_asset_manager_and_leveraged_money(self):
+        rows = cftc_cot.normalize("tff_fut", [TFF_ES], "2026-09-24")
+        by_group = {r["trader_group"]: r for r in rows}
+        self.assertEqual(set(by_group), {"dealer", "asset_manager", "leveraged_money",
+                                         "other_reportable", "nonreportable"})
+        am = by_group["asset_manager"]
+        self.assertEqual((am["long"], am["short"], am["net"]),
+                         ("1154700", "206219", str(1154700 - 206219)))
+        lev = by_group["leveraged_money"]
+        self.assertEqual(lev["net"], str(205744 - 486190))
+
+    def test_tff_fields_with_all_suffix_do_not_exist(self):
+        # The "_all" suffix appears on dealer fields only; a mapping that
+        # assumed it everywhere would silently drop these groups.
+        self.assertNotIn("asset_mgr_positions_long_all", TFF_ES)
+        self.assertNotIn("lev_money_positions_long_all", TFF_ES)
+
     def test_unmapped_family_yields_nothing(self):
-        self.assertEqual(cftc_cot.normalize("tff_fut", [DISAGG_GOLD], "x"), [])
+        self.assertEqual(cftc_cot.normalize("legacy_combined", [], "x"), [])
+        self.assertEqual(cftc_cot.normalize("unknown_fut", [DISAGG_GOLD], "x"), [])
+
+
+class FlowsTests(unittest.TestCase):
+    WATCH = {"tff_fut": {"13874A": "E-mini S&P 500"}}
+
+    @staticmethod
+    def _row(date, net, oi="1000", code="13874A", report="tff_fut"):
+        return {"report": report, "market_code": code, "trader_group": "asset_manager",
+                "report_date": date, "long": "", "short": "", "net": str(net),
+                "open_interest": oi}
+
+    def test_week_over_week_change(self):
+        rows = [self._row("2026-09-08", 500), self._row("2026-09-01", 400),
+                self._row("2026-09-15", 450)]
+        flows = cftc_cot.compute_flows(rows, self.WATCH)
+        self.assertEqual([f["report_date"] for f in flows],
+                         ["2026-09-01", "2026-09-08", "2026-09-15"])
+        self.assertEqual([f["net_change"] for f in flows], ["", "100", "-50"])
+        self.assertEqual(flows[2]["net_pct_oi"], "45.0")
+        self.assertEqual(flows[0]["label"], "E-mini S&P 500")
+
+    def test_no_change_across_a_missing_week(self):
+        rows = [self._row("2026-09-01", 400), self._row("2026-09-15", 450)]
+        flows = cftc_cot.compute_flows(rows, self.WATCH)
+        self.assertEqual(flows[1]["net_change"], "")
+
+    def test_unwatched_markets_are_left_out(self):
+        rows = [self._row("2026-09-01", 1, code="088691", report="disagg_fut")]
+        self.assertEqual(cftc_cot.compute_flows(rows, self.WATCH), [])
+
+    def test_config_watch_uses_verified_codes(self):
+        watch = cftc_cot.watch_list()
+        self.assertEqual(set(watch["tff_fut"]), {"13874A", "209742", "098662"})
+        self.assertEqual(set(watch["disagg_fut"]), {"088691", "067651"})
 
 
 class TransportTests(unittest.TestCase):

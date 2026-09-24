@@ -15,20 +15,30 @@ the same rows (see signals/config/cftc_endpoints.json):
 With no token the keyless route goes first; with one, SODA3 goes first. Either
 falls back to the other on a refusal (401/403) or a network failure.
 
-Output (append-only, first print wins):
-  data/cftc/positions.csv  — report, date, market, trader group, long/short/spread
-  data/cftc/raw/           — the JSON payloads, so a parser fix can be replayed
+Which markets: the "watch" section of the config — equity index and currency
+futures from the TFF report (asset managers vs leveraged funds), commodities
+from the disaggregated report (managed money), each keyed by contract code.
+
+Output:
+  data/cftc/positions.csv     — append-only, first print wins: report, date,
+                                market, trader group, long/short/spread/net
+  data/cftc/raw/              — the JSON payloads, so a parser fix can be replayed
+  data/derived/cftc_flows.csv — rebuilt each run: net and its change from the
+                                previous week, per watched market and group
 
 Usage:
-    python -m signals.cftc_cot latest                        # last 10 weeks, gold, both reports
-    python -m signals.cftc_cot latest disagg_fut 088691
+    python -m signals.cftc_cot latest                        # last 10 weeks, every watched market
+    python -m signals.cftc_cot latest tff_fut 13874A
+    python -m signals.cftc_cot backfill 2006-06-13           # every watched market
     python -m signals.cftc_cot backfill 2015-01-01 disagg_fut 088691
+    python -m signals.cftc_cot flows
     python -m signals.cftc_cot query legacy_fut "SELECT * WHERE contract_market_name = 'GOLD' ORDER BY report_date_as_yyyy_mm_dd DESC LIMIT 10"
     python -m signals.cftc_cot reparse
 """
 
 from __future__ import annotations
 
+import csv
 import datetime as dt
 import json
 import os
@@ -45,15 +55,15 @@ POSITIONS_HEADER = ["report", "report_date", "market_code", "market_and_exchange
                     "open_interest", "retrieved_at"]
 POSITIONS_KEY = ["report", "report_date", "market_code", "trader_group"]
 
-DEFAULT_REPORTS = ["legacy_fut", "disagg_fut"]
-DEFAULT_MARKETS = ["088691"]
+FLOWS_HEADER = ["report", "market_code", "label", "trader_group", "report_date",
+                "long", "short", "net", "net_change", "open_interest", "net_pct_oi"]
 DATE_FIELD = "report_date_as_yyyy_mm_dd"
 
 # Trader groups per report family: (long field, short field, spread field).
 # Field names are copied from live rows (2026-09-24), typos included — the
 # CFTC spells it "noncomm_postions_spread_all" and "swap__positions_short_all".
-# TFF is left out until a live row has been checked; its rows still land in
-# raw/ and can be normalized later with `reparse`.
+# TFF (checked on the E-mini S&P 500, 2026-09-24) drops the "_all" suffix on
+# the asset-manager and leveraged-money fields but keeps it on dealer fields.
 GROUP_FIELDS = {
     "legacy": {
         "noncommercial": ("noncomm_positions_long_all", "noncomm_positions_short_all",
@@ -71,11 +81,28 @@ GROUP_FIELDS = {
                              "other_rept_positions_spread"),
         "nonreportable": ("nonrept_positions_long_all", "nonrept_positions_short_all", None),
     },
+    "tff": {
+        "dealer": ("dealer_positions_long_all", "dealer_positions_short_all",
+                   "dealer_positions_spread_all"),
+        "asset_manager": ("asset_mgr_positions_long", "asset_mgr_positions_short",
+                          "asset_mgr_positions_spread"),
+        "leveraged_money": ("lev_money_positions_long", "lev_money_positions_short",
+                            "lev_money_positions_spread"),
+        "other_reportable": ("other_rept_positions_long", "other_rept_positions_short",
+                             "other_rept_positions_spread"),
+        "nonreportable": ("nonrept_positions_long_all", "nonrept_positions_short_all", None),
+    },
 }
 
 
 def _load_config() -> dict:
     return json.loads((CONFIG_DIR / "cftc_endpoints.json").read_text("utf-8"))
+
+
+def watch_list(cfg: dict | None = None) -> dict[str, dict[str, str]]:
+    """{report: {market code: label}} from the config's watch section."""
+    cfg = cfg or _load_config()
+    return {r: dict(m) for r, m in cfg.get("watch", {}).items() if not r.startswith("_")}
 
 
 def _dataset(cfg: dict, report: str) -> str:
@@ -248,9 +275,86 @@ def fetch(report: str, market_codes: list[str], since: str | None = None,
     return added
 
 
-def latest(reports: list[str], market_codes: list[str], weeks: int = 10) -> int:
+def fetch_watch(since: str, report: str | None = None,
+                market_codes: list[str] | None = None) -> int:
+    """Fetch every watched (report, markets) pair, or one report if named.
+    One failing report is reported and skipped, not fatal to the others."""
+    watch = watch_list()
+    if report:
+        watch = {report: {c: "" for c in (market_codes or watch.get(report, {}))}}
+    total, failed = 0, []
+    for rep, markets in watch.items():
+        if not markets:
+            continue
+        try:
+            total += fetch(rep, list(markets), since)
+        except Exception as err:  # noqa: BLE001
+            failed.append(rep)
+            print(f"  cftc {rep} failed ({type(err).__name__}: {err}); continuing")
+    if failed and len(failed) == len(watch):
+        raise RuntimeError("cftc: every report failed")
+    return total
+
+
+def latest(report: str | None = None, market_codes: list[str] | None = None,
+           weeks: int = 10) -> int:
     since = (dt.date.today() - dt.timedelta(weeks=weeks)).isoformat()
-    return sum(fetch(r, market_codes, since) for r in reports)
+    return fetch_watch(since, report, market_codes)
+
+
+# --- Weekly change in net position ------------------------------------------
+
+def compute_flows(rows: list[dict], watch: dict[str, dict[str, str]]) -> list[dict]:
+    """Net position and its change from the previous week, per watched series.
+
+    net_change is left blank when the previous stored week is not exactly
+    seven days earlier (the first week, or a gap such as a shutdown), so a
+    change is never measured across a missing week. It counts contracts, not
+    dollars: a week's change mixes new money with price-driven hedging.
+    """
+    series: dict[tuple, list[dict]] = {}
+    for r in rows:
+        if r["market_code"] in watch.get(r["report"], {}):
+            series.setdefault((r["report"], r["market_code"], r["trader_group"]), []).append(r)
+    out: list[dict] = []
+    for (report, code, group), recs in sorted(series.items()):
+        recs.sort(key=lambda r: r["report_date"])
+        prev = None
+        for r in recs:
+            net = parse_number(r["net"])
+            oi = parse_number(r["open_interest"])
+            change = None
+            if prev is not None and net is not None:
+                gap = (dt.date.fromisoformat(r["report_date"])
+                       - dt.date.fromisoformat(prev["report_date"])).days
+                prev_net = parse_number(prev["net"])
+                if gap == 7 and prev_net is not None:
+                    change = net - prev_net
+            out.append({
+                "report": report, "market_code": code,
+                "label": watch[report][code], "trader_group": group,
+                "report_date": r["report_date"], "long": r["long"], "short": r["short"],
+                "net": r["net"], "net_change": fmt(change),
+                "open_interest": r["open_interest"],
+                "net_pct_oi": f"{100 * net / oi:.1f}" if net is not None and oi else "",
+            })
+            prev = r
+    return out
+
+
+def write_flows() -> int:
+    """data/derived/cftc_flows.csv, rebuilt from positions.csv each run."""
+    src = OUT_DIR / "positions.csv"
+    if not src.exists():
+        print("cftc flows: no positions.csv yet")
+        return 0
+    with src.open(encoding="utf-8", newline="") as fh:
+        rows = list(csv.DictReader(fh))
+    flows = compute_flows(rows, watch_list())
+    write_csv(DATA_DIR / "derived" / "cftc_flows.csv", FLOWS_HEADER,
+              [[f[c] for c in FLOWS_HEADER] for f in flows])
+    print(f"cftc_flows.csv: {len(flows)} rows")
+    return len(flows)
 
 
 def reparse() -> None:
@@ -274,10 +378,11 @@ def main(argv: list[str]) -> int:
         return 2
     cmd, rest = argv[0], argv[1:]
     if cmd == "latest":
-        reports = [rest[0]] if rest else DEFAULT_REPORTS
-        latest(reports, rest[1:] or DEFAULT_MARKETS)
-    elif cmd == "backfill" and len(rest) >= 2:
-        fetch(rest[1], rest[2:] or DEFAULT_MARKETS, since=rest[0])
+        latest(rest[0] if rest else None, rest[1:] or None)
+    elif cmd == "backfill" and rest:
+        fetch_watch(rest[0], rest[1] if len(rest) > 1 else None, rest[2:] or None)
+    elif cmd == "flows":
+        write_flows()
     elif cmd == "query" and len(rest) == 2:
         rows, route = run_query(rest[0], rest[1])
         print(json.dumps(rows, indent=1))

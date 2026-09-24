@@ -72,7 +72,7 @@ on:
         required: false
         default: ""
       cftc_backfill:
-        description: "Backfill CFTC COT from a start date, e.g. 2006-06-13 (disaggregated history begins then)"
+        description: "Backfill every watched CFTC COT market from a start date, e.g. 2006-06-13 (TFF and disaggregated history begin then)"
         required: false
         default: ""
 
@@ -214,20 +214,21 @@ jobs:
 
       # CFTC Commitments of Traders (keyless Socrata API). Weekly: positions as
       # of Tuesday, published Friday 15:30 ET, so the daily run no-ops on most
-      # days. Pulls the legacy and disaggregated reports for the markets in
-      # signals/config/cftc_endpoints.json (default 088691, COMEX gold).
+      # days. Pulls every market in the "watch" section of
+      # signals/config/cftc_endpoints.json (TFF for equity indices and the
+      # dollar, disaggregated for gold and crude), then rebuilds the weekly
+      # net-change table data/derived/cftc_flows.csv.
       - name: Fetch CFTC Commitments of Traders (keyless)
         continue-on-error: true
         env:
           CFTC_APP_TOKEN: ${{ secrets.CFTC_APP_TOKEN }}
         run: |
           if [ -n "${{ github.event.inputs.cftc_backfill }}" ]; then
-            for report in legacy_fut disagg_fut; do
-              python -m signals.cftc_cot backfill "${{ github.event.inputs.cftc_backfill }}" "$report"
-            done
+            python -m signals.cftc_cot backfill "${{ github.event.inputs.cftc_backfill }}"
           else
             python -m signals.cftc_cot latest
           fi
+          python -m signals.cftc_cot flows
 
       - name: Snapshot the previous derived tables (baseline for the diff)
         run: |
