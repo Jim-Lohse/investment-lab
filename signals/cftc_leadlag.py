@@ -5,7 +5,8 @@ the summary leans on it. For each watched series (institutions and hedge funds
 in the S&P 500, Nasdaq-100 and dollar-index futures; hedge funds in gold and
 crude) it asks whether a positioning signal known at a date lines up with the
 fund's price move, and for GLD its gold holdings (money in or out), over the
-following 1, 4, 8 and 13 weeks.
+following 1, 2, 3 and 4 weeks (weekly to monthly, the window the
+summary is meant to serve).
 
 No look-ahead. Positions are as of Tuesday. The report is normally public
 Friday afternoon but slips to Monday in holiday weeks, so the main test acts at
@@ -75,7 +76,7 @@ SERIES = [
     ("disagg_fut", "088691", "managed_money", "GLD", "Gold", "Hedge funds"),
     ("disagg_fut", "067651", "managed_money", "USO", "Crude oil", "Hedge funds"),
 ]
-HORIZONS = [1, 4, 8, 13]
+HORIZONS = [1, 2, 3, 4]         # weekly to monthly: the window the summary serves
 SIGNALS = ["chg1", "chg4", "crowd", "turn"]
 MIN_HISTORY = 104          # weeks before any percentile or fifth is scored
 CROWD_WINDOW = 156         # three years
