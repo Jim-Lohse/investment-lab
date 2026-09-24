@@ -186,6 +186,12 @@ class FlowsTests(unittest.TestCase):
         flows = cftc_cot.compute_flows(rows, self.WATCH)
         self.assertEqual(flows[1]["net_change"], "")
 
+    def test_holiday_shifted_week_still_counts(self):
+        rows = [self._row("2006-06-27", 400), self._row("2006-07-03", 430),
+                self._row("2006-07-11", 420)]
+        flows = cftc_cot.compute_flows(rows, self.WATCH)
+        self.assertEqual([f["net_change"] for f in flows], ["", "30", "-10"])
+
     def test_unwatched_markets_are_left_out(self):
         rows = [self._row("2026-09-01", 1, code="088691", report="disagg_fut")]
         self.assertEqual(cftc_cot.compute_flows(rows, self.WATCH), [])

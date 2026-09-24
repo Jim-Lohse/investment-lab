@@ -307,9 +307,11 @@ def latest(report: str | None = None, market_codes: list[str] | None = None,
 def compute_flows(rows: list[dict], watch: dict[str, dict[str, str]]) -> list[dict]:
     """Net position and its change from the previous week, per watched series.
 
-    net_change is left blank when the previous stored week is not exactly
-    seven days earlier (the first week, or a gap such as a shutdown), so a
-    change is never measured across a missing week. It counts contracts, not
+    net_change is left blank when the previous stored week is more than nine
+    days earlier (the first week, or a week that was never published), so a
+    change is never measured across a missing week. A holiday can move the
+    as-of day off Tuesday, so 6- and 8-day spacings (22 of them since 2006)
+    still count as consecutive weeks. It counts contracts, not
     dollars: a week's change mixes new money with price-driven hedging.
     """
     series: dict[tuple, list[dict]] = {}
@@ -328,7 +330,7 @@ def compute_flows(rows: list[dict], watch: dict[str, dict[str, str]]) -> list[di
                 gap = (dt.date.fromisoformat(r["report_date"])
                        - dt.date.fromisoformat(prev["report_date"])).days
                 prev_net = parse_number(prev["net"])
-                if gap == 7 and prev_net is not None:
+                if 5 <= gap <= 9 and prev_net is not None:
                     change = net - prev_net
             out.append({
                 "report": report, "market_code": code,
