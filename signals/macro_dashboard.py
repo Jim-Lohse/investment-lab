@@ -303,6 +303,14 @@ def rates_takeaway(p: dict) -> list[str]:
     c2, c10 = y2["changes"]["13w"], y10["changes"]["13w"]
     out = [f"The 2-year yield is {y2['value']:.2f}% and {moved(c2, 'pts')} over 13 weeks; "
            f"the 10-year is {y10['value']:.2f}% and {moved(c10, 'pts')}."]
+    what = {"2-year": "where markets expect the Federal Reserve to take rates",
+            "10-year": "long-term borrowing costs, including mortgage rates"}
+    for it, label in ((y2, "2-year"), (y10, "10-year")):
+        c4, r = it["changes"]["4w"], it.get("move4_rank_pct")
+        if c4 is not None and r is not None and r >= 90:
+            out.append(f"The {label} yield {'rose' if c4 > 0 else 'fell'} {bp(c4)} in the last "
+                       f"4 weeks, larger than {r}% of 4-week moves since {it['since'][:4]}: an "
+                       f"unusually quick repricing of {what[label]}.")
     since = f" since {month_year(g['streak']['since'])}" if g.get("streak") else ""
     if g["value"] >= 0:
         out.append(f"The 10-year pays {g['value']:.2f} percentage points more than the 2-year, "
@@ -388,7 +396,9 @@ def headlines(panels: list[dict]) -> list[str]:
     out = []
     rates = next((p for p in panels if p["id"] == "rates"), None)
     if rates and rates.get("takeaway"):
-        out.extend(rates["takeaway"][:2])
+        out.extend(rates["takeaway"][:1])
+        out.extend(t for t in rates["takeaway"][1:] if "unusually quick" in t)
+        out.extend(t for t in rates["takeaway"] if "curve is" in t)
     for p in panels:
         if p["id"] in ("rates", "trade"):
             continue

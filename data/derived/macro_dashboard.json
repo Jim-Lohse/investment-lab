@@ -2,9 +2,9 @@
  "generated": "2026-09-24",
  "headlines": [
   "The 2-year yield is 4.85% and is up 78 bp over 13 weeks; the 10-year is 5.11% and is up 73 bp.",
+  "The 2-year yield rose 51 bp in the last 4 weeks, larger than 95% of 4-week moves since 1990: an unusually quick repricing of where markets expect the Federal Reserve to take rates.",
   "The 10-year pays 0.26 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-  "Compared with the same period last year: Taiwan 46% higher; Korea 78% higher; Japan 19% higher (11% in U.S. dollars).",
-  "No other series made an unusually large move over the past four weeks."
+  "Compared with the same period last year: Taiwan 46% higher; Korea 78% higher; Japan 19% higher (11% in U.S. dollars)."
  ],
  "panels": [
   {
@@ -2593,6 +2593,7 @@
    "explainer": "The 2-year yield tracks where the bond market expects the Federal Reserve's rate to be over the next two years. The 10-year reflects long-run growth and inflation expectations. When the gap between them turns negative (an inverted curve), the market expects rate cuts, usually because it expects a slowdown. Inversions have come before most U.S. recessions of the past 50 years, with lead times from months to about two years, and some false alarms.",
    "takeaway": [
     "The 2-year yield is 4.85% and is up 78 bp over 13 weeks; the 10-year is 5.11% and is up 73 bp.",
+    "The 2-year yield rose 51 bp in the last 4 weeks, larger than 95% of 4-week moves since 1990: an unusually quick repricing of where markets expect the Federal Reserve to take rates.",
     "The 10-year pays 0.26 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
     "The shape of the curve barely changed over 13 weeks."
    ]
