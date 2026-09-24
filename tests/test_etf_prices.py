@@ -92,6 +92,12 @@ class GldPayloadTests(unittest.TestCase):
     def test_pdf_bar_list_is_rejected(self):
         self.assertEqual(etf_prices.parse_gld_payload(b"%PDF-1.5 bar list"), [])
 
+    def test_archive_links_found_on_page(self):
+        html = ('<a href="/assets/dynamic/GLD/GLD_US_archive_EN.xlsx">Download</a>'
+                '<a href="/assets/dynamic/GLD/HSBC_bar_list.pdf">Bars</a>')
+        self.assertEqual(etf_prices.archive_links(html, "https://www.spdrgoldshares.com/usa/gld/"),
+                         ["https://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_US_archive_EN.xlsx"])
+
     def test_csv_bytes(self):
         self.assertEqual(len(etf_prices.parse_gld_payload(GLD.encode())), 2)
 

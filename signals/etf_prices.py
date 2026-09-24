@@ -170,6 +170,17 @@ def parse_gld_rows(all_rows: list[list[str]]) -> list[dict]:
     return sorted({r["date"]: r for r in rows}.values(), key=lambda r: r["date"])
 
 
+def archive_links(html: str, base: str) -> list[str]:
+    """Links on the GLD page that look like the historical archive file."""
+    from urllib.parse import urljoin
+    out = []
+    for href in re.findall(r"""href\s*=\s*["']([^"']+)["']""", html, flags=re.I):
+        low = href.lower()
+        if "archive" in low and any(ext in low for ext in (".xlsx", ".xls", ".csv")):
+            out.append(urljoin(base, href))
+    return out
+
+
 def _parse_date(text: str) -> str | None:
     text = text.strip()
     if re.fullmatch(r"\d{5}(\.0+)?", text):  # Excel serial date
@@ -212,7 +223,14 @@ def fetch() -> None:
         if not got:
             failed.append(ticker)
     got_gld = False
-    for url in cfg["gld_archive_urls"]:
+    candidates = list(cfg["gld_archive_urls"])
+    try:  # the page's own "Historical Archive" link, tried first
+        page = http_get(cfg["gld_page_url"])
+        (FLOWS_DIR / "raw" / "gld_page.html").write_bytes(page.content)
+        candidates = archive_links(page.text, cfg["gld_page_url"]) + candidates
+    except Exception as err:  # noqa: BLE001
+        print(f"  GLD page {cfg['gld_page_url']}: {type(err).__name__}: {err}")
+    for url in dict.fromkeys(candidates):
         try:
             resp = http_get(url)
         except Exception as err:  # noqa: BLE001

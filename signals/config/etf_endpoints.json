@@ -24,8 +24,10 @@
     "https://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_US_archive_EN.csv"
   ],
   "_gld_note": [
-    "As of 2026-09-24 the .csv address serves the daily gold bar list (a PDF),",
-    "not the history; the site's 'Historical Archive (XLSX)' link is tried first.",
-    "Payloads are recognised by content (xlsx, csv, pdf), never by file name."
-  ]
+    "As of 2026-09-24 the .csv archive address serves the daily gold bar list",
+    "(a PDF) and the guessed .xlsx address is 404. The fetcher reads the fund page",
+    "first and follows its 'archive' link; payloads are recognised by content",
+    "(xlsx, csv, pdf), never by file name. The page is saved to data/flows/raw/."
+  ],
+  "gld_page_url": "https://www.spdrgoldshares.com/usa/gld/"
 }
