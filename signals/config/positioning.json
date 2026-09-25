@@ -38,6 +38,28 @@
     "its past rows in data/positioning/headlines.csv."
   ],
 
+  "relevance": {
+    "_note": [
+      "Which collected stories count. The searches stay verbatim; this filter",
+      "decides what is kept for the counts, the dashboard and the digest. The",
+      "13-week backfill on 2026-09-25 showed 100 of 180 stories were",
+      "MarketBeat auto-generated rating changes and 13F stake notices, nearly",
+      "all caught by the JPMorgan search. Every row stays in headlines.csv;",
+      "only the counting skips them. A story counts when its outlet is not",
+      "excluded and its headline has at least one require_any phrase."
+    ],
+    "exclude_outlets": ["MarketBeat"],
+    "require_any": ["hedge fund", "hedge funds", "HEDGE FLOW", "prime broker", "prime brokers",
+                    "prime brokerage", "Goldman PB", "MSPB", "positioning", "positions",
+                    "leverage", "leveraged", "deleveraging", "de-leveraging", "delever",
+                    "de-gross", "de-grossing", "degrossing", "gross exposure", "net exposure",
+                    "short sellers", "short interest", "short-selling", "short selling",
+                    "shorting", "crowded", "crowding", "VIP basket", "most-owned",
+                    "net buying", "net selling", "net buyers", "net sellers", "quant funds",
+                    "trading desk", "trading firms", "funding costs", "institutional holding",
+                    "institutional holdings", "unwind", "unwinding", "rebalancing", "pension rebalancing"]
+  },
+
   "tags": {
     "_note": "Whole-word, case-insensitive matches on the headline. A headline can carry several tags.",
     "bank": {

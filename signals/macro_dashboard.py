@@ -270,7 +270,7 @@ def positioning_panel(today: dt.date) -> dict | None:
     appear on the page's data (the repository is public)."""
     from . import positioning as pos
     cfg = pos.load_config()
-    rows = read_csv(pos.HEADLINES)
+    rows, _ = pos.kept_rows(cfg)
     qids = [q["id"] for q in cfg["queries"]]
     weeks = pos.weekly_counts(rows, qids, today)
     loud = pos.loudness(weeks, cfg)

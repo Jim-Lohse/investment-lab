@@ -66,6 +66,16 @@ def row(sid, qid, day):
     return {"story_id": sid, "query_id": qid, "published_et": day}
 
 
+class RelevanceTests(unittest.TestCase):
+    def test_marketbeat_and_off_topic_dropped(self):
+        keep = {"outlet": "Reuters", "title": "Hedge funds dump tech at fastest pace in a decade"}
+        junk = {"outlet": "MarketBeat", "title": "Hedge funds boost stake in JPMorgan Chase"}
+        off = {"outlet": "Financial Times", "title": "Fifa puts the World Cup up for sale"}
+        self.assertTrue(P.relevant(keep, CFG))
+        self.assertFalse(P.relevant(junk, CFG))
+        self.assertFalse(P.relevant(off, CFG))
+
+
 class WeeklyTests(unittest.TestCase):
     def test_story_counted_once_in_total_and_empty_weeks_are_zero(self):
         rows = [row("a", "pb_data", "2026-09-01"), row("a", "mspb", "2026-09-02"),
