@@ -129,6 +129,23 @@ def tag(title: str, tags: dict) -> dict:
             "topics": ";".join(topics), "extreme": "yes" if extreme else ""}
 
 
+def relevant(row: dict, cfg: dict) -> bool:
+    """A collected story counts only from a non-excluded outlet and with at
+    least one positioning phrase in its headline (config "relevance")."""
+    rel = cfg.get("relevance")
+    if not rel:
+        return True
+    if row.get("outlet", "") in rel.get("exclude_outlets", []):
+        return False
+    return any(_has(row.get("title", ""), w) for w in rel.get("require_any", []))
+
+
+def kept_rows(cfg: dict) -> tuple[list[dict], int]:
+    """(stories that pass the relevance filter, number collected)."""
+    rows = read_csv_dicts(HEADLINES) if HEADLINES.exists() else []
+    return [r for r in rows if relevant(r, cfg)], len(rows)
+
+
 def rows_for(items: list[dict], query_id: str, cfg: dict, seen: dt.date) -> list[dict]:
     rows = []
     for it in items:
@@ -381,13 +398,14 @@ def notable(rows: list[dict], since: dt.date) -> list[dict]:
 
 
 def build_brief(cfg: dict, today: dt.date) -> str:
-    rows = read_csv_dicts(HEADLINES) if HEADLINES.exists() else []
+    rows, collected = kept_rows(cfg)
     qids = [q["id"] for q in cfg["queries"]]
     weeks = weekly_counts(rows, qids, today)
     loud = loudness(weeks, cfg)
     week_start = today - dt.timedelta(days=today.weekday())
     lines = [f"# Positioning brief, {today.isoformat()} (U.S. Eastern)", "",
-             f"Stories stored: {len({r['story_id'] for r in rows})}. "
+             f"Stories counted: {len({r['story_id'] for r in rows})} "
+             f"(of {collected} rows collected; the rest failed the relevance filter). "
              f"This week (from {week_start.isoformat()}): {loud['count']} distinct stories; "
              f"usual week (median of up to {cfg['loudness']['baseline_weeks']} earlier weeks): "
              f"{loud['baseline'] if loud['baseline'] is not None else 'not enough history'}; "
@@ -418,7 +436,7 @@ def build_brief(cfg: dict, today: dt.date) -> str:
 
 
 def write_derived(cfg: dict, today: dt.date) -> None:
-    rows = read_csv_dicts(HEADLINES) if HEADLINES.exists() else []
+    rows, _ = kept_rows(cfg)
     qids = [q["id"] for q in cfg["queries"]]
     weeks = weekly_counts(rows, qids, today)
     write_csv(WEEKLY, ["week_ending", "total", *qids],
@@ -483,8 +501,7 @@ def main(argv: list[str]) -> int:
             return 0
         holdings = json.loads(path.read_text("utf-8")).get("holdings", [])
         since = (today - dt.timedelta(days=int(argv[1]) if len(argv) > 1 else 7)).isoformat()
-        rows = [r for r in (read_csv_dicts(HEADLINES) if HEADLINES.exists() else [])
-                if r.get("first_seen_et", "") >= since]
+        rows = [r for r in kept_rows(cfg)[0] if r.get("first_seen_et", "") >= since]
         seen = set()
         for r, h in match_holdings(rows, holdings):
             if (r["story_id"], h["name"]) in seen:
