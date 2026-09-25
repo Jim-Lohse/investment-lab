@@ -1,0 +1,15 @@
+start,end,kind,label,basis
+2026-09-24,2026-09-30,rebalance,"Quarter-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces (larger at quarter-end)",last 5 trading days of the month
+2026-10-09,2026-10-09,short_interest,Estimated: FINRA short interest published (shares sold short as of 2026-09-30),"estimate, 7 business days after settlement; FINRA's calendar governs"
+2026-10-26,2026-10-30,rebalance,"Month-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces",last 5 trading days of the month
+2026-10-26,2026-10-26,short_interest,Estimated: FINRA short interest published (shares sold short as of 2026-10-15),"estimate, 7 business days after settlement; FINRA's calendar governs"
+2026-11-10,2026-11-10,short_interest,Estimated: FINRA short interest published (shares sold short as of 2026-10-30),"estimate, 7 business days after settlement; FINRA's calendar governs"
+2026-11-16,2026-11-16,13f,"13F deadline: large funds' quarter-end holdings become public; expect a wave of ""what hedge funds bought and sold"" stories","45 days after quarter-end, next business day"
+2026-11-19,2026-11-26,trend_monitor,Estimated: Goldman Hedge Fund Trend Monitor and its most-crowded-stocks list reach the press,"estimate, 3 to 10 days after the 13F deadline"
+2026-11-23,2026-11-30,rebalance,"Month-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces",last 5 trading days of the month
+2026-11-24,2026-11-24,short_interest,Estimated: FINRA short interest published (shares sold short as of 2026-11-13),"estimate, 7 business days after settlement; FINRA's calendar governs"
+2026-12-09,2026-12-09,short_interest,Estimated: FINRA short interest published (shares sold short as of 2026-11-30),"estimate, 7 business days after settlement; FINRA's calendar governs"
+2026-12-18,2026-12-18,expiry,"Quarterly options and futures expiry: stock-index contracts expire together, which can swing prices and trading volume","third Friday of March, June, September, December"
+2026-12-24,2026-12-31,rebalance,"Quarter-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces (larger at quarter-end)",last 5 trading days of the month
+2026-12-24,2026-12-24,short_interest,Estimated: FINRA short interest published (shares sold short as of 2026-12-15),"estimate, 7 business days after settlement; FINRA's calendar governs"
+2027-01-12,2027-01-12,short_interest,Estimated: FINRA short interest published (shares sold short as of 2026-12-31),"estimate, 7 business days after settlement; FINRA's calendar governs"
