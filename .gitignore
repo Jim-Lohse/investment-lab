@@ -6,3 +6,4 @@ IBKR_SLEEVE_PILOT.md
 # data/flows are the record (see signals/etf_prices.py).
 data/prices/raw/
 data/flows/raw/
+signals/config/holdings.local.json

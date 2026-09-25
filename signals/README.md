@@ -39,6 +39,9 @@ Action.
 | `signals/config/korea_endpoints.json` | Korea endpoint config incl. HS codes (8542 semis, 8486 semi equipment, 8479 robots) |
 | `signals/config/japan_endpoints.json` | Japan endpoints (URL patterns, stage codes, e-Stat navigation), HS prefixes and principal-commodity codes |
 | `signals/config/cftc_endpoints.json` | CFTC report dataset ids, both API routes, the watch list by contract code (S&P 500 and Nasdaq-100 E-minis and the dollar index from TFF; COMEX gold and NYMEX WTI from disaggregated), the headline series for the weekly brief |
+| `signals/positioning.py` | Positioning layer: bank prime-brokerage notes as they reach the press (Google News search feeds, keyless), weekly story counts and a busy-or-quiet reading, an event calendar (rebalancing windows, quarterly expiry, 13F deadline, Trend Monitor, FINRA short interest), and a private holdings match that never writes to the repo |
+| `signals/config/positioning.json` | The searches (Jim's six, verbatim), labelling words, loudness bands, calendar rules, alert thresholds |
+| `signals/POSITIONING_SUMMARY.md` | Specification for positioning: schedule, same-day alert rules, the weekly section, the privacy rule, settings |
 | `signals/CFTC_WEEKLY_SUMMARY.md` | Specification for the weekly CFTC intelligence summary (schedule, send-once rules, research action vs situational awareness) |
 | `signals/config/us_endpoints.json` | Census/HTS endpoints, requested variables, the HTS codes tracked (transceivers, laser diodes, fibre, wafers, equipment) |
 | `data/taiwan/monthly_revenue/` | One normalized CSV per month & market (thousand TWD) |

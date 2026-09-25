@@ -17,6 +17,7 @@ Inputs (all already produced by the workflow):
   data/flows/gld_holdings.csv       signals/etf_prices.py
   data/derived/cftc_flows.csv       signals/cftc_cot.py
   data/derived/{taiwan,korea,japan}_signals.csv   signals/compute_signals.py
+  data/positioning/headlines.csv    signals/positioning.py (the Positioning strip)
 
 Output:
   data/derived/macro_dashboard.json   the numbers
@@ -263,6 +264,48 @@ def trade_item(name, rows, period_key, value_key, window_key, note) -> dict:
                           "value": parse_number(prev.get(value_key))} if prev else None)}
 
 
+def positioning_panel(today: dt.date) -> dict | None:
+    """The Positioning strip: how loud prime-brokerage chatter is, the newest
+    stories, and the dated events ahead. Market-wide only; holdings never
+    appear on the page's data (the repository is public)."""
+    from . import positioning as pos
+    cfg = pos.load_config()
+    rows = read_csv(pos.HEADLINES)
+    qids = [q["id"] for q in cfg["queries"]]
+    weeks = pos.weekly_counts(rows, qids, today)
+    loud = pos.loudness(weeks, cfg)
+    stories = pos.notable(rows, today - dt.timedelta(days=13))[:5]
+    horizon = (today + dt.timedelta(days=28)).isoformat()
+    events = [e for e in pos.calendar_events(today, cfg) if e["start"] <= horizon]
+    return {"id": "positioning", "title": "Positioning: what hedge funds are doing",
+            "explainer": ("Big banks' prime-brokerage desks lend to hedge funds and see their "
+                          "trades. Their notes go to clients first and reach Reuters, the FT, "
+                          "Barron's and others days later. This strip counts those stories and "
+                          "shows the newest; it measures how much the press is talking about "
+                          "positioning, not the positions themselves."),
+            "items": [], "loudness": loud,
+            "weeks": [[w["week_ending"], w["total"]] for w in weeks[-26:]],
+            "stories": [{"date": r["published_et"], "outlet": r["outlet"], "title": r["title"],
+                         "link": r["link"], "banks": r["banks"], "direction": r["direction"],
+                         "extreme": r["extreme"] == "yes"} for r in stories],
+            "calendar": events}
+
+
+def positioning_takeaway(p: dict) -> list[str]:
+    loud = p["loudness"]
+    if not p["weeks"]:
+        return ["No positioning stories stored yet; the first collection runs on the next "
+                "weekday morning."]
+    s = f"{loud['count']} distinct positioning stories this week: {loud['label']}"
+    s += (f" (a usual week has {loud['baseline']:g})." if loud["baseline"] is not None else ".")
+    out = [s]
+    ex = [x for x in p["stories"] if x["extreme"]]
+    if ex:
+        out.append(f"Record-type wording in the last two weeks: \"{ex[0]['title']}\" "
+                   f"({ex[0]['outlet']}, {ex[0]['date']}).")
+    return out
+
+
 # --- Takeaways ---------------------------------------------------------------
 # Plain sentences built from the numbers by fixed rules, so the wording is the
 # same week to week and never goes beyond what the data says. Descriptive
@@ -400,10 +443,13 @@ def headlines(panels: list[dict]) -> list[str]:
         out.extend(t for t in rates["takeaway"][1:] if "unusually quick" in t)
         out.extend(t for t in rates["takeaway"] if "curve is" in t)
     for p in panels:
-        if p["id"] in ("rates", "trade"):
+        if p["id"] in ("rates", "trade", "positioning"):
             continue
         out.extend(t for t in p.get("takeaway", []) if "unusually large" in t
                    or "crowded" in t or "tended to keep going" in t)
+    posn = next((p for p in panels if p["id"] == "positioning"), None)
+    if posn and posn["loudness"].get("ratio") is not None and posn["loudness"]["ratio"] >= 1.5:
+        out.append(posn["takeaway"][0])
     trade = next((p for p in panels if p["id"] == "trade"), None)
     if trade and trade.get("takeaway"):
         out.append(trade["takeaway"][0])
@@ -416,11 +462,13 @@ def headlines(panels: list[dict]) -> list[str]:
 
 def build(today: dt.date | None = None) -> dict:
     today = today or dt.date.today()
-    panels = [rates_panel(), *market_panels(), trade_panel()]
+    panels = [rates_panel(), *market_panels(), positioning_panel(today), trade_panel()]
     for p in panels:
         p["takeaway"] = (rates_takeaway(p) if p["id"] == "rates" else
-                         trade_takeaway(p) if p["id"] == "trade" else market_takeaway(p))
-        if p["id"] not in ("rates", "trade") and not p["takeaway"]:
+                         trade_takeaway(p) if p["id"] == "trade" else
+                         positioning_takeaway(p) if p["id"] == "positioning" else
+                         market_takeaway(p))
+        if p["id"] not in ("rates", "trade", "positioning") and not p["takeaway"]:
             p["takeaway"] = ["No unusually large moves or crowded positions here this week."]
     return {"generated": today.isoformat(),
             "headlines": headlines(panels),

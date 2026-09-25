@@ -137,6 +137,15 @@ section.panel { display: grid; gap: 22px; min-width: 0; }
 .trade-row .big { font-family: var(--display); font-size: 30px; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
 .trade-row .sub { font-size: 14px; color: var(--ink-2); }
 
+.pos-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 32px; }
+.pos-list { display: grid; }
+.pos-list > div { padding-block: 12px; border-top: 1px solid var(--rule); font-size: 15px; line-height: 1.45; }
+.pos-list > div:first-child { border-top: 0; }
+.pos-list .meta { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
+.pos-cal > div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; padding-block: 10px; border-top: 1px solid var(--rule); font-size: 14px; line-height: 1.45; }
+.pos-cal > div:first-child { border-top: 0; }
+.pos-cal .when { font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: 13px; }
+@media (max-width: 860px) { .pos-grid { grid-template-columns: minmax(0, 1fr); } }
 .glossary { display: grid; gap: 10px; font-size: 14px; color: var(--ink-2); max-width: 72ch; }
 .glossary b { color: var(--ink); font-weight: 600; }
 footer { display: grid; gap: 10px; font-size: 14px; color: var(--ink-2); padding-top: 18px; border-top: 3px double var(--rule-strong); }
@@ -431,6 +440,26 @@ function tradePanel(p) {
   return sec;
 }
 
+function positioningPanel(p) {
+  const sec = document.createElement("section");
+  sec.className = "panel";
+  const loud = p.loudness || {};
+  const usual = loud.baseline != null ? `A usual week: ${loud.baseline}` : esc(loud.label || "");
+  const stories = (p.stories || []).map((x) => `<div><a href="${esc(x.link)}" rel="noopener" target="_blank">${esc(x.title)}</a>
+      <div class="meta">${esc(x.outlet)} · ${esc(fmtDate(x.date))}${x.banks ? " · " + esc(x.banks) : ""}${x.direction ? " · " + esc(x.direction) : ""}${x.extreme ? " · record-type wording" : ""}</div></div>`).join("")
+    || `<div class="muted">No stories in the last two weeks.</div>`;
+  const cal = (p.calendar || []).map((e) => `<div><span class="when">${esc(fmtDate(e.start))}${e.end !== e.start ? "<br>to " + esc(fmtDate(e.end)) : ""}</span><span>${esc(e.label)}</span></div>`).join("")
+    || `<div class="muted">Nothing dated in the next four weeks.</div>`;
+  sec.innerHTML = `${headHtml(p, "Positioning")}${takeawayHtml(p)}
+    <div class="figures"><div class="figure"><span class="label">Stories this week</span><span class="v">${loud.count ?? 0}</span><span class="d">${usual}</span></div>
+      <div class="figure" style="grid-column: span 2"><span class="label">Stories per week, last six months</span><svg class="spark" id="posSpark" role="img" aria-label="Positioning stories per week" style="height:70px"></svg></div></div>
+    <div class="pos-grid"><div><span class="label">Newest stories</span><div class="pos-list">${stories}</div></div>
+      <div><span class="label">Coming up, next four weeks</span><div class="pos-cal">${cal}</div></div></div>`;
+  if (p.weeks && p.weeks.length > 1) requestAnimationFrame(() => lineChart($("#posSpark", sec), [{ points: p.weeks, color: "var(--s1)", fill: "var(--s1-soft)" }],
+    { width: 600, height: 70, margin: { t: 6, r: 6, b: 6, l: 3 }, stroke: 1.75, dot: 3, fmt: (v) => `${v} stories` }));
+  return sec;
+}
+
 function render() {
   $("#panels").innerHTML = "";
   if (!DATA) { $("#panels").innerHTML = '<section class="panel"><p>No data embedded. Run <code>python -m signals.macro_dashboard</code>.</p></section>'; return; }
@@ -438,9 +467,9 @@ function render() {
   $("#headlines").innerHTML = (DATA.headlines || []).map((h) => `<li><span class="n" aria-hidden="true"></span><span>${esc(h)}</span></li>`).join("");
   const root = $("#panels");
   for (const p of DATA.panels) {
-    root.appendChild(p.id === "rates" ? ratesPanel(p) : p.id === "trade" ? tradePanel(p) : marketPanel(p));
+    root.appendChild(p.id === "rates" ? ratesPanel(p) : p.id === "trade" ? tradePanel(p) : p.id === "positioning" ? positioningPanel(p) : marketPanel(p));
   }
-  $("#footer").innerHTML = `<p class="closing">${esc(DATA.closing)}</p><p>Sources: U.S. Treasury daily yield curve; CFTC Commitments of Traders; fund prices; SPDR Gold Trust daily holdings; Taiwan MOPS, Korea Customs and Japan Ministry of Finance trade statistics. Numbers computed in the investment-lab repository, <code>signals/macro_dashboard.py</code>.</p>`;
+  $("#footer").innerHTML = `<p class="closing">${esc(DATA.closing)}</p><p>Sources: U.S. Treasury daily yield curve; CFTC Commitments of Traders; fund prices; press coverage of bank prime-brokerage data via Google News search; SPDR Gold Trust daily holdings; Taiwan MOPS, Korea Customs and Japan Ministry of Finance trade statistics. Numbers computed in the investment-lab repository, <code>signals/macro_dashboard.py</code>.</p>`;
 }
 render();
 let lastW = window.innerWidth, timer;

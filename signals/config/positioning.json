@@ -1,0 +1,128 @@
+{
+  "_comment": [
+    "Market-wide positioning collection for signals/positioning.py. Every",
+    "setting here is meant to be edited: change a search, a keyword or a",
+    "threshold with a commit and the next run uses it. The rules for the",
+    "digest and the same-day email are in signals/POSITIONING_SUMMARY.md.",
+    "",
+    "Holdings never go in this file: the repository is public. See",
+    "holdings_file below."
+  ],
+
+  "feed_template": "https://news.google.com/rss/search?q={query}&hl=en-US&gl=US&ceid=US:en",
+  "_feed_note": [
+    "Google News search feed: the same query language as a Google search",
+    "(quotes, OR, site:), no account, about 100 newest items per query. The",
+    "daily run adds when:3d so a Monday run still covers the weekend; the",
+    "backfill adds after:/before: one week at a time."
+  ],
+  "daily_window": "when:3d",
+
+  "queries": [
+    {"id": "pb_data", "label": "Prime brokerage data quoted in the press",
+     "q": "\"prime brokerage data\" OR \"prime brokerage data show\" hedge funds"},
+    {"id": "hedge_flow", "label": "Reuters HEDGE FLOW column",
+     "q": "site:reuters.com \"HEDGE FLOW\""},
+    {"id": "trend_monitor", "label": "Goldman Hedge Fund Trend Monitor and VIP basket",
+     "q": "\"Hedge Fund Trend Monitor\" OR \"VIP basket\" Goldman"},
+    {"id": "mspb", "label": "Morgan Stanley prime brokerage (MSPB)",
+     "q": "\"MSPB\" positioning"},
+    {"id": "pb_leverage", "label": "Weekly prime-desk leverage notes",
+     "q": "\"prime services\" OR \"prime brokerage\" \"leverage\" hedge funds weekly"},
+    {"id": "jpm_data", "label": "JPMorgan-sourced hedge fund data",
+     "q": "\"Hedge funds\" \"according to data from\" JPMorgan"}
+  ],
+  "_queries_note": [
+    "The six searches above are Jim's proven wording, kept exactly. Add new",
+    "searches below them; give each a short unique id. Removing one keeps",
+    "its past rows in data/positioning/headlines.csv."
+  ],
+
+  "tags": {
+    "_note": "Whole-word, case-insensitive matches on the headline. A headline can carry several tags.",
+    "bank": {
+      "Goldman Sachs": ["Goldman", "Goldman Sachs", "GS prime"],
+      "Morgan Stanley": ["Morgan Stanley", "MSPB"],
+      "JPMorgan": ["JPMorgan", "JP Morgan", "JPM"],
+      "Bank of America": ["BofA", "Bank of America"],
+      "UBS": ["UBS"],
+      "Barclays": ["Barclays"]
+    },
+    "direction": {
+      "buying": ["buy", "buying", "bought", "add", "added", "adding", "raise", "raised",
+                 "boost", "boosted", "pile", "piled", "piling", "pile into", "load up",
+                 "loaded", "net buyers", "increase", "increased", "re-risk", "rerisk",
+                 "chase", "chased", "snap up", "snapped up"],
+      "selling": ["sell", "selling", "sold", "cut", "cuts", "cutting", "dump", "dumped",
+                  "dumping", "unload", "unloaded", "reduce", "reduced", "trim", "trimmed",
+                  "slash", "slashed", "exit", "exited", "flee", "fled", "net sellers",
+                  "de-gross", "degross", "de-grossing", "degrossing", "de-risk", "derisk",
+                  "unwind", "unwinding", "retreat", "pull back", "pulled back"]
+    },
+    "topic": {
+      "leverage": ["leverage", "gross leverage", "net leverage", "gross exposure",
+                   "net exposure"],
+      "shorts": ["short", "shorts", "shorting", "short sellers", "short interest",
+                 "bearish bets"],
+      "crowding": ["crowded", "crowding", "VIP", "most-owned", "favorite", "favourite",
+                   "popular"],
+      "tech": ["tech", "technology", "megacap", "megacaps", "Magnificent Seven",
+               "semiconductor", "semiconductors", "chip", "chips", "AI"],
+      "asia": ["Asia", "Asian", "Japan", "Japanese", "China", "Chinese", "Korea", "Korean",
+               "Taiwan", "Taiwanese", "Indonesia", "emerging markets", "EM"],
+      "sectors": ["energy", "financials", "banks", "healthcare", "industrials", "utilities",
+                  "materials", "consumer", "defensives", "cyclicals"]
+    },
+    "extreme": ["record", "most since", "biggest since", "largest since", "highest since",
+                "lowest since", "fastest since", "fastest pace", "most in", "biggest in",
+                "largest in", "all-time", "decade", "years"]
+  },
+
+  "loudness": {
+    "_note": [
+      "How busy prime-brokerage chatter is: the number of distinct stories",
+      "this week (Monday to Sunday, U.S. Eastern) compared with the median of",
+      "the previous baseline_weeks weeks. A story is counted once however",
+      "many outlets carry it or searches catch it. Needs min_weeks of history",
+      "before it labels anything."
+    ],
+    "baseline_weeks": 12,
+    "min_weeks": 4,
+    "bands": [
+      {"below": 0.5, "label": "quieter than usual"},
+      {"below": 1.5, "label": "about normal"},
+      {"below": 2.5, "label": "busier than usual"},
+      {"below": null, "label": "much busier than usual"}
+    ]
+  },
+
+  "calendar": {
+    "_note": [
+      "Dates computed by rule, in U.S. Eastern time. Estimated windows are",
+      "labelled as estimates on the page and in the digest. The FINRA and",
+      "FOMC lists override the rule-based dates when filled in; they are",
+      "copied from the official pages, never typed from memory."
+    ],
+    "month_end_trading_days": 5,
+    "form13f_deadline_days": 45,
+    "trend_monitor_after_deadline_days": [3, 10],
+    "short_interest_publish_business_days": 7,
+    "finra_short_interest_publication_dates": [],
+    "fomc_decision_dates": [],
+    "horizon_days": 120
+  },
+
+  "holdings_file": "signals/config/holdings.local.json",
+  "_holdings_note": [
+    "Git-ignored; created at run time by the same-day alert Routine from a",
+    "private Notion page, or by hand on a private machine. Format:",
+    "{\"holdings\": [{\"name\": \"Hon Hai\", \"aliases\": [\"Foxconn\"],",
+    "\"market\": \"TW\", \"us_symbol\": \"\", \"sleeve\": \"roth_ira\"}]}"
+  ],
+
+  "form144_alert": {
+    "_note": "Phase 2 (SEC filings page). Same-day email when either is met, U.S.-listed holdings only.",
+    "min_value_usd": 5000000,
+    "min_pct_shares_outstanding": 1.0
+  }
+}

@@ -88,6 +88,20 @@ In So what, cover the relevant caveats in plain words:
 
 What now: a table (Owner Claude or Jim, what, what would close it). Claude owns re-checks; anything for Jim is labelled optional unless it is needed.
 
+### Positioning section
+
+Since 2026-09-25 the weekly summary also carries the positioning layer: bank
+prime-brokerage notes as they reach the press, and the dated events ahead.
+Run `python -m signals.positioning weekly` after step 1 and use the numbers
+in `data/derived/positioning_brief.md` exactly. Follow the "weekly
+Positioning section" rules in `signals/POSITIONING_SUMMARY.md`: one short
+table in What (loudness, then up to five stories), two or three sentences in
+So what, and the coming events in What now only when one falls in the next
+seven days. Every positioning item is "Situational awareness only". Keep the
+whole summary about one page: cut positioning stories before cutting the
+explanation of the CFTC rows. If the brief says no stories are stored yet,
+write one sentence saying collection has started.
+
 ## Delivery
 
 0. Refresh the macro dashboard: run `python -m signals.macro_dashboard`, then publish `data/derived/macro_dashboard.html` to the dashboard's existing URL (named in the Routine prompt) with the Artifact tool, as an update to that URL, never as a new page. If publishing fails, carry on and say so in the closing message.

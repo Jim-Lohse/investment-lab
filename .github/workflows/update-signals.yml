@@ -80,6 +80,10 @@ on:
         description: "Backfill Treasury yields from a start year, e.g. 1990 (one request per year)"
         required: false
         default: ""
+      positioning_backfill:
+        description: "Backfill positioning news, number of weeks back, e.g. 13 (one search per week per query)"
+        required: false
+        default: ""
       cftc_backfill:
         description: "Backfill every watched CFTC COT market from a start date, e.g. 2006-06-13 (TFF and disaggregated history begin then)"
         required: false
@@ -260,6 +264,23 @@ jobs:
             python -u -m signals.treasury_yields backfill "${{ github.event.inputs.treasury_backfill }}"
           else
             python -u -m signals.treasury_yields latest
+          fi
+
+      # Positioning: bank prime-brokerage notes as they reach the press, via
+      # Google News search feeds (keyless). Collected once a day, on the
+      # 12:30 UTC run (8:30 am Eastern in summer, 7:30 am in winter); the
+      # module itself skips Saturday and Sunday. Other runs only recompute
+      # the weekly counts, brief and calendar (offline). Holdings are never
+      # used here: the repository is public. Spec: signals/POSITIONING_SUMMARY.md.
+      - name: Positioning news (weekdays, once a day) and calendar
+        continue-on-error: true
+        run: |
+          if [ -n "${{ github.event.inputs.positioning_backfill }}" ]; then
+            python -m signals.positioning backfill "${{ github.event.inputs.positioning_backfill }}"
+          elif [ "${{ github.event.schedule }}" = "30 12 * * *" ] || { [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "$CFTC_ONLY" != "true" ]; }; then
+            python -m signals.positioning news
+          else
+            python -m signals.positioning weekly
           fi
 
       - name: Snapshot the previous derived tables (baseline for the diff)
