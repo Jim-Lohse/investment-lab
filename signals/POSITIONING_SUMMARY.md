@@ -50,8 +50,12 @@ for awareness.
 
 Runs weekdays 9:30 am Eastern. Steps:
 
-1. Read the holdings from the private Notion page named in the prompt. If it
-   is empty, stop silently.
+1. Build the holdings list: the Schwab Roth IRA holdings and ad hoc watch
+   names from the private Notion page named in the prompt, plus the IBKR
+   taxable positions read live with the Interactive Brokers connector. If
+   the IBKR connector is unavailable, use the IBKR table on the Notion page
+   and name that in the email if one is sent. If the list is empty, stop
+   silently.
 2. Check out `origin/main`. Write the holdings to
    `signals/config/holdings.local.json` and run
    `python -m signals.positioning match 1` (stories first seen today or
@@ -62,14 +66,15 @@ Runs weekdays 9:30 am Eastern. Steps:
    ownership filings, activist stakes, foreign investors net buying or
    selling, block trades. Ordinary company news (earnings, products) is not
    a positioning story and does not trigger an email.
-4. Drop anything already recorded in the Notion database (same link, or same
-   headline and holding).
+4. Drop anything already recorded in the alert log on the Notion page (same
+   link, or same headline and holding).
 5. If nothing is left, stop silently. Otherwise send one email for the run,
    subject "Positioning alert: <holding names>", with one entry per story:
    the headline as a link, the outlet and date, and two or three plain
    sentences on why it should not wait for Friday (what the story says the
    funds did, and which of Jim's holdings it touches). No trade
-   recommendations. Record each story in Notion (Verdict "Same-day alert").
+   recommendations. Add each story to the alert log on the Notion page
+   (date, holding, headline, link).
 
 ## The weekly Positioning section (inside the Friday CFTC summary)
 
