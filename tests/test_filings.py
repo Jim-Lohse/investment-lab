@@ -163,6 +163,17 @@ class DartTests(unittest.TestCase):
                         .startswith("quarterly earnings release"))
         self.assertEqual(filings.english_title("Pre-Close Trading Update"), "Pre-Close Trading Update")
 
+    def test_korean_titles_seen_on_first_live_run(self):
+        # These three came through untranslated on the 2026-09-26 run.
+        self.assertTrue(filings.english_title("최대주주등소유주식변동신고서")
+                        .startswith("largest shareholder group's holdings changed ("))
+        self.assertTrue(filings.english_title("소송등의판결ㆍ결정(자율공시:일정금액미만의청구)")
+                        .startswith("court ruling in a lawsuit ("))
+        self.assertTrue(filings.english_title("조회공시요구(풍문또는보도)에대한답변(미확정)")
+                        .startswith("reply to the exchange's question about a rumor or press report: not yet decided ("))
+        self.assertTrue(filings.english_title("조회공시요구(현저한시황변동)에대한답변")
+                        .startswith("reply to the exchange's question ("))
+
     def test_corp_codes(self):
         codes = filings.parse_dart_corp_codes(CORPCODE_XML, {"033780", "005930"})
         self.assertEqual(codes, {"033780": "00244455", "005930": "00126380"})
