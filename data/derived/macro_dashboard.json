@@ -1,11 +1,10 @@
 {
- "generated": "2026-09-25",
+ "generated": "2026-09-26",
  "headlines": [
   "The 2-year yield is 4.81% and is up 74 bp over 13 weeks; the 10-year is 5.17% and is up 79 bp.",
   "The 2-year yield rose 47 bp in the last 4 weeks, larger than 93% of 4-week moves since 1990: an unusually quick repricing of where markets expect the Federal Reserve to take rates.",
   "The 10-year yield rose 44 bp in the last 4 weeks, larger than 92% of 4-week moves since 1990: an unusually quick repricing of long-term borrowing costs, including mortgage rates.",
   "The 10-year pays 0.36 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-  "24 distinct positioning stories this week: busier than usual (a usual week has 12.5).",
   "Compared with the same period last year: Taiwan 46% higher; Korea 78% higher; Japan 19% higher (11% in U.S. dollars)."
  ],
  "panels": [
@@ -7927,7 +7926,7 @@
       ],
       [
        "2024-06-07",
-       518.7
+       518.69
       ],
       [
        "2024-06-14",
@@ -8067,7 +8066,7 @@
       ],
       [
        "2025-02-07",
-       589.2
+       589.19
       ],
       [
        "2025-02-14",
@@ -8191,7 +8190,7 @@
       ],
       [
        "2025-09-12",
-       648.6
+       648.59
       ],
       [
        "2025-09-19",
@@ -11633,109 +11632,109 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 24,
-    "baseline": 12.5,
-    "ratio": 1.92,
-    "label": "busier than usual"
+    "count": 2,
+    "baseline": 2.5,
+    "ratio": 0.8,
+    "label": "about normal"
    },
    "weeks": [
     [
      "2026-07-05",
-     6
-    ],
-    [
-     "2026-07-12",
-     12
-    ],
-    [
-     "2026-07-19",
-     8
-    ],
-    [
-     "2026-07-26",
-     10
-    ],
-    [
-     "2026-08-02",
-     15
-    ],
-    [
-     "2026-08-09",
-     14
-    ],
-    [
-     "2026-08-16",
      2
     ],
     [
-     "2026-08-23",
+     "2026-07-12",
+     8
+    ],
+    [
+     "2026-07-19",
      3
     ],
     [
+     "2026-07-26",
+     4
+    ],
+    [
+     "2026-08-02",
+     6
+    ],
+    [
+     "2026-08-09",
+     5
+    ],
+    [
+     "2026-08-16",
+     1
+    ],
+    [
+     "2026-08-23",
+     2
+    ],
+    [
      "2026-08-30",
-     13
+     1
     ],
     [
      "2026-09-06",
-     14
+     2
     ],
     [
      "2026-09-13",
-     37
+     0
     ],
     [
      "2026-09-20",
-     22
+     4
     ],
     [
      "2026-09-27",
-     24
+     2
     ]
    ],
    "stories": [
     {
-     "date": "2026-09-24",
-     "outlet": "MarketBeat",
-     "title": "Regency Centers (NASDAQ:REG) Upgraded by JPMorgan Chase & Co. to \"Overweight\" Rating",
-     "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPbXhlQ0lXVXFEMGgtMFZJeFZqYmlzem1OTU0yOG9VdnE5RTUzMDJSN3AzSG54cHMyNVVrMzhTbzNZN2hBNmtrLURFYlJpT2owRGJpbVNOZmpLRmRzdy1MRzk2VWpzR2doOFByU0RfVHdfaS1aaVpxSGRSZ0JadFh0bXRBcnhoVlJYTGJ6N3hKRHlJSTdfY21MZTJYSU4zWnMzanI0OUFqNVV6R1RXc1pFTXdFZHVzZFJNVF9nQkZvYldtRHJnbTZRa1hUSF9NcDhwYU1wcl93?oc=5",
-     "banks": "JPMorgan",
-     "direction": "buying",
+     "date": "2026-09-18",
+     "outlet": "The Dark Side Of The Boom",
+     "title": "Goldman PB: The Crowded Trade Is Rotating Into Analog Semis, Materials and Defense",
+     "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQdTlCRXQ0ZTluLWRBUnhVWDRiMTY5dUZjNFI1X0lzUG1PbzZZWEpfb3pNUUpPUHB6QWFaZ0o3bEs4SDJ2QzdEc0JSaU93eWFXUW9xbkRxZ2I1cVo3TTJMdWlBZnBxQ3hQSjZfSFEtMzRRSW1Oc0VTNE5PckRJbDNCejdWX1JTRkFnM3NLWg?oc=5",
+     "banks": "Goldman Sachs",
+     "direction": "",
      "extreme": false
     },
     {
-     "date": "2026-09-24",
-     "outlet": "MarketBeat",
-     "title": "Welltower (NYSE:WELL) Rating Increased to Overweight at JPMorgan Chase & Co.",
-     "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOelQ5aG5la1ZuSUwzbm0yMS1GMUNSc0ZJQ1ZYM2pXaUQzc0RKU1BiZ3c3U3pLb0ZYc2lzOGoyRVlpWmloZEJZUEl3bkFLdm9PTUQ1NUpnc1FkOVlES3lObEFDNVpXeEc1aUNEOTVjZWJ5T1RReGJEU2JkN3RqRVhMZmd3RzA2WTU4RnNRWDBxU2t0V2pSanJjUkttNVI0NE5hTXE5anZPSnFjcncwdS1KVXcyV3UwVU5FMjJnbnFsOEVUU1Y3dnU1SklBcjV3Zw?oc=5",
+     "date": "2026-09-14",
+     "outlet": "Banking Exchange",
+     "title": "JPMorgan Cuts Lending to AI-Focused Hedge Fund After Losses",
+     "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQdDZFMUxQcnZDWlZtZ1hjTWJlcE12cDFDOE5RQU1rTTIxalBEdWxvaU1mRG52Z2hOUGpKRXB4RFVXRnBkbXlfRzdwQ1ZOekVnRHhsV1hXTGdVUzNHVEhvU1FrUkg1YVBSX0hBVzdLTGVYRnl0NjFHbDNON2REVHpUYjVjUlZqblJDVVRxSzJ5SXNTd2s1XzJvMlJQS0duN2NTLTB0aWNzNE9kdnd0amtYQ05B?oc=5",
      "banks": "JPMorgan",
-     "direction": "buying",
+     "direction": "selling",
      "extreme": false
     },
     {
-     "date": "2026-09-24",
-     "outlet": "MarketBeat",
-     "title": "Mufg Securities Americas Inc. Boosts Stake in JPMorgan Chase & Co. $JPM",
-     "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOX3Fud2syZExwZGJVOUsxX3BPWjhxOUMxTWNZdUlXTkhlSngyVzJSZl9VSnBwQm9WRVZwcWdPYlQzQUM5V0hCWk1JUkRsaE92bjNsNWZFd3dZall0b1lFRzJmZklTRFVFelM5VUo1V2RqTDQ2MFAtOUE5clIzbWRkaXl2b2R3UFRJdEtJWVhkOTk4cUJmNUQ2WWtPX0xKcm5UWkNZOUhPSHZjcVE0UWF5a0s2dWphM1d2Wl9jbG9fT1FERTE0MEE?oc=5",
-     "banks": "JPMorgan",
-     "direction": "buying",
+     "date": "2026-09-21",
+     "outlet": "Financial Times",
+     "title": "Fed and BoE step up scrutiny of bank exposure to trading firms after Jane Street loss",
+     "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOZ3otVXhYMVhIaTl4dHZJLXlIbVZmV3ZMZ0RQM2RTU0ZKTlpIZ3VfaEtlSF9RTU5NUy1yUEJpLWdXcFdmeWVseWhGQVJ0VnZ5LXVVa1VIN2hjVDk2dmVJVWw5MHMwemhCTTZOeUhoUjBCWEdsWHFQaTZzRWE3TnBpYlItbG8?oc=5",
+     "banks": "",
+     "direction": "",
      "extreme": false
     },
     {
-     "date": "2026-09-24",
-     "outlet": "MarketBeat",
-     "title": "Norwegian Cruise Line (NYSE:NCLH) Price Target Cut to $13.00 by Analysts at JPMorgan Chase & Co.",
-     "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxPSURGQTloQlNSblR3SDdPbXRWdW1YaHdFVFF5VkMzVy02OTZZRXpfX01mV2p2X29Ib2QxUDVTdHd5RmV3ZVVoZUZZWU5HYWtNcDJBSVJRWElzQm1fLUM2TWNacU04cmhJQXhYWUlPMm9nNkNnMXhLbXhzNmdOMkFHSjdwZ1FZVnM1RklKY2trVFQ4WllEaFJKMFFIS2xjT2JnOXZZVXRueVBuaVZ1OFluQi1VWXJITkhDNkl3WVJLcHpzRkRDMTI0c2xjSmR1RVBoSVFGbXlFR0x3a0U2Wk1VNUhvR0Z1QQ?oc=5",
-     "banks": "JPMorgan",
-     "direction": "mixed",
+     "date": "2026-09-21",
+     "outlet": "Investing.com",
+     "title": "Fed, BoE probe bank exposure to trading firms after Jane Street loss - report",
+     "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQLVRZN3pDOHpmSTdrTXAtLTl2cDlxYllGdTlWdXRDYXhYdXFKLTJ2dTdkRzVtNmhNdXoxa09hLWM3VW9OZVBaUFhvZm9HYmdCd2d0MEktUlA3WEZwOW5VU2w4NlA2d1ZJRjlnZnBXZm1BNi00T0RvcFdBbXJrX3JkaDhPNVlnZjh0Z2lma3FSN3RJUEo4azN5czExdmV2WjI3SlBSTXRrVDVfZy1OSmxfcTkxMWVrVm1Sa2VpcVBEdDQwQjF1cUVTQVNyVUJJQS1oSW0w?oc=5",
+     "banks": "",
+     "direction": "",
      "extreme": false
     },
     {
-     "date": "2026-09-24",
-     "outlet": "MarketBeat",
-     "title": "Anheuser-Busch InBev SA/NV (NYSE:BUD) Given Buy Rating at JPMorgan Chase & Co.",
-     "link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPSVp0Ti1EelF6LW1xX0V1QjBvamQzWEVXemExY243UDdWVjRrcElSQmVzY0F2U3QwYmxfVFRYR2pUbHJONFZTQjFXODNWLVdWR2ZFVWxqZ0ZWRFVqZHJwT3QyNGZUOEdiME1NdDVNYUZFenV5UEZDY3pncUZHR2dqN0t1aGpBV3BTcHV5X09sWGNYMFNPYTIyVDRuaUF3dW1IYzhOZFhTZmwtc3RncWk0eU5kaldIMmRlUEdNdEVNNFNWOEhiY3NzSGxaWkxOeEU?oc=5",
-     "banks": "JPMorgan",
-     "direction": "buying",
+     "date": "2026-09-14",
+     "outlet": "finance.biggo.com",
+     "title": "Hedge Funds Just Went Heavy on Tech Stocks\u2014Right as the Nasdaq's Key Support Gave Way",
+     "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBRcGZHb19lbzF5cktGcmlUSUstNWN5U1FZQjQ5X05oWFZmX2ozUVBTLUctd1VRNWtBcFRIaUs0TTMybjVQSkFoZmtVcXJhWkJDS0lCbHdJbld0bVhVYnZVX1NNMU9rckI0cDBaQV9UQTRPb1BveUE?oc=5",
+     "banks": "",
+     "direction": "",
      "extreme": false
     }
    ],
@@ -11756,7 +11755,7 @@
     }
    ],
    "takeaway": [
-    "24 distinct positioning stories this week: busier than usual (a usual week has 12.5)."
+    "2 distinct positioning stories this week: about normal (a usual week has 2.5)."
    ]
   },
   {
