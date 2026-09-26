@@ -33,6 +33,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      ith:
+             ref: ${{ github.ref }}
 
       - uses: actions/setup-python@v5
         with:
