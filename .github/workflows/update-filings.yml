@@ -1,0 +1,108 @@
+name: update-filings
+
+# Foreign company filings: Japan TDnet and EDINET, Korea OpenDART, UK RNS.
+# Reads the watched companies' own documents (signals/filings.py) and writes
+# a plain-English brief to data/derived/filings_whats_new.md.
+# EDINET and OpenDART skip cleanly until EDINET_API_KEY and DART_API_KEY exist
+# as repository secrets. Setup notes: signals/FILINGS_README.md.
+
+on:
+  schedule:
+    - cron: "45 7 * * 1-5"    # after the Tokyo close and Japan's evening filings
+    - cron: "15 13 * * 1-5"   # after the London morning announcements
+  workflow_dispatch:
+    inputs:
+      capture:
+        description: "Set to any value to save raw pages to data/filings/raw/ for parser repair"
+        required: false
+        default: ""
+      days:
+        description: "Look-back window in days for EDINET and OpenDART (blank = 7 and 14)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-data-commit
+  cancel-in-progress: false
+
+jobs:
+  filings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r signals/requirements.txt
+
+      - name: Run offline tests for the filings feeds
+        run: python -m unittest tests.test_filings
+
+      - name: Note the start time (the brief reports what arrived after it)
+        run: echo "RUN_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+
+      # Each feed is independent: one broken source is one red step,
+      # the others still run.
+      - name: Japan TDnet announcements (keyless)
+        continue-on-error: true
+        run: python -m signals.filings tdnet
+
+      - name: Japan EDINET filings (needs EDINET_API_KEY)
+        continue-on-error: true
+        env:
+          EDINET_API_KEY: ${{ secrets.EDINET_API_KEY }}
+        run: |
+          if [ -n "${{ github.event.inputs.days }}" ]; then
+            python -m signals.filings edinet --days "${{ github.event.inputs.days }}"
+          else
+            python -m signals.filings edinet
+          fi
+
+      - name: Korea OpenDART filings (needs DART_API_KEY)
+        continue-on-error: true
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+        run: |
+          if [ -n "${{ github.event.inputs.days }}" ]; then
+            python -m signals.filings dart --days "${{ github.event.inputs.days }}"
+          else
+            python -m signals.filings dart
+          fi
+
+      - name: UK RNS announcements and buyback tally (keyless)
+        continue-on-error: true
+        run: python -m signals.filings uk
+
+      - name: Save raw pages for parser repair (manual runs only)
+        if: ${{ github.event.inputs.capture != '' }}
+        continue-on-error: true
+        run: python -m signals.filings capture
+
+      - name: Write the plain-English brief
+        id: brief
+        run: |
+          python -m signals.filings brief --since "$RUN_START" | tee "$RUNNER_TEMP/brief.out"
+          echo "subject=$(tail -n 1 "$RUNNER_TEMP/brief.out")" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push if anything changed
+        run: |
+          git add data/
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "signals-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "${{ steps.brief.outputs.subject }} ($(date -u +%F))"
+          for delay in 2 4 8 16 0; do
+            git push && exit 0
+            [ "$delay" = "0" ] && exit 1
+            sleep "$delay"
+            git pull --rebase --no-autostash || true
+          done
