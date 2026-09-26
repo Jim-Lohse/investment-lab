@@ -1,0 +1,36 @@
+{
+  "_note": "Companies whose own filings are read directly. This repository is public: list companies and topics only, never position sizes, prices paid or entry levels.",
+  "topics": {
+    "results": {"label": "results", "patterns": ["決算短信", "決算説明", "四半期報告", "半期報告", "有価証券報告", "잠정실적", "영업실적", "결산실적", "매출액또는손익구조", "Results", "Trading Update", "Pre-Close", "Pre-close", "Trading Statement"]},
+    "forecast": {"label": "guidance change", "patterns": ["業績予想", "予想値と実績値", "Profit Warning", "Guidance"]},
+    "dividend": {"label": "dividend", "patterns": ["配当", "剰余金", "배당", "Dividend"]},
+    "buyback": {"label": "buyback", "patterns": ["自己株式", "自己株券", "자기주식", "자사주", "소각", "Transaction in Own Shares", "Buyback", "Repurchase"]},
+    "shareholder_return": {"label": "shareholder-return policy", "patterns": ["株主還元", "주주환원", "기업가치 제고", "기업가치제고", "밸류업", "Capital Allocation", "Capital Markets Day"]},
+    "segment": {"label": "segment disclosure", "patterns": ["セグメント", "エナジーソリューション", "Energy Solutions"]},
+    "ownership": {"label": "big holder change", "patterns": ["大量保有", "主要株主", "売出し", "立会外分売", "대량보유", "최대주주", "Holding(s) in Company", "Holdings in Company"]},
+    "plan": {"label": "business plan", "patterns": ["中期経営計画", "事業計画", "中長期"]},
+    "financing": {"label": "new debt or shares", "patterns": ["転換社債", "新株予約権付社債", "社債", "新株式", "전환사채", "유상증자", "Bond", "Notes Offering"]},
+    "capex": {"label": "capacity spending", "patterns": ["設備投資", "시설투자", "신규시설", "공장"]},
+    "insider": {"label": "director dealing", "patterns": ["Director/PDMR", "PDMR", "임원ㆍ주요주주", "임원・주요주주"]}
+  },
+  "japan": [
+    {"code": "7220", "name": "Musashi Seimitsu", "task": "segment check: does the energy-storage unit get its own segment line?", "priority": ["results", "segment", "forecast", "plan"]},
+    {"code": "5016", "name": "JX Advanced Metals", "task": "JX watch: first-half results, detailed spending plan, big holder selling", "priority": ["results", "forecast", "plan", "ownership", "buyback", "financing"]},
+    {"code": "6501", "name": "Hitachi", "task": "re-entry multiple: profit guidance and results", "priority": ["results", "forecast", "buyback"]},
+    {"code": "8031", "name": "Mitsui & Co.", "task": "organic-growth question for Tokyo names", "priority": ["results", "forecast", "ownership", "buyback", "shareholder_return"]}
+  ],
+  "korea": [
+    {"stock_code": "033780", "name": "KT&G", "task": "new dividend policy", "priority": ["dividend", "shareholder_return", "buyback", "results"]},
+    {"stock_code": "005930", "name": "Samsung Electronics", "task": "memory maker: early profit figures, spending, big holders", "priority": ["results", "capex", "ownership", "buyback"]},
+    {"stock_code": "000660", "name": "SK hynix", "task": "memory maker: early profit figures, spending, big holders", "priority": ["results", "capex", "ownership", "financing"]}
+  ],
+  "uk": [
+    {"tidm": "IMB", "investegate_slug": "imperial-brands--imb", "name": "Imperial Brands", "task": "dividend and buyback checks; October trading update; full-year results", "priority": ["results", "dividend", "buyback", "shareholder_return", "forecast"], "routine_headlines": ["Transaction in Own Shares", "Total Voting Rights", "Block Listing"]}
+  ],
+  "calendar": [
+    {"sort_by": "2026-10-01", "window": "early October", "company": "Imperial Brands", "event": "pre-close trading update (exact date not yet announced)"},
+    {"sort_by": "2026-11-04", "window": "early November", "company": "Musashi Seimitsu", "event": "second-quarter results (exact date not yet announced)"},
+    {"sort_by": "2026-11-09", "window": "Nov 9", "company": "JX Advanced Metals", "event": "first-half results"},
+    {"sort_by": "2026-11-15", "window": "mid November", "company": "Imperial Brands", "event": "full-year results (exact date not yet announced)"}
+  ]
+}
