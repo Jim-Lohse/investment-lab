@@ -1,0 +1,12 @@
+rcept_no,stock_code,company,report,filer,received,remark,link,topics,needs_reading,first_seen_utc
+20260922800292,033780,KT&G,주식소각결정,케이티앤지,20260922,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922800292,buyback,yes,2026-09-26T18:34:57Z
+20260922000256,033780,KT&G,주요사항보고서(자기주식취득결정),케이티앤지,20260922,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000256,buyback,yes,2026-09-26T18:34:57Z
+20260918800709,033780,KT&G,소송등의판결ㆍ결정(자율공시:일정금액미만의청구),케이티앤지,20260918,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918800709,,,2026-09-26T18:34:57Z
+20260922000524,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,허은녕,20260922,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000524,insider,,2026-09-26T18:34:57Z
+20260918800754,005930,Samsung Electronics,최대주주등소유주식변동신고서,삼성전자,20260918,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918800754,ownership,yes,2026-09-26T18:34:57Z
+20260918000212,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,조혜경,20260918,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000212,insider,,2026-09-26T18:34:57Z
+20260918000191,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,이혁재,20260918,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000191,insider,,2026-09-26T18:34:57Z
+20260917000097,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,신제윤,20260917,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260917000097,insider,,2026-09-26T18:34:57Z
+20260914000248,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,아포테커마띠유,20260914,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260914000248,insider,,2026-09-26T18:34:57Z
+20260922000361,000660,SK hynix,임원ㆍ주요주주특정증권등소유상황보고서,정인철,20260922,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000361,insider,,2026-09-26T18:34:57Z
+20260918800583,000660,SK hynix,조회공시요구(풍문또는보도)에대한답변(미확정),SK하이닉스,20260918,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918800583,,,2026-09-26T18:34:57Z
