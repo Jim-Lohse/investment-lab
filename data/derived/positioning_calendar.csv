@@ -13,3 +13,4 @@ start,end,kind,label,basis
 2026-12-24,2026-12-31,rebalance,"Quarter-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces (larger at quarter-end)",last 5 trading days of the month
 2026-12-24,2026-12-24,short_interest,Estimated: FINRA short interest published (shares sold short as of 2026-12-15),"estimate, 7 business days after settlement; FINRA's calendar governs"
 2027-01-12,2027-01-12,short_interest,Estimated: FINRA short interest published (shares sold short as of 2026-12-31),"estimate, 7 business days after settlement; FINRA's calendar governs"
+2027-01-25,2027-01-29,rebalance,"Month-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces",last 5 trading days of the month
