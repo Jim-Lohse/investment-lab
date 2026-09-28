@@ -1,6 +1,6 @@
-# Positioning brief, 2026-09-27 (U.S. Eastern)
+# Positioning brief, 2026-09-28 (U.S. Eastern)
 
-Stories counted: 40 (of 181 rows collected; the rest failed the relevance filter). This week (from 2026-09-21): 2 distinct stories; usual week (median of up to 12 earlier weeks): 2.5; reading: about normal.
+Stories counted: 40 (of 181 rows collected; the rest failed the relevance filter). This week (from 2026-09-28): 0 distinct stories; usual week (median of up to 12 earlier weeks): 2.5; reading: quieter than usual.
 
 | Search | This week | Usual week |
 |---|---|---|
@@ -8,15 +8,14 @@ Stories counted: 40 (of 181 rows collected; the rest failed the relevance filter
 | Reuters HEDGE FLOW column | 0 | 0.0 |
 | Goldman Hedge Fund Trend Monitor and VIP basket | 0 | 0.0 |
 | Morgan Stanley prime brokerage (MSPB) | 0 | 0.0 |
-| Weekly prime-desk leverage notes | 2 | 1.5 |
+| Weekly prime-desk leverage notes | 0 | 1.5 |
 | JPMorgan-sourced hedge fund data | 0 | 0.0 |
 
 ## Stories this week
 
 | Date | Outlet | Headline | Bank | Direction | Record-type wording |
 |---|---|---|---|---|---|
-| 2026-09-21 | Financial Times | [Fed and BoE step up scrutiny of bank exposure to trading firms after Jane Street loss](https://news.google.com/rss/articles/CBMihAFBVV95cUxOZ3otVXhYMVhIaTl4dHZJLXlIbVZmV3ZMZ0RQM2RTU0ZKTlpIZ3VfaEtlSF9RTU5NUy1yUEJpLWdXcFdmeWVseWhGQVJ0VnZ5LXVVa1VIN2hjVDk2dmVJVWw5MHMwemhCTTZOeUhoUjBCWEdsWHFQaTZzRWE3TnBpYlItbG8?oc=5) | - | - | - |
-| 2026-09-21 | Investing.com | [Fed, BoE probe bank exposure to trading firms after Jane Street loss - report](https://news.google.com/rss/articles/CBMi0wFBVV95cUxQLVRZN3pDOHpmSTdrTXAtLTl2cDlxYllGdTlWdXRDYXhYdXFKLTJ2dTdkRzVtNmhNdXoxa09hLWM3VW9OZVBaUFhvZm9HYmdCd2d0MEktUlA3WEZwOW5VU2w4NlA2d1ZJRjlnZnBXZm1BNi00T0RvcFdBbXJrX3JkaDhPNVlnZjh0Z2lma3FSN3RJUEo4azN5czExdmV2WjI3SlBSTXRrVDVfZy1OSmxfcTkxMWVrVm1Sa2VpcVBEdDQwQjF1cUVTQVNyVUJJQS1oSW0w?oc=5) | - | - | - |
+| - | - | No stories this week | - | - | - |
 
 ## Coming up (next 21 days)
 

@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-27",
+ "generated": "2026-09-28",
  "headlines": [
   "The 2-year yield is 4.81% and is up 74 bp over 13 weeks; the 10-year is 5.17% and is up 79 bp.",
   "The 2-year yield rose 47 bp in the last 4 weeks, larger than 93% of 4-week moves since 1990: an unusually quick repricing of where markets expect the Federal Reserve to take rates.",
@@ -2607,23 +2607,19 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-09-25",
-     "value": 28.62,
+     "as_of": "2026-09-28",
+     "value": 28.7,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 1.56,
-      "13w": 0.56,
-      "52w": 7.23
+      "4w": 2.21,
+      "13w": 1.27,
+      "52w": 7.98
      },
      "change_kind": "pct",
-     "move4_rank_pct": 59,
+     "move4_rank_pct": 77,
      "chart": [
-      [
-       "2023-10-06",
-       25.86
-      ],
       [
        "2023-10-13",
        26.03
@@ -3243,6 +3239,10 @@
       [
        "2026-09-25",
        28.62
+      ],
+      [
+       "2026-10-02",
+       28.7
       ]
      ]
     },
@@ -4532,7 +4532,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 0.6% over 13 weeks and 7.2% higher than a year ago."
+    "Dollar fund (UUP) is up 1.3% over 13 weeks and 8.0% higher than a year ago."
    ]
   },
   {
@@ -4542,23 +4542,19 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-09-25",
-     "value": 393.41,
+     "as_of": "2026-09-28",
+     "value": 377.56,
      "note": "Price including dividends.",
      "since": "2006-01-06",
-     "rank_pct": 97,
+     "rank_pct": 96,
      "changes": {
-      "4w": -3.79,
-      "13w": 5.29,
-      "52w": 13.46
+      "4w": -7.18,
+      "13w": -0.15,
+      "52w": 5.57
      },
      "change_kind": "pct",
-     "move4_rank_pct": 60,
+     "move4_rank_pct": 87,
      "chart": [
-      [
-       "2023-10-06",
-       169.7
-      ],
       [
        "2023-10-13",
        178.83
@@ -5178,13 +5174,17 @@
       [
        "2026-09-25",
        393.41
+      ],
+      [
+       "2026-10-02",
+       377.56
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-09-24",
+     "as_of": "2026-09-25",
      "value": 1054.55,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
@@ -6467,7 +6467,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is up 5.3% over 13 weeks and 13.5% higher than a year ago.",
+    "Gold fund (GLD) is little changed over 13 weeks and 5.6% higher than a year ago.",
     "Gold held by GLD is up 1.2% over 4 weeks: money flowing in."
    ]
   },
@@ -6478,23 +6478,19 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-09-25",
-     "value": 148.33,
+     "as_of": "2026-09-28",
+     "value": 153.62,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 56,
      "changes": {
-      "4w": 14.36,
-      "13w": 40.62,
-      "52w": 92.59
+      "4w": 8.21,
+      "13w": 47.74,
+      "52w": 114.22
      },
      "change_kind": "pct",
-     "move4_rank_pct": 88,
+     "move4_rank_pct": 65,
      "chart": [
-      [
-       "2023-10-06",
-       74.16
-      ],
       [
        "2023-10-13",
        78.99
@@ -7114,6 +7110,10 @@
       [
        "2026-09-25",
        148.33
+      ],
+      [
+       "2026-10-02",
+       153.62
       ]
      ]
     },
@@ -7761,7 +7761,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 40.6% over 13 weeks and 92.6% higher than a year ago."
+    "Oil fund (USO) is up 47.7% over 13 weeks and 114.2% higher than a year ago."
    ]
   },
   {
@@ -7771,23 +7771,19 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-09-25",
-     "value": 771.35,
+     "as_of": "2026-09-28",
+     "value": 764.96,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 0.51,
-      "13w": 6.07,
-      "52w": 17.81
+      "4w": -0.43,
+      "13w": 2.96,
+      "52w": 15.54
      },
      "change_kind": "pct",
-     "move4_rank_pct": 9,
+     "move4_rank_pct": 8,
      "chart": [
-      [
-       "2023-10-06",
-       414.25
-      ],
       [
        "2023-10-13",
        416.14
@@ -8066,7 +8062,7 @@
       ],
       [
        "2025-02-07",
-       589.19
+       589.2
       ],
       [
        "2025-02-14",
@@ -8407,29 +8403,29 @@
       [
        "2026-09-25",
        771.35
+      ],
+      [
+       "2026-10-02",
+       764.96
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-09-25",
-     "value": 744.5,
+     "as_of": "2026-09-28",
+     "value": 734.61,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 4.03,
-      "13w": 5.49,
-      "52w": 25.51
+      "4w": 2.28,
+      "13w": 3.2,
+      "52w": 22.36
      },
      "change_kind": "pct",
-     "move4_rank_pct": 56,
+     "move4_rank_pct": 32,
      "chart": [
-      [
-       "2023-10-06",
-       358.59
-      ],
       [
        "2023-10-13",
        359.16
@@ -8672,7 +8668,7 @@
       ],
       [
        "2024-12-06",
-       521.2
+       521.21
       ],
       [
        "2024-12-13",
@@ -9049,6 +9045,10 @@
       [
        "2026-09-25",
        744.5
+      ],
+      [
+       "2026-10-02",
+       734.61
       ]
      ]
     },
@@ -11622,8 +11622,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 6.1% over 13 weeks and 17.8% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is up 5.5% over 13 weeks and 25.5% higher than a year ago."
+    "S&P 500 fund (SPY) is up 3.0% over 13 weeks and 15.5% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is up 3.2% over 13 weeks and 22.4% higher than a year ago."
    ]
   },
   {
@@ -11632,10 +11632,10 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 2,
+    "count": 0,
     "baseline": 2.5,
-    "ratio": 0.8,
-    "label": "about normal"
+    "ratio": 0.0,
+    "label": "quieter than usual"
    },
    "weeks": [
     [
@@ -11689,6 +11689,10 @@
     [
      "2026-09-27",
      2
+    ],
+    [
+     "2026-10-04",
+     0
     ]
    ],
    "stories": [
@@ -11699,15 +11703,6 @@
      "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQdTlCRXQ0ZTluLWRBUnhVWDRiMTY5dUZjNFI1X0lzUG1PbzZZWEpfb3pNUUpPUHB6QWFaZ0o3bEs4SDJ2QzdEc0JSaU93eWFXUW9xbkRxZ2I1cVo3TTJMdWlBZnBxQ3hQSjZfSFEtMzRRSW1Oc0VTNE5PckRJbDNCejdWX1JTRkFnM3NLWg?oc=5",
      "banks": "Goldman Sachs",
      "direction": "",
-     "extreme": false
-    },
-    {
-     "date": "2026-09-14",
-     "outlet": "Banking Exchange",
-     "title": "JPMorgan Cuts Lending to AI-Focused Hedge Fund After Losses",
-     "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQdDZFMUxQcnZDWlZtZ1hjTWJlcE12cDFDOE5RQU1rTTIxalBEdWxvaU1mRG52Z2hOUGpKRXB4RFVXRnBkbXlfRzdwQ1ZOekVnRHhsV1hXTGdVUzNHVEhvU1FrUkg1YVBSX0hBVzdLTGVYRnl0NjFHbDNON2REVHpUYjVjUlZqblJDVVRxSzJ5SXNTd2s1XzJvMlJQS0duN2NTLTB0aWNzNE9kdnd0amtYQ05B?oc=5",
-     "banks": "JPMorgan",
-     "direction": "selling",
      "extreme": false
     },
     {
@@ -11727,15 +11722,6 @@
      "banks": "",
      "direction": "",
      "extreme": false
-    },
-    {
-     "date": "2026-09-14",
-     "outlet": "finance.biggo.com",
-     "title": "Hedge Funds Just Went Heavy on Tech Stocks\u2014Right as the Nasdaq's Key Support Gave Way",
-     "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBRcGZHb19lbzF5cktGcmlUSUstNWN5U1FZQjQ5X05oWFZmX2ozUVBTLUctd1VRNWtBcFRIaUs0TTMybjVQSkFoZmtVcXJhWkJDS0lCbHdJbld0bVhVYnZVX1NNMU9rckI0cDBaQV9UQTRPb1BveUE?oc=5",
-     "banks": "",
-     "direction": "",
-     "extreme": false
     }
    ],
    "calendar": [
@@ -11752,10 +11738,24 @@
      "kind": "short_interest",
      "label": "Estimated: FINRA short interest published (shares sold short as of 2026-09-30)",
      "basis": "estimate, 7 business days after settlement; FINRA's calendar governs"
+    },
+    {
+     "start": "2026-10-26",
+     "end": "2026-10-30",
+     "kind": "rebalance",
+     "label": "Month-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces",
+     "basis": "last 5 trading days of the month"
+    },
+    {
+     "start": "2026-10-26",
+     "end": "2026-10-26",
+     "kind": "short_interest",
+     "label": "Estimated: FINRA short interest published (shares sold short as of 2026-10-15)",
+     "basis": "estimate, 7 business days after settlement; FINRA's calendar governs"
     }
    ],
    "takeaway": [
-    "2 distinct positioning stories this week: about normal (a usual week has 2.5)."
+    "0 distinct positioning stories this week: quieter than usual (a usual week has 2.5)."
    ]
   },
   {
