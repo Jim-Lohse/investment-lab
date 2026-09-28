@@ -1,14 +1,16 @@
 # Foreign company filings: what's new
 
-Run date 2026-09-26. New means first seen since 2026-09-26T19:27:05Z.
+Run date 2026-09-28. New means first seen since 2026-09-28T15:57:14Z.
 
 ## Bottom line
 
-Nothing new from the watched companies since the last run.
+New documents arrived, but none touches a question you are watching.
 
 ## What
 
-No new company documents.
+| Company | Where | Title | Dated | About | Read now? |
+|---|---|---|---|---|---|
+| Imperial Brands | UK announcement | [Director/PDMR Shareholding](https://www.investegate.co.uk/announcement/rns/imperial-brands--imb/director-pdmr-shareholding/9794778) | 2026-09-28 | director dealing | no |
 
 ## So what
 
@@ -16,11 +18,11 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 
 | Shares bought | Money spent | Average price paid | Most recent purchase |
 |---|---|---|---|
-| 1,333,711 | £33,030,035 | 2,476.6 pence a share | 24 Sep 2026 |
+| 1,280,658 | £31,584,887 | 2,466.3 pence a share | 25 Sep 2026 |
 
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
 
-Nothing to interpret this run.
+1 routine UK notice(s) (daily buyback reports, share-count updates) are counted above rather than listed.
 
 ## What now
 
