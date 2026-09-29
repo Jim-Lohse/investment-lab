@@ -1,6 +1,6 @@
 # Positioning brief, 2026-09-29 (U.S. Eastern)
 
-Stories counted: 41 (of 192 rows collected; the rest failed the relevance filter). This week (from 2026-09-28): 1 distinct stories; usual week (median of up to 12 earlier weeks): 2.5; reading: quieter than usual.
+Stories counted: 41 (of 198 rows collected; the rest failed the relevance filter). This week (from 2026-09-28): 1 distinct stories; usual week (median of up to 12 earlier weeks): 2.5; reading: quieter than usual.
 
 | Search | This week | Usual week |
 |---|---|---|
