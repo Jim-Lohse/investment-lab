@@ -1,6 +1,6 @@
 # Foreign company filings: what's new
 
-Run date 2026-09-30. New means first seen since 2026-09-30T14:14:05Z.
+Run date 2026-09-30. New means first seen since 2026-09-30T18:27:08Z.
 
 ## Bottom line
 
@@ -8,9 +8,7 @@ New documents arrived, but none touches a question you are watching.
 
 ## What
 
-| Company | Where | Title | Dated | About | Read now? |
-|---|---|---|---|---|---|
-| SK hynix | Korea filing | [director or major-holder share dealing (임원ㆍ주요주주특정증권등소유상황보고서)](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260930000861) | 2026-09-30 | director dealing | no |
+No new company documents.
 
 ## So what
 
@@ -18,7 +16,7 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 
 | Shares bought | Money spent | Average price paid | Most recent purchase |
 |---|---|---|---|
-| 1,206,404 | £29,658,643 | 2,458.4 pence a share | 29 Sep 2026 |
+| 1,016,404 | £24,979,684 | 2,457.7 pence a share | 30 Sep 2026 |
 
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
 
