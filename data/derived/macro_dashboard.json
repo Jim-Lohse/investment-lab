@@ -5,6 +5,7 @@
   "The 2-year yield rose 51 bp in the last 4 weeks, larger than 95% of 4-week moves since 1990: an unusually quick repricing of where markets expect the Federal Reserve to take rates.",
   "The 10-year yield rose 51 bp in the last 4 weeks, larger than 96% of 4-week moves since 1990: an unusually quick repricing of long-term borrowing costs, including mortgage rates.",
   "The 10-year pays 0.41 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+  "5 distinct positioning stories this week: busier than usual (a usual week has 2.5).",
   "Compared with the same period last year: Taiwan 46% higher; Korea 84% higher; Japan 23% higher (17% in U.S. dollars)."
  ],
  "panels": [
@@ -2608,17 +2609,17 @@
      "name": "Dollar fund (UUP)",
      "unit": "USD",
      "as_of": "2026-10-01",
-     "value": 28.87,
+     "value": 28.99,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.81,
-      "13w": 1.87,
-      "52w": 8.62
+      "4w": 3.24,
+      "13w": 2.29,
+      "52w": 9.07
      },
      "change_kind": "pct",
-     "move4_rank_pct": 85,
+     "move4_rank_pct": 89,
      "chart": [
       [
        "2023-10-13",
@@ -3242,7 +3243,7 @@
       ],
       [
        "2026-10-02",
-       28.87
+       28.99
       ]
      ]
     },
@@ -4532,7 +4533,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 1.9% over 13 weeks and 8.6% higher than a year ago."
+    "Dollar fund (UUP) is up 2.3% over 13 weeks and 9.1% higher than a year ago."
    ]
   },
   {
@@ -4543,17 +4544,17 @@
      "name": "Gold fund (GLD)",
      "unit": "USD",
      "as_of": "2026-10-01",
-     "value": 382.08,
+     "value": 382.37,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 96,
      "changes": {
-      "4w": -6.07,
-      "13w": 1.04,
-      "52w": 6.83
+      "4w": -6.0,
+      "13w": 1.12,
+      "52w": 6.91
      },
      "change_kind": "pct",
-     "move4_rank_pct": 81,
+     "move4_rank_pct": 80,
      "chart": [
       [
        "2023-10-13",
@@ -5177,7 +5178,7 @@
       ],
       [
        "2026-10-02",
-       382.08
+       382.37
       ]
      ]
     },
@@ -6467,7 +6468,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is up 1.0% over 13 weeks and 6.8% higher than a year ago.",
+    "Gold fund (GLD) is up 1.1% over 13 weeks and 6.9% higher than a year ago.",
     "Gold held by GLD is little changed over 4 weeks: money flowing in."
    ]
   },
@@ -6479,17 +6480,17 @@
      "name": "Oil fund (USO)",
      "unit": "USD",
      "as_of": "2026-10-01",
-     "value": 147.94,
+     "value": 149.7,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 56,
      "changes": {
-      "4w": 4.21,
-      "13w": 42.28,
-      "52w": 106.3
+      "4w": 5.45,
+      "13w": 43.97,
+      "52w": 108.76
      },
      "change_kind": "pct",
-     "move4_rank_pct": 37,
+     "move4_rank_pct": 47,
      "chart": [
       [
        "2023-10-13",
@@ -7113,7 +7114,7 @@
       ],
       [
        "2026-10-02",
-       147.94
+       149.7
       ]
      ]
     },
@@ -7761,7 +7762,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 42.3% over 13 weeks and 106.3% higher than a year ago."
+    "Oil fund (USO) is up 44.0% over 13 weeks and 108.8% higher than a year ago."
    ]
   },
   {
@@ -7772,17 +7773,17 @@
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
      "as_of": "2026-10-01",
-     "value": 761.61,
+     "value": 763.96,
      "note": "Price including dividends.",
      "since": "2006-01-06",
-     "rank_pct": 99,
+     "rank_pct": 100,
      "changes": {
-      "4w": -0.87,
-      "13w": 2.51,
-      "52w": 15.03
+      "4w": -0.56,
+      "13w": 2.83,
+      "52w": 15.39
      },
      "change_kind": "pct",
-     "move4_rank_pct": 15,
+     "move4_rank_pct": 9,
      "chart": [
       [
        "2023-10-13",
@@ -8062,7 +8063,7 @@
       ],
       [
        "2025-02-07",
-       589.19
+       589.2
       ],
       [
        "2025-02-14",
@@ -8186,7 +8187,7 @@
       ],
       [
        "2025-09-12",
-       648.59
+       648.6
       ],
       [
        "2025-09-19",
@@ -8406,7 +8407,7 @@
       ],
       [
        "2026-10-02",
-       761.61
+       763.96
       ]
      ]
     },
@@ -8414,17 +8415,17 @@
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
      "as_of": "2026-10-01",
-     "value": 740.14,
+     "value": 742.47,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 3.05,
-      "13w": 3.97,
-      "52w": 23.28
+      "4w": 3.38,
+      "13w": 4.3,
+      "52w": 23.67
      },
      "change_kind": "pct",
-     "move4_rank_pct": 41,
+     "move4_rank_pct": 46,
      "chart": [
       [
        "2023-10-13",
@@ -9048,7 +9049,7 @@
       ],
       [
        "2026-10-02",
-       740.14
+       742.47
       ]
      ]
     },
@@ -11622,8 +11623,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 2.5% over 13 weeks and 15.0% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is up 4.0% over 13 weeks and 23.3% higher than a year ago."
+    "S&P 500 fund (SPY) is up 2.8% over 13 weeks and 15.4% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is up 4.3% over 13 weeks and 23.7% higher than a year ago."
    ]
   },
   {
@@ -11632,10 +11633,10 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 3,
+    "count": 5,
     "baseline": 2.5,
-    "ratio": 1.2,
-    "label": "about normal"
+    "ratio": 2.0,
+    "label": "busier than usual"
    },
    "weeks": [
     [
@@ -11692,10 +11693,19 @@
     ],
     [
      "2026-10-04",
-     3
+     5
     ]
    ],
    "stories": [
+    {
+     "date": "2026-09-30",
+     "outlet": "The New York Times",
+     "title": "Troubles at Situational Awareness Point to Record Stock Market Leverage",
+     "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOXzQzMUZZeENZMEd6RnhIUl9ZdmNXVmpPRzVhcnA4eXN5ZGEzZmZSTGswX2JEOXlKdVBIeHZKNFZ4UXUyUGFkVWhwYWR5STFuWHNFYktLeFROR2tQc2ljdVltTk9wSGc4cGdvbWJxUE8yODd1b3M2eEJaYkpCOXFQLW9kNTJkczVac3o2Yk85d1JSem9OZE5J?oc=5",
+     "banks": "",
+     "direction": "",
+     "extreme": true
+    },
     {
      "date": "2026-09-28",
      "outlet": "Traders Union",
@@ -11715,28 +11725,19 @@
      "extreme": false
     },
     {
+     "date": "2026-10-01",
+     "outlet": "WinBuzzer",
+     "title": "How AI Hedge Fund Situational Awareness Sold Stocks Under Lender Pressure",
+     "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQZVZ5SExJeGtfQllvTnV5SDF5WnhSWnRxbDVuZmZKejlpTHpFTTBoOFhPU18zQ05DT3gySmZWUzZ6azd5OEE2a3JGbEI1Q2ZwTy1ZamZTMEVyYVRZNXhiek1DRC1wQlhyQXR5dk9HQWhCbk1Mb01aR21IMEhPOEVrNWZZMGFHVHdjNm5sRGZrQ1NWcDN3a21CVXV4Zk95V25QMkwyVF9nSi1zeEwwcGc?oc=5",
+     "banks": "",
+     "direction": "selling",
+     "extreme": false
+    },
+    {
      "date": "2026-09-30",
      "outlet": "The New York Times",
      "title": "Hedge Fund\u2019s Near Collapse Lays Bare Risks of Borrowing to Bet on A.I.",
      "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOXzQzMUZZeENZMEd6RnhIUl9ZdmNXVmpPRzVhcnA4eXN5ZGEzZmZSTGswX2JEOXlKdVBIeHZKNFZ4UXUyUGFkVWhwYWR5STFuWHNFYktLeFROR2tQc2ljdVltTk9wSGc4cGdvbWJxUE8yODd1b3M2eEJaYkpCOXFQLW9kNTJkczVac3o2Yk85d1JSem9OZE5J?oc=5",
-     "banks": "",
-     "direction": "",
-     "extreme": false
-    },
-    {
-     "date": "2026-09-30",
-     "outlet": "Securities.io",
-     "title": "Bank of England FPC Holds CCyB at 2% and Advances Leverage Reforms",
-     "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPekh0QXNnRkRsYnlfX0RkdmZhaGFoVUpwVWh1bHNjdHVESzdqbGc1aXRkYXhpeWV6REw3c1EzSEpjVDJRdE9ReF9EeUZ2eGUxbmFXNGNOQ2xpZXB3NE5HVzMwVjJZd0d4WVhNQWZISnlsZWJnNktBTWhwRHpVSUVrbTNaNmdsN2FYZmhNTFJkbndZdlRsRUk4?oc=5",
-     "banks": "",
-     "direction": "",
-     "extreme": false
-    },
-    {
-     "date": "2026-09-21",
-     "outlet": "Financial Times",
-     "title": "Fed and BoE step up scrutiny of bank exposure to trading firms after Jane Street loss",
-     "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOZ3otVXhYMVhIaTl4dHZJLXlIbVZmV3ZMZ0RQM2RTU0ZKTlpIZ3VfaEtlSF9RTU5NUy1yUEJpLWdXcFdmeWVseWhGQVJ0VnZ5LXVVa1VIN2hjVDk2dmVJVWw5MHMwemhCTTZOeUhoUjBCWEdsWHFQaTZzRWE3TnBpYlItbG8?oc=5",
      "banks": "",
      "direction": "",
      "extreme": false
@@ -11766,7 +11767,8 @@
     }
    ],
    "takeaway": [
-    "3 distinct positioning stories this week: about normal (a usual week has 2.5)."
+    "5 distinct positioning stories this week: busier than usual (a usual week has 2.5).",
+    "Record-type wording in the last two weeks: \"Troubles at Situational Awareness Point to Record Stock Market Leverage\" (The New York Times, 2026-09-30)."
    ]
   },
   {
