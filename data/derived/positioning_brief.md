@@ -1,4 +1,4 @@
-# Positioning brief, 2026-10-01 (U.S. Eastern)
+# Positioning brief, 2026-10-02 (U.S. Eastern)
 
 Stories counted: 45 (of 208 rows collected; the rest failed the relevance filter). This week (from 2026-09-28): 5 distinct stories; usual week (median of up to 12 earlier weeks): 2.5; reading: busier than usual.
 

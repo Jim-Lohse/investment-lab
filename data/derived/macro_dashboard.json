@@ -1,10 +1,10 @@
 {
- "generated": "2026-10-01",
+ "generated": "2026-10-02",
  "headlines": [
-  "The 2-year yield is 4.88% and is up 74 bp over 13 weeks; the 10-year is 5.29% and is up 80 bp.",
-  "The 2-year yield rose 51 bp in the last 4 weeks, larger than 95% of 4-week moves since 1990: an unusually quick repricing of where markets expect the Federal Reserve to take rates.",
-  "The 10-year yield rose 51 bp in the last 4 weeks, larger than 96% of 4-week moves since 1990: an unusually quick repricing of long-term borrowing costs, including mortgage rates.",
-  "The 10-year pays 0.41 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+  "The 2-year yield is 4.78% and is up 64 bp over 13 weeks; the 10-year is 5.24% and is up 75 bp.",
+  "The 2-year yield rose 41 bp in the last 4 weeks, larger than 90% of 4-week moves since 1990: an unusually quick repricing of where markets expect the Federal Reserve to take rates.",
+  "The 10-year yield rose 46 bp in the last 4 weeks, larger than 94% of 4-week moves since 1990: an unusually quick repricing of long-term borrowing costs, including mortgage rates.",
+  "The 10-year pays 0.46 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
   "5 distinct positioning stories this week: busier than usual (a usual week has 2.5).",
   "Compared with the same period last year: Taiwan 46% higher; Korea 84% higher; Japan 23% higher (17% in U.S. dollars)."
  ],
@@ -16,18 +16,18 @@
     {
      "name": "2-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-09-30",
-     "value": 4.88,
+     "as_of": "2026-10-01",
+     "value": 4.78,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 73,
+     "rank_pct": 71,
      "changes": {
-      "4w": 0.51,
-      "13w": 0.74,
-      "52w": 1.3
+      "4w": 0.41,
+      "13w": 0.64,
+      "52w": 1.2
      },
      "change_kind": "abs",
-     "move4_rank_pct": 95,
+     "move4_rank_pct": 90,
      "chart": [
       [
        "2023-10-13",
@@ -651,25 +651,25 @@
       ],
       [
        "2026-10-02",
-       4.88
+       4.78
       ]
      ]
     },
     {
      "name": "10-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-09-30",
-     "value": 5.29,
+     "as_of": "2026-10-01",
+     "value": 5.24,
      "note": "",
      "since": "1990-01-05",
      "rank_pct": 71,
      "changes": {
-      "4w": 0.51,
-      "13w": 0.8,
-      "52w": 1.16
+      "4w": 0.46,
+      "13w": 0.75,
+      "52w": 1.11
      },
      "change_kind": "abs",
-     "move4_rank_pct": 96,
+     "move4_rank_pct": 94,
      "chart": [
       [
        "2023-10-13",
@@ -1293,25 +1293,25 @@
       ],
       [
        "2026-10-02",
-       5.29
+       5.24
       ]
      ]
     },
     {
      "name": "Gap: 10-year minus 2-year",
      "unit": "percentage points",
-     "as_of": "2026-09-30",
-     "value": 0.41,
+     "as_of": "2026-10-01",
+     "value": 0.46,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 33,
+     "rank_pct": 35,
      "changes": {
-      "4w": 0.0,
-      "13w": 0.06,
-      "52w": -0.14
+      "4w": 0.05,
+      "13w": 0.11,
+      "52w": -0.09
      },
      "change_kind": "abs",
-     "move4_rank_pct": 0,
+     "move4_rank_pct": 32,
      "chart": [
       [
        "2023-10-13",
@@ -1935,7 +1935,7 @@
       ],
       [
        "2026-10-02",
-       0.41
+       0.46
       ]
      ],
      "inverted": false,
@@ -1947,18 +1947,18 @@
     {
      "name": "Gap: 10-year minus 3-month",
      "unit": "percentage points",
-     "as_of": "2026-09-30",
-     "value": 1.09,
+     "as_of": "2026-10-01",
+     "value": 1.07,
      "note": "",
      "since": "1990-01-05",
      "rank_pct": 40,
      "changes": {
-      "4w": 0.22,
-      "13w": 0.42,
-      "52w": 0.99
+      "4w": 0.2,
+      "13w": 0.4,
+      "52w": 0.97
      },
      "change_kind": "abs",
-     "move4_rank_pct": 64,
+     "move4_rank_pct": 59,
      "chart": [
       [
        "2023-10-13",
@@ -2582,7 +2582,7 @@
       ],
       [
        "2026-10-02",
-       1.09
+       1.07
       ]
      ],
      "inverted": false,
@@ -2594,10 +2594,10 @@
    ],
    "explainer": "The 2-year yield tracks where the bond market expects the Federal Reserve's rate to be over the next two years. The 10-year reflects long-run growth and inflation expectations. When the gap between them turns negative (an inverted curve), the market expects rate cuts, usually because it expects a slowdown. Inversions have come before most U.S. recessions of the past 50 years, with lead times from months to about two years, and some false alarms.",
    "takeaway": [
-    "The 2-year yield is 4.88% and is up 74 bp over 13 weeks; the 10-year is 5.29% and is up 80 bp.",
-    "The 2-year yield rose 51 bp in the last 4 weeks, larger than 95% of 4-week moves since 1990: an unusually quick repricing of where markets expect the Federal Reserve to take rates.",
-    "The 10-year yield rose 51 bp in the last 4 weeks, larger than 96% of 4-week moves since 1990: an unusually quick repricing of long-term borrowing costs, including mortgage rates.",
-    "The 10-year pays 0.41 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+    "The 2-year yield is 4.78% and is up 64 bp over 13 weeks; the 10-year is 5.24% and is up 75 bp.",
+    "The 2-year yield rose 41 bp in the last 4 weeks, larger than 90% of 4-week moves since 1990: an unusually quick repricing of where markets expect the Federal Reserve to take rates.",
+    "The 10-year yield rose 46 bp in the last 4 weeks, larger than 94% of 4-week moves since 1990: an unusually quick repricing of long-term borrowing costs, including mortgage rates.",
+    "The 10-year pays 0.46 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
     "The shape of the curve barely changed over 13 weeks."
    ]
   },
@@ -2608,18 +2608,18 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-10-01",
-     "value": 28.99,
+     "as_of": "2026-10-02",
+     "value": 28.87,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 3.24,
-      "13w": 2.29,
-      "52w": 9.07
+      "4w": 2.81,
+      "13w": 1.87,
+      "52w": 8.62
      },
      "change_kind": "pct",
-     "move4_rank_pct": 89,
+     "move4_rank_pct": 85,
      "chart": [
       [
        "2023-10-13",
@@ -3243,7 +3243,7 @@
       ],
       [
        "2026-10-02",
-       28.99
+       28.87
       ]
      ]
     },
@@ -4533,7 +4533,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 2.3% over 13 weeks and 9.1% higher than a year ago."
+    "Dollar fund (UUP) is up 1.9% over 13 weeks and 8.6% higher than a year ago."
    ]
   },
   {
@@ -4543,18 +4543,18 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-10-01",
-     "value": 382.37,
+     "as_of": "2026-10-02",
+     "value": 384.07,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 96,
      "changes": {
-      "4w": -6.0,
-      "13w": 1.12,
-      "52w": 6.91
+      "4w": -5.58,
+      "13w": 1.57,
+      "52w": 7.39
      },
      "change_kind": "pct",
-     "move4_rank_pct": 80,
+     "move4_rank_pct": 76,
      "chart": [
       [
        "2023-10-13",
@@ -5178,25 +5178,25 @@
       ],
       [
        "2026-10-02",
-       382.37
+       384.07
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-09-30",
-     "value": 1055.7,
+     "as_of": "2026-10-01",
+     "value": 1056.55,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
      "rank_pct": 74,
      "changes": {
-      "4w": 0.35,
-      "13w": 5.43,
-      "52w": 4.02
+      "4w": 0.43,
+      "13w": 5.51,
+      "52w": 4.11
      },
      "change_kind": "pct",
-     "move4_rank_pct": 9,
+     "move4_rank_pct": 11,
      "chart": [
       [
        "2023-10-13",
@@ -5820,7 +5820,7 @@
       ],
       [
        "2026-10-02",
-       1055.7
+       1056.55
       ]
      ]
     },
@@ -6468,7 +6468,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is up 1.1% over 13 weeks and 6.9% higher than a year ago.",
+    "Gold fund (GLD) is up 1.6% over 13 weeks and 7.4% higher than a year ago.",
     "Gold held by GLD is little changed over 4 weeks: money flowing in."
    ]
   },
@@ -6479,18 +6479,18 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-10-01",
-     "value": 149.7,
+     "as_of": "2026-10-02",
+     "value": 143.41,
      "note": "Price including dividends.",
      "since": "2006-04-14",
-     "rank_pct": 56,
+     "rank_pct": 55,
      "changes": {
-      "4w": 5.45,
-      "13w": 43.97,
-      "52w": 108.76
+      "4w": 1.02,
+      "13w": 37.92,
+      "52w": 99.99
      },
      "change_kind": "pct",
-     "move4_rank_pct": 47,
+     "move4_rank_pct": 10,
      "chart": [
       [
        "2023-10-13",
@@ -7114,7 +7114,7 @@
       ],
       [
        "2026-10-02",
-       149.7
+       143.41
       ]
      ]
     },
@@ -7762,7 +7762,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 44.0% over 13 weeks and 108.8% higher than a year ago."
+    "Oil fund (USO) is up 37.9% over 13 weeks and 100.0% higher than a year ago."
    ]
   },
   {
@@ -7772,18 +7772,18 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-10-01",
-     "value": 763.96,
+     "as_of": "2026-10-02",
+     "value": 771.27,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": -0.56,
-      "13w": 2.83,
-      "52w": 15.39
+      "4w": 0.39,
+      "13w": 3.81,
+      "52w": 16.49
      },
      "change_kind": "pct",
-     "move4_rank_pct": 9,
+     "move4_rank_pct": 7,
      "chart": [
       [
        "2023-10-13",
@@ -7847,7 +7847,7 @@
       ],
       [
        "2024-01-26",
-       471.96
+       471.97
       ],
       [
        "2024-02-02",
@@ -7923,7 +7923,7 @@
       ],
       [
        "2024-06-07",
-       518.69
+       518.7
       ],
       [
        "2024-06-14",
@@ -8063,7 +8063,7 @@
       ],
       [
        "2025-02-07",
-       589.2
+       589.19
       ],
       [
        "2025-02-14",
@@ -8187,7 +8187,7 @@
       ],
       [
        "2025-09-12",
-       648.6
+       648.59
       ],
       [
        "2025-09-19",
@@ -8407,25 +8407,25 @@
       ],
       [
        "2026-10-02",
-       763.96
+       771.27
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-10-01",
-     "value": 742.47,
+     "as_of": "2026-10-02",
+     "value": 753.36,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 3.38,
-      "13w": 4.3,
-      "52w": 23.67
+      "4w": 4.89,
+      "13w": 5.83,
+      "52w": 25.48
      },
      "change_kind": "pct",
-     "move4_rank_pct": 46,
+     "move4_rank_pct": 67,
      "chart": [
       [
        "2023-10-13",
@@ -9049,7 +9049,7 @@
       ],
       [
        "2026-10-02",
-       742.47
+       753.36
       ]
      ]
     },
@@ -11623,8 +11623,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 2.8% over 13 weeks and 15.4% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is up 4.3% over 13 weeks and 23.7% higher than a year ago."
+    "S&P 500 fund (SPY) is up 3.8% over 13 weeks and 16.5% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is up 5.8% over 13 weeks and 25.5% higher than a year ago."
    ]
   },
   {
@@ -11716,15 +11716,6 @@
      "extreme": false
     },
     {
-     "date": "2026-09-18",
-     "outlet": "The Dark Side Of The Boom",
-     "title": "Goldman PB: The Crowded Trade Is Rotating Into Analog Semis, Materials and Defense",
-     "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQdTlCRXQ0ZTluLWRBUnhVWDRiMTY5dUZjNFI1X0lzUG1PbzZZWEpfb3pNUUpPUHB6QWFaZ0o3bEs4SDJ2QzdEc0JSaU93eWFXUW9xbkRxZ2I1cVo3TTJMdWlBZnBxQ3hQSjZfSFEtMzRRSW1Oc0VTNE5PckRJbDNCejdWX1JTRkFnM3NLWg?oc=5",
-     "banks": "Goldman Sachs",
-     "direction": "",
-     "extreme": false
-    },
-    {
      "date": "2026-10-01",
      "outlet": "WinBuzzer",
      "title": "How AI Hedge Fund Situational Awareness Sold Stocks Under Lender Pressure",
@@ -11738,6 +11729,15 @@
      "outlet": "The New York Times",
      "title": "Hedge Fund\u2019s Near Collapse Lays Bare Risks of Borrowing to Bet on A.I.",
      "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOXzQzMUZZeENZMEd6RnhIUl9ZdmNXVmpPRzVhcnA4eXN5ZGEzZmZSTGswX2JEOXlKdVBIeHZKNFZ4UXUyUGFkVWhwYWR5STFuWHNFYktLeFROR2tQc2ljdVltTk9wSGc4cGdvbWJxUE8yODd1b3M2eEJaYkpCOXFQLW9kNTJkczVac3o2Yk85d1JSem9OZE5J?oc=5",
+     "banks": "",
+     "direction": "",
+     "extreme": false
+    },
+    {
+     "date": "2026-09-30",
+     "outlet": "Securities.io",
+     "title": "Bank of England FPC Holds CCyB at 2% and Advances Leverage Reforms",
+     "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPekh0QXNnRkRsYnlfX0RkdmZhaGFoVUpwVWh1bHNjdHVESzdqbGc1aXRkYXhpeWV6REw3c1EzSEpjVDJRdE9ReF9EeUZ2eGUxbmFXNGNOQ2xpZXB3NE5HVzMwVjJZd0d4WVhNQWZISnlsZWJnNktBTWhwRHpVSUVrbTNaNmdsN2FYZmhNTFJkbndZdlRsRUk4?oc=5",
      "banks": "",
      "direction": "",
      "extreme": false
