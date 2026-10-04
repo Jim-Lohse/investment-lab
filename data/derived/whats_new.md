@@ -1,4 +1,4 @@
-# What's new — signals run 2026-10-03
+# What's new — signals run 2026-10-04
 
 ## No flags this run
 
