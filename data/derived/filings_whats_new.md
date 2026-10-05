@@ -1,10 +1,10 @@
 # Foreign company filings: what's new
 
-Run date 2026-10-02. New means first seen since 2026-10-02T18:25:11Z.
+Run date 2026-10-05. New means first seen since 2026-10-05T16:22:42Z.
 
 ## Bottom line
 
-Nothing new from the watched companies since the last run.
+New documents arrived, but none touches a question you are watching.
 
 ## What
 
@@ -16,11 +16,11 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 
 | Shares bought | Money spent | Average price paid | Most recent purchase |
 |---|---|---|---|
-| 1,076,404 | £26,366,649 | 2,449.5 pence a share | 01 Oct 2026 |
+| 1,019,457 | £24,969,371 | 2,449.3 pence a share | 02 Oct 2026 |
 
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
 
-Nothing to interpret this run.
+1 routine UK notice(s) (daily buyback reports, share-count updates) are counted above rather than listed.
 
 ## What now
 
