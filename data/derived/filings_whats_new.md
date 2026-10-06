@@ -1,16 +1,14 @@
 # Foreign company filings: what's new
 
-Run date 2026-10-06. New means first seen since 2026-10-06T14:27:40Z.
+Run date 2026-10-06. New means first seen since 2026-10-06T18:54:41Z.
 
 ## Bottom line
 
-New documents arrived, but none touches a question you are watching.
+Nothing new from the watched companies since the last run.
 
 ## What
 
-| Company | Where | Title | Dated | About | Read now? |
-|---|---|---|---|---|---|
-| SK hynix | Korea filing | [동일인등출자계열회사와의상품ㆍ용역거래변경](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261006000253) | 2026-10-06 | other | no |
+No new company documents.
 
 ## So what
 
@@ -22,7 +20,7 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
 
-1 routine UK notice(s) (daily buyback reports, share-count updates) are counted above rather than listed.
+Nothing to interpret this run.
 
 ## What now
 
