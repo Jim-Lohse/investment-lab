@@ -1,6 +1,6 @@
 # Positioning brief, 2026-10-07 (U.S. Eastern)
 
-Stories counted: 47 (of 239 rows collected; the rest failed the relevance filter). This week (from 2026-10-05): 1 distinct stories; usual week (median of up to 12 earlier weeks): 2.5; reading: quieter than usual.
+Stories counted: 48 (of 242 rows collected; the rest failed the relevance filter). This week (from 2026-10-05): 2 distinct stories; usual week (median of up to 12 earlier weeks): 2.5; reading: about normal.
 
 | Search | This week | Usual week |
 |---|---|---|
@@ -8,7 +8,7 @@ Stories counted: 47 (of 239 rows collected; the rest failed the relevance filter
 | Reuters HEDGE FLOW column | 0 | 0.0 |
 | Goldman Hedge Fund Trend Monitor and VIP basket | 0 | 0.0 |
 | Morgan Stanley prime brokerage (MSPB) | 0 | 0.0 |
-| Weekly prime-desk leverage notes | 1 | 1.5 |
+| Weekly prime-desk leverage notes | 2 | 1.5 |
 | JPMorgan-sourced hedge fund data | 0 | 0.0 |
 
 ## Stories this week
@@ -16,6 +16,7 @@ Stories counted: 47 (of 239 rows collected; the rest failed the relevance filter
 | Date | Outlet | Headline | Bank | Direction | Record-type wording |
 |---|---|---|---|---|---|
 | 2026-10-06 | Ahram Online | [Hedge funds’ $40 tln exposure could amplify global financial shocks: IMF - Economy - Business](https://news.google.com/rss/articles/CBMizgFBVV95cUxPcVFfWEdZVE9ORlhQTW45eFRMRm5Gc256NVBPWlhLU3BHRUttTmw5cnc5MVlKcnZ4aHFiYVpKYmVMYzBsQnV6cmNhSzQxeHlpZlVZYkVLaFF5bXZCZC1JblF5cFRudW1XWWlvS0RrY0tKUmVLUlNPN0M1X1hhRHJ2VzJLLVVHVmZsY3JaR1ppQW9CYXlDUlMwMUZBaFJ6ak5QQXR6c3VLcW4zNXNiTFV4TkdmdzhhR09HeFlWRk5tck13RmZSeWN2YnJFVE90UQ?oc=5) | - | - | - |
+| 2026-10-06 | TradingView | [Ripple Wins Brevan Howard as a Prime Brokerage Client: Will XRP Benefit?](https://news.google.com/rss/articles/CBMiyAFBVV95cUxQak1sbFEzWXl4cjM0N0JDTGhOaVRjY2x5ckU1RVRDY1lnbi1NdTA4b1hlLUNLWmxqTXhTMWxfbFBkM3Y0STNXT2lhSmZScUE5cFA3LUZQeFp6RHlmTk5YNVJqeU00NXE4emlBQ1g4N1pKQ0RBdXFRRDRNM1ExZXpZMmlObzlqajFQc0xXdXpUMjkwRnBidkhqc2w1Q3g5eHhnZnB4QkYzNlBMSUVMWGhIemU2RktvczV0MlRVVGpXUXZFNWdpcEs5TQ?oc=5) | - | - | - |
 
 ## Coming up (next 21 days)
 
