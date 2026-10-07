@@ -1,6 +1,6 @@
 # Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan + U.S. trade
 
-_Generated 2026-10-06 by `signals/compute_signals.py`._
+_Generated 2026-10-07 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
 ## Taiwan monthly revenue — 2026-08
@@ -54,9 +54,6 @@ _YoY in yen is what MOF publishes. YoY in USD restates the same series at the re
 
 | Period | Window | Source | Item | JPY m | YoY % (yen) | YoY % (USD) | FX pt | YoY % (MOF) |
 |---|---|---|---|---:|---:|---:|---:|---:|
-| 2026-08 | D20 | press_release | BAL:Grand Total | -1119533 | 111.83 | 97.36 | 14.47 | 100.70 |
-| 2026-08 | D20 | press_release | E:Grand Total | 6050366 | 17.93 | 9.87 | 8.06 | 18 |
-| 2026-08 | D20 | press_release | I:Grand Total | 7169899 | 26.70 | 18.04 | 8.66 | 26.10 |
 | 2026-08 | MONTH | press_release | BAL:Grand Total | -1111913 | 357.99 | 325.96 | 32.03 | 278.10 |
 | 2026-08 | MONTH | press_release | E:(IC) | 697209 | 56.89 | 45.92 | 10.97 | 56.90 |
 | 2026-08 | MONTH | press_release | E:ELECTRICAL MEASURING | 199780 | 20.38 | 11.96 | 8.42 | 20.40 |
@@ -74,6 +71,9 @@ _YoY in yen is what MOF publishes. YoY in USD restates the same series at the re
 | 2026-09 | D10 | press_release | BAL:Grand Total | -421205 | -18.80 | -23.07 | 4.27 | -21.50 |
 | 2026-09 | D10 | press_release | E:Grand Total | 3821914 | 23.33 | 16.84 | 6.49 | 23.30 |
 | 2026-09 | D10 | press_release | I:Grand Total | 4243119 | 17.29 | 11.12 | 6.17 | 16.70 |
+| 2026-09 | D20 | press_release | BAL:Grand Total | 27439 | -119.75 | -118.73 | -1.02 |  |
+| 2026-09 | D20 | press_release | E:Grand Total | 7879504 | 23.35 | 16.94 | 6.41 | 23.50 |
+| 2026-09 | D20 | press_release | I:Grand Total | 7852065 | 20.31 | 14.05 | 6.26 | 19.90 |
 | 2026-08 | MONTH | timeseries:world_exports_by_commodity | E:半導体等製造装置 | 489701 | 40.12 | 30.32 | 9.80 |  |
 | 2026-08 | MONTH | timeseries:world_exports_by_commodity | E:半導体等電子部品 | 894119 | 52.25 | 41.61 | 10.64 |  |
 | 2026-08 | MONTH | timeseries:world_exports_by_commodity | E:科学光学機器 | 250890 | 19.51 | 11.15 | 8.36 |  |

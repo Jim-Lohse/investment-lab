@@ -7054,6 +7054,9 @@ period,period_type,source,item,value_jpy_m,value_jpy_m_year_ago,yoy_pct,yoy_pct_
 2026-09,D10,press_release,BAL:Grand Total,-421205,-518752,-18.80,-21.50,156.06,-2698908,-23.07,4.27,159.20,-24.68
 2026-09,D10,press_release,E:Grand Total,3821914,3099031,23.33,23.30,156.06,24489245,16.84,6.49,159.20,14.40
 2026-09,D10,press_release,I:Grand Total,4243119,3617783,17.29,16.70,156.06,27188152,11.12,6.17,159.20,8.80
+2026-09,D20,press_release,BAL:Grand Total,27439,-138911,-119.75,,155.77,176154,-118.73,-1.02,158.66,-118.40
+2026-09,D20,press_release,E:Grand Total,7879504,6387733,23.35,23.50,155.77,50585148,16.94,6.41,158.66,14.91
+2026-09,D20,press_release,I:Grand Total,7852065,6526644,20.31,19.90,155.77,50408994,14.05,6.26,158.66,12.08
 1979-01,MONTH,timeseries:world_total,E:Exp-Total,1192541,,,,,,,,,
 1979-01,MONTH,timeseries:world_total,I:Imp-Total,1476341,,,,,,,,,
 1979-02,MONTH,timeseries:world_total,E:Exp-Total,1547064,,,,,,,,,
