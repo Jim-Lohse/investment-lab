@@ -1,16 +1,14 @@
 # Foreign company filings: what's new
 
-Run date 2026-10-07. New means first seen since 2026-10-07T14:44:49Z.
+Run date 2026-10-07. New means first seen since 2026-10-07T19:20:33Z.
 
 ## Bottom line
 
-1 new document(s) touch a question you are watching, from Mitsui & Co.. Read them first; links are in the table below.
+New documents arrived, but none touches a question you are watching.
 
 ## What
 
-| Company | Where | Title | Dated | About | Read now? |
-|---|---|---|---|---|---|
-| Mitsui & Co. | Japan filing: big-holder (5%) report | [big-holder stake change report (変更報告書)](https://disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?S100Z608) | 2026-10-07 | big holder change | yes |
+No new company documents.
 
 ## So what
 
@@ -18,15 +16,17 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 
 | Shares bought | Money spent | Average price paid | Most recent purchase |
 |---|---|---|---|
-| 1,030,000 | £25,208,614 | 2,447.4 pence a share | 05 Oct 2026 |
+| 1,412,743 | £34,720,492 | 2,457.7 pence a share | 06 Oct 2026 |
 
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
+
+1 routine UK notice(s) (daily buyback reports, share-count updates) are counted above rather than listed.
 
 ## What now
 
 | Owner | What | What closes it |
 |---|---|---|
-| Jim or Claude | Read Mitsui & Co.: big-holder stake change report (変更報告書) | Answer recorded on the company's research page |
+| none | Nothing open | |
 
 Coming up: Musashi Seimitsu second-quarter results (exact date not yet announced), early November; JX Advanced Metals first-half results, Nov 9; Imperial Brands full-year results (exact date not yet announced), mid November.
 
