@@ -38,7 +38,7 @@ for awareness.
 | Source | Goes stale in | Delivery | Status |
 |---|---|---|---|
 | Prime-brokerage notes quoted in the press (the six searches) | About a week | Weekly digest; same-day only if it names a holding | Built |
-| Any positioning story naming a holding (press, Bigdata.com, Alpha Vantage news) | Days | Same-day email | Routine to be created after merge |
+| Any positioning story naming a holding (press, Bigdata.com) | Days | Same-day email | Built |
 | Calendar: month-end and quarter-end rebalancing, quarterly expiry, 13F deadline, Goldman Trend Monitor window, FINRA short-interest dates | n/a | Dashboard strip and digest | Built (Fed dates to load) |
 | FINRA short interest, U.S.-listed holdings | About two weeks | Weekly digest when it shows a trend | Next phase |
 | Schedule 13D on a holding | Days | Same-day email | Next phase, SEC filings page |
@@ -60,8 +60,9 @@ Runs weekdays 9:30 am Eastern. Steps:
    `signals/config/holdings.local.json` and run
    `python -m signals.positioning match 1` (stories first seen today or
    yesterday that name a holding).
-3. For each holding, search the last 24 hours with Bigdata.com (and Alpha
-   Vantage news for U.S.-listed lines) for positioning stories only: hedge
+3. For each holding, search the last 24 hours with Bigdata.com for
+   positioning stories only (Alpha Vantage was removed from the alert on
+   2026-10-08 because of free-tier account limits): hedge
    funds, short sellers or short interest, prime brokerage data, 13F or
    ownership filings, activist stakes, foreign investors net buying or
    selling, block trades. Ordinary company news (earnings, products) is not
