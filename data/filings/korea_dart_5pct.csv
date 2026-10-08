@@ -1,1 +1,3 @@
 rcept_no,stock_code,company,received,holder,report_type,shares,shares_change,stake_pct,stake_change_pct,reason,first_seen_utc
+20261008000706,005930,Samsung Electronics,2026-10-08,삼성물산,일반,"1,151,055,549","-68,241",19.69,-0.00,"- 특별관계자 및 보유주식수 변동
+- 보유주식등에 관한 계약의 변경",2026-10-08T14:56:55Z

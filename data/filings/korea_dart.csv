@@ -15,3 +15,6 @@ rcept_no,stock_code,company,report,filer,received,remark,link,topics,needs_readi
 20261001000203,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,이석림,20261001,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261001000203,insider,,2026-10-01T14:46:18Z
 20261002800981,005930,Samsung Electronics,최대주주등소유주식변동신고서,삼성전자,20261002,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261002800981,ownership,yes,2026-10-02T14:08:17Z
 20261006000253,000660,SK hynix,동일인등출자계열회사와의상품ㆍ용역거래변경,SK하이닉스,20261006,공,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261006000253,,,2026-10-06T14:27:52Z
+20261008000706,005930,Samsung Electronics,주식등의대량보유상황보고서(일반),삼성물산,20261008,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261008000706,ownership,yes,2026-10-08T14:56:55Z
+20261008800028,005930,Samsung Electronics,기업설명회(IR)개최(안내공시),삼성전자,20261008,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261008800028,,,2026-10-08T14:56:55Z
+20261008800004,005930,Samsung Electronics,연결재무제표기준영업(잠정)실적(공정공시),삼성전자,20261008,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261008800004,,,2026-10-08T14:56:55Z
