@@ -1,11 +1,11 @@
 {
- "generated": "2026-10-10",
+ "generated": "2026-10-11",
  "headlines": [
   "The 2-year yield is 4.80% and is up 59 bp over 13 weeks; the 10-year is 5.24% and is up 68 bp.",
   "The 10-year pays 0.44 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
   "Dollar fund (UUP) is up 2.2% over 13 weeks and 7.6% higher than a year ago. Its latest 4-week move is larger than 91% of past 4-week moves, which is unusually large.",
   "9 distinct positioning stories this week: much busier than usual (a usual week has 2.5).",
-  "Compared with the same period last year: Taiwan 46% higher; Korea 84% higher; Japan 23% higher (17% in U.S. dollars)."
+  "Compared with the same period last year: Taiwan 50% higher; Korea 84% higher; Japan 23% higher (17% in U.S. dollars)."
  ],
  "panels": [
   {
@@ -8056,7 +8056,7 @@
       ],
       [
        "2025-02-07",
-       589.19
+       589.2
       ],
       [
        "2025-02-14",
@@ -8180,7 +8180,7 @@
       ],
       [
        "2025-09-12",
-       648.6
+       648.59
       ],
       [
        "2025-09-19",
@@ -8662,7 +8662,7 @@
       ],
       [
        "2024-12-06",
-       521.21
+       521.2
       ],
       [
        "2024-12-13",
@@ -11772,14 +11772,14 @@
     {
      "name": "Taiwan: revenue of all listed companies",
      "kind": "trade",
-     "period": "2026-08",
+     "period": "2026-09",
      "window": "month",
-     "value": 46.36,
+     "value": 49.99,
      "note": "Monthly, filed by the 10th of the next month.",
      "previous": {
-      "period": "2026-07",
+      "period": "2026-08",
       "window": "month",
-      "value": 41.79
+      "value": 46.36
      }
     },
     {
@@ -11812,7 +11812,7 @@
    ],
    "explainer": "Growth compared with the same period a year earlier, from the lab's existing Taiwan, Korea and Japan data. Strong readings here mostly reflect AI-hardware demand.",
    "takeaway": [
-    "Compared with the same period last year: Taiwan 46% higher; Korea 84% higher; Japan 23% higher (17% in U.S. dollars).",
+    "Compared with the same period last year: Taiwan 50% higher; Korea 84% higher; Japan 23% higher (17% in U.S. dollars).",
     "About 6 points of Japan's export growth is only the weaker yen; the dollar figure is the truer read of demand."
    ]
   }

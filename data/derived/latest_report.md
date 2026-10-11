@@ -1,20 +1,22 @@
 # Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan + U.S. trade
 
-_Generated 2026-10-10 by `signals/compute_signals.py`._
+_Generated 2026-10-11 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
-## Taiwan monthly revenue — 2026-08
+## Taiwan monthly revenue — 2026-09
 
 | Group | n | Agg YoY % | Median YoY % | Breadth % |
 |---|---:|---:|---:|---:|
-| ai_compute | 5 | 54.13 | 111.02 | 100.0 |
-| ai_server_odm | 5 | 86.68 | 51.98 | 100.0 |
-| power_cooling | 5 | 38.81 | 34.95 | 100.0 |
-| robotics_motion | 3 | 42.03 | 42.30 | 100.0 |
-| network_interconnect | 3 | 56.53 | 53.99 | 100.0 |
-| photonics_epi | 2 | 115.32 | 126.03 | 100.0 |
-| photonics_cpo | 8 | 62.59 | 43.63 | 100.0 |
-| all_listed | 1970 | 46.36 | 15.17 | 72.2 |
+| ai_compute | 4 | 47.80 | 76.21 | 100.0 |
+| ai_server_odm | 5 | 55.74 | 76.69 | 100.0 |
+| power_cooling | 3 | 39.51 | 23.23 | 100.0 |
+| robotics_motion | 2 | 29.79 | 28.34 | 100.0 |
+| network_interconnect | 3 | 57.54 | 39.16 | 100.0 |
+| photonics_epi | 2 | 85.63 | 109.82 | 100.0 |
+| photonics_cpo | 7 | 65.60 | 97.26 | 100.0 |
+| all_listed | 1620 | 49.99 | 14.67 | 71.0 |
+
+_2026-08 ai_compute agg YoY: 54.13%_
 
 _2026-07 ai_compute agg YoY: 42.67%_
 
