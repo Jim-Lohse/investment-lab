@@ -2605,17 +2605,17 @@
      "name": "Dollar fund (UUP)",
      "unit": "USD",
      "as_of": "2026-10-12",
-     "value": 29.14,
+     "value": 29.13,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.64,
-      "13w": 2.86,
-      "52w": 8.61
+      "4w": 2.61,
+      "13w": 2.82,
+      "52w": 8.57
      },
      "change_kind": "pct",
-     "move4_rank_pct": 83,
+     "move4_rank_pct": 82,
      "chart": [
       [
        "2023-10-27",
@@ -3239,7 +3239,7 @@
       ],
       [
        "2026-10-16",
-       29.14
+       29.13
       ]
      ]
     },
@@ -4529,7 +4529,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 2.9% over 13 weeks and 8.6% higher than a year ago."
+    "Dollar fund (UUP) is up 2.8% over 13 weeks and 8.6% higher than a year ago."
    ]
   },
   {
@@ -4540,17 +4540,17 @@
      "name": "Gold fund (GLD)",
      "unit": "USD",
      "as_of": "2026-10-12",
-     "value": 381.63,
+     "value": 382.15,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 96,
      "changes": {
-      "4w": -4.87,
-      "13w": 3.59,
-      "52w": -1.89
+      "4w": -4.74,
+      "13w": 3.73,
+      "52w": -1.76
      },
      "change_kind": "pct",
-     "move4_rank_pct": 71,
+     "move4_rank_pct": 69,
      "chart": [
       [
        "2023-10-27",
@@ -5174,7 +5174,7 @@
       ],
       [
        "2026-10-16",
-       381.63
+       382.15
       ]
      ]
     },
@@ -6464,7 +6464,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is up 3.6% over 13 weeks and 1.9% lower than a year ago.",
+    "Gold fund (GLD) is up 3.7% over 13 weeks and 1.8% lower than a year ago.",
     "Gold held by GLD is up 0.6% over 4 weeks: money flowing in."
    ]
   },
@@ -6476,17 +6476,17 @@
      "name": "Oil fund (USO)",
      "unit": "USD",
      "as_of": "2026-10-12",
-     "value": 151.79,
+     "value": 151.03,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 56,
      "changes": {
-      "4w": -1.32,
-      "13w": 22.45,
-      "52w": 123.29
+      "4w": -1.81,
+      "13w": 21.84,
+      "52w": 122.17
      },
      "change_kind": "pct",
-     "move4_rank_pct": 12,
+     "move4_rank_pct": 16,
      "chart": [
       [
        "2023-10-27",
@@ -7110,7 +7110,7 @@
       ],
       [
        "2026-10-16",
-       151.79
+       151.03
       ]
      ]
     },
@@ -7758,7 +7758,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 22.4% over 13 weeks and 123.3% higher than a year ago."
+    "Oil fund (USO) is up 21.8% over 13 weeks and 122.2% higher than a year ago."
    ]
   },
   {
@@ -7769,17 +7769,17 @@
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
      "as_of": "2026-10-12",
-     "value": 777.6,
+     "value": 778.1,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.09,
-      "13w": 4.88,
-      "52w": 18.3
+      "4w": 2.15,
+      "13w": 4.94,
+      "52w": 18.38
      },
      "change_kind": "pct",
-     "move4_rank_pct": 39,
+     "move4_rank_pct": 41,
      "chart": [
       [
        "2023-10-27",
@@ -8403,7 +8403,7 @@
       ],
       [
        "2026-10-16",
-       777.6
+       778.1
       ]
      ]
     },
@@ -8411,17 +8411,17 @@
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
      "as_of": "2026-10-12",
-     "value": 745.77,
+     "value": 746.04,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 3.48,
-      "13w": 7.37,
-      "52w": 24.07
+      "4w": 3.52,
+      "13w": 7.4,
+      "52w": 24.11
      },
      "change_kind": "pct",
-     "move4_rank_pct": 48,
+     "move4_rank_pct": 49,
      "chart": [
       [
        "2023-10-27",
@@ -9045,7 +9045,7 @@
       ],
       [
        "2026-10-16",
-       745.77
+       746.04
       ]
      ]
     },
@@ -11619,7 +11619,7 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 4.9% over 13 weeks and 18.3% higher than a year ago.",
+    "S&P 500 fund (SPY) is up 4.9% over 13 weeks and 18.4% higher than a year ago.",
     "Nasdaq-100 fund (QQQ) is up 7.4% over 13 weeks and 24.1% higher than a year ago."
    ]
   },
