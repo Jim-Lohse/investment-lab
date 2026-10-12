@@ -1,11 +1,10 @@
 {
- "generated": "2026-10-11",
+ "generated": "2026-10-12",
  "headlines": [
   "The 2-year yield is 4.80% and is up 59 bp over 13 weeks; the 10-year is 5.24% and is up 68 bp.",
   "The 10-year pays 0.44 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-  "Dollar fund (UUP) is up 2.2% over 13 weeks and 7.6% higher than a year ago. Its latest 4-week move is larger than 91% of past 4-week moves, which is unusually large.",
-  "9 distinct positioning stories this week: much busier than usual (a usual week has 2.5).",
-  "Compared with the same period last year: Taiwan 50% higher; Korea 84% higher; Japan 23% higher (17% in U.S. dollars)."
+  "Compared with the same period last year: Taiwan 50% higher; Korea 102% higher; Japan 23% higher (17% in U.S. dollars).",
+  "No other series made an unusually large move over the past four weeks."
  ],
  "panels": [
   {
@@ -2605,23 +2604,19 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-10-09",
-     "value": 29.02,
+     "as_of": "2026-10-12",
+     "value": 29.14,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 3.38,
-      "13w": 2.22,
-      "52w": 7.6
+      "4w": 2.64,
+      "13w": 2.86,
+      "52w": 8.61
      },
      "change_kind": "pct",
-     "move4_rank_pct": 91,
+     "move4_rank_pct": 83,
      "chart": [
-      [
-       "2023-10-20",
-       25.95
-      ],
       [
        "2023-10-27",
        26.06
@@ -3241,6 +3236,10 @@
       [
        "2026-10-09",
        29.02
+      ],
+      [
+       "2026-10-16",
+       29.14
       ]
      ]
     },
@@ -4530,7 +4529,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 2.2% over 13 weeks and 7.6% higher than a year ago. Its latest 4-week move is larger than 91% of past 4-week moves, which is unusually large."
+    "Dollar fund (UUP) is up 2.9% over 13 weeks and 8.6% higher than a year ago."
    ]
   },
   {
@@ -4540,23 +4539,19 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-10-09",
-     "value": 384.58,
+     "as_of": "2026-10-12",
+     "value": 381.63,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 96,
      "changes": {
-      "4w": -3.56,
-      "13w": 2.01,
-      "52w": 4.19
+      "4w": -4.87,
+      "13w": 3.59,
+      "52w": -1.89
      },
      "change_kind": "pct",
-     "move4_rank_pct": 58,
+     "move4_rank_pct": 71,
      "chart": [
-      [
-       "2023-10-20",
-       183.59
-      ],
       [
        "2023-10-27",
        186.15
@@ -5176,24 +5171,28 @@
       [
        "2026-10-09",
        384.58
+      ],
+      [
+       "2026-10-16",
+       381.63
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-10-08",
-     "value": 1055.41,
+     "as_of": "2026-10-09",
+     "value": 1053.13,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
      "rank_pct": 74,
      "changes": {
-      "4w": 0.76,
-      "13w": 5.28,
-      "52w": 3.76
+      "4w": 0.55,
+      "13w": 5.06,
+      "52w": 3.54
      },
      "change_kind": "pct",
-     "move4_rank_pct": 21,
+     "move4_rank_pct": 14,
      "chart": [
       [
        "2023-10-20",
@@ -5817,7 +5816,7 @@
       ],
       [
        "2026-10-09",
-       1055.41
+       1053.13
       ]
      ]
     },
@@ -6465,8 +6464,8 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is up 2.0% over 13 weeks and 4.2% higher than a year ago.",
-    "Gold held by GLD is up 0.8% over 4 weeks: money flowing in."
+    "Gold fund (GLD) is up 3.6% over 13 weeks and 1.9% lower than a year ago.",
+    "Gold held by GLD is up 0.6% over 4 weeks: money flowing in."
    ]
   },
   {
@@ -6476,23 +6475,19 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-10-09",
-     "value": 148.2,
+     "as_of": "2026-10-12",
+     "value": 151.79,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 56,
      "changes": {
-      "4w": -4.33,
-      "13w": 36.34,
-      "52w": 113.58
+      "4w": -1.32,
+      "13w": 22.45,
+      "52w": 123.29
      },
      "change_kind": "pct",
-     "move4_rank_pct": 38,
+     "move4_rank_pct": 12,
      "chart": [
-      [
-       "2023-10-20",
-       80.7
-      ],
       [
        "2023-10-27",
        78.36
@@ -7112,6 +7107,10 @@
       [
        "2026-10-09",
        148.2
+      ],
+      [
+       "2026-10-16",
+       151.79
       ]
      ]
     },
@@ -7759,7 +7758,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 36.3% over 13 weeks and 113.6% higher than a year ago."
+    "Oil fund (USO) is up 22.4% over 13 weeks and 123.3% higher than a year ago."
    ]
   },
   {
@@ -7769,23 +7768,19 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-10-09",
-     "value": 778.57,
+     "as_of": "2026-10-12",
+     "value": 777.6,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.12,
-      "13w": 3.38,
-      "52w": 20.51
+      "4w": 2.09,
+      "13w": 4.88,
+      "52w": 18.3
      },
      "change_kind": "pct",
-     "move4_rank_pct": 40,
+     "move4_rank_pct": 39,
      "chart": [
-      [
-       "2023-10-20",
-       406.2
-      ],
       [
        "2023-10-27",
        396.06
@@ -8405,29 +8400,29 @@
       [
        "2026-10-09",
        778.57
+      ],
+      [
+       "2026-10-16",
+       777.6
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-10-09",
-     "value": 751.27,
+     "as_of": "2026-10-12",
+     "value": 745.77,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 5.2,
-      "13w": 3.66,
-      "52w": 28.04
+      "4w": 3.48,
+      "13w": 7.37,
+      "52w": 24.07
      },
      "change_kind": "pct",
-     "move4_rank_pct": 69,
+     "move4_rank_pct": 48,
      "chart": [
-      [
-       "2023-10-20",
-       348.66
-      ],
       [
        "2023-10-27",
        339.52
@@ -8762,7 +8757,7 @@
       ],
       [
        "2025-05-30",
-       515.5
+       515.51
       ],
       [
        "2025-06-06",
@@ -9047,6 +9042,10 @@
       [
        "2026-10-09",
        751.27
+      ],
+      [
+       "2026-10-16",
+       745.77
       ]
      ]
     },
@@ -11620,8 +11619,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 3.4% over 13 weeks and 20.5% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is up 3.7% over 13 weeks and 28.0% higher than a year ago."
+    "S&P 500 fund (SPY) is up 4.9% over 13 weeks and 18.3% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is up 7.4% over 13 weeks and 24.1% higher than a year ago."
    ]
   },
   {
@@ -11630,10 +11629,10 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 9,
-    "baseline": 2.5,
-    "ratio": 3.6,
-    "label": "much busier than usual"
+    "count": 0,
+    "baseline": 3.0,
+    "ratio": 0.0,
+    "label": "quieter than usual"
    },
    "weeks": [
     [
@@ -11695,6 +11694,10 @@
     [
      "2026-10-11",
      9
+    ],
+    [
+     "2026-10-18",
+     0
     ]
    ],
    "stories": [
@@ -11717,15 +11720,6 @@
      "extreme": true
     },
     {
-     "date": "2026-09-28",
-     "outlet": "Traders Union",
-     "title": "Goldman Sachs prime brokerage fees surge on Situational Awareness trading activity",
-     "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOWjg4OFNheDEtenVsSGlSUTBSYXo0OWpYV2xFOER2czR5NHV2UlNVU1N2U0RORVhLck9RSjN6TEM4Q2I0SVNyZGZCeHBTTmFnajhpRTIyczI4VVRpRV9XRmdLZHpfeHgySnNmVjFlOEE0R2kxQmJBTmEyOTdXRk5OOVJmNnhPa3h4UGliMFJnQ01WMDA?oc=5",
-     "banks": "Goldman Sachs",
-     "direction": "",
-     "extreme": false
-    },
-    {
      "date": "2026-10-08",
      "outlet": "Simply Wall Street",
      "title": "3 Bank Stocks Exposed To Prime Brokerage Leverage Risk",
@@ -11739,6 +11733,15 @@
      "outlet": "Hedgeweek",
      "title": "Trillion-dollar hedge fund borrowing boom drives Wall Street prime brokerage profits",
      "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSGgyVjE0U3U4N2o5dzRSUm5lbG9CNThnWHItMmNpRTE2NGZtRDZuQnB2eTFuS0xILWExTWFSZENYUTYxZ3pzSk9NRjhyQVFzaUlveUplNGU3ODZhVXAzdXdnMTloZm02eFlXcWVaRU9Nd05CbHlieUx0S0V0WEY0MUtWZzh3ZWJXLU9kR3JYZC12V1ZhZ0xxTnJXelMxaERCZUg1YXF3dmVVakNnMTJSNg?oc=5",
+     "banks": "",
+     "direction": "",
+     "extreme": false
+    },
+    {
+     "date": "2026-10-08",
+     "outlet": "Financial Times",
+     "title": "How a trillion-dollar hedge fund borrowing spree became Wall Street\u2019s cash cow",
+     "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPOXF0NmRWV2hsYm9HZTc2YTNLQjV1SkZmYkNDLU0ybXdHQlBvanNTMngwVkFYOGhZNE92YVZvMDlLcjEzVG00SEQ0ZFlJQjR5aURtQ3NZdWVCTFZSOHJlM0JxTmtWYmhvRXJ5NGZJaGptRXYybGRQTGhtMFdjYURSNzdmeWU?oc=5",
      "banks": "",
      "direction": "",
      "extreme": false
@@ -11761,7 +11764,7 @@
     }
    ],
    "takeaway": [
-    "9 distinct positioning stories this week: much busier than usual (a usual week has 2.5).",
+    "0 distinct positioning stories this week: quieter than usual (a usual week has 3).",
     "Record-type wording in the last two weeks: \"Wall Street Banks Profit as Hedge Fund Borrowing Hits Record $3.7 Trillion\" (streamlinefeed.co.ke, 2026-10-08)."
    ]
   },
@@ -11774,7 +11777,7 @@
      "kind": "trade",
      "period": "2026-09",
      "window": "month",
-     "value": 49.99,
+     "value": 49.98,
      "note": "Monthly, filed by the 10th of the next month.",
      "previous": {
       "period": "2026-08",
@@ -11785,14 +11788,14 @@
     {
      "name": "Korea: total exports",
      "kind": "trade",
-     "period": "2026-09",
-     "window": "",
-     "value": 83.51,
+     "period": "2026-10",
+     "window": "first 10 days",
+     "value": 101.95,
      "note": "The earliest read each month: the first 10 days, the first 20, then the full month. Already in U.S. dollars.",
      "previous": {
       "period": "2026-09",
-      "window": "first 20 days",
-      "value": 78.3
+      "window": "",
+      "value": 83.51
      }
     },
     {
@@ -11812,7 +11815,7 @@
    ],
    "explainer": "Growth compared with the same period a year earlier, from the lab's existing Taiwan, Korea and Japan data. Strong readings here mostly reflect AI-hardware demand.",
    "takeaway": [
-    "Compared with the same period last year: Taiwan 50% higher; Korea 84% higher; Japan 23% higher (17% in U.S. dollars).",
+    "Compared with the same period last year: Taiwan 50% higher; Korea 102% higher; Japan 23% higher (17% in U.S. dollars).",
     "About 6 points of Japan's export growth is only the weaker yen; the dollar figure is the truer read of demand."
    ]
   }
