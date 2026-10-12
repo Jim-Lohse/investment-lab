@@ -16,7 +16,7 @@
   "japan": [
     {"code": "7220", "name": "Musashi Seimitsu", "task": "segment check: does the energy-storage unit get its own segment line?", "priority": ["results", "segment", "forecast", "plan"]},
     {"code": "5016", "name": "JX Advanced Metals", "task": "JX watch: first-half results, detailed spending plan, big holder selling", "priority": ["results", "forecast", "plan", "ownership", "buyback", "financing"]},
-    {"code": "6501", "name": "Hitachi", "task": "re-entry multiple: profit guidance and results", "priority": ["results", "forecast", "buyback"]},
+    {"code": "6501", "name": "Hitachi", "task": "valuation check: profit guidance and results", "priority": ["results", "forecast", "buyback"]},
     {"code": "8031", "name": "Mitsui & Co.", "task": "organic-growth question for Tokyo names", "priority": ["results", "forecast", "ownership", "buyback", "shareholder_return"]}
   ],
   "korea": [
