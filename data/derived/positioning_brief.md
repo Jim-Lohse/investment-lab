@@ -1,6 +1,6 @@
 # Positioning brief, 2026-10-14 (U.S. Eastern)
 
-Stories counted: 57 (of 274 rows collected; the rest failed the relevance filter). This week (from 2026-10-12): 2 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: about normal.
+Stories counted: 58 (of 284 rows collected; the rest failed the relevance filter). This week (from 2026-10-12): 3 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: about normal.
 
 | Search | This week | Usual week |
 |---|---|---|
@@ -8,7 +8,7 @@ Stories counted: 57 (of 274 rows collected; the rest failed the relevance filter
 | Reuters HEDGE FLOW column | 0 | 0.0 |
 | Goldman Hedge Fund Trend Monitor and VIP basket | 0 | 0.0 |
 | Morgan Stanley prime brokerage (MSPB) | 0 | 0.0 |
-| Weekly prime-desk leverage notes | 1 | 1.5 |
+| Weekly prime-desk leverage notes | 2 | 1.5 |
 | JPMorgan-sourced hedge fund data | 1 | 0.0 |
 
 ## Stories this week
@@ -17,6 +17,7 @@ Stories counted: 57 (of 274 rows collected; the rest failed the relevance filter
 |---|---|---|---|---|---|
 | 2026-10-13 | Bloomberg.com | [Goldman’s Equity Traders Take Back Seat to Prime Brokerage Arm](https://news.google.com/rss/articles/CBMiswFBVV95cUxOb0ZJeWw3T1ZSLUhxVUI1QWxJSU1sM2MzVmpiclZXRUZqNUNmX29wWHR2MVRSR3ItT0F4OW9OeGRkeU9idmsyVzc0NVhTVGNYdng3WVJRTmp6b1FRa1VCLXp3ZXFSaFo3c3lCNGtsWUlFQ0hPWjl0N09PbWhkdVlBeW9aa2h6R2g1R0phcVEzVmFOcGFSUVVWaHM2ZXhrbkE0UDUzSldybTRubVFfQ3UxS3ZQNA?oc=5) | Goldman Sachs | - | - |
 | 2026-10-13 | Reuters | [Hedge funds are a top draw in Asia as investors look beyond bonds](https://news.google.com/rss/articles/CBMirwFBVV95cUxPNDNlMkhtWmtQU3JuS19QZU5EYUJqSkJ6WDY0TnFEQmNUUWpIMmdsQm85SGdONUpJcXUwaWtSOWtOWC1Rc1BPbXItdjN4dHh6WTdBZDhqVXE4MS1yZ2x5LTlzNkZpeEQyNFhQMGY4NktVSFpvbTl6NEVPeVlMSHRKOVg2M3liZ1oyMVNMejZnVVA0Wm81blYwYXVTbUVtNXdNYXNMYkNYYVVESGdVd2JV?oc=5) | - | - | - |
+| 2026-10-13 | Hedgeweek | [Alpaca targets prime brokerage expansion amid tokenised stock growth](https://news.google.com/rss/articles/CBMimwFBVV95cUxOcjVDVkctMG1uLXpORWp4T3ZyWTAzSnJDdDg4YWU1aWFUV09odm1VMFpObmx0bU0zWjdGUlRxblFIMW9POXlMZFpLM1ZQVVBwQVZXMnVXaDJDbDZrZWZGcVlwY0liYmV3bFNkQzA3UWxYVGp2blA0eFBkQ210RVN2QTNabGlaMUsyN3Z4NlFqb3NwMk1GaDJwMUtvRQ?oc=5) | - | - | - |
 
 ## Coming up (next 21 days)
 

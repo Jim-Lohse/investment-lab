@@ -2604,18 +2604,18 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-10-13",
-     "value": 29.02,
+     "as_of": "2026-10-14",
+     "value": 29.18,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.22,
-      "13w": 2.44,
-      "52w": 8.16
+      "4w": 2.78,
+      "13w": 3.0,
+      "52w": 8.76
      },
      "change_kind": "pct",
-     "move4_rank_pct": 76,
+     "move4_rank_pct": 84,
      "chart": [
       [
        "2023-10-27",
@@ -3239,7 +3239,7 @@
       ],
       [
        "2026-10-16",
-       29.02
+       29.18
       ]
      ]
     },
@@ -4529,7 +4529,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 2.4% over 13 weeks and 8.2% higher than a year ago."
+    "Dollar fund (UUP) is up 3.0% over 13 weeks and 8.8% higher than a year ago."
    ]
   },
   {
@@ -4539,18 +4539,18 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-10-13",
-     "value": 381.67,
+     "as_of": "2026-10-14",
+     "value": 374.5,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 96,
      "changes": {
-      "4w": -4.86,
-      "13w": 3.6,
-      "52w": -1.88
+      "4w": -6.65,
+      "13w": 1.65,
+      "52w": -3.73
      },
      "change_kind": "pct",
-     "move4_rank_pct": 71,
+     "move4_rank_pct": 85,
      "chart": [
       [
        "2023-10-27",
@@ -5174,7 +5174,7 @@
       ],
       [
        "2026-10-16",
-       381.67
+       374.5
       ]
      ]
     },
@@ -6464,7 +6464,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is up 3.6% over 13 weeks and 1.9% lower than a year ago.",
+    "Gold fund (GLD) is up 1.6% over 13 weeks and 3.7% lower than a year ago.",
     "Gold held by GLD is little changed over 4 weeks: money flowing out."
    ]
   },
@@ -6475,18 +6475,18 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-10-13",
-     "value": 153.09,
+     "as_of": "2026-10-14",
+     "value": 154.08,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 56,
      "changes": {
-      "4w": -0.47,
-      "13w": 23.5,
-      "52w": 125.2
+      "4w": 0.17,
+      "13w": 24.3,
+      "52w": 126.65
      },
      "change_kind": "pct",
-     "move4_rank_pct": 5,
+     "move4_rank_pct": 2,
      "chart": [
       [
        "2023-10-27",
@@ -7110,7 +7110,7 @@
       ],
       [
        "2026-10-16",
-       153.09
+       154.08
       ]
      ]
     },
@@ -7758,7 +7758,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 23.5% over 13 weeks and 125.2% higher than a year ago."
+    "Oil fund (USO) is up 24.3% over 13 weeks and 126.7% higher than a year ago."
    ]
   },
   {
@@ -7768,18 +7768,18 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-10-13",
-     "value": 778.01,
+     "as_of": "2026-10-14",
+     "value": 768.76,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.14,
-      "13w": 4.93,
-      "52w": 18.36
+      "4w": 0.93,
+      "13w": 3.68,
+      "52w": 16.96
      },
      "change_kind": "pct",
-     "move4_rank_pct": 41,
+     "move4_rank_pct": 16,
      "chart": [
       [
        "2023-10-27",
@@ -7911,7 +7911,7 @@
       ],
       [
        "2024-06-07",
-       518.7
+       518.69
       ],
       [
        "2024-06-14",
@@ -8175,7 +8175,7 @@
       ],
       [
        "2025-09-12",
-       648.6
+       648.59
       ],
       [
        "2025-09-19",
@@ -8403,25 +8403,25 @@
       ],
       [
        "2026-10-16",
-       778.01
+       768.76
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-10-13",
-     "value": 743.57,
+     "as_of": "2026-10-14",
+     "value": 729.29,
      "note": "Price including dividends.",
      "since": "2006-01-06",
-     "rank_pct": 100,
+     "rank_pct": 99,
      "changes": {
-      "4w": 3.17,
-      "13w": 7.05,
-      "52w": 23.7
+      "4w": 1.19,
+      "13w": 4.99,
+      "52w": 21.32
      },
      "change_kind": "pct",
-     "move4_rank_pct": 44,
+     "move4_rank_pct": 18,
      "chart": [
       [
        "2023-10-27",
@@ -8657,7 +8657,7 @@
       ],
       [
        "2024-12-06",
-       521.21
+       521.2
       ],
       [
        "2024-12-13",
@@ -8757,7 +8757,7 @@
       ],
       [
        "2025-05-30",
-       515.5
+       515.51
       ],
       [
        "2025-06-06",
@@ -9045,7 +9045,7 @@
       ],
       [
        "2026-10-16",
-       743.57
+       729.29
       ]
      ]
     },
@@ -11619,8 +11619,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 4.9% over 13 weeks and 18.4% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is up 7.0% over 13 weeks and 23.7% higher than a year ago."
+    "S&P 500 fund (SPY) is up 3.7% over 13 weeks and 17.0% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is up 5.0% over 13 weeks and 21.3% higher than a year ago."
    ]
   },
   {
@@ -11629,9 +11629,9 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 2,
+    "count": 3,
     "baseline": 3.0,
-    "ratio": 0.67,
+    "ratio": 1.0,
     "label": "about normal"
    },
    "weeks": [
@@ -11697,7 +11697,7 @@
     ],
     [
      "2026-10-18",
-     2
+     3
     ]
    ],
    "stories": [
@@ -11729,19 +11729,19 @@
      "extreme": false
     },
     {
-     "date": "2026-10-08",
-     "outlet": "Simply Wall Street",
-     "title": "3 Bank Stocks Exposed To Prime Brokerage Leverage Risk",
-     "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNOFgtQnpta1RaUFRoOUFOQ2lXcHU3WGV2Ym91U1NRV2FIN1IwTHVPOVc5NWFhY3F0clp2M2cxb1RYc1VTSHFwaVJBNXdaNm5YbTd1NGowaGN5Yl9aNE1wb3FjbElIVGk0bS16blVWRzE2dHBLcG9CLUp0ZG5XVjFYcHhnejlndERra0otNmdGcGdXWFZrSVNjamFreUwyam1sV3RZbnpnRGlzSWFoSXFDMl9Dbkx4RDF6WDRreUNfY3VfbW5rejJEb1hha3p6eVZ5aXZ3TURn0gHbAUFVX3lxTE94WXRYV1BCcENJYldSb3NYV1B3NDRqYVh6SzEwT2RzZ1I0dEtGVUpROUpVOXpISXlMTmJLc2NOaDdQeU5RWEJqSVJyb3VOVjNBVEkyNkVRX0dCemJVMkQzMW1pbGlfaGlIWWFCeXRKVzdDaHB6SC1VSjZmdWhlSDl5aFVJSG9fNzBvOXdDY000Y1hWZkVMV0dzejd1TXR0YmJ5MmhoQUxZTEpSZkZwMDhrV3pRVzVnc3d5THhhemgtcGI4cW9ZWlN5QmM2WGFfWlo1eTd0dlZ5MFJTVQ?oc=5",
+     "date": "2026-10-13",
+     "outlet": "Hedgeweek",
+     "title": "Alpaca targets prime brokerage expansion amid tokenised stock growth",
+     "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOcjVDVkctMG1uLXpORWp4T3ZyWTAzSnJDdDg4YWU1aWFUV09odm1VMFpObmx0bU0zWjdGUlRxblFIMW9POXlMZFpLM1ZQVVBwQVZXMnVXaDJDbDZrZWZGcVlwY0liYmV3bFNkQzA3UWxYVGp2blA0eFBkQ210RVN2QTNabGlaMUsyN3Z4NlFqb3NwMk1GaDJwMUtvRQ?oc=5",
      "banks": "",
      "direction": "",
      "extreme": false
     },
     {
      "date": "2026-10-08",
-     "outlet": "Hedgeweek",
-     "title": "Trillion-dollar hedge fund borrowing boom drives Wall Street prime brokerage profits",
-     "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSGgyVjE0U3U4N2o5dzRSUm5lbG9CNThnWHItMmNpRTE2NGZtRDZuQnB2eTFuS0xILWExTWFSZENYUTYxZ3pzSk9NRjhyQVFzaUlveUplNGU3ODZhVXAzdXdnMTloZm02eFlXcWVaRU9Nd05CbHlieUx0S0V0WEY0MUtWZzh3ZWJXLU9kR3JYZC12V1ZhZ0xxTnJXelMxaERCZUg1YXF3dmVVakNnMTJSNg?oc=5",
+     "outlet": "Simply Wall Street",
+     "title": "3 Bank Stocks Exposed To Prime Brokerage Leverage Risk",
+     "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNOFgtQnpta1RaUFRoOUFOQ2lXcHU3WGV2Ym91U1NRV2FIN1IwTHVPOVc5NWFhY3F0clp2M2cxb1RYc1VTSHFwaVJBNXdaNm5YbTd1NGowaGN5Yl9aNE1wb3FjbElIVGk0bS16blVWRzE2dHBLcG9CLUp0ZG5XVjFYcHhnejlndERra0otNmdGcGdXWFZrSVNjamFreUwyam1sV3RZbnpnRGlzSWFoSXFDMl9Dbkx4RDF6WDRreUNfY3VfbW5rejJEb1hha3p6eVZ5aXZ3TURn0gHbAUFVX3lxTE94WXRYV1BCcENJYldSb3NYV1B3NDRqYVh6SzEwT2RzZ1I0dEtGVUpROUpVOXpISXlMTmJLc2NOaDdQeU5RWEJqSVJyb3VOVjNBVEkyNkVRX0dCemJVMkQzMW1pbGlfaGlIWWFCeXRKVzdDaHB6SC1VSjZmdWhlSDl5aFVJSG9fNzBvOXdDY000Y1hWZkVMV0dzejd1TXR0YmJ5MmhoQUxZTEpSZkZwMDhrV3pRVzVnc3d5THhhemgtcGI4cW9ZWlN5QmM2WGFfWlo1eTd0dlZ5MFJTVQ?oc=5",
      "banks": "",
      "direction": "",
      "extreme": false
@@ -11771,7 +11771,7 @@
     }
    ],
    "takeaway": [
-    "2 distinct positioning stories this week: about normal (a usual week has 3).",
+    "3 distinct positioning stories this week: about normal (a usual week has 3).",
     "Record-type wording in the last two weeks: \"Wall Street Banks Profit as Hedge Fund Borrowing Hits Record $3.7 Trillion\" (streamlinefeed.co.ke, 2026-10-08)."
    ]
   },
