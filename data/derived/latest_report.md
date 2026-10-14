@@ -1,6 +1,6 @@
 # Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan + U.S. trade
 
-_Generated 2026-10-13 by `signals/compute_signals.py`._
+_Generated 2026-10-14 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
 ## Taiwan monthly revenue — 2026-09
@@ -14,7 +14,7 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | network_interconnect | 3 | 57.54 | 39.16 | 100.0 |
 | photonics_epi | 2 | 85.63 | 109.82 | 100.0 |
 | photonics_cpo | 8 | 62.33 | 68.60 | 100.0 |
-| all_listed | 1957 | 46.73 | 14.46 | 71.3 |
+| all_listed | 1958 | 46.72 | 14.43 | 71.3 |
 
 _2026-08 ai_compute agg YoY: 54.13%_
 
