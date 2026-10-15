@@ -1,14 +1,16 @@
 # Foreign company filings: what's new
 
-Run date 2026-10-14. New means first seen since 2026-10-14T18:01:19Z.
+Run date 2026-10-15. New means first seen since 2026-10-15T12:51:43Z.
 
 ## Bottom line
 
-Nothing new from the watched companies since the last run.
+New documents arrived, but none touches a question you are watching.
 
 ## What
 
-No new company documents.
+| Company | Where | Title | Dated | About | Read now? |
+|---|---|---|---|---|---|
+| Mitsui & Co. | Japan same-day announcement | [（経過開示）Penske Corporationと共同での米国Penske Automotive Group, Inc.の浮動株買収の決定](https://www.release.tdnet.info/inbs/140120261015551440.pdf) | 2026-10-15 | other | no |
 
 ## So what
 
@@ -19,9 +21,7 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 | 1,412,743 | £34,720,492 | 2,457.7 pence a share | 06 Oct 2026 |
 
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
-Watch: no purchase reported for 6 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
-
-Nothing to interpret this run.
+Watch: no purchase reported for 7 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
 
 ## What now
 
