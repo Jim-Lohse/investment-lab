@@ -3,6 +3,7 @@
  "headlines": [
   "The 2-year yield is 4.77% and is up 59 bp over 13 weeks; the 10-year is 5.10% and is up 55 bp.",
   "The 10-year pays 0.33 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+  "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 92% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
   "9 distinct positioning stories this week: much busier than usual (a usual week has 3).",
   "Compared with the same period last year: Taiwan 44% higher; Korea 102% higher; Japan 23% higher (17% in U.S. dollars)."
  ],
@@ -2605,17 +2606,17 @@
      "name": "Dollar fund (UUP)",
      "unit": "USD",
      "as_of": "2026-10-16",
-     "value": 28.98,
+     "value": 28.92,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.08,
-      "13w": 2.29,
-      "52w": 8.01
+      "4w": 1.87,
+      "13w": 2.08,
+      "52w": 7.79
      },
      "change_kind": "pct",
-     "move4_rank_pct": 74,
+     "move4_rank_pct": 69,
      "chart": [
       [
        "2023-10-27",
@@ -3239,30 +3240,26 @@
       ],
       [
        "2026-10-16",
-       28.98
+       28.92
       ]
      ]
     },
     {
      "name": "Hedge funds, dollar-index futures",
      "unit": "contracts",
-     "as_of": "2026-10-06",
-     "value": 864.0,
+     "as_of": "2026-10-13",
+     "value": 2076.0,
      "note": "Contracts betting on a rise minus contracts betting on a fall, as of Tuesday. Situational awareness only: tested, it does not lead prices.",
      "since": "2006-06-16",
-     "rank_pct": 59,
+     "rank_pct": 64,
      "changes": {
-      "4w": -5322.0,
-      "13w": 5318.0,
-      "52w": 13315.0
+      "4w": 6985.0,
+      "13w": 6942.0,
+      "52w": 18612.0
      },
      "change_kind": "abs",
-     "move4_rank_pct": 50,
+     "move4_rank_pct": 61,
      "chart": [
-      [
-       "2023-10-20",
-       2477.0
-      ],
       [
        "2023-10-27",
        4055.0
@@ -3882,29 +3879,29 @@
       [
        "2026-10-09",
        864.0
+      ],
+      [
+       "2026-10-16",
+       2076.0
       ]
      ]
     },
     {
      "name": "Institutions, dollar-index futures",
      "unit": "contracts",
-     "as_of": "2026-10-06",
-     "value": 19096.0,
+     "as_of": "2026-10-13",
+     "value": 18164.0,
      "note": "Contracts betting on a rise minus contracts betting on a fall, as of Tuesday. Situational awareness only: tested, it does not lead prices.",
      "since": "2006-06-16",
-     "rank_pct": 88,
+     "rank_pct": 86,
      "changes": {
-      "4w": 2752.0,
-      "13w": -2328.0,
-      "52w": 22821.0
+      "4w": 2362.0,
+      "13w": -3875.0,
+      "52w": 18779.0
      },
      "change_kind": "abs",
-     "move4_rank_pct": 62,
+     "move4_rank_pct": 57,
      "chart": [
-      [
-       "2023-10-20",
-       18899.0
-      ],
       [
        "2023-10-27",
        18874.0
@@ -4524,12 +4521,16 @@
       [
        "2026-10-09",
        19096.0
+      ],
+      [
+       "2026-10-16",
+       18164.0
       ]
      ]
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 2.3% over 13 weeks and 8.0% higher than a year ago."
+    "Dollar fund (UUP) is up 2.1% over 13 weeks and 7.8% higher than a year ago."
    ]
   },
   {
@@ -4540,17 +4541,17 @@
      "name": "Gold fund (GLD)",
      "unit": "USD",
      "as_of": "2026-10-16",
-     "value": 381.33,
+     "value": 382.01,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 96,
      "changes": {
-      "4w": -4.95,
-      "13w": 3.51,
-      "52w": -1.97
+      "4w": -4.78,
+      "13w": 3.69,
+      "52w": -1.79
      },
      "change_kind": "pct",
-     "move4_rank_pct": 71,
+     "move4_rank_pct": 70,
      "chart": [
       [
        "2023-10-27",
@@ -5174,7 +5175,7 @@
       ],
       [
        "2026-10-16",
-       381.33
+       382.01
       ]
      ]
     },
@@ -5823,23 +5824,19 @@
     {
      "name": "Hedge funds, gold futures",
      "unit": "contracts",
-     "as_of": "2026-10-06",
-     "value": 110987.0,
+     "as_of": "2026-10-13",
+     "value": 107089.0,
      "note": "Contracts betting on a rise minus contracts betting on a fall, as of Tuesday. Situational awareness only: tested, it does not lead prices.",
      "since": "2006-06-16",
-     "rank_pct": 53,
+     "rank_pct": 51,
      "changes": {
-      "4w": -23985.0,
-      "13w": -5174.0,
-      "52w": -18772.0
+      "4w": -26027.0,
+      "13w": -13690.0,
+      "52w": -1221.0
      },
      "change_kind": "abs",
-     "move4_rank_pct": 50,
+     "move4_rank_pct": 54,
      "chart": [
-      [
-       "2023-10-20",
-       15103.0
-      ],
       [
        "2023-10-27",
        55748.0
@@ -6459,12 +6456,16 @@
       [
        "2026-10-09",
        110987.0
+      ],
+      [
+       "2026-10-16",
+       107089.0
       ]
      ]
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is up 3.5% over 13 weeks and 2.0% lower than a year ago.",
+    "Gold fund (GLD) is up 3.7% over 13 weeks and 1.8% lower than a year ago.",
     "Gold held by GLD is little changed over 4 weeks: money flowing out."
    ]
   },
@@ -6476,17 +6477,17 @@
      "name": "Oil fund (USO)",
      "unit": "USD",
      "as_of": "2026-10-16",
-     "value": 161.2,
+     "value": 161.76,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 57,
      "changes": {
-      "4w": 4.8,
-      "13w": 30.04,
-      "52w": 137.13
+      "4w": 5.16,
+      "13w": 30.49,
+      "52w": 137.95
      },
      "change_kind": "pct",
-     "move4_rank_pct": 41,
+     "move4_rank_pct": 45,
      "chart": [
       [
        "2023-10-27",
@@ -7110,30 +7111,26 @@
       ],
       [
        "2026-10-16",
-       161.2
+       161.76
       ]
      ]
     },
     {
      "name": "Hedge funds, WTI crude futures",
      "unit": "contracts",
-     "as_of": "2026-10-06",
-     "value": 53598.0,
+     "as_of": "2026-10-13",
+     "value": 40574.0,
      "note": "Contracts betting on a rise minus contracts betting on a fall, as of Tuesday. Situational awareness only: tested, it does not lead prices.",
      "since": "2006-06-16",
-     "rank_pct": 12,
+     "rank_pct": 8,
      "changes": {
-      "4w": -58133.0,
-      "13w": -10443.0,
-      "52w": 71079.0
+      "4w": -65705.0,
+      "13w": -21400.0,
+      "52w": 59340.0
      },
      "change_kind": "abs",
-     "move4_rank_pct": 78,
+     "move4_rank_pct": 82,
      "chart": [
-      [
-       "2023-10-20",
-       203144.0
-      ],
       [
        "2023-10-27",
        195976.0
@@ -7753,12 +7750,17 @@
       [
        "2026-10-09",
        53598.0
+      ],
+      [
+       "2026-10-16",
+       40574.0
       ]
      ]
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 30.0% over 13 weeks and 137.1% higher than a year ago."
+    "Oil fund (USO) is up 30.5% over 13 weeks and 137.9% higher than a year ago.",
+    "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 92% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
   {
@@ -7769,17 +7771,17 @@
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
      "as_of": "2026-10-16",
-     "value": 766.05,
+     "value": 763.25,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 99,
      "changes": {
-      "4w": 0.57,
-      "13w": 3.32,
-      "52w": 16.54
+      "4w": 0.2,
+      "13w": 2.94,
+      "52w": 16.12
      },
      "change_kind": "pct",
-     "move4_rank_pct": 9,
+     "move4_rank_pct": 4,
      "chart": [
       [
        "2023-10-27",
@@ -7911,7 +7913,7 @@
       ],
       [
        "2024-06-07",
-       518.69
+       518.7
       ],
       [
        "2024-06-14",
@@ -8051,7 +8053,7 @@
       ],
       [
        "2025-02-07",
-       589.2
+       589.19
       ],
       [
        "2025-02-14",
@@ -8403,7 +8405,7 @@
       ],
       [
        "2026-10-16",
-       766.05
+       763.25
       ]
      ]
     },
@@ -8411,17 +8413,17 @@
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
      "as_of": "2026-10-16",
-     "value": 715.49,
+     "value": 709.8,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 99,
      "changes": {
-      "4w": -0.72,
-      "13w": 3.01,
-      "52w": 19.03
+      "4w": -1.51,
+      "13w": 2.19,
+      "52w": 18.08
      },
      "change_kind": "pct",
-     "move4_rank_pct": 10,
+     "move4_rank_pct": 22,
      "chart": [
       [
        "2023-10-27",
@@ -8757,7 +8759,7 @@
       ],
       [
        "2025-05-30",
-       515.51
+       515.5
       ],
       [
        "2025-06-06",
@@ -9045,30 +9047,26 @@
       ],
       [
        "2026-10-16",
-       715.49
+       709.8
       ]
      ]
     },
     {
      "name": "Institutions, S&P 500 futures",
      "unit": "contracts",
-     "as_of": "2026-10-06",
-     "value": 906615.0,
+     "as_of": "2026-10-13",
+     "value": 915835.0,
      "note": "Contracts betting on a rise minus contracts betting on a fall, as of Tuesday. Situational awareness only: tested, it does not lead prices.",
      "since": "2006-06-16",
-     "rank_pct": 80,
+     "rank_pct": 82,
      "changes": {
-      "4w": -5746.0,
-      "13w": -63977.0,
-      "52w": -42490.0
+      "4w": 11151.0,
+      "13w": -24637.0,
+      "52w": -6068.0
      },
      "change_kind": "abs",
-     "move4_rank_pct": 4,
+     "move4_rank_pct": 8,
      "chart": [
-      [
-       "2023-10-20",
-       672170.0
-      ],
       [
        "2023-10-27",
        610714.0
@@ -9688,29 +9686,29 @@
       [
        "2026-10-09",
        906615.0
+      ],
+      [
+       "2026-10-16",
+       915835.0
       ]
      ]
     },
     {
      "name": "Hedge funds, S&P 500 futures",
      "unit": "contracts",
-     "as_of": "2026-10-06",
-     "value": -415087.0,
+     "as_of": "2026-10-13",
+     "value": -408726.0,
      "note": "Contracts betting on a rise minus contracts betting on a fall, as of Tuesday. Situational awareness only: tested, it does not lead prices.",
      "since": "2006-06-16",
-     "rank_pct": 18,
+     "rank_pct": 20,
      "changes": {
-      "4w": -73983.0,
-      "13w": -53212.0,
-      "52w": 45086.0
+      "4w": -115583.0,
+      "13w": -43724.0,
+      "52w": 7822.0
      },
      "change_kind": "abs",
-     "move4_rank_pct": 57,
+     "move4_rank_pct": 75,
      "chart": [
-      [
-       "2023-10-20",
-       -260638.0
-      ],
       [
        "2023-10-27",
        -195844.0
@@ -10330,29 +10328,29 @@
       [
        "2026-10-09",
        -415087.0
+      ],
+      [
+       "2026-10-16",
+       -408726.0
       ]
      ]
     },
     {
      "name": "Institutions, Nasdaq-100 futures",
      "unit": "contracts",
-     "as_of": "2026-10-06",
-     "value": 73798.0,
+     "as_of": "2026-10-13",
+     "value": 75323.0,
      "note": "Contracts betting on a rise minus contracts betting on a fall, as of Tuesday. Situational awareness only: tested, it does not lead prices.",
      "since": "2006-06-16",
      "rank_pct": 72,
      "changes": {
-      "4w": -1728.0,
-      "13w": -5172.0,
-      "52w": -10402.0
+      "4w": 8512.0,
+      "13w": 1260.0,
+      "52w": -8114.0
      },
      "change_kind": "abs",
-     "move4_rank_pct": 9,
+     "move4_rank_pct": 40,
      "chart": [
-      [
-       "2023-10-20",
-       61583.0
-      ],
       [
        "2023-10-27",
        61006.0
@@ -10972,29 +10970,29 @@
       [
        "2026-10-09",
        73798.0
+      ],
+      [
+       "2026-10-16",
+       75323.0
       ]
      ]
     },
     {
      "name": "Hedge funds, Nasdaq-100 futures",
      "unit": "contracts",
-     "as_of": "2026-10-06",
-     "value": -19212.0,
+     "as_of": "2026-10-13",
+     "value": -11593.0,
      "note": "Contracts betting on a rise minus contracts betting on a fall, as of Tuesday. Situational awareness only: tested, it does not lead prices.",
      "since": "2006-06-16",
-     "rank_pct": 36,
+     "rank_pct": 45,
      "changes": {
-      "4w": 12660.0,
-      "13w": 35801.0,
-      "52w": -11998.0
+      "4w": -5206.0,
+      "13w": 52570.0,
+      "52w": -6496.0
      },
      "change_kind": "abs",
-     "move4_rank_pct": 39,
+     "move4_rank_pct": 16,
      "chart": [
-      [
-       "2023-10-20",
-       -13879.0
-      ],
       [
        "2023-10-27",
        -13884.0
@@ -11614,13 +11612,17 @@
       [
        "2026-10-09",
        -19212.0
+      ],
+      [
+       "2026-10-16",
+       -11593.0
       ]
      ]
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 3.3% over 13 weeks and 16.5% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is up 3.0% over 13 weeks and 19.0% higher than a year ago."
+    "S&P 500 fund (SPY) is up 2.9% over 13 weeks and 16.1% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is up 2.2% over 13 weeks and 18.1% higher than a year ago."
    ]
   },
   {
