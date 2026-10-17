@@ -1,8 +1,8 @@
 {
- "generated": "2026-10-16",
+ "generated": "2026-10-17",
  "headlines": [
-  "The 2-year yield is 4.77% and is up 59 bp over 13 weeks; the 10-year is 5.10% and is up 55 bp.",
-  "The 10-year pays 0.33 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+  "The 2-year yield is 4.74% and is up 56 bp over 13 weeks; the 10-year is 5.09% and is up 54 bp.",
+  "The 10-year pays 0.35 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 92% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
   "9 distinct positioning stories this week: much busier than usual (a usual week has 3).",
   "Compared with the same period last year: Taiwan 44% higher; Korea 102% higher; Japan 23% higher (17% in U.S. dollars)."
@@ -15,18 +15,18 @@
     {
      "name": "2-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-10-15",
-     "value": 4.77,
+     "as_of": "2026-10-16",
+     "value": 4.74,
      "note": "",
      "since": "1990-01-05",
      "rank_pct": 71,
      "changes": {
-      "4w": 0.01,
-      "13w": 0.59,
-      "52w": 1.31
+      "4w": -0.02,
+      "13w": 0.56,
+      "52w": 1.28
      },
      "change_kind": "abs",
-     "move4_rank_pct": 3,
+     "move4_rank_pct": 7,
      "chart": [
       [
        "2023-10-27",
@@ -650,25 +650,25 @@
       ],
       [
        "2026-10-16",
-       4.77
+       4.74
       ]
      ]
     },
     {
      "name": "10-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-10-15",
-     "value": 5.1,
+     "as_of": "2026-10-16",
+     "value": 5.09,
      "note": "",
      "since": "1990-01-05",
      "rank_pct": 69,
      "changes": {
-      "4w": 0.09,
-      "13w": 0.55,
-      "52w": 1.08
+      "4w": 0.08,
+      "13w": 0.54,
+      "52w": 1.07
      },
      "change_kind": "abs",
-     "move4_rank_pct": 29,
+     "move4_rank_pct": 26,
      "chart": [
       [
        "2023-10-27",
@@ -1292,25 +1292,25 @@
       ],
       [
        "2026-10-16",
-       5.1
+       5.09
       ]
      ]
     },
     {
      "name": "Gap: 10-year minus 2-year",
      "unit": "percentage points",
-     "as_of": "2026-10-15",
-     "value": 0.33,
+     "as_of": "2026-10-16",
+     "value": 0.35,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 29,
+     "rank_pct": 30,
      "changes": {
-      "4w": 0.08,
-      "13w": -0.04,
-      "52w": -0.23
+      "4w": 0.1,
+      "13w": -0.02,
+      "52w": -0.21
      },
      "change_kind": "abs",
-     "move4_rank_pct": 47,
+     "move4_rank_pct": 55,
      "chart": [
       [
        "2023-10-27",
@@ -1934,7 +1934,7 @@
       ],
       [
        "2026-10-16",
-       0.33
+       0.35
       ]
      ],
      "inverted": false,
@@ -1946,18 +1946,18 @@
     {
      "name": "Gap: 10-year minus 3-month",
      "unit": "percentage points",
-     "as_of": "2026-10-15",
-     "value": 0.82,
+     "as_of": "2026-10-16",
+     "value": 0.83,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 33,
+     "rank_pct": 34,
      "changes": {
-      "4w": -0.05,
-      "13w": 0.12,
-      "52w": 0.8
+      "4w": -0.04,
+      "13w": 0.13,
+      "52w": 0.81
      },
      "change_kind": "abs",
-     "move4_rank_pct": 17,
+     "move4_rank_pct": 13,
      "chart": [
       [
        "2023-10-27",
@@ -2581,7 +2581,7 @@
       ],
       [
        "2026-10-16",
-       0.82
+       0.83
       ]
      ],
      "inverted": false,
@@ -2593,8 +2593,8 @@
    ],
    "explainer": "The 2-year yield tracks where the bond market expects the Federal Reserve's rate to be over the next two years. The 10-year reflects long-run growth and inflation expectations. When the gap between them turns negative (an inverted curve), the market expects rate cuts, usually because it expects a slowdown. Inversions have come before most U.S. recessions of the past 50 years, with lead times from months to about two years, and some false alarms.",
    "takeaway": [
-    "The 2-year yield is 4.77% and is up 59 bp over 13 weeks; the 10-year is 5.10% and is up 55 bp.",
-    "The 10-year pays 0.33 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+    "The 2-year yield is 4.74% and is up 56 bp over 13 weeks; the 10-year is 5.09% and is up 54 bp.",
+    "The 10-year pays 0.35 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
     "The shape of the curve barely changed over 13 weeks."
    ]
   },
@@ -7913,7 +7913,7 @@
       ],
       [
        "2024-06-07",
-       518.7
+       518.69
       ],
       [
        "2024-06-14",
@@ -8053,7 +8053,7 @@
       ],
       [
        "2025-02-07",
-       589.19
+       589.2
       ],
       [
        "2025-02-14",
@@ -8177,7 +8177,7 @@
       ],
       [
        "2025-09-12",
-       648.59
+       648.6
       ],
       [
        "2025-09-19",
@@ -8759,7 +8759,7 @@
       ],
       [
        "2025-05-30",
-       515.5
+       515.51
       ],
       [
        "2025-06-06",
