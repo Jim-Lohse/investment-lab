@@ -1,16 +1,17 @@
 # Foreign company filings: what's new
 
-Run date 2026-10-16. New means first seen since 2026-10-16T17:24:21Z.
+Run date 2026-10-19. New means first seen since 2026-10-19T14:58:10Z.
 
 ## Bottom line
 
-New documents arrived, but none touches a question you are watching.
+1 new document(s) touch a question you are watching, from Mitsui & Co.. Read them first; links are in the table below.
 
 ## What
 
 | Company | Where | Title | Dated | About | Read now? |
 |---|---|---|---|---|---|
-| Imperial Brands | UK announcement | [Holding(s) in Company](https://www.investegate.co.uk/announcement/rns/imperial-brands--imb/holding-s-in-company/9827947) | 2026-10-16 | big holder change | no |
+| Mitsui & Co. | Japan filing: big-holder (5%) report | [big-holder stake change report (変更報告書)](https://disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?S100Z7VO) | 2026-10-19 | big holder change | yes |
+| Samsung Electronics | Korea filing | [director or major-holder share dealing (임원ㆍ주요주주특정증권등소유상황보고서)](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000318) | 2026-10-19 | director dealing | no |
 
 ## So what
 
@@ -21,13 +22,15 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 | 1,412,743 | £34,720,492 | 2,457.7 pence a share | 06 Oct 2026 |
 
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
-Watch: no purchase reported for 8 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
+Watch: no purchase reported for 9 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
+
+1 routine UK notice(s) (daily buyback reports, share-count updates) are counted above rather than listed.
 
 ## What now
 
 | Owner | What | What closes it |
 |---|---|---|
-| none | Nothing open | |
+| Jim or Claude | Read Mitsui & Co.: big-holder stake change report (変更報告書) | Answer recorded on the company's research page |
 
 Coming up: Musashi Seimitsu second-quarter results (exact date not yet announced), early November; JX Advanced Metals first-half results, Nov 9; Imperial Brands full-year results (exact date not yet announced), mid November.
 
