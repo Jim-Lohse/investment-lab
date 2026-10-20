@@ -4,6 +4,7 @@
   "The 2-year yield is 4.77% and is up 44 bp over 13 weeks; the 10-year is 5.15% and is up 46 bp.",
   "The 10-year pays 0.38 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 92% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
+  "11 distinct positioning stories this week: much busier than usual (a usual week has 3).",
   "Compared with the same period last year: Taiwan 44% higher; Korea 102% higher; Japan 23% higher (17% in U.S. dollars)."
  ],
  "panels": [
@@ -2604,18 +2605,18 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-10-19",
-     "value": 29.0,
+     "as_of": "2026-10-20",
+     "value": 28.93,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 1.33,
-      "13w": 1.47,
-      "52w": 7.45
+      "4w": 1.08,
+      "13w": 1.22,
+      "52w": 7.19
      },
      "change_kind": "pct",
-     "move4_rank_pct": 52,
+     "move4_rank_pct": 43,
      "chart": [
       [
        "2023-11-03",
@@ -3239,7 +3240,7 @@
       ],
       [
        "2026-10-23",
-       29.0
+       28.93
       ]
      ]
     },
@@ -4529,7 +4530,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 1.5% over 13 weeks and 7.5% higher than a year ago."
+    "Dollar fund (UUP) is up 1.2% over 13 weeks and 7.2% higher than a year ago."
    ]
   },
   {
@@ -4539,18 +4540,18 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-10-19",
-     "value": 379.69,
+     "as_of": "2026-10-20",
+     "value": 377.95,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 96,
      "changes": {
-      "4w": -3.49,
-      "13w": 2.09,
-      "52w": 0.57
+      "4w": -3.93,
+      "13w": 1.63,
+      "52w": 0.11
      },
      "change_kind": "pct",
-     "move4_rank_pct": 57,
+     "move4_rank_pct": 62,
      "chart": [
       [
        "2023-11-03",
@@ -5174,7 +5175,7 @@
       ],
       [
        "2026-10-23",
-       379.69
+       377.95
       ]
      ]
     },
@@ -6464,7 +6465,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is up 2.1% over 13 weeks and 0.6% higher than a year ago.",
+    "Gold fund (GLD) is up 1.6% over 13 weeks and 0.1% higher than a year ago.",
     "Gold held by GLD is little changed over 4 weeks: money flowing in."
    ]
   },
@@ -6475,18 +6476,18 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-10-19",
-     "value": 160.81,
+     "as_of": "2026-10-20",
+     "value": 160.04,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 57,
      "changes": {
-      "4w": 8.41,
-      "13w": 17.65,
-      "52w": 119.75
+      "4w": 7.89,
+      "13w": 17.08,
+      "52w": 118.69
      },
      "change_kind": "pct",
-     "move4_rank_pct": 66,
+     "move4_rank_pct": 64,
      "chart": [
       [
        "2023-11-03",
@@ -7110,7 +7111,7 @@
       ],
       [
        "2026-10-23",
-       160.81
+       160.04
       ]
      ]
     },
@@ -7758,7 +7759,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 17.6% over 13 weeks and 119.8% higher than a year ago.",
+    "Oil fund (USO) is up 17.1% over 13 weeks and 118.7% higher than a year ago.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 92% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7769,18 +7770,18 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-10-19",
-     "value": 766.48,
+     "as_of": "2026-10-20",
+     "value": 769.47,
      "note": "Price including dividends.",
      "since": "2006-01-06",
-     "rank_pct": 99,
+     "rank_pct": 100,
      "changes": {
-      "4w": -0.63,
-      "13w": 3.99,
-      "52w": 14.4
+      "4w": -0.24,
+      "13w": 4.39,
+      "52w": 14.84
      },
      "change_kind": "pct",
-     "move4_rank_pct": 10,
+     "move4_rank_pct": 5,
      "chart": [
       [
        "2023-11-03",
@@ -7832,7 +7833,7 @@
       ],
       [
        "2024-01-26",
-       471.97
+       471.96
       ],
       [
        "2024-02-02",
@@ -8172,7 +8173,7 @@
       ],
       [
        "2025-09-12",
-       648.59
+       648.6
       ],
       [
        "2025-09-19",
@@ -8404,25 +8405,25 @@
       ],
       [
        "2026-10-23",
-       766.48
+       769.47
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-10-19",
-     "value": 718.36,
+     "as_of": "2026-10-20",
+     "value": 719.29,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 99,
      "changes": {
-      "4w": -3.51,
-      "13w": 5.1,
-      "52w": 16.96
+      "4w": -3.39,
+      "13w": 5.23,
+      "52w": 17.11
      },
      "change_kind": "pct",
-     "move4_rank_pct": 49,
+     "move4_rank_pct": 46,
      "chart": [
       [
        "2023-11-03",
@@ -9046,7 +9047,7 @@
       ],
       [
        "2026-10-23",
-       718.36
+       719.29
       ]
      ]
     },
@@ -11620,8 +11621,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 4.0% over 13 weeks and 14.4% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is up 5.1% over 13 weeks and 17.0% higher than a year ago."
+    "S&P 500 fund (SPY) is up 4.4% over 13 weeks and 14.8% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is up 5.2% over 13 weeks and 17.1% higher than a year ago."
    ]
   },
   {
@@ -11630,10 +11631,10 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 3,
+    "count": 11,
     "baseline": 3.0,
-    "ratio": 1.0,
-    "label": "about normal"
+    "ratio": 3.67,
+    "label": "much busier than usual"
    },
    "weeks": [
     [
@@ -11702,15 +11703,42 @@
     ],
     [
      "2026-10-25",
-     3
+     11
     ]
    ],
    "stories": [
+    {
+     "date": "2026-10-20",
+     "outlet": "24/7 Wall St.",
+     "title": "Hedge Funds Dumped Tech Stocks at the Fastest Pace in a Decade, Goldman Says",
+     "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOUmg2N0xWU3RqdFJtNXNmRW5TWWRVYkhZMjNUTFNOR2lBckhEc29HUHd2czlFbEdzX0VSZGpmdFdOczAxdWRXTG1hdnBBcjRlY2dlaUMzeUkwN3ZHQnJsRHp4Q09JazNCbGpOdzlHUks1MHVCU1hMMkZnbi11U2J4cE5BZWRvbWJBaE5hQjZJSk9nd2ZtSUFqLVhBS0l0N2pPTnJoUC1uMnJ5TEM2ZUdFVnBManhZeFJWbGJn?oc=5",
+     "banks": "Goldman Sachs",
+     "direction": "selling",
+     "extreme": true
+    },
     {
      "date": "2026-10-19",
      "outlet": "Investing.com UK",
      "title": "Hedge funds cut tech stocks at record pace, Goldman says By Investing.com",
      "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPZ1JqOE1IOXdOaGdOOUlPQ05xSzQ5blM5aW9PQThSbGNNV1MzYnpHcW1fLTdnaUtKc3Rya1p0MW5lSE5jd1k3NEMwVG5TZlNlUV85Vm1EX3kwUWwxYmtNbk4zVWIwR3J0U2gyZE9Xb0NTSjBpYnVDM0NDYXJ3MmpCVzNMeFR0U01pWGF6cERBam5lVnlUYnBSQmFGbnNoSVMxdzBEZWVnRWMxWHMwVnBmRw?oc=5",
+     "banks": "Goldman Sachs",
+     "direction": "selling",
+     "extreme": true
+    },
+    {
+     "date": "2026-10-19",
+     "outlet": "Crypto Briefing",
+     "title": "Hedge funds retreat from tech stocks at fastest pace in a decade, Goldman Sachs says",
+     "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE56TEc3ai1OdlJkSlRDQ1hoeHl0aV9WS0RhRjQ0VlBsZndMbFFURWFCcnZMbDBUeTFCc1pvZzVHQzNnT01Oa0ZqcUtnS0sxUXh3RmZLWTlFalVVVWZmamY4LWVUcTNEVmt0MFZOUk5iM0lzMXJxX2c?oc=5",
+     "banks": "Goldman Sachs",
+     "direction": "selling",
+     "extreme": true
+    },
+    {
+     "date": "2026-10-19",
+     "outlet": "Yahoo Finance Australia",
+     "title": "Hedge funds cut tech stocks at record pace, Goldman says",
+     "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNUFNOUzJ1X3hzMDZodENHWE5TTUhXTjdoTFhmUlB3RDlZNVJ3TF9OSjNZT3BST1dmUjZURXJ4RHdzY2ExX1k1cFBINXF6QTlOWmhXYzRvTkg3VkxOM1dwS2NoY05GakhVMldDUGpRdkJ0U3FsRDdKR29yenk1SmlwOFVn?oc=5",
      "banks": "Goldman Sachs",
      "direction": "selling",
      "extreme": true
@@ -11723,33 +11751,6 @@
      "banks": "Goldman Sachs",
      "direction": "",
      "extreme": true
-    },
-    {
-     "date": "2026-10-19",
-     "outlet": "Business Upturn",
-     "title": "Hedge funds cut technology stock positions at fastest pace in a decade as AI trade unwinds",
-     "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPSHl2VlZFbTB0Wkdpb3JVdGpuaTVFY1NyYUFmYW05VTgzN0QwQ18tOE9xSEVEbFp5QkRESVdJNThFZy1CazR4RklCaXNmYndlS3dzQWtRclZVV2hSenJPby1XN0NLQVBoOXNUUGF5Zk0zdlpDRU55SlJ3bkJfclRiNm1nVV9RcjFBUUdWMHpUYVN2VWJxZ0VKZjI4NUllbUNIaURjODhRRVhpSWlRUFNLRW1wTTJHV2VjVDFMQnlaQXdWaVRLb0JNalJfak5MZUpNeUR3N2IyWFlLdmM?oc=5",
-     "banks": "",
-     "direction": "selling",
-     "extreme": true
-    },
-    {
-     "date": "2026-10-08",
-     "outlet": "streamlinefeed.co.ke",
-     "title": "Wall Street Banks Profit as Hedge Fund Borrowing Hits Record $3.7 Trillion",
-     "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQS3RBeVo5TE4tV3VpaGh6ZGVOUjJQQ2llN2doYVFway1UX2N6Y2hpTVhCNlFDcHczWnN5cllvQ01CX3NnV0ZHSmhfODA2YUluUGJ5cktrYVBvVUF0ZHllOU13RWhTQ3hfWEU0dDJLNzhrZTJWRkczaW1kV1pkYWs0elF5cGt5SWkyUVU5dHQxVjJIV0tTWGswaHhKbkVDVTVvaGZSWWxESjZudw?oc=5",
-     "banks": "",
-     "direction": "",
-     "extreme": true
-    },
-    {
-     "date": "2026-10-16",
-     "outlet": "TradingView",
-     "title": "Investors have reversed all global AI net buying since 2025 \u2013 Goldman Sachs Prime Book",
-     "link": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNZ0w2MHhQS0RyeWZLekhsc1B0X0E4RG1seVAxRlZFdkhPNnJmMFhEcV9wUTZ5QXNLUkRNRjlQbXpqYXlRbGU5WEdMSmpfTFNoZzNGc0RBbS1WTlR6cFFYT1B2ZmUyMUlEQmNZZmxwUzBIa1UzSXlWbGI3M0lmUEhUWjJaOUowZGRWb2I3SUg0Y25SUWFNZk50dGJNUWgwdVNMNkhtQ01YZ0c4SDJWZnBwRk40bG9HelAwelVJelJpcXJybUIxUGZESFBwN0RYcU5FZWVXczFMb2FvUnJnNHVZWg?oc=5",
-     "banks": "Goldman Sachs",
-     "direction": "buying",
-     "extreme": false
     }
    ],
    "calendar": [
@@ -11783,8 +11784,8 @@
     }
    ],
    "takeaway": [
-    "3 distinct positioning stories this week: about normal (a usual week has 3).",
-    "Record-type wording in the last two weeks: \"Hedge funds cut tech stocks at record pace, Goldman says By Investing.com\" (Investing.com UK, 2026-10-19)."
+    "11 distinct positioning stories this week: much busier than usual (a usual week has 3).",
+    "Record-type wording in the last two weeks: \"Hedge Funds Dumped Tech Stocks at the Fastest Pace in a Decade, Goldman Says\" (24/7 Wall St., 2026-10-20)."
    ]
   },
   {
