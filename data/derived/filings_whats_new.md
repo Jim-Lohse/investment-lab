@@ -1,6 +1,6 @@
 # Foreign company filings: what's new
 
-Run date 2026-10-20. New means first seen since 2026-10-20T12:58:07Z.
+Run date 2026-10-20. New means first seen since 2026-10-20T17:58:41Z.
 
 ## Bottom line
 
