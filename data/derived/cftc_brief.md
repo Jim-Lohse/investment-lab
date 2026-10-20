@@ -1,7 +1,7 @@
 # CFTC positioning brief, week of 2026-10-13
 
 - Latest week in the data: 2026-10-13
-- Latest week that should be published by 2026-10-19: 2026-10-13
+- Latest week that should be published by 2026-10-20: 2026-10-13
 - Status: current
 
 | Market | Who | Net | Change from last week | Move bigger than % of past weekly moves | Net higher than % of past weeks | Net a year earlier | Flag |
