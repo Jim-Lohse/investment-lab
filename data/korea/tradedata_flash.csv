@@ -13,3 +13,5 @@ yyyymm,period_label,period_type,metric,value_usd_m,yoy_pct,retrieved_at
 2026-09,Sep.1~Sep.30,FULL,Import,71092,26,2026-10-01
 2026-10,Oct.1~Oct.10,D10,Export,26104,102,2026-10-12
 2026-10,Oct.1~Oct.10,D10,Import,22316,65.50,2026-10-12
+2026-10,Oct.1~Oct.20,D20,Export,61612,105.40,2026-10-21
+2026-10,Oct.1~Oct.20,D20,Import,47117,42.80,2026-10-21
