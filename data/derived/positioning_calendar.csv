@@ -15,3 +15,4 @@ start,end,kind,label,basis
 2027-01-27,2027-01-27,short_interest,Estimated: FINRA short interest published (shares sold short as of 2027-01-15),"estimate, 7 business days after settlement; FINRA's calendar governs"
 2027-02-09,2027-02-09,short_interest,Estimated: FINRA short interest published (shares sold short as of 2027-01-29),"estimate, 7 business days after settlement; FINRA's calendar governs"
 2027-02-16,2027-02-16,13f,"13F deadline: large funds' quarter-end holdings become public; expect a wave of ""what hedge funds bought and sold"" stories","45 days after quarter-end, next business day"
+2027-02-19,2027-02-26,trend_monitor,Estimated: Goldman Hedge Fund Trend Monitor and its most-crowded-stocks list reach the press,"estimate, 3 to 10 days after the 13F deadline"
