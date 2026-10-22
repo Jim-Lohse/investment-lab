@@ -1,14 +1,14 @@
 # Positioning brief, 2026-10-22 (U.S. Eastern)
 
-Stories counted: 80 (of 363 rows collected; the rest failed the relevance filter). This week (from 2026-10-19): 13 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: much busier than usual.
+Stories counted: 85 (of 376 rows collected; the rest failed the relevance filter). This week (from 2026-10-19): 18 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: much busier than usual.
 
 | Search | This week | Usual week |
 |---|---|---|
-| Prime brokerage data quoted in the press | 4 | 0.0 |
+| Prime brokerage data quoted in the press | 5 | 0.0 |
 | Reuters HEDGE FLOW column | 0 | 0.0 |
 | Goldman Hedge Fund Trend Monitor and VIP basket | 0 | 0.0 |
 | Morgan Stanley prime brokerage (MSPB) | 0 | 0.0 |
-| Weekly prime-desk leverage notes | 8 | 2.0 |
+| Weekly prime-desk leverage notes | 13 | 2.0 |
 | JPMorgan-sourced hedge fund data | 5 | 0.0 |
 
 ## Stories this week
@@ -25,8 +25,8 @@ Stories counted: 80 (of 363 rows collected; the rest failed the relevance filter
 | 2026-10-19 | Business Upturn | [Hedge funds cut technology stock positions at fastest pace in a decade as AI trade unwinds](https://news.google.com/rss/articles/CBMi2wFBVV95cUxPSHl2VlZFbTB0Wkdpb3JVdGpuaTVFY1NyYUFmYW05VTgzN0QwQ18tOE9xSEVEbFp5QkRESVdJNThFZy1CazR4RklCaXNmYndlS3dzQWtRclZVV2hSenJPby1XN0NLQVBoOXNUUGF5Zk0zdlpDRU55SlJ3bkJfclRiNm1nVV9RcjFBUUdWMHpUYVN2VWJxZ0VKZjI4NUllbUNIaURjODhRRVhpSWlRUFNLRW1wTTJHV2VjVDFMQnlaQXdWaVRLb0JNalJfak5MZUpNeUR3N2IyWFlLdmM?oc=5) | - | selling | yes |
 | 2026-10-19 | BigGo Finance | [AI Bubble Fears Trigger Record Hedge Fund Exit From Tech Stocks; Semiconductors Hit Hardest](https://news.google.com/rss/articles/CBMidkFVX3lxTE02d1p5SWl5a3pUSlg4WGp0blFEeER4SERmUkozXzNwVnVMcmFCTGtrbERtWnZoZzdyQjZzd1FBMkU4RlpMVGVaVllibEF5NE1lSDRPQkVUbUc2YlNsRmpRSzNuNW11UWxCYjB2aHFGTjFyaEVpQXc?oc=5) | - | selling | yes |
 | 2026-10-19 | 富途牛牛 | [Record reductions yet still heavy exposure to tech stocks: Hedge funds are compressing their positions into "low-leverage certainty."](https://news.google.com/rss/articles/CBMiqgFBVV95cUxPSmNPdUI3M0Y3V0ZaeVA3ajNtY0lLRzBSWlYteFBzLUdOZGk0akl5V295QWF1ZDlIYmZ5TDRoY3JsX3RjaUduYkRGV0tRcG42bUo4OHNPdTJGdG1WN3JpVnQ0YlBEVUdiaFBfLVlnbTZTQ0FCcG4tOTZibHFieUdjcjZqSHVabDNhQnhNVVJjdlJlYlJvUmJfVXhpVkhCS1BGVkotZ2JSWFA4dw?oc=5) | - | - | yes |
-| 2026-10-19 | www.tokenpost.com | [Goldman Clients Cut Tech Positions by Largest Percentage in Records Dating to 2016](https://news.google.com/rss/articles/CBMiWkFVX3lxTE1LdWl3SURxN3FBTDNOOWFNWVNoeEYxS09Cd0QxMXN2MWVib0xmbmh6aW15YjV3enc5ZE5tRS11dmx1Zmh4ZUJ5aTBValdSU1JNOFVHSU04VFV6QQ?oc=5) | Goldman Sachs | selling | - |
-| 2026-10-19 | Finextra Research | [A $1 Trillion Week: What the AI Selloff Says About Credit, Leverage and Who Holds the Risk: By Andrii Bilous](https://news.google.com/rss/articles/CBMiygFBVV95cUxNcUlTX0tOM01pZEdteG16OUNzQm9pVGVqNm15NTlaY3VMbzZBR1JyQi1wS2FHaWVnb0wwcXBETHA2bHZXM3Q4VWhmZjZaRmxQREI3ck1ua3Z0UWV6cEsxcWJZRnJ3LUNZVXBTWHlKWUJDTEx3VnZ6R2ZJQWx6aDZaZEEteGdMdF91eTllMTIyMHp0cGN0dTIwMTJmQkhjeW9GT0RDY2V0X3pXRk9lTm9MMXRmY21GQ1RSbno2UThyZk43WWExQ2k5SGdB?oc=5) | - | - | - |
+| 2026-10-22 | HedgeCo.Net | [Barclays Shifted Balance Sheet From Rates Trading to Hedge Fund Financing in Asia, Bloomberg Reported](https://news.google.com/rss/articles/CBMi1AFBVV95cUxPNm1FRjk5LWxjWFFjRWYxcnpmNVRyMXoxVFllakxuT2NGc2FRVllydGpJZC1RS05OTGtLeFR1SzFJbXR2MFFXczJXMDVJT1ZKYkZCVGJQaHVDVkp6bVhRUWJUVFdKbUY4YlhDU20xT0FvdThvWkFZR19LVTNycENCaVZoWDdQam51LVFDTTZkQllEQTFkT2wzb25aeXhkQU55cmZOblFVeFpvVmpwejYwa2NOSnB1c1NqUk4yb1RHNm1IM3FhM3BGa2UycVdlVWQwY2Y0Tw?oc=5) | Barclays | - | - |
+| 2026-10-22 | Demokratis.co.id | [Barclays Shifts Capital to Expand Hedge Fund Financing](https://news.google.com/rss/articles/CBMic0FVX3lxTFB6REVQYzcwVFI2bEtZbEJiRlFwTVZrOEJpZmVIUXJGeDFwUW9mSzE0OUlaX3JPMkoyMURxd3FvQlU1VmZyLWRjNGdOV3ZfQ25IOEJ0Wmd4YzFQTjdRUnFsX1JzQ1RwdHJsLWUybG9hTnJHU1E?oc=5) | Barclays | - | - |
 
 ## Coming up (next 21 days)
 
