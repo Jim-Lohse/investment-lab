@@ -26,3 +26,8 @@ rcept_no,stock_code,company,report,filer,received,remark,link,topics,needs_readi
 20261016000505,005930,Samsung Electronics,주식등의대량보유상황보고서(일반),삼성물산,20261016,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016000505,ownership,yes,2026-10-16T12:43:52Z
 20261016000492,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,이재용,20261016,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016000492,insider,,2026-10-16T12:43:52Z
 20261019000318,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,최고은,20261019,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000318,insider,,2026-10-19T14:58:25Z
+20261023800862,033780,KT&G,기업설명회(IR)개최(안내공시),케이티앤지,20261023,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023800862,,,2026-10-23T12:52:01Z
+20261023000436,033780,KT&G,임원ㆍ주요주주특정증권등소유상황보고서,백승규,20261023,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000436,insider,,2026-10-23T12:52:01Z
+20261023000484,005930,Samsung Electronics,주식등의대량보유상황보고서(일반),삼성물산,20261023,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000484,ownership,yes,2026-10-23T12:52:01Z
+20261023000478,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,서경헌,20261023,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000478,insider,,2026-10-23T12:52:01Z
+20261023800002,000660,SK hynix,풍문또는보도에대한해명,SK하이닉스,20261023,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023800002,,,2026-10-23T12:52:01Z
