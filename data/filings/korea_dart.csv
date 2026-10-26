@@ -31,3 +31,8 @@ rcept_no,stock_code,company,report,filer,received,remark,link,topics,needs_readi
 20261023000484,005930,Samsung Electronics,주식등의대량보유상황보고서(일반),삼성물산,20261023,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000484,ownership,yes,2026-10-23T12:52:01Z
 20261023000478,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,서경헌,20261023,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000478,insider,,2026-10-23T12:52:01Z
 20261023800002,000660,SK hynix,풍문또는보도에대한해명,SK하이닉스,20261023,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023800002,,,2026-10-23T12:52:01Z
+20261026000017,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,이헌,20261026,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000017,insider,,2026-10-26T14:33:39Z
+20261026000273,000660,SK hynix,임원ㆍ주요주주특정증권등소유상황보고서,정인철,20261026,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000273,insider,,2026-10-26T14:33:39Z
+20261026800524,000660,SK hynix,[기재정정]주식소각결정,SK하이닉스,20261026,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026800524,buyback,,2026-10-26T14:33:39Z
+20261026000259,000660,SK hynix,자기주식취득결과보고서,SK하이닉스,20261026,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026000259,buyback,,2026-10-26T14:33:39Z
+20261026800118,000660,SK hynix,풍문또는보도에대한해명(미확정),SK하이닉스,20261026,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261026800118,,,2026-10-26T14:33:39Z
