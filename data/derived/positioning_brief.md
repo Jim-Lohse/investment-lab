@@ -1,4 +1,4 @@
-# Positioning brief, 2026-10-26 (U.S. Eastern)
+# Positioning brief, 2026-10-27 (U.S. Eastern)
 
 Stories counted: 93 (of 422 rows collected; the rest failed the relevance filter). This week (from 2026-10-26): 1 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: quieter than usual.
 
@@ -22,7 +22,6 @@ Stories counted: 93 (of 422 rows collected; the rest failed the relevance filter
 | Dates | Event | Basis |
 |---|---|---|
 | 2026-10-26 to 2026-10-30 | Month-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces | last 5 trading days of the month |
-| 2026-10-26 | Estimated: FINRA short interest published (shares sold short as of 2026-10-15) | estimate, 7 business days after settlement; FINRA's calendar governs |
 | 2026-11-10 | Estimated: FINRA short interest published (shares sold short as of 2026-10-30) | estimate, 7 business days after settlement; FINRA's calendar governs |
 | 2026-11-16 | 13F deadline: large funds' quarter-end holdings become public; expect a wave of "what hedge funds bought and sold" stories | 45 days after quarter-end, next business day |
 
