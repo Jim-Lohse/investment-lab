@@ -1,6 +1,6 @@
 # Positioning brief, 2026-10-27 (U.S. Eastern)
 
-Stories counted: 93 (of 422 rows collected; the rest failed the relevance filter). This week (from 2026-10-26): 1 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: quieter than usual.
+Stories counted: 94 (of 428 rows collected; the rest failed the relevance filter). This week (from 2026-10-26): 2 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: about normal.
 
 | Search | This week | Usual week |
 |---|---|---|
@@ -8,13 +8,14 @@ Stories counted: 93 (of 422 rows collected; the rest failed the relevance filter
 | Reuters HEDGE FLOW column | 0 | 0.0 |
 | Goldman Hedge Fund Trend Monitor and VIP basket | 0 | 0.0 |
 | Morgan Stanley prime brokerage (MSPB) | 0 | 0.0 |
-| Weekly prime-desk leverage notes | 1 | 2.0 |
+| Weekly prime-desk leverage notes | 2 | 2.0 |
 | JPMorgan-sourced hedge fund data | 0 | 0.0 |
 
 ## Stories this week
 
 | Date | Outlet | Headline | Bank | Direction | Record-type wording |
 |---|---|---|---|---|---|
+| 2026-10-27 | Real Investment Advice | [Hedge Funds Sell, Retail Buys: Whose The Smart Money?](https://news.google.com/rss/articles/CBMioAFBVV95cUxQUjFReFFGX25IemhJWUIzWGVheWN4eHYwdGZyTlNTdVlEWU9hVFU0VE5IazdwZDc1c1dQQVpYM3ZXd1RpUWpIQmwzdTdFNlFrVWNaQUk3anpuR3dlNHltQkM1YmZFdGVxdDBSb0xnVWcwWE0yNmE5SU5LTFBxOTFQcDZPSVotMkE2U214NjVjTnJLSDJKcDV3a1E5TVZ4blIw?oc=5) | - | selling | - |
 | 2026-10-26 | BigGo Finance | [US Stock Fundamentals Haven't Broken, Yet Wall Street Is Unwinding the Crowded AI Trade: Hedge Fund Net Leverage Falls to 47%](https://news.google.com/rss/articles/CBMidkFVX3lxTE44QWJKQzRtZ1ktN1RFR3JlUzU4TTJCT3UxbEtzdG81dkJNR0FGc2oyd1pEdWsxTmwyekduUWZtQmRpMHNBdlpXd0FWMGRqc3Z1NU9nRnhFLWNrNG9SM0UyVWxEOVlFUUtLbXBfeVlBZlV4RnN2MVE?oc=5) | - | selling | - |
 
 ## Coming up (next 21 days)
