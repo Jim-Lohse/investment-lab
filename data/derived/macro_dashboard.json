@@ -4540,17 +4540,17 @@
      "name": "Gold fund (GLD)",
      "unit": "USD",
      "as_of": "2026-10-28",
-     "value": 370.94,
+     "value": 369.84,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 95,
      "changes": {
-      "4w": -2.42,
-      "13w": -0.16,
-      "52w": 0.77
+      "4w": -2.71,
+      "13w": -0.46,
+      "52w": 0.47
      },
      "change_kind": "pct",
-     "move4_rank_pct": 43,
+     "move4_rank_pct": 47,
      "chart": [
       [
        "2023-11-10",
@@ -5174,7 +5174,7 @@
       ],
       [
        "2026-10-30",
-       370.94
+       369.84
       ]
      ]
     },
@@ -6464,7 +6464,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is little changed over 13 weeks and 0.8% higher than a year ago.",
+    "Gold fund (GLD) is little changed over 13 weeks and 0.5% higher than a year ago.",
     "Gold held by GLD is down 1.3% over 4 weeks: money flowing out."
    ]
   },
@@ -6476,17 +6476,17 @@
      "name": "Oil fund (USO)",
      "unit": "USD",
      "as_of": "2026-10-28",
-     "value": 167.19,
+     "value": 168.4,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 58,
      "changes": {
-      "4w": 13.45,
-      "13w": 29.43,
-      "52w": 130.42
+      "4w": 14.27,
+      "13w": 30.37,
+      "52w": 132.08
      },
      "change_kind": "pct",
-     "move4_rank_pct": 85,
+     "move4_rank_pct": 88,
      "chart": [
       [
        "2023-11-10",
@@ -7110,7 +7110,7 @@
       ],
       [
        "2026-10-30",
-       167.19
+       168.4
       ]
      ]
     },
@@ -7758,7 +7758,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 29.4% over 13 weeks and 130.4% higher than a year ago.",
+    "Oil fund (USO) is up 30.4% over 13 weeks and 132.1% higher than a year ago.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 93% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7770,14 +7770,14 @@
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
      "as_of": "2026-10-28",
-     "value": 771.0,
+     "value": 770.59,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 100,
      "changes": {
-      "4w": 0.18,
-      "13w": 3.46,
-      "52w": 14.26
+      "4w": 0.12,
+      "13w": 3.41,
+      "52w": 14.2
      },
      "change_kind": "pct",
      "move4_rank_pct": 3,
@@ -7904,7 +7904,7 @@
       ],
       [
        "2024-06-07",
-       518.69
+       518.7
       ],
       [
        "2024-06-14",
@@ -8044,7 +8044,7 @@
       ],
       [
        "2025-02-07",
-       589.19
+       589.2
       ],
       [
        "2025-02-14",
@@ -8168,7 +8168,7 @@
       ],
       [
        "2025-09-12",
-       648.6
+       648.59
       ],
       [
        "2025-09-19",
@@ -8404,7 +8404,7 @@
       ],
       [
        "2026-10-30",
-       771.0
+       770.59
       ]
      ]
     },
@@ -8412,14 +8412,14 @@
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
      "as_of": "2026-10-28",
-     "value": 722.03,
+     "value": 721.82,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 99,
      "changes": {
-      "4w": -3.68,
-      "13w": 5.06,
-      "52w": 15.32
+      "4w": -3.7,
+      "13w": 5.03,
+      "52w": 15.28
      },
      "change_kind": "pct",
      "move4_rank_pct": 51,
@@ -9046,7 +9046,7 @@
       ],
       [
        "2026-10-30",
-       722.03
+       721.82
       ]
      ]
     },
@@ -11620,8 +11620,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 3.5% over 13 weeks and 14.3% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is up 5.1% over 13 weeks and 15.3% higher than a year ago."
+    "S&P 500 fund (SPY) is up 3.4% over 13 weeks and 14.2% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is up 5.0% over 13 weeks and 15.3% higher than a year ago."
    ]
   },
   {
@@ -11630,9 +11630,9 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 2,
+    "count": 3,
     "baseline": 3.0,
-    "ratio": 0.67,
+    "ratio": 1.0,
     "label": "about normal"
    },
    "weeks": [
@@ -11706,7 +11706,7 @@
     ],
     [
      "2026-11-01",
-     2
+     3
     ]
    ],
    "stories": [
@@ -11801,7 +11801,7 @@
     }
    ],
    "takeaway": [
-    "2 distinct positioning stories this week: about normal (a usual week has 3).",
+    "3 distinct positioning stories this week: about normal (a usual week has 3).",
     "Record-type wording in the last two weeks: \"Hedge Funds Dumped Tech Stocks at the Fastest Pace in a Decade, Goldman Says\" (24/7 Wall St., 2026-10-20)."
    ]
   },
