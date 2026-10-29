@@ -1,6 +1,6 @@
 # Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan + U.S. trade
 
-_Generated 2026-10-28 by `signals/compute_signals.py`._
+_Generated 2026-10-29 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
 ## Taiwan monthly revenue — 2026-09
@@ -56,53 +56,53 @@ _YoY in yen is what MOF publishes. YoY in USD restates the same series at the re
 
 | Period | Window | Source | Item | JPY m | YoY % (yen) | YoY % (USD) | FX pt | YoY % (MOF) |
 |---|---|---|---|---:|---:|---:|---:|---:|
-| 2026-09 | D10 | press_release | BAL:Grand Total | -421205 | -18.80 | -23.07 | 4.27 | -21.50 |
-| 2026-09 | D10 | press_release | E:Grand Total | 3821914 | 23.33 | 16.84 | 6.49 | 23.30 |
-| 2026-09 | D10 | press_release | I:Grand Total | 4243119 | 17.29 | 11.12 | 6.17 | 16.70 |
 | 2026-09 | D20 | press_release | BAL:Grand Total | 27439 | -119.75 | -118.73 | -1.02 |  |
 | 2026-09 | D20 | press_release | E:Grand Total | 7879504 | 23.35 | 16.94 | 6.41 | 23.50 |
 | 2026-09 | D20 | press_release | I:Grand Total | 7852065 | 20.31 | 14.05 | 6.26 | 19.90 |
-| 2026-09 | MONTH | press_release | BAL:Grand Total | -536558 | 126.06 | 113.83 | 12.23 | 93.20 |
-| 2026-09 | MONTH | press_release | E:(IC) | 734438 | 55.51 | 47.09 | 8.42 | 55.50 |
-| 2026-09 | MONTH | press_release | E:ELECTRICAL MEASURING | 216892 | 26.31 | 19.48 | 6.83 | 26.30 |
-| 2026-09 | MONTH | press_release | E:Grand Total | 10972254 | 16.56 | 10.25 | 6.31 | 16.70 |
-| 2026-09 | MONTH | press_release | E:SCIENTIFIC, OPTICAL INST | 242679 | 11.64 | 5.60 | 6.04 | 11.60 |
+| 2026-09 | MONTH | press_release | BAL:Grand Total | -556479 | 134.45 | 121.76 | 12.69 | 100.40 |
+| 2026-09 | MONTH | press_release | E:(IC) | 734423 | 55.51 | 47.09 | 8.42 | 55.50 |
+| 2026-09 | MONTH | press_release | E:ELECTRICAL MEASURING | 216767 | 26.24 | 19.41 | 6.83 | 26.20 |
+| 2026-09 | MONTH | press_release | E:Grand Total | 10953854 | 16.37 | 10.07 | 6.30 | 16.50 |
+| 2026-09 | MONTH | press_release | E:SCIENTIFIC, OPTICAL INST | 242605 | 11.60 | 5.56 | 6.04 | 11.60 |
 | 2026-09 | MONTH | press_release | E:SEMICON MACHINERY ETC | 553333 | 43.94 | 36.15 | 7.79 | 43.90 |
-| 2026-09 | MONTH | press_release | E:SEMICONDUCTORS ETC | 933673 | 49.44 | 41.35 | 8.09 | 49.40 |
+| 2026-09 | MONTH | press_release | E:SEMICONDUCTORS ETC | 933636 | 49.43 | 41.35 | 8.08 | 49.40 |
 | 2026-09 | MONTH | press_release | E:TELEPHONY, TELEGRAPHY | 33823 | 22.77 | 16.13 | 6.64 | 22.80 |
 | 2026-09 | MONTH | press_release | I:(IC) | 550090 | 61.44 | 52.70 | 8.74 | 61.40 |
-| 2026-09 | MONTH | press_release | I:ELECTRICAL MEASURING | 101791 | -0.27 | -5.67 | 5.40 | -0.40 |
-| 2026-09 | MONTH | press_release | I:Grand Total | 11508812 | 19.25 | 12.80 | 6.45 | 18.90 |
-| 2026-09 | MONTH | press_release | I:SCIENTIFIC, OPTICAL INST | 223853 | 2.16 | -3.36 | 5.52 | 1.90 |
-| 2026-09 | MONTH | press_release | I:SEMICONDUCTORS ETC | 605246 | 51.45 | 43.25 | 8.20 | 51.40 |
+| 2026-09 | MONTH | press_release | I:ELECTRICAL MEASURING | 101844 | -0.22 | -5.62 | 5.40 | -0.30 |
+| 2026-09 | MONTH | press_release | I:Grand Total | 11510333 | 19.27 | 12.82 | 6.45 | 18.90 |
+| 2026-09 | MONTH | press_release | I:SCIENTIFIC, OPTICAL INST | 223883 | 2.18 | -3.35 | 5.53 | 1.90 |
+| 2026-09 | MONTH | press_release | I:SEMICONDUCTORS ETC | 605250 | 51.45 | 43.25 | 8.20 | 51.40 |
 | 2026-09 | MONTH | press_release | I:TELEPHONY, TELEGRAPHY | 507335 | 6.82 | 1.04 | 5.78 | 6.70 |
-| 2026-08 | MONTH | timeseries:world_exports_by_commodity | E:半導体等製造装置 | 489701 | 40.12 | 30.32 | 9.80 |  |
-| 2026-08 | MONTH | timeseries:world_exports_by_commodity | E:半導体等電子部品 | 894119 | 52.25 | 41.61 | 10.64 |  |
-| 2026-08 | MONTH | timeseries:world_exports_by_commodity | E:科学光学機器 | 250890 | 19.51 | 11.15 | 8.36 |  |
-| 2026-08 | MONTH | timeseries:world_exports_by_commodity | E:総額 | 10043270 | 19.28 | 10.94 | 8.34 |  |
-| 2026-08 | MONTH | timeseries:world_imports_by_commodity | I:半導体等電子部品 | 599831 | 82.14 | 69.41 | 12.73 |  |
-| 2026-08 | MONTH | timeseries:world_imports_by_commodity | I:科学光学機器 | 226285 | 15.63 | 7.55 | 8.08 |  |
-| 2026-08 | MONTH | timeseries:world_imports_by_commodity | I:総額 | 11155183 | 28.01 | 19.06 | 8.95 |  |
-| 2026-08 | MONTH | estat_hs:DETAILED | E:HS280461 | 3385 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:DETAILED | E:HS3818 | 70113 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:DETAILED | E:HS8486 | 489701 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:DETAILED | E:HS8517 | 21732 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:DETAILED | E:HS8541 | 139884 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:DETAILED | E:HS8542 | 751091 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:DETAILED | E:HS854470 | 5520 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:DETAILED | E:HS9001 | 39050 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:DETAILED | E:HS9013 | 10546 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:PROV9 | I:HS280461 | 8333 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:PROV9 | I:HS3818 | 17817 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:PROV9 | I:HS8486 | 76939 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:PROV9 | I:HS8517 | 305387 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:PROV9 | I:HS8541 | 45586 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:PROV9 | I:HS8542 | 551434 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:PROV9 | I:HS854470 | 6045 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:PROV9 | I:HS9001 | 33202 |  |  |  |  |
-| 2026-08 | MONTH | estat_hs:PROV9 | I:HS9013 | 11819 |  |  |  |  |
+| 2026-10 | D10 | press_release | BAL:Grand Total | -339857 | -37.84 | -41.02 | 3.18 | -41.10 |
+| 2026-10 | D10 | press_release | E:Grand Total | 3822613 | 30.62 | 23.94 | 6.68 | 30.70 |
+| 2026-10 | D10 | press_release | I:Grand Total | 4162470 | 19.84 | 13.72 | 6.12 | 18.90 |
+| 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:半導体等製造装置 | 553333 | 43.95 | 36.16 | 7.79 |  |
+| 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:半導体等電子部品 | 933636 | 49.43 | 41.35 | 8.08 |  |
+| 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:科学光学機器 | 242605 | 11.60 | 5.56 | 6.04 |  |
+| 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:総額 | 10953854 | 16.47 | 10.17 | 6.30 |  |
+| 2026-09 | MONTH | timeseries:world_imports_by_commodity | I:半導体等電子部品 | 605250 | 51.44 | 43.25 | 8.19 |  |
+| 2026-09 | MONTH | timeseries:world_imports_by_commodity | I:科学光学機器 | 223883 | 1.90 | -3.62 | 5.52 |  |
+| 2026-09 | MONTH | timeseries:world_imports_by_commodity | I:総額 | 11510333 | 18.88 | 12.44 | 6.44 |  |
+| 2026-09 | MONTH | estat_hs:DETAILED | E:HS280461 | 3344 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:DETAILED | E:HS3818 | 66958 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:DETAILED | E:HS8486 | 553333 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:DETAILED | E:HS8517 | 27639 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:DETAILED | E:HS8541 | 143284 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:DETAILED | E:HS8542 | 786883 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:DETAILED | E:HS854470 | 5491 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:DETAILED | E:HS9001 | 39733 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:DETAILED | E:HS9013 | 9722 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:PROV9 | I:HS280461 | 6459 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:PROV9 | I:HS3818 | 18714 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:PROV9 | I:HS8486 | 107524 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:PROV9 | I:HS8517 | 484916 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:PROV9 | I:HS8541 | 48895 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:PROV9 | I:HS8542 | 554179 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:PROV9 | I:HS854470 | 2642 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:PROV9 | I:HS9001 | 35065 |  |  |  |  |
+| 2026-09 | MONTH | estat_hs:PROV9 | I:HS9013 | 12610 |  |  |  |  |
 
-_Reference rate, newest window stored: 156.39 yen per USD (2026-09)._
+_Reference rate, newest window stored: 158.10 yen per USD (2026-10)._
 
 ## U.S. trade by HTS code (Census) — demand side
 

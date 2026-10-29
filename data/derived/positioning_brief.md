@@ -1,4 +1,4 @@
-# Positioning brief, 2026-10-28 (U.S. Eastern)
+# Positioning brief, 2026-10-29 (U.S. Eastern)
 
 Stories counted: 95 (of 432 rows collected; the rest failed the relevance filter). This week (from 2026-10-26): 3 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: about normal.
 
@@ -26,5 +26,6 @@ Stories counted: 95 (of 432 rows collected; the rest failed the relevance filter
 | 2026-10-26 to 2026-10-30 | Month-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces | last 5 trading days of the month |
 | 2026-11-10 | Estimated: FINRA short interest published (shares sold short as of 2026-10-30) | estimate, 7 business days after settlement; FINRA's calendar governs |
 | 2026-11-16 | 13F deadline: large funds' quarter-end holdings become public; expect a wave of "what hedge funds bought and sold" stories | 45 days after quarter-end, next business day |
+| 2026-11-19 to 2026-11-26 | Estimated: Goldman Hedge Fund Trend Monitor and its most-crowded-stocks list reach the press | estimate, 3 to 10 days after the 13F deadline |
 
 Federal Reserve meeting dates are not loaded yet (calendar.fomc_decision_dates in signals/config/positioning.json).
