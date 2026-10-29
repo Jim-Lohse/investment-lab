@@ -123,3 +123,7 @@ tdnet_id,code,company,published_jst,title,doc_url,xbrl_url,topics,needs_reading,
 1282852,8031,Mitsui & Co.,2026-10-01 08:45:00,自己株式の取得状況（途中経過）,https://www.release.tdnet.info/inbs/140120260929542194.pdf,,buyback,yes,2026-10-01T14:46:07Z
 1283344,6501,Hitachi,2026-10-02 15:30:00,自己株式の取得状況に関するお知らせ(会社法第459条第1項の規定による定款の定めに基づく自己株式の取得),https://www.release.tdnet.info/inbs/140120261002545344.pdf,,buyback,yes,2026-10-02T14:08:05Z
 1285663,8031,Mitsui & Co.,2026-10-15 20:00:00,"（経過開示）Penske Corporationと共同での米国Penske Automotive Group, Inc.の浮動株買収の決定",https://www.release.tdnet.info/inbs/140120261015551440.pdf,,,,2026-10-15T12:51:43Z
+1287527,6501,Hitachi,2026-10-28 15:30:00,2027年3月期 第2四半期 (中間期) 決算短信〔IFRS〕(連結),https://www.release.tdnet.info/inbs/140120261028557937.pdf,https://www.release.tdnet.info/inbs/081220261028557937.zip,results,yes,2026-10-29T14:38:59Z
+1287528,6501,Hitachi,2026-10-28 15:30:00,2027年3月期 第2四半期連結決算の概要,https://www.release.tdnet.info/inbs/140120261028557945.pdf,,,,2026-10-29T14:38:59Z
+1287529,6501,Hitachi,2026-10-28 15:30:00,剰余金の配当(中間配当)に関するお知らせ,https://www.release.tdnet.info/inbs/140120261028557955.pdf,,dividend,,2026-10-29T14:38:59Z
+1287530,6501,Hitachi,2026-10-28 15:30:00,役員向け株式報酬制度に係る「役員報酬BIP信託」の導入に関するお知らせ,https://www.release.tdnet.info/inbs/140120261028557959.pdf,,,,2026-10-29T14:38:59Z
