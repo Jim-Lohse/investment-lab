@@ -3,8 +3,9 @@
  "headlines": [
   "The 2-year yield is 4.61% and is up 33 bp over 13 weeks; the 10-year is 4.98% and is up 23 bp.",
   "The 10-year pays 0.37 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-  "Oil fund (USO) is up 32.3% over 13 weeks and 135.5% higher than a year ago. Its latest 4-week move is larger than 91% of past 4-week moves, which is unusually large.",
+  "Oil fund (USO) is up 32.1% over 13 weeks and 135.2% higher than a year ago. Its latest 4-week move is larger than 90% of past 4-week moves, which is unusually large.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 93% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
+  "Nasdaq-100 fund (QQQ) is little changed over 13 weeks and 9.8% higher than a year ago. Its latest 4-week move is larger than 90% of past 4-week moves, which is unusually large.",
   "Compared with the same period last year: Taiwan 44% higher; Korea 105% higher; Japan 31% higher (24% in U.S. dollars)."
  ],
  "panels": [
@@ -2606,17 +2607,17 @@
      "name": "Dollar fund (UUP)",
      "unit": "USD",
      "as_of": "2026-10-30",
-     "value": 29.05,
+     "value": 29.02,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 0.55,
-      "13w": 3.12,
-      "52w": 6.49
+      "4w": 0.45,
+      "13w": 3.02,
+      "52w": 6.38
      },
      "change_kind": "pct",
-     "move4_rank_pct": 24,
+     "move4_rank_pct": 20,
      "chart": [
       [
        "2023-11-10",
@@ -3240,7 +3241,7 @@
       ],
       [
        "2026-10-30",
-       29.05
+       29.02
       ]
      ]
     },
@@ -4530,7 +4531,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 3.1% over 13 weeks and 6.5% higher than a year ago."
+    "Dollar fund (UUP) is up 3.0% over 13 weeks and 6.4% higher than a year ago."
    ]
   },
   {
@@ -4541,17 +4542,17 @@
      "name": "Gold fund (GLD)",
      "unit": "USD",
      "as_of": "2026-10-30",
-     "value": 357.25,
+     "value": 355.72,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 95,
      "changes": {
-      "4w": -6.02,
-      "13w": -3.85,
-      "52w": -2.95
+      "4w": -6.42,
+      "13w": -4.26,
+      "52w": -3.37
      },
      "change_kind": "pct",
-     "move4_rank_pct": 81,
+     "move4_rank_pct": 83,
      "chart": [
       [
        "2023-11-10",
@@ -5175,7 +5176,7 @@
       ],
       [
        "2026-10-30",
-       357.25
+       355.72
       ]
      ]
     },
@@ -6465,7 +6466,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 3.9% over 13 weeks and 3.0% lower than a year ago.",
+    "Gold fund (GLD) is down 4.3% over 13 weeks and 3.4% lower than a year ago.",
     "Gold held by GLD is down 1.4% over 4 weeks: money flowing out."
    ]
   },
@@ -6477,17 +6478,17 @@
      "name": "Oil fund (USO)",
      "unit": "USD",
      "as_of": "2026-10-30",
-     "value": 170.86,
+     "value": 170.69,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 58,
      "changes": {
-      "4w": 15.94,
-      "13w": 32.28,
-      "52w": 135.47
+      "4w": 15.82,
+      "13w": 32.14,
+      "52w": 135.24
      },
      "change_kind": "pct",
-     "move4_rank_pct": 91,
+     "move4_rank_pct": 90,
      "chart": [
       [
        "2023-11-10",
@@ -7111,7 +7112,7 @@
       ],
       [
        "2026-10-30",
-       170.86
+       170.69
       ]
      ]
     },
@@ -7759,7 +7760,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 32.3% over 13 weeks and 135.5% higher than a year ago. Its latest 4-week move is larger than 91% of past 4-week moves, which is unusually large.",
+    "Oil fund (USO) is up 32.1% over 13 weeks and 135.2% higher than a year ago. Its latest 4-week move is larger than 90% of past 4-week moves, which is unusually large.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 93% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7771,17 +7772,17 @@
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
      "as_of": "2026-10-30",
-     "value": 757.68,
+     "value": 754.69,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 99,
      "changes": {
-      "4w": -1.55,
-      "13w": 1.68,
-      "52w": 12.29
+      "4w": -1.94,
+      "13w": 1.28,
+      "52w": 11.84
      },
      "change_kind": "pct",
-     "move4_rank_pct": 28,
+     "move4_rank_pct": 37,
      "chart": [
       [
        "2023-11-10",
@@ -7905,7 +7906,7 @@
       ],
       [
        "2024-06-07",
-       518.7
+       518.69
       ],
       [
        "2024-06-14",
@@ -8405,7 +8406,7 @@
       ],
       [
        "2026-10-30",
-       757.68
+       754.69
       ]
      ]
     },
@@ -8413,17 +8414,17 @@
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
      "as_of": "2026-10-30",
-     "value": 693.34,
+     "value": 687.15,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 98,
      "changes": {
-      "4w": -7.5,
-      "13w": 0.88,
-      "52w": 10.73
+      "4w": -8.33,
+      "13w": -0.02,
+      "52w": 9.75
      },
      "change_kind": "pct",
-     "move4_rank_pct": 86,
+     "move4_rank_pct": 90,
      "chart": [
       [
        "2023-11-10",
@@ -8651,7 +8652,7 @@
       ],
       [
        "2024-12-06",
-       521.21
+       521.2
       ],
       [
        "2024-12-13",
@@ -9047,7 +9048,7 @@
       ],
       [
        "2026-10-30",
-       693.34
+       687.15
       ]
      ]
     },
@@ -11621,8 +11622,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is up 1.7% over 13 weeks and 12.3% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is up 0.9% over 13 weeks and 10.7% higher than a year ago."
+    "S&P 500 fund (SPY) is up 1.3% over 13 weeks and 11.8% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is little changed over 13 weeks and 9.8% higher than a year ago. Its latest 4-week move is larger than 90% of past 4-week moves, which is unusually large."
    ]
   },
   {
