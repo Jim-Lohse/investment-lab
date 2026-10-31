@@ -1,18 +1,18 @@
-# CFTC positioning brief, week of 2026-10-20
+# CFTC positioning brief, week of 2026-10-27
 
-- Latest week in the data: 2026-10-20
-- Latest week that should be published by 2026-10-30: 2026-10-20
+- Latest week in the data: 2026-10-27
+- Latest week that should be published by 2026-10-31: 2026-10-27
 - Status: current
 
 | Market | Who | Net | Change from last week | Move bigger than % of past weekly moves | Net higher than % of past weeks | Net a year earlier | Flag |
 |---|---|---|---|---|---|---|---|
-| S&P 500 (SPY) | Institutions | 901377 | -14458 | 28 | 78 | 902735 (2025-10-21) |  |
-| S&P 500 (SPY) | Hedge funds | -371245 | 37481 | 54 | 29 | -441001 (2025-10-21) |  |
-| Nasdaq-100 (QQQ) | Institutions | 77790 | 2467 | 25 | 74 | 82133 (2025-10-21) |  |
-| Nasdaq-100 (QQQ) | Hedge funds | 950 | 12543 | 65 | 56 | 2044 (2025-10-21) |  |
-| Dollar index (UUP) | Institutions | 17020 | -1144 | 67 | 83 | 1302 (2025-10-21) |  |
-| Dollar index (UUP) | Hedge funds | 3183 | 1107 | 32 | 68 | -17830 (2025-10-21) |  |
-| Gold (GLD) | Hedge funds | 104206 | -2883 | 17 | 49 | 92227 (2025-10-21) |  |
-| Crude oil (USO) | Hedge funds | 36187 | -4387 | 16 | 7 | -38154 (2025-10-21) |  |
+| S&P 500 (SPY) | Institutions | 923449 | 22072 | 42 | 84 | 906797 (2025-10-28) |  |
+| S&P 500 (SPY) | Hedge funds | -400604 | -29359 | 45 | 22 | -448721 (2025-10-28) |  |
+| Nasdaq-100 (QQQ) | Institutions | 65381 | -12409 | 83 | 67 | 76269 (2025-10-28) |  |
+| Nasdaq-100 (QQQ) | Hedge funds | 2301 | 1351 | 10 | 57 | 11174 (2025-10-28) |  |
+| Dollar index (UUP) | Institutions | 16713 | -307 | 31 | 82 | 505 (2025-10-28) |  |
+| Dollar index (UUP) | Hedge funds | 3158 | -25 | 0 | 68 | -15282 (2025-10-28) |  |
+| Gold (GLD) | Hedge funds | 105562 | 1356 | 8 | 50 | 104159 (2025-10-28) |  |
+| Crude oil (USO) | Hedge funds | 31128 | -5059 | 18 | 6 | -8600 (2025-10-28) |  |
 
 Flags: 'unusual move' = weekly change bigger than 90% of that series' earlier weekly moves; 'extreme net' = net above 95% or below 5% of its earlier weeks. Ranks use only earlier weeks, from 2006-06-13.
