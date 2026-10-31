@@ -27,7 +27,7 @@ prompt. At run time the Routine may copy them into
 |---|---|---|
 | Collect market-wide stories | Weekdays, 8:30 am (7:30 am in winter), on the existing 12:30 UTC workflow run | `python -m signals.positioning news`: the searches in `signals/config/positioning.json`, last 3 days, new stories appended to `data/positioning/headlines.csv`; weekly counts, calendar and `data/derived/positioning_brief.md` rebuilt |
 | Same-day position alert | Weekdays, 9:21 am | Routine "Positioning same-day alert" (below). Silent unless a trigger fires |
-| Weekly digest | Friday, 6:30 pm | A "Positioning" section inside the CFTC weekly summary (`signals/CFTC_WEEKLY_SUMMARY.md`), same email, same Notion page, and the macro dashboard's Positioning strip |
+| Weekly digest | Saturday, 8:00 am | A "Positioning" section inside the CFTC weekly summary (`signals/CFTC_WEEKLY_SUMMARY.md`), same email, same Notion page, and the macro dashboard's Positioning strip |
 
 Once a day is deliberate. The feeds keep several days of stories, so one run
 misses nothing, and a story known at 11 am instead of 8:30 am changes nothing
@@ -93,11 +93,11 @@ Runs weekdays 9:21 am Eastern. Steps:
    subject "Positioning alert: <names>", with one entry per story: the
    headline as a link, the outlet and date, whether the name is a holding
    or a watch name, and two or three plain sentences on why it should not
-   wait for Friday (what the story says investors did, and which name it
-   touches). No trade recommendations. Add each story to the alert log on
-   the Notion page (date, name, headline, link).
+   wait for Saturday's weekly summary (what the story says investors did,
+   and which name it touches). No trade recommendations. Add each story to
+   the alert log on the Notion page (date, name, headline, link).
 
-## The weekly Positioning section (inside the Friday CFTC summary)
+## The weekly Positioning section (inside the Saturday CFTC summary)
 
 Numbers come from `data/derived/positioning_brief.md`, used exactly:
 

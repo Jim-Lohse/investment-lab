@@ -1,11 +1,12 @@
 # CFTC weekly summary: specification
 
 What the weekly CFTC Commitments of Traders summary contains, when it is sent,
-and how it decides between a research action and situational awareness. Two
-Claude Routines follow this file; their prompts only name the private parts
-(the Notion database and the email address), so the rules change with a commit
-here rather than by editing a Routine. The general writing rules in `CLAUDE.md`
-apply on top of this file.
+and how it decides between a research action and situational awareness. One
+Claude Routine follows this file, with a Saturday main run and a Tuesday
+backup; its prompt only names the private parts (the Notion database and the
+email address), so the rules change with a commit here rather than by editing
+the Routine. The general writing rules in `CLAUDE.md` apply on top of this
+file.
 
 ## Schedule
 
@@ -13,12 +14,18 @@ apply on top of this file.
 |---|---|---|
 | CFTC publishes positions as of Tuesday | Fri 19:30 / 20:30 | Fri 3:30 pm |
 | `update-signals.yml` fetches CFTC only | Fri 21:30 | Fri 5:30 pm / 4:30 pm |
-| Routine "CFTC weekly intelligence": main run | Fri 22:30 | Fri 6:30 pm / 5:30 pm |
-| Routine "CFTC weekly intelligence backup" | Sat and Tue 12:00 | 8:00 am / 7:00 am |
+| Routine "CFTC weekly intelligence": main run | Sat 12:00 / 13:00 | Sat 8:00 am |
+| Same Routine: backup run | Tue 12:00 / 13:00 | Tue 8:00 am |
+
+The Routine is scheduled in New York time, so it stays at 8:00 am Eastern
+when the clocks change. Delivery moved from Friday evening to Saturday morning
+on 2026-10-14: GitHub often starts the Friday 21:30 UTC fetch hours late, so a
+Friday-evening run kept arriving before the week's data.
 
 Holiday weeks slip the release to Monday, which the daily 07:30 UTC fetch
 picks up and the Tuesday backup delivers. A government shutdown stops
-publication; the backups send one short "report delayed" note per missing week.
+publication; the Saturday and Tuesday runs send one short "report delayed"
+note per missing week.
 Only one summary is sent per week: the Notion database is the record of what
 was sent, and every run checks it first.
 
@@ -27,8 +34,10 @@ read only what the workflow committed.
 
 ## Run steps
 
-1. Check out `origin/main` and `pip install -r signals/requirements.txt`. If
-   that fails or `data/derived/cftc_flows.csv` is missing, email a two-sentence
+1. Check out `origin/main` and run
+   `python -m pip install -r signals/requirements.txt` (plain `pip` can
+   install into a different Python than the one that runs the code). If that
+   fails or `data/derived/cftc_flows.csv` is missing, email a two-sentence
    failure notice (subject "CFTC weekly intelligence: run failed") and stop.
 
 2. Facts for today. Run `python -m signals.cftc_cot brief`. It prints and
@@ -48,10 +57,8 @@ read only what the workflow committed.
      delivered." and stop. Send nothing.
    - Status current and no page for D: write the summary and deliver it
      (next two sections).
-   - Status STALE on the Friday run: stop quietly; the fetch may be late and
-     Saturday's run retries.
-   - Status STALE on the Saturday or Tuesday run: if a "Report delayed" page
-     already exists for the expected week, stop quietly. Otherwise create one
+   - Status STALE: if a "Report delayed" page already exists for the expected
+     week, stop quietly. Otherwise create one
      (Name "Week of <expected week>: report delayed", Week = expected week,
      Verdict "Report delayed") holding two plain sentences, which week's
      report is late and when the next check runs, email the same two
