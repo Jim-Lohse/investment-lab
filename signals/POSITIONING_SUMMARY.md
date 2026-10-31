@@ -52,8 +52,12 @@ Runs weekdays 9:21 am Eastern. Steps:
 
 1. Build the name list. It has three parts, and only names on it can
    trigger an email:
-   - Schwab Roth IRA holdings, read live with the Charles Schwab connector
-     (the Roth account only). If that connector is unavailable, use the
+   - Schwab Roth IRA holdings, read with the Truthifi connector (it may be
+     listed as "Charles Schwab"; its tools say Truthifi). Truthifi also
+     links Jim's Fidelity accounts: use the Schwab "Roth Contributory IRA"
+     account only. Truthifi holds a daily snapshot, usually a day or two
+     old, so a trade made yesterday may not show yet; give the snapshot
+     date in the email if one is sent. If that connector is unavailable, use the
      Schwab Roth IRA table on the private Notion page named in the prompt,
      and say so in the email if one is sent.
    - IBKR taxable positions, read live with the Interactive Brokers
