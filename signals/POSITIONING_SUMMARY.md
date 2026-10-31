@@ -26,7 +26,7 @@ prompt. At run time the Routine may copy them into
 | Step | When | What |
 |---|---|---|
 | Collect market-wide stories | Weekdays, 8:30 am (7:30 am in winter), on the existing 12:30 UTC workflow run | `python -m signals.positioning news`: the searches in `signals/config/positioning.json`, last 3 days, new stories appended to `data/positioning/headlines.csv`; weekly counts, calendar and `data/derived/positioning_brief.md` rebuilt |
-| Same-day position alert | Weekdays, 9:30 am | Routine "Positioning same-day alert" (below). Silent unless a trigger fires |
+| Same-day position alert | Weekdays, 9:21 am | Routine "Positioning same-day alert" (below). Silent unless a trigger fires |
 | Weekly digest | Friday, 6:30 pm | A "Positioning" section inside the CFTC weekly summary (`signals/CFTC_WEEKLY_SUMMARY.md`), same email, same Notion page, and the macro dashboard's Positioning strip |
 
 Once a day is deliberate. The feeds keep several days of stories, so one run
@@ -48,33 +48,50 @@ for awareness.
 
 ## The same-day alert (Routine "Positioning same-day alert")
 
-Runs weekdays 9:30 am Eastern. Steps:
+Runs weekdays 9:21 am Eastern. Steps:
 
-1. Build the holdings list: the Schwab Roth IRA holdings and ad hoc watch
-   names from the private Notion page named in the prompt, plus the IBKR
-   taxable positions read live with the Interactive Brokers connector. If
-   the IBKR connector is unavailable, use the IBKR table on the Notion page
-   and name that in the email if one is sent. If the list is empty, stop
-   silently.
-2. Check out `origin/main`. Write the holdings to
+1. Build the name list. It has three parts, and only names on it can
+   trigger an email:
+   - Schwab Roth IRA holdings, read live with the Charles Schwab connector
+     (the Roth account only). If that connector is unavailable, use the
+     Schwab Roth IRA table on the private Notion page named in the prompt,
+     and say so in the email if one is sent.
+   - IBKR taxable positions, read live with the Interactive Brokers
+     connector. If it is unavailable, use the IBKR table on the Notion page,
+     and say so in the email if one is sent.
+   - Watch names: every row in the "Ad hoc watch names" table on the Notion
+     page (names Jim and Claude agreed to watch, including the companies
+     inside funds Jim holds). These are never read from a broker.
+   Use each name's aliases and U.S. symbol from the Notion page where it has
+   them. If the whole list is empty, stop silently.
+2. Check out `origin/main`. Write the list to
    `signals/config/holdings.local.json` and run
    `python -m signals.positioning match 1` (stories first seen today or
-   yesterday that name a holding).
-3. For each holding, search the last 24 hours with Bigdata.com for
-   positioning stories only: hedge
-   funds, short sellers or short interest, prime brokerage data, 13F or
-   ownership filings, activist stakes, foreign investors net buying or
-   selling, block trades. Ordinary company news (earnings, products) is not
-   a positioning story and does not trigger an email.
-4. Drop anything already recorded in the alert log on the Notion page (same
-   link, or same headline and holding).
-5. If nothing is left, stop silently. Otherwise send one email for the run,
-   subject "Positioning alert: <holding names>", with one entry per story:
-   the headline as a link, the outlet and date, and two or three plain
-   sentences on why it should not wait for Friday (what the story says the
-   funds did, and which of Jim's holdings it touches). No trade
-   recommendations. Add each story to the alert log on the Notion page
-   (date, holding, headline, link).
+   yesterday that name a listed name).
+3. For each name, search the last 24 hours with Bigdata.com for positioning
+   stories only.
+4. Keep a story only if both tests pass:
+   - It names one of the listed names (or an alias or its U.S. symbol) in
+     the headline or the opening paragraph. A story about a company not on
+     the list never triggers an email, even if it mentions a listed
+     company's sector or market.
+   - It is a positioning story: what investors as a group are doing with
+     the name. That means hedge funds or prime brokerage data; short
+     sellers, short interest or bearish options bets; 13F, 13D, 13G or other
+     ownership filings; activist stakes; insider sales or Form 144; foreign
+     investors' net buying or selling; block trades; fund inflows or
+     outflows. Ordinary company news is not: earnings, guidance, products,
+     analyst price targets, valuation commentary, or a share price move
+     with no stated buyer or seller.
+5. Drop anything already recorded in the alert log on the Notion page (same
+   link, or same headline and name).
+6. If nothing is left, stop silently. Otherwise send one email for the run,
+   subject "Positioning alert: <names>", with one entry per story: the
+   headline as a link, the outlet and date, whether the name is a holding
+   or a watch name, and two or three plain sentences on why it should not
+   wait for Friday (what the story says investors did, and which name it
+   touches). No trade recommendations. Add each story to the alert log on
+   the Notion page (date, name, headline, link).
 
 ## The weekly Positioning section (inside the Friday CFTC summary)
 
