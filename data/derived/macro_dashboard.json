@@ -1,10 +1,10 @@
 {
- "generated": "2026-10-31",
+ "generated": "2026-11-01",
  "headlines": [
   "The 2-year yield is 4.56% and is up 28 bp over 13 weeks; the 10-year is 4.94% and is up 19 bp.",
   "The 10-year pays 0.38 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 94% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
-  "Compared with the same period last year: Taiwan 44% higher; Korea 105% higher; Japan 31% higher (24% in U.S. dollars)."
+  "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 31% higher (24% in U.S. dollars)."
  ],
  "panels": [
   {
@@ -8044,7 +8044,7 @@
       ],
       [
        "2025-02-07",
-       589.2
+       589.19
       ],
       [
        "2025-02-14",
@@ -8650,7 +8650,7 @@
       ],
       [
        "2024-12-06",
-       521.21
+       521.2
       ],
       [
        "2024-12-13",
@@ -8750,7 +8750,7 @@
       ],
       [
        "2025-05-30",
-       515.5
+       515.51
       ],
       [
        "2025-06-06",
@@ -11765,20 +11765,6 @@
      "basis": "estimate, 7 business days after settlement; FINRA's calendar governs"
     },
     {
-     "start": "2026-11-16",
-     "end": "2026-11-16",
-     "kind": "13f",
-     "label": "13F deadline: large funds' quarter-end holdings become public; expect a wave of \"what hedge funds bought and sold\" stories",
-     "basis": "45 days after quarter-end, next business day"
-    },
-    {
-     "start": "2026-11-19",
-     "end": "2026-11-26",
-     "kind": "trend_monitor",
-     "label": "Estimated: Goldman Hedge Fund Trend Monitor and its most-crowded-stocks list reach the press",
-     "basis": "estimate, 3 to 10 days after the 13F deadline"
-    },
-    {
      "start": "2026-11-23",
      "end": "2026-11-30",
      "kind": "rebalance",
@@ -11819,13 +11805,13 @@
      "name": "Korea: total exports",
      "kind": "trade",
      "period": "2026-10",
-     "window": "first 20 days",
-     "value": 105.35,
+     "window": "",
+     "value": 93.7,
      "note": "The earliest read each month: the first 10 days, the first 20, then the full month. Already in U.S. dollars.",
      "previous": {
       "period": "2026-10",
-      "window": "first 10 days",
-      "value": 101.95
+      "window": "first 20 days",
+      "value": 105.35
      }
     },
     {
@@ -11845,7 +11831,7 @@
    ],
    "explainer": "Growth compared with the same period a year earlier, from the lab's existing Taiwan, Korea and Japan data. Strong readings here mostly reflect AI-hardware demand.",
    "takeaway": [
-    "Compared with the same period last year: Taiwan 44% higher; Korea 105% higher; Japan 31% higher (24% in U.S. dollars).",
+    "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 31% higher (24% in U.S. dollars).",
     "About 7 points of Japan's export growth is only the weaker yen; the dollar figure is the truer read of demand."
    ]
   }
