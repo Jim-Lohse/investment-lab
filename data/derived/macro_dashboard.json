@@ -1,10 +1,9 @@
 {
- "generated": "2026-11-03",
+ "generated": "2026-11-04",
  "headlines": [
-  "The 2-year yield is 4.59% and is up 40 bp over 13 weeks; the 10-year is 4.91% and is up 26 bp.",
-  "The 10-year pays 0.32 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+  "The 2-year yield is 4.61% and is up 42 bp over 13 weeks; the 10-year is 4.95% and is up 30 bp.",
+  "The 10-year pays 0.34 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 94% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
-  "Nasdaq-100 fund (QQQ) is down 5.1% over 13 weeks and 13.0% higher than a year ago. Its latest 4-week move is larger than 90% of past 4-week moves, which is unusually large.",
   "8 distinct positioning stories this week: much busier than usual (a usual week has 3).",
   "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 31% higher (24% in U.S. dollars)."
  ],
@@ -16,18 +15,18 @@
     {
      "name": "2-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-11-02",
-     "value": 4.59,
+     "as_of": "2026-11-03",
+     "value": 4.61,
      "note": "",
      "since": "1990-01-05",
      "rank_pct": 68,
      "changes": {
-      "4w": -0.21,
-      "13w": 0.4,
-      "52w": 1.04
+      "4w": -0.19,
+      "13w": 0.42,
+      "52w": 1.06
      },
      "change_kind": "abs",
-     "move4_rank_pct": 68,
+     "move4_rank_pct": 63,
      "chart": [
       [
        "2023-11-17",
@@ -651,25 +650,25 @@
       ],
       [
        "2026-11-06",
-       4.59
+       4.61
       ]
      ]
     },
     {
      "name": "10-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-11-02",
-     "value": 4.91,
+     "as_of": "2026-11-03",
+     "value": 4.95,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 66,
+     "rank_pct": 67,
      "changes": {
-      "4w": -0.33,
-      "13w": 0.26,
-      "52w": 0.8
+      "4w": -0.29,
+      "13w": 0.3,
+      "52w": 0.84
      },
      "change_kind": "abs",
-     "move4_rank_pct": 81,
+     "move4_rank_pct": 77,
      "chart": [
       [
        "2023-11-17",
@@ -1293,25 +1292,25 @@
       ],
       [
        "2026-11-06",
-       4.91
+       4.95
       ]
      ]
     },
     {
      "name": "Gap: 10-year minus 2-year",
      "unit": "percentage points",
-     "as_of": "2026-11-02",
-     "value": 0.32,
+     "as_of": "2026-11-03",
+     "value": 0.34,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 29,
+     "rank_pct": 30,
      "changes": {
-      "4w": -0.12,
-      "13w": -0.14,
-      "52w": -0.24
+      "4w": -0.1,
+      "13w": -0.12,
+      "52w": -0.22
      },
      "change_kind": "abs",
-     "move4_rank_pct": 63,
+     "move4_rank_pct": 55,
      "chart": [
       [
        "2023-11-17",
@@ -1935,7 +1934,7 @@
       ],
       [
        "2026-11-06",
-       0.32
+       0.34
       ]
      ],
      "inverted": false,
@@ -1947,18 +1946,18 @@
     {
      "name": "Gap: 10-year minus 3-month",
      "unit": "percentage points",
-     "as_of": "2026-11-02",
-     "value": 0.7,
+     "as_of": "2026-11-03",
+     "value": 0.74,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 31,
+     "rank_pct": 32,
      "changes": {
-      "4w": -0.29,
-      "13w": -0.08,
-      "52w": 0.51
+      "4w": -0.25,
+      "13w": -0.04,
+      "52w": 0.55
      },
      "change_kind": "abs",
-     "move4_rank_pct": 77,
+     "move4_rank_pct": 69,
      "chart": [
       [
        "2023-11-17",
@@ -2582,7 +2581,7 @@
       ],
       [
        "2026-11-06",
-       0.7
+       0.74
       ]
      ],
      "inverted": false,
@@ -2594,8 +2593,8 @@
    ],
    "explainer": "The 2-year yield tracks where the bond market expects the Federal Reserve's rate to be over the next two years. The 10-year reflects long-run growth and inflation expectations. When the gap between them turns negative (an inverted curve), the market expects rate cuts, usually because it expects a slowdown. Inversions have come before most U.S. recessions of the past 50 years, with lead times from months to about two years, and some false alarms.",
    "takeaway": [
-    "The 2-year yield is 4.59% and is up 40 bp over 13 weeks; the 10-year is 4.91% and is up 26 bp.",
-    "The 10-year pays 0.32 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+    "The 2-year yield is 4.61% and is up 42 bp over 13 weeks; the 10-year is 4.95% and is up 30 bp.",
+    "The 10-year pays 0.34 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
     "The shape of the curve barely changed over 13 weeks."
    ]
   },
@@ -2606,18 +2605,18 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-11-03",
-     "value": 29.0,
+     "as_of": "2026-11-04",
+     "value": 28.91,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": -0.07,
-      "13w": 3.31,
-      "52w": 6.5
+      "4w": -0.38,
+      "13w": 2.99,
+      "52w": 6.17
      },
      "change_kind": "pct",
-     "move4_rank_pct": 4,
+     "move4_rank_pct": 15,
      "chart": [
       [
        "2023-11-17",
@@ -3241,7 +3240,7 @@
       ],
       [
        "2026-11-06",
-       29.0
+       28.91
       ]
      ]
     },
@@ -4531,7 +4530,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 3.3% over 13 weeks and 6.5% higher than a year ago."
+    "Dollar fund (UUP) is up 3.0% over 13 weeks and 6.2% higher than a year ago."
    ]
   },
   {
@@ -4541,18 +4540,18 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-11-03",
-     "value": 359.56,
+     "as_of": "2026-11-04",
+     "value": 370.05,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 95,
      "changes": {
-      "4w": -6.51,
-      "13w": -9.76,
-      "52w": -2.38
+      "4w": -3.78,
+      "13w": -7.13,
+      "52w": 0.47
      },
      "change_kind": "pct",
-     "move4_rank_pct": 84,
+     "move4_rank_pct": 60,
      "chart": [
       [
        "2023-11-17",
@@ -5176,25 +5175,25 @@
       ],
       [
        "2026-11-06",
-       359.56
+       370.05
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-11-02",
-     "value": 1040.51,
+     "as_of": "2026-11-03",
+     "value": 1037.66,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
      "rank_pct": 71,
      "changes": {
-      "4w": -1.2,
-      "13w": 2.26,
-      "52w": -0.15
+      "4w": -1.47,
+      "13w": 1.98,
+      "52w": -0.42
      },
      "change_kind": "pct",
-     "move4_rank_pct": 34,
+     "move4_rank_pct": 40,
      "chart": [
       [
        "2023-11-17",
@@ -5818,7 +5817,7 @@
       ],
       [
        "2026-11-06",
-       1040.51
+       1037.66
       ]
      ]
     },
@@ -6466,8 +6465,8 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 9.8% over 13 weeks and 2.4% lower than a year ago.",
-    "Gold held by GLD is down 1.2% over 4 weeks: money flowing out."
+    "Gold fund (GLD) is down 7.1% over 13 weeks and 0.5% higher than a year ago.",
+    "Gold held by GLD is down 1.5% over 4 weeks: money flowing out."
    ]
   },
   {
@@ -6477,18 +6476,18 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-11-03",
-     "value": 157.67,
+     "as_of": "2026-11-04",
+     "value": 154.0,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 56,
      "changes": {
-      "4w": 6.39,
-      "13w": 33.64,
-      "52w": 121.26
+      "4w": 3.91,
+      "13w": 30.53,
+      "52w": 116.11
      },
      "change_kind": "pct",
-     "move4_rank_pct": 54,
+     "move4_rank_pct": 34,
      "chart": [
       [
        "2023-11-17",
@@ -7112,7 +7111,7 @@
       ],
       [
        "2026-11-06",
-       157.67
+       154.0
       ]
      ]
     },
@@ -7760,7 +7759,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 33.6% over 13 weeks and 121.3% higher than a year ago.",
+    "Oil fund (USO) is up 30.5% over 13 weeks and 116.1% higher than a year ago.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 94% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7771,18 +7770,18 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-11-03",
-     "value": 755.01,
+     "as_of": "2026-11-04",
+     "value": 767.47,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 99,
      "changes": {
-      "4w": -3.03,
-      "13w": -2.12,
-      "52w": 13.74
+      "4w": -1.43,
+      "13w": -0.5,
+      "52w": 15.62
      },
      "change_kind": "pct",
-     "move4_rank_pct": 56,
+     "move4_rank_pct": 26,
      "chart": [
       [
        "2023-11-17",
@@ -7826,7 +7825,7 @@
       ],
       [
        "2024-01-26",
-       471.97
+       471.96
       ],
       [
        "2024-02-02",
@@ -8406,25 +8405,25 @@
       ],
       [
        "2026-11-06",
-       755.01
+       767.47
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-11-03",
-     "value": 685.64,
+     "as_of": "2026-11-04",
+     "value": 697.18,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 98,
      "changes": {
-      "4w": -8.74,
-      "13w": -5.07,
-      "52w": 12.98
+      "4w": -7.2,
+      "13w": -3.48,
+      "52w": 14.88
      },
      "change_kind": "pct",
-     "move4_rank_pct": 90,
+     "move4_rank_pct": 84,
      "chart": [
       [
        "2023-11-17",
@@ -9048,7 +9047,7 @@
       ],
       [
        "2026-11-06",
-       685.64
+       697.18
       ]
      ]
     },
@@ -11622,8 +11621,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is down 2.1% over 13 weeks and 13.7% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is down 5.1% over 13 weeks and 13.0% higher than a year ago. Its latest 4-week move is larger than 90% of past 4-week moves, which is unusually large."
+    "S&P 500 fund (SPY) is down 0.5% over 13 weeks and 15.6% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is down 3.5% over 13 weeks and 14.9% higher than a year ago."
    ]
   },
   {
@@ -11744,20 +11743,20 @@
      "extreme": true
     },
     {
-     "date": "2026-10-21",
-     "outlet": "Gadget Review",
-     "title": "The 'Smart Money' Is Running: Hedge Funds Just Dumped Tech at the Fastest Pace in 10 Years",
-     "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOOUw2TG56eFVEM0JjNEw5YzRmV2RmN2E1UnNyNTVTQ2ZuMlVkS1JsellSVXdsSzlwZzhwNkQ2T3NHNHJ4NUdPSWhIWG1Ra3N2STJZWGxsLXZxTW1fYVFyYjZMOHluM3BQV1NkZWpkSWI1MjR0dnRzV01aR0w5aUM4N0V4WVNVZFozenQtcGNGcElEbU1FZ1Y5UUlhWC1hdzZXSHR0eFVXekpMd1h1M0hJTzlnZzlpcUU?oc=5",
-     "banks": "",
-     "direction": "selling",
-     "extreme": true
-    },
-    {
      "date": "2026-11-02",
      "outlet": "BigGo Finance",
      "title": "Goldman Sachs Deconstructs October's US Stock Market Turmoil: Seven Contrarian Signals Emerge, Hedge Fund Net Exposure Already Prices In a Bear Market",
      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTFA3NTRWYW5fV0ZHeFAzcmxJMjJfaU9pUW1XT0k4MjctTU00S3QwcmFDU0dWSGVmZVZoX2J2QTl0QVZlVG1paXRlcHZMcUgxeW1oT3p5U18yNnF4R3Q1R01mZzNwdk9JZjlqNERPc0RJTTZnenh6SUE?oc=5",
      "banks": "Goldman Sachs",
+     "direction": "",
+     "extreme": false
+    },
+    {
+     "date": "2026-11-02",
+     "outlet": "TradingView",
+     "title": "Hedge funds turn underweight on AI for first time since 2023 - Morgan Stanley",
+     "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPSXp2QVNXUGdXYjNLQ0xQczdWZDdBRjU5UmdOTmMxVHl6R21ENUx4SndZMGFRdkRVZjdSZ2dNQUpOWUxXUXRWVkdJUnlxbWl0V2hRd3otSTc2a2JWRFRCdmV2WVlzdnR4Vk1pUTB4cFlzNTFWOURnN3ZIQnZjLWY4ajZEVEFLeVNnaUh6b1VHQTlPcjVtZnNnc1dMYjVheUNMSkN4VURTOGVib1BSU2YwV3pLTVFleDdIRTFLanQyY0J5d1VBWm1IS1g3VGU4OTNpMmpr?oc=5",
+     "banks": "Morgan Stanley",
      "direction": "",
      "extreme": false
     }
