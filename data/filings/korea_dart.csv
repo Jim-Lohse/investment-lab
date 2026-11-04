@@ -60,3 +60,5 @@ rcept_no,stock_code,company,report,filer,received,remark,link,topics,needs_readi
 20261030000716,005930,Samsung Electronics,주식등의대량보유상황보고서(일반),삼성물산,20261030,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000716,ownership,yes,2026-10-30T14:31:20Z
 20261030000586,005930,Samsung Electronics,특수관계인으로부터주식의취득,삼성전자,20261030,공,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000586,,,2026-10-30T14:31:20Z
 20261103000167,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,오정환,20261103,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103000167,insider,,2026-11-03T15:28:34Z
+20261104800612,005930,Samsung Electronics,최대주주등소유주식변동신고서,삼성전자,20261104,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261104800612,ownership,yes,2026-11-04T15:46:01Z
+20261104000325,005930,Samsung Electronics,자기주식처분결과보고서,삼성전자,20261104,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261104000325,buyback,yes,2026-11-04T15:46:01Z
