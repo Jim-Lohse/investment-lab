@@ -62,3 +62,8 @@ rcept_no,stock_code,company,report,filer,received,remark,link,topics,needs_readi
 20261103000167,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,오정환,20261103,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261103000167,insider,,2026-11-03T15:28:34Z
 20261104800612,005930,Samsung Electronics,최대주주등소유주식변동신고서,삼성전자,20261104,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261104800612,ownership,yes,2026-11-04T15:46:01Z
 20261104000325,005930,Samsung Electronics,자기주식처분결과보고서,삼성전자,20261104,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261104000325,buyback,yes,2026-11-04T15:46:01Z
+20261105800517,033780,KT&G,기업가치제고계획(자율공시),케이티앤지,20261105,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105800517,shareholder_return,yes,2026-11-05T15:48:09Z
+20261105800554,033780,KT&G,수시공시의무관련사항(공정공시),케이티앤지,20261105,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105800554,,,2026-11-05T15:48:09Z
+20261105800497,033780,KT&G,금전대여결정,케이티앤지,20261105,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105800497,,,2026-11-05T15:48:09Z
+20261105800482,033780,KT&G,연결재무제표기준영업(잠정)실적(공정공시),케이티앤지,20261105,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105800482,,,2026-11-05T15:48:09Z
+20261105000566,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,박세근,20261105,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000566,insider,,2026-11-05T15:48:09Z
