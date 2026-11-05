@@ -1,6 +1,6 @@
 # Positioning brief, 2026-11-05 (U.S. Eastern)
 
-Stories counted: 105 (of 500 rows collected; the rest failed the relevance filter). This week (from 2026-11-02): 9 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: much busier than usual.
+Stories counted: 106 (of 511 rows collected; the rest failed the relevance filter). This week (from 2026-11-02): 10 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: much busier than usual.
 
 | Search | This week | Usual week |
 |---|---|---|
@@ -8,7 +8,7 @@ Stories counted: 105 (of 500 rows collected; the rest failed the relevance filte
 | Reuters HEDGE FLOW column | 0 | 0.0 |
 | Goldman Hedge Fund Trend Monitor and VIP basket | 0 | 0.0 |
 | Morgan Stanley prime brokerage (MSPB) | 0 | 0.0 |
-| Weekly prime-desk leverage notes | 5 | 2.0 |
+| Weekly prime-desk leverage notes | 6 | 2.0 |
 | JPMorgan-sourced hedge fund data | 0 | 0.0 |
 
 ## Stories this week
@@ -17,6 +17,7 @@ Stories counted: 105 (of 500 rows collected; the rest failed the relevance filte
 |---|---|---|---|---|---|
 | 2026-11-03 | Yahoo Finance Singapore | [Goldman data shows hedge funds cut leverage at fastest pace since March](https://news.google.com/rss/articles/CBMihgFBVV95cUxPN1k3SVNzYi1VdW1rS2FRUmpxSk1tT2locFRub1UtWW1Gcmh6UkN2ZTFHTTd3RG9fRnowX2pyekNKbVEwNnduMU9JWE1lZVNEVVowOFl1MF9Ka2plMFJuWjdiT3Vqc195YzltLUd1VFdMTXFfT2ZldXFCV2dsTDNxSUtXdkQ1Zw?oc=5) | Goldman Sachs | selling | yes |
 | 2026-11-04 | Hedgeweek | [Hedge funds slash leverage at fastest pace since March amid October losses](https://news.google.com/rss/articles/CBMiowFBVV95cUxOODFqTlMtYVVka0xydVlDRXVQWDV5THNpa2dSd2U2NTVjYUZRbUZVOUI5S2NvLUduVGRKQTdoN3dERkpncnNFMmlveUFKamZiMGZBS1pXSUt3STRILTlMbU43TTFzRXlHUHVDWFRlYUIwU3BpekVkbzNjSnZfSFZMbmVPWHphdHhMZ1NxcnVkcDFTMk9uSUExdUNIU0JlR2dIRFo4?oc=5) | - | selling | yes |
+| 2026-11-03 | The Dark Side Of The Boom | [Wall Street's Risk Appetite Breaks: Goldman Finds a Market Still Carrying Too Much Leverage](https://news.google.com/rss/articles/CBMigwFBVV95cUxPRXZacDh4V3BUR21UZVZIcVRLY29lR3JHVnp6SUlPeHBsSGQzTWxqZUFrM0ZzTFZXQlhhMTd1UEZORzA1cV9fU3J0RUFhZTd6UExTSzZSbHRLLWN1bmxMdlB0aE0tTzIzaXVZX1lrS0puUW1tTUZtcVVzWENlQzBTNnc1Zw?oc=5) | Goldman Sachs | - | - |
 | 2026-11-02 | BigGo Finance | [Goldman Sachs Deconstructs October's US Stock Market Turmoil: Seven Contrarian Signals Emerge, Hedge Fund Net Exposure Already Prices In a Bear Market](https://news.google.com/rss/articles/CBMidkFVX3lxTFA3NTRWYW5fV0ZHeFAzcmxJMjJfaU9pUW1XT0k4MjctTU00S3QwcmFDU0dWSGVmZVZoX2J2QTl0QVZlVG1paXRlcHZMcUgxeW1oT3p5U18yNnF4R3Q1R01mZzNwdk9JZjlqNERPc0RJTTZnenh6SUE?oc=5) | Goldman Sachs | - | - |
 | 2026-11-02 | TradingView | [Hedge funds turn underweight on AI for first time since 2023 - Morgan Stanley](https://news.google.com/rss/articles/CBMi0wFBVV95cUxPSXp2QVNXUGdXYjNLQ0xQczdWZDdBRjU5UmdOTmMxVHl6R21ENUx4SndZMGFRdkRVZjdSZ2dNQUpOWUxXUXRWVkdJUnlxbWl0V2hRd3otSTc2a2JWRFRCdmV2WVlzdnR4Vk1pUTB4cFlzNTFWOURnN3ZIQnZjLWY4ajZEVEFLeVNnaUh6b1VHQTlPcjVtZnNnc1dMYjVheUNMSkN4VURTOGVib1BSU2YwV3pLTVFleDdIRTFLanQyY0J5d1VBWm1IS1g3VGU4OTNpMmpr?oc=5) | Morgan Stanley | - | - |
 | 2026-11-02 | The Dark Side Of The Boom | [Making Money Is Hard. Keeping It Is Harder: Goldman Warns the AI Trade Has One More Crowded Long to Clear](https://news.google.com/rss/articles/CBMihAFBVV95cUxPZUFXMnpRRHBacHFZWUc3ZjVEQTVjdUR4S3RHYWpETGdKTy1QR25PcExRVEpLU2ZCTFdVM2JDNlp6bmNoSld6aWl4TmozeTl6WmhCSm5VZTYyY3JPR1dWUUlqQldCTHlNR25UN1NDenYwVWcwVVVmNkNMU3VYOC1GLXVQX1o?oc=5) | Goldman Sachs | - | - |
