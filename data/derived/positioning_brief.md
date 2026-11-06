@@ -1,6 +1,6 @@
 # Positioning brief, 2026-11-06 (U.S. Eastern)
 
-Stories counted: 106 (of 511 rows collected; the rest failed the relevance filter). This week (from 2026-11-02): 10 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: much busier than usual.
+Stories counted: 106 (of 527 rows collected; the rest failed the relevance filter). This week (from 2026-11-02): 10 distinct stories; usual week (median of up to 12 earlier weeks): 3.0; reading: much busier than usual.
 
 | Search | This week | Usual week |
 |---|---|---|
