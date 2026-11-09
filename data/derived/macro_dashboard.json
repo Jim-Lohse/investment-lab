@@ -1,11 +1,9 @@
 {
- "generated": "2026-11-08",
+ "generated": "2026-11-09",
  "headlines": [
   "The 2-year yield is 4.51% and is up 32 bp over 13 weeks; the 10-year is 4.86% and is up 21 bp.",
   "The 10-year pays 0.35 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 95% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
-  "Nasdaq-100 fund (QQQ) is down 9.2% over 13 weeks and 8.1% higher than a year ago. Its latest 4-week move is larger than 97% of past 4-week moves, which is unusually large.",
-  "10 distinct positioning stories this week: much busier than usual (a usual week has 3).",
   "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 31% higher (24% in U.S. dollars)."
  ],
  "panels": [
@@ -2606,23 +2604,19 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-11-06",
-     "value": 29.13,
+     "as_of": "2026-11-09",
+     "value": 29.02,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 0.38,
-      "13w": 3.78,
-      "52w": 6.98
+      "4w": 0.35,
+      "13w": 3.24,
+      "52w": 6.77
      },
      "change_kind": "pct",
-     "move4_rank_pct": 15,
+     "move4_rank_pct": 14,
      "chart": [
-      [
-       "2023-11-17",
-       25.48
-      ],
       [
        "2023-11-24",
        25.4
@@ -3242,6 +3236,10 @@
       [
        "2026-11-06",
        29.13
+      ],
+      [
+       "2026-11-13",
+       29.02
       ]
      ]
     },
@@ -4531,7 +4529,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 3.8% over 13 weeks and 7.0% higher than a year ago."
+    "Dollar fund (UUP) is up 3.2% over 13 weeks and 6.8% higher than a year ago."
    ]
   },
   {
@@ -4541,23 +4539,19 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-11-06",
-     "value": 372.52,
+     "as_of": "2026-11-09",
+     "value": 375.99,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 96,
      "changes": {
-      "4w": -3.14,
-      "13w": -6.51,
-      "52w": 1.14
+      "4w": -1.58,
+      "13w": -6.35,
+      "52w": 0.01
      },
      "change_kind": "pct",
-     "move4_rank_pct": 52,
+     "move4_rank_pct": 29,
      "chart": [
-      [
-       "2023-11-17",
-       183.67
-      ],
       [
        "2023-11-24",
        185.52
@@ -5177,24 +5171,28 @@
       [
        "2026-11-06",
        372.52
+      ],
+      [
+       "2026-11-13",
+       375.99
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-11-05",
-     "value": 1040.51,
+     "as_of": "2026-11-06",
+     "value": 1041.37,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
      "rank_pct": 71,
      "changes": {
-      "4w": -1.2,
-      "13w": 2.26,
-      "52w": -0.15
+      "4w": -1.12,
+      "13w": 2.34,
+      "52w": -0.07
      },
      "change_kind": "pct",
-     "move4_rank_pct": 34,
+     "move4_rank_pct": 32,
      "chart": [
       [
        "2023-11-17",
@@ -5818,7 +5816,7 @@
       ],
       [
        "2026-11-06",
-       1040.51
+       1041.37
       ]
      ]
     },
@@ -6466,8 +6464,8 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 6.5% over 13 weeks and 1.1% higher than a year ago.",
-    "Gold held by GLD is down 1.2% over 4 weeks: money flowing out."
+    "Gold fund (GLD) is down 6.3% over 13 weeks and 0.0% higher than a year ago.",
+    "Gold held by GLD is down 1.1% over 4 weeks: money flowing out."
    ]
   },
   {
@@ -6477,23 +6475,19 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-11-06",
-     "value": 148.41,
+     "as_of": "2026-11-09",
+     "value": 143.6,
      "note": "Price including dividends.",
      "since": "2006-04-14",
-     "rank_pct": 56,
+     "rank_pct": 55,
      "changes": {
-      "4w": 0.14,
-      "13w": 25.79,
-      "52w": 108.27
+      "4w": -11.23,
+      "13w": 13.43,
+      "52w": 101.18
      },
      "change_kind": "pct",
-     "move4_rank_pct": 1,
+     "move4_rank_pct": 78,
      "chart": [
-      [
-       "2023-11-17",
-       70.75
-      ],
       [
        "2023-11-24",
        70.82
@@ -7113,6 +7107,10 @@
       [
        "2026-11-06",
        148.41
+      ],
+      [
+       "2026-11-13",
+       143.6
       ]
      ]
     },
@@ -7760,7 +7758,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 25.8% over 13 weeks and 108.3% higher than a year ago.",
+    "Oil fund (USO) is up 13.4% over 13 weeks and 101.2% higher than a year ago.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 95% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7771,23 +7769,19 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-11-06",
-     "value": 735.29,
+     "as_of": "2026-11-09",
+     "value": 752.14,
      "note": "Price including dividends.",
      "since": "2006-01-06",
-     "rank_pct": 98,
+     "rank_pct": 99,
      "changes": {
-      "4w": -5.56,
-      "13w": -4.67,
-      "52w": 10.77
+      "4w": -1.46,
+      "13w": -2.88,
+      "52w": 13.14
      },
      "change_kind": "pct",
-     "move4_rank_pct": 84,
+     "move4_rank_pct": 26,
      "chart": [
-      [
-       "2023-11-17",
-       434.74
-      ],
       [
        "2023-11-24",
        439.09
@@ -8166,7 +8160,7 @@
       ],
       [
        "2025-09-12",
-       648.59
+       648.6
       ],
       [
        "2025-09-19",
@@ -8407,29 +8401,29 @@
       [
        "2026-11-06",
        735.29
+      ],
+      [
+       "2026-11-13",
+       752.14
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-11-06",
-     "value": 656.1,
+     "as_of": "2026-11-09",
+     "value": 677.1,
      "note": "Price including dividends.",
      "since": "2006-01-06",
-     "rank_pct": 97,
+     "rank_pct": 98,
      "changes": {
-      "4w": -12.67,
-      "13w": -9.16,
-      "52w": 8.11
+      "4w": -4.61,
+      "13w": -7.29,
+      "52w": 11.73
      },
      "change_kind": "pct",
-     "move4_rank_pct": 97,
+     "move4_rank_pct": 63,
      "chart": [
-      [
-       "2023-11-17",
-       379.57
-      ],
       [
        "2023-11-24",
        382.98
@@ -9049,6 +9043,10 @@
       [
        "2026-11-06",
        656.1
+      ],
+      [
+       "2026-11-13",
+       677.1
       ]
      ]
     },
@@ -11622,8 +11620,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is down 4.7% over 13 weeks and 10.8% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is down 9.2% over 13 weeks and 8.1% higher than a year ago. Its latest 4-week move is larger than 97% of past 4-week moves, which is unusually large."
+    "S&P 500 fund (SPY) is down 2.9% over 13 weeks and 13.1% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is down 7.3% over 13 weeks and 11.7% higher than a year ago."
    ]
   },
   {
@@ -11632,10 +11630,10 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 10,
-    "baseline": 3.0,
-    "ratio": 3.33,
-    "label": "much busier than usual"
+    "count": 0,
+    "baseline": 4.0,
+    "ratio": 0.0,
+    "label": "quieter than usual"
    },
    "weeks": [
     [
@@ -11713,6 +11711,10 @@
     [
      "2026-11-08",
      10
+    ],
+    [
+     "2026-11-15",
+     0
     ]
    ],
    "stories": [
@@ -11786,7 +11788,7 @@
     }
    ],
    "takeaway": [
-    "10 distinct positioning stories this week: much busier than usual (a usual week has 3).",
+    "0 distinct positioning stories this week: quieter than usual (a usual week has 4).",
     "Record-type wording in the last two weeks: \"Goldman data shows hedge funds cut leverage at fastest pace since March\" (Yahoo Finance Singapore, 2026-11-03)."
    ]
   },
