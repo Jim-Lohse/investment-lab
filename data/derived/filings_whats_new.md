@@ -1,22 +1,16 @@
 # Foreign company filings: what's new
 
-Run date 2026-11-10. New means first seen since 2026-11-10T15:46:30Z.
+Run date 2026-11-10. New means first seen since 2026-11-10T20:27:52Z.
 
 ## Bottom line
 
-3 new document(s) touch a question you are watching, from Mitsui & Co., Musashi Seimitsu. Read them first; links are in the table below.
+New documents arrived, but none touches a question you are watching.
 
 ## What
 
 | Company | Where | Title | Dated | About | Read now? |
 |---|---|---|---|---|---|
-| Mitsui & Co. | Japan filing: buyback status report | [buyback progress report (自己株券買付状況報告書（法２４条の６第１項に基づくもの）)](https://disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?S100ZDZ7) | 2026-11-10 | buyback | yes |
-| Musashi Seimitsu | Japan same-day announcement | [earnings release (2027年３月期 第２四半期(中間期)決算短信〔日本基準〕(連結))](https://www.release.tdnet.info/inbs/140120261109570044.pdf) | 2026-11-10 | results | yes |
-| Musashi Seimitsu | Japan filing: half-year report | [half-year report (半期報告書－第100期(2026/04/01－2027/03/31))](https://disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?S100ZDO8) | 2026-11-10 | results | yes |
-| Musashi Seimitsu | Japan same-day announcement | [特別利益の計上に関するお知らせ](https://www.release.tdnet.info/inbs/140120261109570053.pdf) | 2026-11-10 | other | no |
-| Musashi Seimitsu | Japan filing: document type 135 | [確認書](https://disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?S100ZDOF) | 2026-11-10 | other | no |
-| Samsung Electronics | Korea filing | [director or major-holder share dealing (임원ㆍ주요주주특정증권등소유상황보고서)](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000320) | 2026-11-10 | director dealing | no |
-| Samsung Electronics | Korea filing | [director or major-holder share dealing (임원ㆍ주요주주특정증권등소유상황보고서)](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000038) | 2026-11-10 | director dealing | no |
+| Imperial Brands | UK announcement | [Director/PDMR Shareholding](https://www.investegate.co.uk/announcement/rns/imperial-brands--imb/director-pdmr-shareholding/9868374) | 2026-11-10 | director dealing | no |
 
 ## So what
 
@@ -33,9 +27,7 @@ Watch: no purchase reported for 25 working days. Either the programme has finish
 
 | Owner | What | What closes it |
 |---|---|---|
-| Jim or Claude | Read Musashi Seimitsu: earnings release (2027年３月期 第２四半期(中間期)決算短信〔日本基準〕(連結)) | Answer recorded on the company's research page |
-| Jim or Claude | Read Mitsui & Co.: buyback progress report (自己株券買付状況報告書（法２４条の６第１項に基づくもの）) | Answer recorded on the company's research page |
-| Jim or Claude | Read Musashi Seimitsu: half-year report (半期報告書－第100期(2026/04/01－2027/03/31)) | Answer recorded on the company's research page |
+| none | Nothing open | |
 
 Coming up: Imperial Brands full-year results (exact date not yet announced), mid November.
 
