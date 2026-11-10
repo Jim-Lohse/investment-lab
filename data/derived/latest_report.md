@@ -1,6 +1,6 @@
 # Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan + U.S. trade
 
-_Generated 2026-11-09 by `signals/compute_signals.py`._
+_Generated 2026-11-10 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
 ## Taiwan monthly revenue — 2026-09
@@ -56,9 +56,6 @@ _YoY in yen is what MOF publishes. YoY in USD restates the same series at the re
 
 | Period | Window | Source | Item | JPY m | YoY % (yen) | YoY % (USD) | FX pt | YoY % (MOF) |
 |---|---|---|---|---:|---:|---:|---:|---:|
-| 2026-09 | D20 | press_release | BAL:Grand Total | 27439 | -119.75 | -118.73 | -1.02 |  |
-| 2026-09 | D20 | press_release | E:Grand Total | 7879504 | 23.35 | 16.94 | 6.41 | 23.50 |
-| 2026-09 | D20 | press_release | I:Grand Total | 7852065 | 20.31 | 14.05 | 6.26 | 19.90 |
 | 2026-09 | MONTH | press_release | BAL:Grand Total | -556479 | 134.45 | 121.76 | 12.69 | 100.40 |
 | 2026-09 | MONTH | press_release | E:(IC) | 734423 | 55.51 | 47.09 | 8.42 | 55.50 |
 | 2026-09 | MONTH | press_release | E:ELECTRICAL MEASURING | 216767 | 26.24 | 19.41 | 6.83 | 26.20 |
@@ -76,6 +73,9 @@ _YoY in yen is what MOF publishes. YoY in USD restates the same series at the re
 | 2026-10 | D10 | press_release | BAL:Grand Total | -339857 | -37.84 | -41.02 | 3.18 | -41.10 |
 | 2026-10 | D10 | press_release | E:Grand Total | 3822613 | 30.62 | 23.94 | 6.68 | 30.70 |
 | 2026-10 | D10 | press_release | I:Grand Total | 4162470 | 19.84 | 13.72 | 6.12 | 18.90 |
+| 2026-10 | D20 | press_release | BAL:Grand Total | -810433 | 163.44 | 150.85 | 12.59 | 274.10 |
+| 2026-10 | D20 | press_release | E:Grand Total | 7314664 | 26.44 | 20.39 | 6.05 | 23.50 |
+| 2026-10 | D20 | press_release | I:Grand Total | 8125097 | 33.36 | 26.98 | 6.38 | 32.40 |
 | 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:半導体等製造装置 | 553333 | 43.95 | 36.16 | 7.79 |  |
 | 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:半導体等電子部品 | 933636 | 49.43 | 41.35 | 8.08 |  |
 | 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:科学光学機器 | 242605 | 11.60 | 5.56 | 6.04 |  |
@@ -102,7 +102,7 @@ _YoY in yen is what MOF publishes. YoY in USD restates the same series at the re
 | 2026-09 | MONTH | estat_hs:PROV9 | I:HS9001 | 35065 |  |  |  |  |
 | 2026-09 | MONTH | estat_hs:PROV9 | I:HS9013 | 12610 |  |  |  |  |
 
-_Reference rate, newest window stored: 158.10 yen per USD (2026-10)._
+_Reference rate, newest window stored: 158.16 yen per USD (2026-10)._
 
 ## U.S. trade by HTS code (Census) — demand side
 

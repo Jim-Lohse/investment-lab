@@ -1,10 +1,10 @@
 {
- "generated": "2026-11-09",
+ "generated": "2026-11-10",
  "headlines": [
   "The 2-year yield is 4.56% and is up 39 bp over 13 weeks; the 10-year is 4.88% and is up 20 bp.",
   "The 10-year pays 0.32 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 95% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
-  "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 31% higher (24% in U.S. dollars)."
+  "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 26% higher (20% in U.S. dollars)."
  ],
  "panels": [
   {
@@ -2604,18 +2604,18 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-11-09",
-     "value": 28.97,
+     "as_of": "2026-11-10",
+     "value": 29.12,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 0.17,
-      "13w": 3.06,
-      "52w": 6.59
+      "4w": 0.69,
+      "13w": 3.59,
+      "52w": 7.14
      },
      "change_kind": "pct",
-     "move4_rank_pct": 7,
+     "move4_rank_pct": 28,
      "chart": [
       [
        "2023-11-24",
@@ -3239,7 +3239,7 @@
       ],
       [
        "2026-11-13",
-       28.97
+       29.12
       ]
      ]
     },
@@ -4529,7 +4529,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 3.1% over 13 weeks and 6.6% higher than a year ago."
+    "Dollar fund (UUP) is up 3.6% over 13 weeks and 7.1% higher than a year ago."
    ]
   },
   {
@@ -4539,18 +4539,18 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-11-09",
-     "value": 379.53,
+     "as_of": "2026-11-10",
+     "value": 370.55,
      "note": "Price including dividends.",
      "since": "2006-01-06",
-     "rank_pct": 96,
+     "rank_pct": 95,
      "changes": {
-      "4w": -0.65,
-      "13w": -5.47,
-      "52w": 0.95
+      "4w": -3.0,
+      "13w": -7.7,
+      "52w": -1.44
      },
      "change_kind": "pct",
-     "move4_rank_pct": 12,
+     "move4_rank_pct": 51,
      "chart": [
       [
        "2023-11-24",
@@ -5174,30 +5174,26 @@
       ],
       [
        "2026-11-13",
-       379.53
+       370.55
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-11-06",
-     "value": 1041.37,
+     "as_of": "2026-11-09",
+     "value": 1042.51,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
-     "rank_pct": 71,
+     "rank_pct": 72,
      "changes": {
-      "4w": -1.12,
-      "13w": 2.34,
-      "52w": -0.07
+      "4w": -1.56,
+      "13w": 1.85,
+      "52w": -0.14
      },
      "change_kind": "pct",
-     "move4_rank_pct": 32,
+     "move4_rank_pct": 43,
      "chart": [
-      [
-       "2023-11-17",
-       883.43
-      ],
       [
        "2023-11-24",
        882.28
@@ -5817,6 +5813,10 @@
       [
        "2026-11-06",
        1041.37
+      ],
+      [
+       "2026-11-13",
+       1042.51
       ]
      ]
     },
@@ -6464,8 +6464,8 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 5.5% over 13 weeks and 0.9% higher than a year ago.",
-    "Gold held by GLD is down 1.1% over 4 weeks: money flowing out."
+    "Gold fund (GLD) is down 7.7% over 13 weeks and 1.4% lower than a year ago.",
+    "Gold held by GLD is down 1.6% over 4 weeks: money flowing out."
    ]
   },
   {
@@ -6475,18 +6475,18 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-11-09",
-     "value": 142.66,
+     "as_of": "2026-11-10",
+     "value": 140.66,
      "note": "Price including dividends.",
      "since": "2006-04-14",
-     "rank_pct": 55,
+     "rank_pct": 54,
      "changes": {
-      "4w": -11.81,
-      "13w": 12.69,
-      "52w": 99.86
+      "4w": -13.04,
+      "13w": 11.11,
+      "52w": 97.06
      },
      "change_kind": "pct",
-     "move4_rank_pct": 80,
+     "move4_rank_pct": 84,
      "chart": [
       [
        "2023-11-24",
@@ -7110,7 +7110,7 @@
       ],
       [
        "2026-11-13",
-       142.66
+       140.66
       ]
      ]
     },
@@ -7758,7 +7758,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 12.7% over 13 weeks and 99.9% higher than a year ago.",
+    "Oil fund (USO) is up 11.1% over 13 weeks and 97.1% higher than a year ago.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 95% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7769,18 +7769,18 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-11-09",
-     "value": 752.69,
+     "as_of": "2026-11-10",
+     "value": 748.02,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 99,
      "changes": {
-      "4w": -1.38,
-      "13w": -2.81,
-      "52w": 13.23
+      "4w": -2.0,
+      "13w": -3.41,
+      "52w": 12.52
      },
      "change_kind": "pct",
-     "move4_rank_pct": 25,
+     "move4_rank_pct": 38,
      "chart": [
       [
        "2023-11-24",
@@ -7896,7 +7896,7 @@
       ],
       [
        "2024-06-07",
-       518.69
+       518.7
       ],
       [
        "2024-06-14",
@@ -8160,7 +8160,7 @@
       ],
       [
        "2025-09-12",
-       648.6
+       648.59
       ],
       [
        "2025-09-19",
@@ -8404,25 +8404,25 @@
       ],
       [
        "2026-11-13",
-       752.69
+       748.02
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-11-09",
-     "value": 679.35,
+     "as_of": "2026-11-10",
+     "value": 674.24,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 98,
      "changes": {
-      "4w": -4.29,
-      "13w": -6.98,
-      "52w": 12.1
+      "4w": -5.01,
+      "13w": -7.68,
+      "52w": 11.26
      },
      "change_kind": "pct",
-     "move4_rank_pct": 59,
+     "move4_rank_pct": 67,
      "chart": [
       [
        "2023-11-24",
@@ -8642,7 +8642,7 @@
       ],
       [
        "2024-12-06",
-       521.2
+       521.21
       ],
       [
        "2024-12-13",
@@ -9046,7 +9046,7 @@
       ],
       [
        "2026-11-13",
-       679.35
+       674.24
       ]
      ]
     },
@@ -11620,8 +11620,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is down 2.8% over 13 weeks and 13.2% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is down 7.0% over 13 weeks and 12.1% higher than a year ago."
+    "S&P 500 fund (SPY) is down 3.4% over 13 weeks and 12.5% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is down 7.7% over 13 weeks and 11.3% higher than a year ago."
    ]
   },
   {
@@ -11826,21 +11826,21 @@
      "name": "Japan: total exports",
      "kind": "trade",
      "period": "2026-10",
-     "window": "first 10 days",
-     "value": 30.62,
+     "window": "first 20 days",
+     "value": 26.44,
      "note": "Growth in yen and in U.S. dollars; the difference is the weaker yen.",
      "previous": {
-      "period": "2026-09",
-      "window": "full month",
-      "value": 16.37
+      "period": "2026-10",
+      "window": "first 10 days",
+      "value": 30.62
      },
-     "value_usd": 23.94
+     "value_usd": 20.39
     }
    ],
    "explainer": "Growth compared with the same period a year earlier, from the lab's existing Taiwan, Korea and Japan data. Strong readings here mostly reflect AI-hardware demand.",
    "takeaway": [
-    "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 31% higher (24% in U.S. dollars).",
-    "About 7 points of Japan's export growth is only the weaker yen; the dollar figure is the truer read of demand."
+    "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 26% higher (20% in U.S. dollars).",
+    "About 6 points of Japan's export growth is only the weaker yen; the dollar figure is the truer read of demand."
    ]
   }
  ],
