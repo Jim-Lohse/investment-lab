@@ -1,4 +1,4 @@
-# Positioning brief, 2026-11-10 (U.S. Eastern)
+# Positioning brief, 2026-11-11 (U.S. Eastern)
 
 Stories counted: 112 (of 566 rows collected; the rest failed the relevance filter). This week (from 2026-11-09): 5 distinct stories; usual week (median of up to 12 earlier weeks): 4.0; reading: about normal.
 
@@ -25,7 +25,6 @@ Stories counted: 112 (of 566 rows collected; the rest failed the relevance filte
 
 | Dates | Event | Basis |
 |---|---|---|
-| 2026-11-10 | Estimated: FINRA short interest published (shares sold short as of 2026-10-30) | estimate, 7 business days after settlement; FINRA's calendar governs |
 | 2026-11-23 to 2026-11-30 | Month-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces | last 5 trading days of the month |
 | 2026-11-24 | Estimated: FINRA short interest published (shares sold short as of 2026-11-13) | estimate, 7 business days after settlement; FINRA's calendar governs |
 

@@ -1,10 +1,10 @@
 {
- "generated": "2026-11-10",
+ "generated": "2026-11-11",
  "headlines": [
-  "The 2-year yield is 4.56% and is up 39 bp over 13 weeks; the 10-year is 4.88% and is up 20 bp.",
-  "The 10-year pays 0.32 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+  "The 2-year yield is 4.73% and is up 56 bp over 13 weeks; the 10-year is 4.98% and is up 30 bp.",
+  "The 10-year pays 0.25 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 95% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
-  "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 26% higher (20% in U.S. dollars)."
+  "Compared with the same period last year: Taiwan 52% higher; Korea 112% higher; Japan 26% higher (20% in U.S. dollars)."
  ],
  "panels": [
   {
@@ -14,18 +14,18 @@
     {
      "name": "2-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-11-09",
-     "value": 4.56,
+     "as_of": "2026-11-10",
+     "value": 4.73,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 67,
+     "rank_pct": 70,
      "changes": {
-      "4w": -0.18,
-      "13w": 0.39,
-      "52w": 0.94
+      "4w": -0.01,
+      "13w": 0.56,
+      "52w": 1.11
      },
      "change_kind": "abs",
-     "move4_rank_pct": 63,
+     "move4_rank_pct": 3,
      "chart": [
       [
        "2023-11-24",
@@ -649,25 +649,25 @@
       ],
       [
        "2026-11-13",
-       4.56
+       4.73
       ]
      ]
     },
     {
      "name": "10-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-11-09",
-     "value": 4.88,
+     "as_of": "2026-11-10",
+     "value": 4.98,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 66,
+     "rank_pct": 67,
      "changes": {
-      "4w": -0.21,
-      "13w": 0.2,
-      "52w": 0.74
+      "4w": -0.11,
+      "13w": 0.3,
+      "52w": 0.84
      },
      "change_kind": "abs",
-     "move4_rank_pct": 62,
+     "move4_rank_pct": 34,
      "chart": [
       [
        "2023-11-24",
@@ -1291,25 +1291,25 @@
       ],
       [
        "2026-11-13",
-       4.88
+       4.98
       ]
      ]
     },
     {
      "name": "Gap: 10-year minus 2-year",
      "unit": "percentage points",
-     "as_of": "2026-11-09",
-     "value": 0.32,
+     "as_of": "2026-11-10",
+     "value": 0.25,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 29,
+     "rank_pct": 25,
      "changes": {
-      "4w": -0.03,
-      "13w": -0.19,
-      "52w": -0.2
+      "4w": -0.1,
+      "13w": -0.26,
+      "52w": -0.27
      },
      "change_kind": "abs",
-     "move4_rank_pct": 18,
+     "move4_rank_pct": 55,
      "chart": [
       [
        "2023-11-24",
@@ -1933,7 +1933,7 @@
       ],
       [
        "2026-11-13",
-       0.32
+       0.25
       ]
      ],
      "inverted": false,
@@ -1945,18 +1945,18 @@
     {
      "name": "Gap: 10-year minus 3-month",
      "unit": "percentage points",
-     "as_of": "2026-11-09",
-     "value": 0.64,
+     "as_of": "2026-11-10",
+     "value": 0.68,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 29,
+     "rank_pct": 30,
      "changes": {
-      "4w": -0.19,
-      "13w": -0.18,
-      "52w": 0.45
+      "4w": -0.15,
+      "13w": -0.14,
+      "52w": 0.49
      },
      "change_kind": "abs",
-     "move4_rank_pct": 56,
+     "move4_rank_pct": 46,
      "chart": [
       [
        "2023-11-24",
@@ -2580,7 +2580,7 @@
       ],
       [
        "2026-11-13",
-       0.64
+       0.68
       ]
      ],
      "inverted": false,
@@ -2592,9 +2592,9 @@
    ],
    "explainer": "The 2-year yield tracks where the bond market expects the Federal Reserve's rate to be over the next two years. The 10-year reflects long-run growth and inflation expectations. When the gap between them turns negative (an inverted curve), the market expects rate cuts, usually because it expects a slowdown. Inversions have come before most U.S. recessions of the past 50 years, with lead times from months to about two years, and some false alarms.",
    "takeaway": [
-    "The 2-year yield is 4.56% and is up 39 bp over 13 weeks; the 10-year is 4.88% and is up 20 bp.",
-    "The 10-year pays 0.32 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-    "The gap narrowed by 19 bp over 13 weeks (a flattening curve): short-term rates rose faster than long-term ones, which usually means markets expect the Federal Reserve to keep rates high."
+    "The 2-year yield is 4.73% and is up 56 bp over 13 weeks; the 10-year is 4.98% and is up 30 bp.",
+    "The 10-year pays 0.25 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+    "The gap narrowed by 26 bp over 13 weeks (a flattening curve): short-term rates rose faster than long-term ones, which usually means markets expect the Federal Reserve to keep rates high."
    ]
   },
   {
@@ -2604,18 +2604,18 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-11-10",
-     "value": 29.14,
+     "as_of": "2026-11-11",
+     "value": 29.34,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 0.76,
-      "13w": 3.66,
-      "52w": 7.21
+      "4w": 1.45,
+      "13w": 4.38,
+      "52w": 7.95
      },
      "change_kind": "pct",
-     "move4_rank_pct": 31,
+     "move4_rank_pct": 56,
      "chart": [
       [
        "2023-11-24",
@@ -3239,7 +3239,7 @@
       ],
       [
        "2026-11-13",
-       29.14
+       29.34
       ]
      ]
     },
@@ -4529,7 +4529,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 3.7% over 13 weeks and 7.2% higher than a year ago."
+    "Dollar fund (UUP) is up 4.4% over 13 weeks and 8.0% higher than a year ago."
    ]
   },
   {
@@ -4539,18 +4539,18 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-11-10",
-     "value": 369.31,
+     "as_of": "2026-11-11",
+     "value": 366.95,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 95,
      "changes": {
-      "4w": -3.32,
-      "13w": -8.01,
-      "52w": -1.77
+      "4w": -3.94,
+      "13w": -8.6,
+      "52w": -2.4
      },
      "change_kind": "pct",
-     "move4_rank_pct": 55,
+     "move4_rank_pct": 62,
      "chart": [
       [
        "2023-11-24",
@@ -5174,22 +5174,22 @@
       ],
       [
        "2026-11-13",
-       369.31
+       366.95
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-11-09",
-     "value": 1042.51,
+     "as_of": "2026-11-10",
+     "value": 1042.22,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
      "rank_pct": 72,
      "changes": {
-      "4w": -1.56,
-      "13w": 1.85,
-      "52w": -0.14
+      "4w": -1.59,
+      "13w": 1.83,
+      "52w": -0.17
      },
      "change_kind": "pct",
      "move4_rank_pct": 43,
@@ -5816,7 +5816,7 @@
       ],
       [
        "2026-11-13",
-       1042.51
+       1042.22
       ]
      ]
     },
@@ -6464,7 +6464,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 8.0% over 13 weeks and 1.8% lower than a year ago.",
+    "Gold fund (GLD) is down 8.6% over 13 weeks and 2.4% lower than a year ago.",
     "Gold held by GLD is down 1.6% over 4 weeks: money flowing out."
    ]
   },
@@ -6475,18 +6475,18 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-11-10",
-     "value": 141.34,
+     "as_of": "2026-11-11",
+     "value": 144.81,
      "note": "Price including dividends.",
      "since": "2006-04-14",
-     "rank_pct": 54,
+     "rank_pct": 55,
      "changes": {
-      "4w": -12.62,
-      "13w": 11.64,
-      "52w": 98.01
+      "4w": -10.48,
+      "13w": 14.38,
+      "52w": 102.87
      },
      "change_kind": "pct",
-     "move4_rank_pct": 83,
+     "move4_rank_pct": 75,
      "chart": [
       [
        "2023-11-24",
@@ -7110,7 +7110,7 @@
       ],
       [
        "2026-11-13",
-       141.34
+       144.81
       ]
      ]
     },
@@ -7758,7 +7758,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 11.6% over 13 weeks and 98.0% higher than a year ago.",
+    "Oil fund (USO) is up 14.4% over 13 weeks and 102.9% higher than a year ago.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 95% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7769,18 +7769,18 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-11-10",
-     "value": 748.93,
+     "as_of": "2026-11-11",
+     "value": 756.13,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 99,
      "changes": {
-      "4w": -1.88,
-      "13w": -3.29,
-      "52w": 12.66
+      "4w": -0.93,
+      "13w": -2.36,
+      "52w": 13.74
      },
      "change_kind": "pct",
-     "move4_rank_pct": 35,
+     "move4_rank_pct": 16,
      "chart": [
       [
        "2023-11-24",
@@ -8036,7 +8036,7 @@
       ],
       [
        "2025-02-07",
-       589.19
+       589.2
       ],
       [
        "2025-02-14",
@@ -8404,25 +8404,25 @@
       ],
       [
        "2026-11-13",
-       748.93
+       756.13
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-11-10",
-     "value": 672.48,
+     "as_of": "2026-11-11",
+     "value": 687.07,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 98,
      "changes": {
-      "4w": -5.26,
-      "13w": -7.92,
-      "52w": 10.97
+      "4w": -3.2,
+      "13w": -5.92,
+      "52w": 13.38
      },
      "change_kind": "pct",
-     "move4_rank_pct": 70,
+     "move4_rank_pct": 44,
      "chart": [
       [
        "2023-11-24",
@@ -9046,7 +9046,7 @@
       ],
       [
        "2026-11-13",
-       672.48
+       687.07
       ]
      ]
     },
@@ -11620,8 +11620,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is down 3.3% over 13 weeks and 12.7% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is down 7.9% over 13 weeks and 11.0% higher than a year ago."
+    "S&P 500 fund (SPY) is down 2.4% over 13 weeks and 13.7% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is down 5.9% over 13 weeks and 13.4% higher than a year ago."
    ]
   },
   {
@@ -11766,13 +11766,6 @@
    ],
    "calendar": [
     {
-     "start": "2026-11-10",
-     "end": "2026-11-10",
-     "kind": "short_interest",
-     "label": "Estimated: FINRA short interest published (shares sold short as of 2026-10-30)",
-     "basis": "estimate, 7 business days after settlement; FINRA's calendar governs"
-    },
-    {
      "start": "2026-11-23",
      "end": "2026-11-30",
      "kind": "rebalance",
@@ -11784,6 +11777,13 @@
      "end": "2026-11-24",
      "kind": "short_interest",
      "label": "Estimated: FINRA short interest published (shares sold short as of 2026-11-13)",
+     "basis": "estimate, 7 business days after settlement; FINRA's calendar governs"
+    },
+    {
+     "start": "2026-12-09",
+     "end": "2026-12-09",
+     "kind": "short_interest",
+     "label": "Estimated: FINRA short interest published (shares sold short as of 2026-11-30)",
      "basis": "estimate, 7 business days after settlement; FINRA's calendar governs"
     }
    ],
@@ -11799,27 +11799,27 @@
     {
      "name": "Taiwan: revenue of all listed companies",
      "kind": "trade",
-     "period": "2026-09",
+     "period": "2026-10",
      "window": "month",
-     "value": 43.54,
+     "value": 51.53,
      "note": "Monthly, filed by the 10th of the next month.",
      "previous": {
-      "period": "2026-08",
+      "period": "2026-09",
       "window": "month",
-      "value": 46.36
+      "value": 43.54
      }
     },
     {
      "name": "Korea: total exports",
      "kind": "trade",
-     "period": "2026-10",
-     "window": "",
-     "value": 93.7,
+     "period": "2026-11",
+     "window": "first 10 days",
+     "value": 111.85,
      "note": "The earliest read each month: the first 10 days, the first 20, then the full month. Already in U.S. dollars.",
      "previous": {
       "period": "2026-10",
-      "window": "first 20 days",
-      "value": 105.35
+      "window": "",
+      "value": 93.7
      }
     },
     {
@@ -11839,7 +11839,7 @@
    ],
    "explainer": "Growth compared with the same period a year earlier, from the lab's existing Taiwan, Korea and Japan data. Strong readings here mostly reflect AI-hardware demand.",
    "takeaway": [
-    "Compared with the same period last year: Taiwan 44% higher; Korea 94% higher; Japan 26% higher (20% in U.S. dollars).",
+    "Compared with the same period last year: Taiwan 52% higher; Korea 112% higher; Japan 26% higher (20% in U.S. dollars).",
     "About 6 points of Japan's export growth is only the weaker yen; the dollar figure is the truer read of demand."
    ]
   }
