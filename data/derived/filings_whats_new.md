@@ -1,17 +1,14 @@
 # Foreign company filings: what's new
 
-Run date 2026-11-12. New means first seen since 2026-11-12T16:16:39Z.
+Run date 2026-11-12. New means first seen since 2026-11-12T20:49:32Z.
 
 ## Bottom line
 
-1 new document(s) touch a question you are watching, from Mitsui & Co.. Read them first; links are in the table below.
+Nothing new from the watched companies since the last run.
 
 ## What
 
-| Company | Where | Title | Dated | About | Read now? |
-|---|---|---|---|---|---|
-| Mitsui & Co. | Japan filing: big-holder (5%) report | [big-holder stake change report (変更報告書)](https://disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?S100ZD6O) | 2026-11-12 | big holder change | yes |
-| Samsung Electronics | Korea filing | [director or major-holder share dealing (임원ㆍ주요주주특정증권등소유상황보고서)](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112000017) | 2026-11-12 | director dealing | no |
+No new company documents.
 
 ## So what
 
@@ -24,11 +21,13 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
 Watch: no purchase reported for 27 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
 
+Nothing to interpret this run.
+
 ## What now
 
 | Owner | What | What closes it |
 |---|---|---|
-| Jim or Claude | Read Mitsui & Co.: big-holder stake change report (変更報告書) | Answer recorded on the company's research page |
+| none | Nothing open | |
 
 Coming up: Imperial Brands full-year results (exact date not yet announced), mid November.
 
