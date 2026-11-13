@@ -79,3 +79,9 @@ rcept_no,stock_code,company,report,filer,received,remark,link,topics,needs_readi
 20261110000038,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,김평진,20261110,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261110000038,insider,,2026-11-10T15:46:44Z
 20261111000113,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,이시영,20261111,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261111000113,insider,,2026-11-11T15:37:29Z
 20261112000017,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,송기재,20261112,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112000017,insider,,2026-11-12T16:16:53Z
+20261113801935,005930,Samsung Electronics,최대주주등소유주식변동신고서,삼성전자,20261113,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113801935,ownership,yes,2026-11-13T15:41:32Z
+20261113001527,005930,Samsung Electronics,임원ㆍ주요주주특정증권등소유상황보고서,이재용,20261113,,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001527,insider,,2026-11-13T15:41:32Z
+20261113001338,005930,Samsung Electronics,동일인등출자계열회사와의상품ㆍ용역거래변경,삼성전자,20261113,공,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001338,,,2026-11-13T15:41:32Z
+20261113001302,005930,Samsung Electronics,동일인등출자계열회사와의상품ㆍ용역거래변경,삼성전자,20261113,공,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001302,,,2026-11-13T15:41:32Z
+20261113001281,005930,Samsung Electronics,동일인등출자계열회사와의상품ㆍ용역거래변경,삼성전자,20261113,공,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001281,,,2026-11-13T15:41:32Z
+20261113801115,005930,Samsung Electronics,기업설명회(IR)개최(안내공시),삼성전자,20261113,유,https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113801115,,,2026-11-13T15:41:32Z
