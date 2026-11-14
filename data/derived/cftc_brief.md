@@ -1,8 +1,8 @@
 # CFTC positioning brief, week of 2026-11-03
 
 - Latest week in the data: 2026-11-03
-- Latest week that should be published by 2026-11-13: 2026-11-03
-- Status: current
+- Latest week that should be published by 2026-11-14: 2026-11-10
+- Status: STALE
 
 | Market | Who | Net | Change from last week | Move bigger than % of past weekly moves | Net higher than % of past weeks | Net a year earlier | Flag |
 |---|---|---|---|---|---|---|---|
