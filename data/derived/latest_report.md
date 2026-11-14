@@ -14,7 +14,7 @@ _Derived data; the underlying records in `data/` are the source of truth._
 | network_interconnect | 3 | 84.22 | 79.99 | 100.0 |
 | photonics_epi | 2 | 87.06 | 107.81 | 100.0 |
 | photonics_cpo | 8 | 52.75 | 72.89 | 100.0 |
-| all_listed | 1963 | 51.00 | 14.72 | 70.5 |
+| all_listed | 1971 | 49.75 | 14.52 | 70.5 |
 
 _2026-09 ai_compute agg YoY: 49.72%_
 
