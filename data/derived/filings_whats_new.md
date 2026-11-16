@@ -1,18 +1,14 @@
 # Foreign company filings: what's new
 
-Run date 2026-11-16. New means first seen since 2026-11-16T17:26:15Z.
+Run date 2026-11-16. New means first seen since 2026-11-16T22:53:47Z.
 
 ## Bottom line
 
-New documents arrived, but none touches a question you are watching.
+Nothing new from the watched companies since the last run.
 
 ## What
 
-| Company | Where | Title | Dated | About | Read now? |
-|---|---|---|---|---|---|
-| KT&G | Korea filing | [quarterly report (분기보고서 (2026.09))](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001553) | 2026-11-13 | other | no |
-| SK hynix | Korea filing | [quarterly report (분기보고서 (2026.09))](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001715) | 2026-11-16 | other | no |
-| Samsung Electronics | Korea filing | [quarterly report (분기보고서 (2026.09))](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001482) | 2026-11-16 | other | no |
+No new company documents.
 
 ## So what
 
@@ -25,7 +21,7 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
 Watch: no purchase reported for 29 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
 
-1 routine UK notice(s) (daily buyback reports, share-count updates) are counted above rather than listed.
+Nothing to interpret this run.
 
 ## What now
 
