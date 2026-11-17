@@ -1,9 +1,9 @@
 {
- "generated": "2026-11-16",
+ "generated": "2026-11-17",
  "headlines": [
   "The 2-year yield is 4.83% and is up 59 bp over 13 weeks; the 10-year is 5.12% and is up 38 bp.",
   "The 10-year pays 0.29 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-  "Oil fund (USO) is up 4.0% over 13 weeks and 102.1% higher than a year ago. Its latest 4-week move is larger than 92% of past 4-week moves, which is unusually large.",
+  "Oil fund (USO) is up 5.1% over 13 weeks and 104.3% higher than a year ago. Its latest 4-week move is larger than 91% of past 4-week moves, which is unusually large.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 94% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
   "Compared with the same period last year: Taiwan 45% higher; Korea 112% higher; Japan 26% higher (20% in U.S. dollars)."
  ],
@@ -2605,18 +2605,18 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-11-16",
-     "value": 29.56,
+     "as_of": "2026-11-17",
+     "value": 29.5,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.07,
-      "13w": 5.95,
-      "52w": 7.69
+      "4w": 1.86,
+      "13w": 5.73,
+      "52w": 7.47
      },
      "change_kind": "pct",
-     "move4_rank_pct": 74,
+     "move4_rank_pct": 69,
      "chart": [
       [
        "2023-12-01",
@@ -3240,7 +3240,7 @@
       ],
       [
        "2026-11-20",
-       29.56
+       29.5
       ]
      ]
     },
@@ -4530,7 +4530,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 6.0% over 13 weeks and 7.7% higher than a year ago."
+    "Dollar fund (UUP) is up 5.7% over 13 weeks and 7.5% higher than a year ago."
    ]
   },
   {
@@ -4540,18 +4540,18 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-11-16",
-     "value": 352.93,
+     "as_of": "2026-11-17",
+     "value": 354.1,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 95,
      "changes": {
-      "4w": -3.73,
-      "13w": -16.64,
-      "52w": -5.7
+      "4w": -3.41,
+      "13w": -16.36,
+      "52w": -5.39
      },
      "change_kind": "pct",
-     "move4_rank_pct": 60,
+     "move4_rank_pct": 56,
      "chart": [
       [
        "2023-12-01",
@@ -5175,30 +5175,26 @@
       ],
       [
        "2026-11-20",
-       352.93
+       354.1
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-11-13",
-     "value": 1044.41,
+     "as_of": "2026-11-16",
+     "value": 1046.12,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
-     "rank_pct": 72,
+     "rank_pct": 73,
      "changes": {
-      "4w": -1.38,
-      "13w": 2.04,
-      "52w": 0.04
+      "4w": 0.43,
+      "13w": -0.1,
+      "52w": 0.53
      },
      "change_kind": "pct",
-     "move4_rank_pct": 38,
+     "move4_rank_pct": 11,
      "chart": [
-      [
-       "2023-11-24",
-       882.28
-      ],
       [
        "2023-12-01",
        878.82
@@ -5818,6 +5814,10 @@
       [
        "2026-11-13",
        1044.41
+      ],
+      [
+       "2026-11-20",
+       1046.12
       ]
      ]
     },
@@ -6465,8 +6465,8 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 16.6% over 13 weeks and 5.7% lower than a year ago.",
-    "Gold held by GLD is down 1.4% over 4 weeks: money flowing out."
+    "Gold fund (GLD) is down 16.4% over 13 weeks and 5.4% lower than a year ago.",
+    "Gold held by GLD is little changed over 4 weeks: money flowing in."
    ]
   },
   {
@@ -6476,18 +6476,18 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-11-16",
-     "value": 140.03,
+     "as_of": "2026-11-17",
+     "value": 141.56,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 54,
      "changes": {
-      "4w": -17.4,
-      "13w": 4.0,
-      "52w": 102.06
+      "4w": -16.5,
+      "13w": 5.14,
+      "52w": 104.27
      },
      "change_kind": "pct",
-     "move4_rank_pct": 92,
+     "move4_rank_pct": 91,
      "chart": [
       [
        "2023-12-01",
@@ -7111,7 +7111,7 @@
       ],
       [
        "2026-11-20",
-       140.03
+       141.56
       ]
      ]
     },
@@ -7759,7 +7759,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 4.0% over 13 weeks and 102.1% higher than a year ago. Its latest 4-week move is larger than 92% of past 4-week moves, which is unusually large.",
+    "Oil fund (USO) is up 5.1% over 13 weeks and 104.3% higher than a year ago. Its latest 4-week move is larger than 91% of past 4-week moves, which is unusually large.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 94% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7770,18 +7770,18 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-11-16",
-     "value": 739.95,
+     "as_of": "2026-11-17",
+     "value": 730.55,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 98,
      "changes": {
-      "4w": -2.63,
-      "13w": -3.13,
-      "52w": 13.49
+      "4w": -3.87,
+      "13w": -4.36,
+      "52w": 12.05
      },
      "change_kind": "pct",
-     "move4_rank_pct": 49,
+     "move4_rank_pct": 68,
      "chart": [
       [
        "2023-12-01",
@@ -8405,25 +8405,25 @@
       ],
       [
        "2026-11-20",
-       739.95
+       730.55
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-11-16",
-     "value": 661.75,
+     "as_of": "2026-11-17",
+     "value": 652.58,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 97,
      "changes": {
-      "4w": -6.05,
-      "13w": -7.15,
-      "52w": 12.67
+      "4w": -7.36,
+      "13w": -8.44,
+      "52w": 11.11
      },
      "change_kind": "pct",
-     "move4_rank_pct": 77,
+     "move4_rank_pct": 85,
      "chart": [
       [
        "2023-12-01",
@@ -8739,7 +8739,7 @@
       ],
       [
        "2025-05-30",
-       515.51
+       515.5
       ],
       [
        "2025-06-06",
@@ -9047,7 +9047,7 @@
       ],
       [
        "2026-11-20",
-       661.75
+       652.58
       ]
      ]
     },
@@ -11621,8 +11621,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is down 3.1% over 13 weeks and 13.5% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is down 7.2% over 13 weeks and 12.7% higher than a year ago."
+    "S&P 500 fund (SPY) is down 4.4% over 13 weeks and 12.1% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is down 8.4% over 13 weeks and 11.1% higher than a year ago."
    ]
   },
   {
@@ -11742,15 +11742,6 @@
      "extreme": true
     },
     {
-     "date": "2026-11-03",
-     "outlet": "Yahoo Finance Singapore",
-     "title": "Goldman data shows hedge funds cut leverage at fastest pace since March",
-     "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPN1k3SVNzYi1VdW1rS2FRUmpxSk1tT2locFRub1UtWW1Gcmh6UkN2ZTFHTTd3RG9fRnowX2pyekNKbVEwNnduMU9JWE1lZVNEVVowOFl1MF9Ka2plMFJuWjdiT3Vqc195YzltLUd1VFdMTXFfT2ZldXFCV2dsTDNxSUtXdkQ1Zw?oc=5",
-     "banks": "Goldman Sachs",
-     "direction": "selling",
-     "extreme": true
-    },
-    {
      "date": "2026-11-11",
      "outlet": "Hedgeweek",
      "title": "Hedge funds cut equity risk at fastest pace in a decade amid AI selloff",
@@ -11764,6 +11755,15 @@
      "outlet": "24/7 Wall St.",
      "title": "Hedge Funds Dumped Tech at a Near-Record Pace Right Before Chip Stocks Jumped 7%",
      "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOQTNmU1hDM0lsdS1GaVJVaGlMZlp4RWF1ZUlYZzZNXzFPX3U0RTFBUkJTS01qQ294WTVkeXNWUnRENVU5MjZVZ1dXQXBYZGVaZDBUclNseTRMTzhHSGoweTc1N1QweDNfZl9NQlZiaW5sZmI1VGdSdzdSanBUZHVOcERNQUpsNHAzMWlYRFlZaHRoaTdEWDZPbVo1d3l1bFJQdjYySEs0Z29GWTBXMjNhNThwRHVZdl9TUTBtOEJLMV8?oc=5",
+     "banks": "",
+     "direction": "selling",
+     "extreme": true
+    },
+    {
+     "date": "2026-11-09",
+     "outlet": "Yahoo Finance Singapore",
+     "title": "Hedge funds cut tech exposure at near-record pace as Nasdaq drops 6.4%",
+     "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNNXJpWVprODRJMDlOdEhfaEctS2sxcl9Kc2ZWRHk2UWxzRDQtT0RfOS1aSTFiakkxY3RLYm51Y19EdXNnWkdJckkzZVFwRC1yQ0NjZzhpeTAtY3pmTjhrZXVGR2pVN1g3MGtPTHhuby1BSnhTd0lzUEFiZzZlTWo1MEJaQ2k?oc=5",
      "banks": "",
      "direction": "selling",
      "extreme": true
