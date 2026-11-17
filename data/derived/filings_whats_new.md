@@ -1,17 +1,14 @@
 # Foreign company filings: what's new
 
-Run date 2026-11-17. New means first seen since 2026-11-17T17:03:56Z.
+Run date 2026-11-17. New means first seen since 2026-11-17T21:45:59Z.
 
 ## Bottom line
 
-2 new document(s) touch a question you are watching, from Imperial Brands. Read them first; links are in the table below.
+Nothing new from the watched companies since the last run.
 
 ## What
 
-| Company | Where | Title | Dated | About | Read now? |
-|---|---|---|---|---|---|
-| Imperial Brands | UK announcement | [Dividend Declaration](https://www.investegate.co.uk/announcement/rns/imperial-brands--imb/dividend-declaration/9878518) | 2026-11-17 | dividend | yes |
-| Imperial Brands | UK announcement | [Final Results](https://www.investegate.co.uk/announcement/rns/imperial-brands--imb/final-results/9878188) | 2026-11-17 | results | yes |
+No new company documents.
 
 ## So what
 
@@ -24,11 +21,12 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
 Watch: no purchase reported for 30 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
 
+Nothing to interpret this run.
+
 ## What now
 
 | Owner | What | What closes it |
 |---|---|---|
-| Jim or Claude | Read Imperial Brands: Dividend Declaration | Answer recorded on the company's research page |
-| Jim or Claude | Read Imperial Brands: Final Results | Answer recorded on the company's research page |
+| none | Nothing open | |
 
 This is early evidence that puts things on the watch list; on its own it is not grounds for a decision.
