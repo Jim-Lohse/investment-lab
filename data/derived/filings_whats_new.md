@@ -1,14 +1,16 @@
 # Foreign company filings: what's new
 
-Run date 2026-11-17. New means first seen since 2026-11-17T21:45:59Z.
+Run date 2026-11-18. New means first seen since 2026-11-18T16:42:57Z.
 
 ## Bottom line
 
-Nothing new from the watched companies since the last run.
+New documents arrived, but none touches a question you are watching.
 
 ## What
 
-No new company documents.
+| Company | Where | Title | Dated | About | Read now? |
+|---|---|---|---|---|---|
+| Samsung Electronics | Korea filing | [director or major-holder share dealing (임원ㆍ주요주주특정증권등소유상황보고서)](https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118000151) | 2026-11-18 | director dealing | no |
 
 ## So what
 
@@ -19,9 +21,7 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 | 1,412,743 | £34,720,492 | 2,457.7 pence a share | 06 Oct 2026 |
 
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
-Watch: no purchase reported for 30 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
-
-Nothing to interpret this run.
+Watch: no purchase reported for 31 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
 
 ## What now
 
