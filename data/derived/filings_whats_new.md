@@ -1,16 +1,14 @@
 # Foreign company filings: what's new
 
-Run date 2026-11-19. New means first seen since 2026-11-19T16:47:13Z.
+Run date 2026-11-19. New means first seen since 2026-11-19T21:34:06Z.
 
 ## Bottom line
 
-New documents arrived, but none touches a question you are watching.
+Nothing new from the watched companies since the last run.
 
 ## What
 
-| Company | Where | Title | Dated | About | Read now? |
-|---|---|---|---|---|---|
-| Mitsui & Co. | Japan filing: document type 090 | [訂正発行登録書](https://disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?S100ZISI) | 2026-11-19 | other | no |
+No new company documents.
 
 ## So what
 
@@ -22,6 +20,8 @@ Imperial Brands buying back its own shares. Its last 5 daily report(s) of purcha
 
 A buyback that keeps running on schedule is the company doing what it promised with its cash.
 Watch: no purchase reported for 32 working days. Either the programme has finished or the company has paused it; the next announcement should say which.
+
+Nothing to interpret this run.
 
 ## What now
 
