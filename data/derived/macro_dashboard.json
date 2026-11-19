@@ -1,9 +1,10 @@
 {
- "generated": "2026-11-18",
+ "generated": "2026-11-19",
  "headlines": [
   "The 2-year yield is 4.80% and is up 56 bp over 13 weeks; the 10-year is 5.07% and is up 33 bp.",
   "The 10-year pays 0.27 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-  "Oil fund (USO) is up 1.3% over 13 weeks and 96.9% higher than a year ago. Its latest 4-week move is larger than 95% of past 4-week moves, which is unusually large.",
+  "Gold fund (GLD) is down 20.2% over 13 weeks and 9.7% lower than a year ago. Its latest 4-week move is larger than 90% of past 4-week moves, which is unusually large.",
+  "Oil fund (USO) is up 3.3% over 13 weeks and 100.8% higher than a year ago. Its latest 4-week move is larger than 93% of past 4-week moves, which is unusually large.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 94% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
   "Compared with the same period last year: Taiwan 45% higher; Korea 112% higher; Japan 21% higher (16% in U.S. dollars)."
  ],
@@ -2605,15 +2606,15 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-11-18",
-     "value": 29.62,
+     "as_of": "2026-11-19",
+     "value": 29.64,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.28,
-      "13w": 6.16,
-      "52w": 7.91
+      "4w": 2.35,
+      "13w": 6.24,
+      "52w": 7.98
      },
      "change_kind": "pct",
      "move4_rank_pct": 78,
@@ -3240,7 +3241,7 @@
       ],
       [
        "2026-11-20",
-       29.62
+       29.64
       ]
      ]
     },
@@ -4530,7 +4531,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 6.2% over 13 weeks and 7.9% higher than a year ago."
+    "Dollar fund (UUP) is up 6.2% over 13 weeks and 8.0% higher than a year ago."
    ]
   },
   {
@@ -4540,18 +4541,18 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-11-18",
-     "value": 341.83,
+     "as_of": "2026-11-19",
+     "value": 337.93,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 94,
      "changes": {
-      "4w": -6.76,
-      "13w": -19.26,
-      "52w": -8.67
+      "4w": -7.82,
+      "13w": -20.18,
+      "52w": -9.71
      },
      "change_kind": "pct",
-     "move4_rank_pct": 86,
+     "move4_rank_pct": 90,
      "chart": [
       [
        "2023-12-01",
@@ -5175,25 +5176,25 @@
       ],
       [
        "2026-11-20",
-       341.83
+       337.93
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-11-17",
-     "value": 1048.68,
+     "as_of": "2026-11-18",
+     "value": 1044.12,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
-     "rank_pct": 73,
+     "rank_pct": 72,
      "changes": {
-      "4w": 0.67,
-      "13w": 0.14,
-      "52w": 0.78
+      "4w": 0.24,
+      "13w": -0.3,
+      "52w": 0.34
      },
      "change_kind": "pct",
-     "move4_rank_pct": 18,
+     "move4_rank_pct": 6,
      "chart": [
       [
        "2023-12-01",
@@ -5817,7 +5818,7 @@
       ],
       [
        "2026-11-20",
-       1048.68
+       1044.12
       ]
      ]
     },
@@ -6465,8 +6466,8 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 19.3% over 13 weeks and 8.7% lower than a year ago.",
-    "Gold held by GLD is up 0.7% over 4 weeks: money flowing in."
+    "Gold fund (GLD) is down 20.2% over 13 weeks and 9.7% lower than a year ago. Its latest 4-week move is larger than 90% of past 4-week moves, which is unusually large.",
+    "Gold held by GLD is little changed over 4 weeks: money flowing in."
    ]
   },
   {
@@ -6476,18 +6477,18 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-11-18",
-     "value": 136.44,
+     "as_of": "2026-11-19",
+     "value": 139.14,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 54,
      "changes": {
-      "4w": -19.52,
-      "13w": 1.34,
-      "52w": 96.88
+      "4w": -17.93,
+      "13w": 3.34,
+      "52w": 100.78
      },
      "change_kind": "pct",
-     "move4_rank_pct": 95,
+     "move4_rank_pct": 93,
      "chart": [
       [
        "2023-12-01",
@@ -7111,7 +7112,7 @@
       ],
       [
        "2026-11-20",
-       136.44
+       139.14
       ]
      ]
     },
@@ -7759,7 +7760,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 1.3% over 13 weeks and 96.9% higher than a year ago. Its latest 4-week move is larger than 95% of past 4-week moves, which is unusually large.",
+    "Oil fund (USO) is up 3.3% over 13 weeks and 100.8% higher than a year ago. Its latest 4-week move is larger than 93% of past 4-week moves, which is unusually large.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 94% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7770,18 +7771,18 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-11-18",
-     "value": 730.6,
+     "as_of": "2026-11-19",
+     "value": 730.05,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 98,
      "changes": {
-      "4w": -3.86,
-      "13w": -4.35,
-      "52w": 12.06
+      "4w": -3.94,
+      "13w": -4.42,
+      "52w": 11.97
      },
      "change_kind": "pct",
-     "move4_rank_pct": 67,
+     "move4_rank_pct": 69,
      "chart": [
       [
        "2023-12-01",
@@ -7809,7 +7810,7 @@
       ],
       [
        "2024-01-12",
-       461.57
+       461.58
       ],
       [
        "2024-01-19",
@@ -7893,7 +7894,7 @@
       ],
       [
        "2024-06-07",
-       518.69
+       518.7
       ],
       [
        "2024-06-14",
@@ -8405,25 +8406,25 @@
       ],
       [
        "2026-11-20",
-       730.6
+       730.05
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-11-18",
-     "value": 659.07,
+     "as_of": "2026-11-19",
+     "value": 663.1,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 97,
      "changes": {
-      "4w": -6.44,
-      "13w": -7.52,
-      "52w": 12.22
+      "4w": -5.86,
+      "13w": -6.96,
+      "52w": 12.9
      },
      "change_kind": "pct",
-     "move4_rank_pct": 80,
+     "move4_rank_pct": 75,
      "chart": [
       [
        "2023-12-01",
@@ -9047,7 +9048,7 @@
       ],
       [
        "2026-11-20",
-       659.07
+       663.1
       ]
      ]
     },
@@ -11621,8 +11622,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is down 4.3% over 13 weeks and 12.1% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is down 7.5% over 13 weeks and 12.2% higher than a year ago."
+    "S&P 500 fund (SPY) is down 4.4% over 13 weeks and 12.0% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is down 7.0% over 13 weeks and 12.9% higher than a year ago."
    ]
   },
   {
