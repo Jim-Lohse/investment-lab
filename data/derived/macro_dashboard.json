@@ -1,12 +1,12 @@
 {
- "generated": "2026-11-20",
+ "generated": "2026-11-21",
  "headlines": [
-  "The 2-year yield is 4.76% and is up 52 bp over 13 weeks; the 10-year is 5.04% and is up 30 bp.",
-  "The 10-year pays 0.28 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-  "Gold fund (GLD) is down 24.0% over 13 weeks and 14.0% lower than a year ago. Its latest 4-week move is larger than 98% of past 4-week moves, which is unusually large.",
-  "Oil fund (USO) is up 3.4% over 13 weeks and 100.9% higher than a year ago. Its latest 4-week move is larger than 93% of past 4-week moves, which is unusually large.",
+  "The 2-year yield is 4.63% and is up 39 bp over 13 weeks; the 10-year is 4.92% and is up 18 bp.",
+  "The 10-year pays 0.29 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+  "Gold fund (GLD) is down 23.7% over 13 weeks and 13.7% lower than a year ago. Its latest 4-week move is larger than 98% of past 4-week moves, which is unusually large.",
+  "Oil fund (USO) is up 3.7% over 13 weeks and 101.5% higher than a year ago. Its latest 4-week move is larger than 93% of past 4-week moves, which is unusually large.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 96% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
-  "S&P 500 fund (SPY) is down 9.5% over 13 weeks and 6.0% higher than a year ago. Its latest 4-week move is larger than 96% of past 4-week moves, which is unusually large."
+  "S&P 500 fund (SPY) is down 9.7% over 13 weeks and 5.8% higher than a year ago. Its latest 4-week move is larger than 96% of past 4-week moves, which is unusually large."
  ],
  "panels": [
   {
@@ -16,15 +16,15 @@
     {
      "name": "2-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-11-19",
-     "value": 4.76,
+     "as_of": "2026-11-20",
+     "value": 4.63,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 71,
+     "rank_pct": 69,
      "changes": {
-      "4w": 0.07,
-      "13w": 0.52,
-      "52w": 1.25
+      "4w": -0.06,
+      "13w": 0.39,
+      "52w": 1.12
      },
      "change_kind": "abs",
      "move4_rank_pct": 29,
@@ -651,25 +651,25 @@
       ],
       [
        "2026-11-20",
-       4.76
+       4.63
       ]
      ]
     },
     {
      "name": "10-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-11-19",
-     "value": 5.04,
+     "as_of": "2026-11-20",
+     "value": 4.92,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 68,
+     "rank_pct": 66,
      "changes": {
-      "4w": 0.04,
-      "13w": 0.3,
-      "52w": 0.98
+      "4w": -0.08,
+      "13w": 0.18,
+      "52w": 0.86
      },
      "change_kind": "abs",
-     "move4_rank_pct": 13,
+     "move4_rank_pct": 26,
      "chart": [
       [
        "2023-12-01",
@@ -1293,25 +1293,25 @@
       ],
       [
        "2026-11-20",
-       5.04
+       4.92
       ]
      ]
     },
     {
      "name": "Gap: 10-year minus 2-year",
      "unit": "percentage points",
-     "as_of": "2026-11-19",
-     "value": 0.28,
+     "as_of": "2026-11-20",
+     "value": 0.29,
      "note": "",
      "since": "1990-01-05",
      "rank_pct": 27,
      "changes": {
-      "4w": -0.03,
-      "13w": -0.22,
-      "52w": -0.27
+      "4w": -0.02,
+      "13w": -0.21,
+      "52w": -0.26
      },
      "change_kind": "abs",
-     "move4_rank_pct": 18,
+     "move4_rank_pct": 12,
      "chart": [
       [
        "2023-12-01",
@@ -1935,7 +1935,7 @@
       ],
       [
        "2026-11-20",
-       0.28
+       0.29
       ]
      ],
      "inverted": false,
@@ -1947,18 +1947,18 @@
     {
      "name": "Gap: 10-year minus 3-month",
      "unit": "percentage points",
-     "as_of": "2026-11-19",
-     "value": 0.7,
+     "as_of": "2026-11-20",
+     "value": 0.6,
      "note": "",
      "since": "1990-01-05",
-     "rank_pct": 31,
+     "rank_pct": 28,
      "changes": {
-      "4w": -0.08,
-      "13w": -0.16,
-      "52w": 0.54
+      "4w": -0.18,
+      "13w": -0.26,
+      "52w": 0.44
      },
      "change_kind": "abs",
-     "move4_rank_pct": 27,
+     "move4_rank_pct": 55,
      "chart": [
       [
        "2023-12-01",
@@ -2582,7 +2582,7 @@
       ],
       [
        "2026-11-20",
-       0.7
+       0.6
       ]
      ],
      "inverted": false,
@@ -2594,9 +2594,9 @@
    ],
    "explainer": "The 2-year yield tracks where the bond market expects the Federal Reserve's rate to be over the next two years. The 10-year reflects long-run growth and inflation expectations. When the gap between them turns negative (an inverted curve), the market expects rate cuts, usually because it expects a slowdown. Inversions have come before most U.S. recessions of the past 50 years, with lead times from months to about two years, and some false alarms.",
    "takeaway": [
-    "The 2-year yield is 4.76% and is up 52 bp over 13 weeks; the 10-year is 5.04% and is up 30 bp.",
-    "The 10-year pays 0.28 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-    "The gap narrowed by 22 bp over 13 weeks (a flattening curve): short-term rates rose faster than long-term ones, which usually means markets expect the Federal Reserve to keep rates high."
+    "The 2-year yield is 4.63% and is up 39 bp over 13 weeks; the 10-year is 4.92% and is up 18 bp.",
+    "The 10-year pays 0.29 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+    "The gap narrowed by 21 bp over 13 weeks (a flattening curve): short-term rates rose faster than long-term ones, which usually means markets expect the Federal Reserve to keep rates high."
    ]
   },
   {
@@ -2607,14 +2607,14 @@
      "name": "Dollar fund (UUP)",
      "unit": "USD",
      "as_of": "2026-11-20",
-     "value": 29.63,
+     "value": 29.62,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.31,
-      "13w": 6.2,
-      "52w": 7.94
+      "4w": 2.28,
+      "13w": 6.16,
+      "52w": 7.91
      },
      "change_kind": "pct",
      "move4_rank_pct": 78,
@@ -3241,7 +3241,7 @@
       ],
       [
        "2026-11-20",
-       29.63
+       29.62
       ]
      ]
     },
@@ -4542,14 +4542,14 @@
      "name": "Gold fund (GLD)",
      "unit": "USD",
      "as_of": "2026-11-20",
-     "value": 321.76,
+     "value": 322.87,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 94,
      "changes": {
-      "4w": -12.23,
-      "13w": -24.0,
-      "52w": -14.03
+      "4w": -11.93,
+      "13w": -23.74,
+      "52w": -13.73
      },
      "change_kind": "pct",
      "move4_rank_pct": 98,
@@ -5176,7 +5176,7 @@
       ],
       [
        "2026-11-20",
-       321.76
+       322.87
       ]
      ]
     },
@@ -6466,7 +6466,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 24.0% over 13 weeks and 14.0% lower than a year ago. Its latest 4-week move is larger than 98% of past 4-week moves, which is unusually large.",
+    "Gold fund (GLD) is down 23.7% over 13 weeks and 13.7% lower than a year ago. Its latest 4-week move is larger than 98% of past 4-week moves, which is unusually large.",
     "Gold held by GLD is little changed over 4 weeks: money flowing out."
    ]
   },
@@ -6478,14 +6478,14 @@
      "name": "Oil fund (USO)",
      "unit": "USD",
      "as_of": "2026-11-20",
-     "value": 139.23,
+     "value": 139.63,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 54,
      "changes": {
-      "4w": -17.87,
-      "13w": 3.41,
-      "52w": 100.91
+      "4w": -17.64,
+      "13w": 3.71,
+      "52w": 101.49
      },
      "change_kind": "pct",
      "move4_rank_pct": 93,
@@ -7112,7 +7112,7 @@
       ],
       [
        "2026-11-20",
-       139.23
+       139.63
       ]
      ]
     },
@@ -7760,7 +7760,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 3.4% over 13 weeks and 100.9% higher than a year ago. Its latest 4-week move is larger than 93% of past 4-week moves, which is unusually large.",
+    "Oil fund (USO) is up 3.7% over 13 weeks and 101.5% higher than a year ago. Its latest 4-week move is larger than 93% of past 4-week moves, which is unusually large.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 96% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7772,14 +7772,14 @@
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
      "as_of": "2026-11-20",
-     "value": 691.23,
+     "value": 689.81,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 97,
      "changes": {
-      "4w": -9.05,
-      "13w": -9.5,
-      "52w": 6.02
+      "4w": -9.23,
+      "13w": -9.69,
+      "52w": 5.8
      },
      "change_kind": "pct",
      "move4_rank_pct": 96,
@@ -7894,7 +7894,7 @@
       ],
       [
        "2024-06-07",
-       518.7
+       518.69
       ],
       [
        "2024-06-14",
@@ -8406,7 +8406,7 @@
       ],
       [
        "2026-11-20",
-       691.23
+       689.81
       ]
      ]
     },
@@ -8414,14 +8414,14 @@
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
      "as_of": "2026-11-20",
-     "value": 610.9,
+     "value": 608.45,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 96,
      "changes": {
-      "4w": -13.27,
-      "13w": -14.28,
-      "52w": 4.02
+      "4w": -13.62,
+      "13w": -14.63,
+      "52w": 3.6
      },
      "change_kind": "pct",
      "move4_rank_pct": 98,
@@ -8640,7 +8640,7 @@
       ],
       [
        "2024-12-06",
-       521.2
+       521.21
       ],
       [
        "2024-12-13",
@@ -9048,7 +9048,7 @@
       ],
       [
        "2026-11-20",
-       610.9
+       608.45
       ]
      ]
     },
@@ -11622,8 +11622,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is down 9.5% over 13 weeks and 6.0% higher than a year ago. Its latest 4-week move is larger than 96% of past 4-week moves, which is unusually large.",
-    "Nasdaq-100 fund (QQQ) is down 14.3% over 13 weeks and 4.0% higher than a year ago. Its latest 4-week move is larger than 98% of past 4-week moves, which is unusually large."
+    "S&P 500 fund (SPY) is down 9.7% over 13 weeks and 5.8% higher than a year ago. Its latest 4-week move is larger than 96% of past 4-week moves, which is unusually large.",
+    "Nasdaq-100 fund (QQQ) is down 14.6% over 13 weeks and 3.6% higher than a year ago. Its latest 4-week move is larger than 98% of past 4-week moves, which is unusually large."
    ]
   },
   {
