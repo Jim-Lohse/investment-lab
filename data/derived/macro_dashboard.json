@@ -1,12 +1,11 @@
 {
- "generated": "2026-11-22",
+ "generated": "2026-11-23",
  "headlines": [
   "The 2-year yield is 4.63% and is up 39 bp over 13 weeks; the 10-year is 4.92% and is up 18 bp.",
   "The 10-year pays 0.29 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-  "Gold fund (GLD) is down 23.7% over 13 weeks and 13.7% lower than a year ago. Its latest 4-week move is larger than 98% of past 4-week moves, which is unusually large.",
-  "Oil fund (USO) is up 3.7% over 13 weeks and 101.5% higher than a year ago. Its latest 4-week move is larger than 93% of past 4-week moves, which is unusually large.",
+  "Oil fund (USO) is up 2.7% over 13 weeks and 87.4% higher than a year ago. Its latest 4-week move is larger than 96% of past 4-week moves, which is unusually large.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 96% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
-  "S&P 500 fund (SPY) is down 9.7% over 13 weeks and 5.8% higher than a year ago. Its latest 4-week move is larger than 96% of past 4-week moves, which is unusually large."
+  "Compared with the same period last year: Taiwan 45% higher; Korea 101% higher; Japan 21% higher (16% in U.S. dollars)."
  ],
  "panels": [
   {
@@ -2606,23 +2605,19 @@
     {
      "name": "Dollar fund (UUP)",
      "unit": "USD",
-     "as_of": "2026-11-20",
-     "value": 29.62,
+     "as_of": "2026-11-23",
+     "value": 29.79,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.28,
-      "13w": 6.16,
-      "52w": 7.91
+      "4w": 2.72,
+      "13w": 5.71,
+      "52w": 9.2
      },
      "change_kind": "pct",
-     "move4_rank_pct": 78,
+     "move4_rank_pct": 84,
      "chart": [
-      [
-       "2023-12-01",
-       25.39
-      ],
       [
        "2023-12-08",
        25.62
@@ -3242,6 +3237,10 @@
       [
        "2026-11-20",
        29.62
+      ],
+      [
+       "2026-11-27",
+       29.79
       ]
      ]
     },
@@ -4531,7 +4530,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 6.2% over 13 weeks and 7.9% higher than a year ago."
+    "Dollar fund (UUP) is up 5.7% over 13 weeks and 9.2% higher than a year ago."
    ]
   },
   {
@@ -4541,23 +4540,19 @@
     {
      "name": "Gold fund (GLD)",
      "unit": "USD",
-     "as_of": "2026-11-20",
-     "value": 322.87,
+     "as_of": "2026-11-23",
+     "value": 334.64,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 94,
      "changes": {
-      "4w": -11.93,
-      "13w": -23.74,
+      "4w": -5.94,
+      "13w": -18.16,
       "52w": -13.73
      },
      "change_kind": "pct",
-     "move4_rank_pct": 98,
+     "move4_rank_pct": 80,
      "chart": [
-      [
-       "2023-12-01",
-       192.01
-      ],
       [
        "2023-12-08",
        185.64
@@ -5177,24 +5172,28 @@
       [
        "2026-11-20",
        322.87
+      ],
+      [
+       "2026-11-27",
+       334.64
       ]
      ]
     },
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-11-19",
-     "value": 1038.14,
+     "as_of": "2026-11-20",
+     "value": 1034.43,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
      "rank_pct": 71,
      "changes": {
-      "4w": -0.34,
-      "13w": -0.87,
-      "52w": -0.23
+      "4w": -0.69,
+      "13w": -1.22,
+      "52w": -0.59
      },
      "change_kind": "pct",
-     "move4_rank_pct": 8,
+     "move4_rank_pct": 19,
      "chart": [
       [
        "2023-12-01",
@@ -5818,7 +5817,7 @@
       ],
       [
        "2026-11-20",
-       1038.14
+       1034.43
       ]
      ]
     },
@@ -6466,8 +6465,8 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 23.7% over 13 weeks and 13.7% lower than a year ago. Its latest 4-week move is larger than 98% of past 4-week moves, which is unusually large.",
-    "Gold held by GLD is little changed over 4 weeks: money flowing out."
+    "Gold fund (GLD) is down 18.2% over 13 weeks and 13.7% lower than a year ago.",
+    "Gold held by GLD is down 0.7% over 4 weeks: money flowing out."
    ]
   },
   {
@@ -6477,23 +6476,19 @@
     {
      "name": "Oil fund (USO)",
      "unit": "USD",
-     "as_of": "2026-11-20",
-     "value": 139.63,
+     "as_of": "2026-11-23",
+     "value": 133.18,
      "note": "Price including dividends.",
      "since": "2006-04-14",
-     "rank_pct": 54,
+     "rank_pct": 53,
      "changes": {
-      "4w": -17.64,
-      "13w": 3.71,
-      "52w": 101.49
+      "4w": -21.12,
+      "13w": 2.68,
+      "52w": 87.39
      },
      "change_kind": "pct",
-     "move4_rank_pct": 93,
+     "move4_rank_pct": 96,
      "chart": [
-      [
-       "2023-12-01",
-       69.24
-      ],
       [
        "2023-12-08",
        66.53
@@ -7113,6 +7108,10 @@
       [
        "2026-11-20",
        139.63
+      ],
+      [
+       "2026-11-27",
+       133.18
       ]
      ]
     },
@@ -7760,7 +7759,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 3.7% over 13 weeks and 101.5% higher than a year ago. Its latest 4-week move is larger than 93% of past 4-week moves, which is unusually large.",
+    "Oil fund (USO) is up 2.7% over 13 weeks and 87.4% higher than a year ago. Its latest 4-week move is larger than 96% of past 4-week moves, which is unusually large.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 96% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7771,23 +7770,19 @@
     {
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
-     "as_of": "2026-11-20",
-     "value": 689.81,
+     "as_of": "2026-11-23",
+     "value": 723.58,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 97,
      "changes": {
-      "4w": -9.23,
-      "13w": -9.69,
-      "52w": 5.8
+      "4w": -4.25,
+      "13w": -5.72,
+      "52w": 7.02
      },
      "change_kind": "pct",
-     "move4_rank_pct": 96,
+     "move4_rank_pct": 73,
      "chart": [
-      [
-       "2023-12-01",
-       442.76
-      ],
       [
        "2023-12-08",
        443.82
@@ -7894,7 +7889,7 @@
       ],
       [
        "2024-06-07",
-       518.7
+       518.69
       ],
       [
        "2024-06-14",
@@ -8407,29 +8402,29 @@
       [
        "2026-11-20",
        689.81
+      ],
+      [
+       "2026-11-27",
+       723.58
       ]
      ]
     },
     {
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
-     "as_of": "2026-11-20",
-     "value": 608.45,
+     "as_of": "2026-11-23",
+     "value": 651.33,
      "note": "Price including dividends.",
      "since": "2006-01-06",
-     "rank_pct": 96,
+     "rank_pct": 97,
      "changes": {
-      "4w": -13.62,
-      "13w": -14.63,
-      "52w": 3.6
+      "4w": -5.67,
+      "13w": -8.99,
+      "52w": 5.68
      },
      "change_kind": "pct",
-     "move4_rank_pct": 98,
+     "move4_rank_pct": 73,
      "chart": [
-      [
-       "2023-12-01",
-       383.4
-      ],
       [
        "2023-12-08",
        385.6
@@ -8640,7 +8635,7 @@
       ],
       [
        "2024-12-06",
-       521.21
+       521.2
       ],
       [
        "2024-12-13",
@@ -9049,6 +9044,10 @@
       [
        "2026-11-20",
        608.45
+      ],
+      [
+       "2026-11-27",
+       651.33
       ]
      ]
     },
@@ -11622,8 +11621,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is down 9.7% over 13 weeks and 5.8% higher than a year ago. Its latest 4-week move is larger than 96% of past 4-week moves, which is unusually large.",
-    "Nasdaq-100 fund (QQQ) is down 14.6% over 13 weeks and 3.6% higher than a year ago. Its latest 4-week move is larger than 98% of past 4-week moves, which is unusually large."
+    "S&P 500 fund (SPY) is down 5.7% over 13 weeks and 7.0% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is down 9.0% over 13 weeks and 5.7% higher than a year ago."
    ]
   },
   {
@@ -11632,10 +11631,10 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 6,
-    "baseline": 5.0,
-    "ratio": 1.2,
-    "label": "about normal"
+    "count": 0,
+    "baseline": 6.0,
+    "ratio": 0.0,
+    "label": "quieter than usual"
    },
    "weeks": [
     [
@@ -11721,6 +11720,10 @@
     [
      "2026-11-22",
      6
+    ],
+    [
+     "2026-11-29",
+     0
     ]
    ],
    "stories": [
@@ -11801,7 +11804,7 @@
     }
    ],
    "takeaway": [
-    "6 distinct positioning stories this week: about normal (a usual week has 5).",
+    "0 distinct positioning stories this week: quieter than usual (a usual week has 6).",
     "Record-type wording in the last two weeks: \"Global Equity Hedge Funds Stage Sharpest De-Risking in a Decade; Morgan Stanley, Goldman Sachs, JPMorgan Split on Outlook\" (finance.biggo.com, 2026-11-11)."
    ]
   },
@@ -11826,13 +11829,13 @@
      "name": "Korea: total exports",
      "kind": "trade",
      "period": "2026-11",
-     "window": "first 10 days",
-     "value": 111.85,
+     "window": "first 20 days",
+     "value": 101.46,
      "note": "The earliest read each month: the first 10 days, the first 20, then the full month. Already in U.S. dollars.",
      "previous": {
-      "period": "2026-10",
-      "window": "",
-      "value": 93.7
+      "period": "2026-11",
+      "window": "first 10 days",
+      "value": 111.85
      }
     },
     {
@@ -11852,7 +11855,7 @@
    ],
    "explainer": "Growth compared with the same period a year earlier, from the lab's existing Taiwan, Korea and Japan data. Strong readings here mostly reflect AI-hardware demand.",
    "takeaway": [
-    "Compared with the same period last year: Taiwan 45% higher; Korea 112% higher; Japan 21% higher (16% in U.S. dollars).",
+    "Compared with the same period last year: Taiwan 45% higher; Korea 101% higher; Japan 21% higher (16% in U.S. dollars).",
     "About 5 points of Japan's export growth is only the weaker yen; the dollar figure is the truer read of demand."
    ]
   }
