@@ -1,10 +1,10 @@
 {
  "generated": "2026-11-24",
  "headlines": [
-  "The 2-year yield is 4.63% and is up 29 bp over 13 weeks; the 10-year is 4.92% and is up 19 bp.",
-  "The 10-year pays 0.29 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
-  "Gold fund (GLD) is down 20.4% over 13 weeks and 16.0% lower than a year ago. Its latest 4-week move is larger than 92% of past 4-week moves, which is unusually large.",
-  "Oil fund (USO) is up 4.7% over 13 weeks and 91.1% higher than a year ago. Its latest 4-week move is larger than 95% of past 4-week moves, which is unusually large.",
+  "The 2-year yield is 4.63% and is up 29 bp over 13 weeks; the 10-year is 4.91% and is up 18 bp.",
+  "The 10-year pays 0.28 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+  "Gold fund (GLD) is down 20.4% over 13 weeks and 16.1% lower than a year ago. Its latest 4-week move is larger than 92% of past 4-week moves, which is unusually large.",
+  "Oil fund (USO) is up 4.4% over 13 weeks and 90.6% higher than a year ago. Its latest 4-week move is larger than 95% of past 4-week moves, which is unusually large.",
   "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 96% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when.",
   "Compared with the same period last year: Taiwan 45% higher; Korea 101% higher; Japan 21% higher (16% in U.S. dollars)."
  ],
@@ -16,7 +16,7 @@
     {
      "name": "2-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-11-23",
+     "as_of": "2026-11-24",
      "value": 4.63,
      "note": "",
      "since": "1990-01-05",
@@ -658,18 +658,18 @@
     {
      "name": "10-year Treasury yield",
      "unit": "%",
-     "as_of": "2026-11-23",
-     "value": 4.92,
+     "as_of": "2026-11-24",
+     "value": 4.91,
      "note": "",
      "since": "1990-01-05",
      "rank_pct": 66,
      "changes": {
-      "4w": -0.02,
-      "13w": 0.19,
-      "52w": 0.9
+      "4w": -0.03,
+      "13w": 0.18,
+      "52w": 0.89
      },
      "change_kind": "abs",
-     "move4_rank_pct": 9,
+     "move4_rank_pct": 11,
      "chart": [
       [
        "2023-12-08",
@@ -1293,25 +1293,25 @@
       ],
       [
        "2026-11-27",
-       4.92
+       4.91
       ]
      ]
     },
     {
      "name": "Gap: 10-year minus 2-year",
      "unit": "percentage points",
-     "as_of": "2026-11-23",
-     "value": 0.29,
+     "as_of": "2026-11-24",
+     "value": 0.28,
      "note": "",
      "since": "1990-01-05",
      "rank_pct": 27,
      "changes": {
-      "4w": -0.09,
-      "13w": -0.1,
-      "52w": -0.26
+      "4w": -0.1,
+      "13w": -0.11,
+      "52w": -0.27
      },
      "change_kind": "abs",
-     "move4_rank_pct": 52,
+     "move4_rank_pct": 55,
      "chart": [
       [
        "2023-12-08",
@@ -1935,7 +1935,7 @@
       ],
       [
        "2026-11-27",
-       0.29
+       0.28
       ]
      ],
      "inverted": false,
@@ -1947,7 +1947,7 @@
     {
      "name": "Gap: 10-year minus 3-month",
      "unit": "percentage points",
-     "as_of": "2026-11-23",
+     "as_of": "2026-11-24",
      "value": 0.55,
      "note": "",
      "since": "1990-01-05",
@@ -2594,8 +2594,8 @@
    ],
    "explainer": "The 2-year yield tracks where the bond market expects the Federal Reserve's rate to be over the next two years. The 10-year reflects long-run growth and inflation expectations. When the gap between them turns negative (an inverted curve), the market expects rate cuts, usually because it expects a slowdown. Inversions have come before most U.S. recessions of the past 50 years, with lead times from months to about two years, and some false alarms.",
    "takeaway": [
-    "The 2-year yield is 4.63% and is up 29 bp over 13 weeks; the 10-year is 4.92% and is up 19 bp.",
-    "The 10-year pays 0.29 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
+    "The 2-year yield is 4.63% and is up 29 bp over 13 weeks; the 10-year is 4.91% and is up 18 bp.",
+    "The 10-year pays 0.28 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
     "The shape of the curve barely changed over 13 weeks."
    ]
   },
@@ -2607,14 +2607,14 @@
      "name": "Dollar fund (UUP)",
      "unit": "USD",
      "as_of": "2026-11-24",
-     "value": 29.64,
+     "value": 29.63,
      "note": "Price including dividends.",
      "since": "2007-03-02",
      "rank_pct": 100,
      "changes": {
-      "4w": 2.21,
-      "13w": 5.18,
-      "52w": 8.65
+      "4w": 2.17,
+      "13w": 5.15,
+      "52w": 8.61
      },
      "change_kind": "pct",
      "move4_rank_pct": 76,
@@ -3241,7 +3241,7 @@
       ],
       [
        "2026-11-27",
-       29.64
+       29.63
       ]
      ]
     },
@@ -4531,7 +4531,7 @@
     }
    ],
    "takeaway": [
-    "Dollar fund (UUP) is up 5.2% over 13 weeks and 8.7% higher than a year ago."
+    "Dollar fund (UUP) is up 5.2% over 13 weeks and 8.6% higher than a year ago."
    ]
   },
   {
@@ -4542,14 +4542,14 @@
      "name": "Gold fund (GLD)",
      "unit": "USD",
      "as_of": "2026-11-24",
-     "value": 325.7,
+     "value": 325.45,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 94,
      "changes": {
-      "4w": -8.45,
-      "13w": -20.35,
-      "52w": -16.03
+      "4w": -8.52,
+      "13w": -20.41,
+      "52w": -16.1
      },
      "change_kind": "pct",
      "move4_rank_pct": 92,
@@ -5176,7 +5176,7 @@
       ],
       [
        "2026-11-27",
-       325.7
+       325.45
       ]
      ]
     },
@@ -6466,7 +6466,7 @@
     }
    ],
    "takeaway": [
-    "Gold fund (GLD) is down 20.4% over 13 weeks and 16.0% lower than a year ago. Its latest 4-week move is larger than 92% of past 4-week moves, which is unusually large.",
+    "Gold fund (GLD) is down 20.4% over 13 weeks and 16.1% lower than a year ago. Its latest 4-week move is larger than 92% of past 4-week moves, which is unusually large.",
     "Gold held by GLD is down 1.0% over 4 weeks: money flowing out."
    ]
   },
@@ -6478,14 +6478,14 @@
      "name": "Oil fund (USO)",
      "unit": "USD",
      "as_of": "2026-11-24",
-     "value": 135.83,
+     "value": 135.43,
      "note": "Price including dividends.",
      "since": "2006-04-14",
      "rank_pct": 54,
      "changes": {
-      "4w": -19.55,
-      "13w": 4.73,
-      "52w": 91.12
+      "4w": -19.78,
+      "13w": 4.42,
+      "52w": 90.56
      },
      "change_kind": "pct",
      "move4_rank_pct": 95,
@@ -7112,7 +7112,7 @@
       ],
       [
        "2026-11-27",
-       135.83
+       135.43
       ]
      ]
     },
@@ -7760,7 +7760,7 @@
     }
    ],
    "takeaway": [
-    "Oil fund (USO) is up 4.7% over 13 weeks and 91.1% higher than a year ago. Its latest 4-week move is larger than 95% of past 4-week moves, which is unusually large.",
+    "Oil fund (USO) is up 4.4% over 13 weeks and 90.6% higher than a year ago. Its latest 4-week move is larger than 95% of past 4-week moves, which is unusually large.",
     "Hedge funds, WTI crude futures: net long (betting on a rise), lower than 96% of weeks since 2006, a crowded position. Crowding shows where a sharp reversal could start, not when."
    ]
   },
@@ -7772,17 +7772,17 @@
      "name": "S&P 500 fund (SPY)",
      "unit": "USD",
      "as_of": "2026-11-24",
-     "value": 717.57,
+     "value": 718.78,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 97,
      "changes": {
-      "4w": -5.05,
-      "13w": -6.5,
-      "52w": 6.13
+      "4w": -4.89,
+      "13w": -6.34,
+      "52w": 6.31
      },
      "change_kind": "pct",
-     "move4_rank_pct": 81,
+     "move4_rank_pct": 79,
      "chart": [
       [
        "2023-12-08",
@@ -7814,7 +7814,7 @@
       ],
       [
        "2024-01-26",
-       471.97
+       471.96
       ],
       [
        "2024-02-02",
@@ -7890,7 +7890,7 @@
       ],
       [
        "2024-06-07",
-       518.69
+       518.7
       ],
       [
        "2024-06-14",
@@ -8030,7 +8030,7 @@
       ],
       [
        "2025-02-07",
-       589.2
+       589.19
       ],
       [
        "2025-02-14",
@@ -8154,7 +8154,7 @@
       ],
       [
        "2025-09-12",
-       648.59
+       648.6
       ],
       [
        "2025-09-19",
@@ -8406,7 +8406,7 @@
       ],
       [
        "2026-11-27",
-       717.57
+       718.78
       ]
      ]
     },
@@ -8414,17 +8414,17 @@
      "name": "Nasdaq-100 fund (QQQ)",
      "unit": "USD",
      "as_of": "2026-11-24",
-     "value": 637.61,
+     "value": 638.1,
      "note": "Price including dividends.",
      "since": "2006-01-06",
      "rank_pct": 97,
      "changes": {
-      "4w": -7.66,
-      "13w": -10.91,
-      "52w": 3.45
+      "4w": -7.59,
+      "13w": -10.84,
+      "52w": 3.53
      },
      "change_kind": "pct",
-     "move4_rank_pct": 87,
+     "move4_rank_pct": 86,
      "chart": [
       [
        "2023-12-08",
@@ -8636,7 +8636,7 @@
       ],
       [
        "2024-12-06",
-       521.21
+       521.2
       ],
       [
        "2024-12-13",
@@ -9048,7 +9048,7 @@
       ],
       [
        "2026-11-27",
-       637.61
+       638.1
       ]
      ]
     },
@@ -11622,8 +11622,8 @@
     }
    ],
    "takeaway": [
-    "S&P 500 fund (SPY) is down 6.5% over 13 weeks and 6.1% higher than a year ago.",
-    "Nasdaq-100 fund (QQQ) is down 10.9% over 13 weeks and 3.5% higher than a year ago."
+    "S&P 500 fund (SPY) is down 6.3% over 13 weeks and 6.3% higher than a year ago.",
+    "Nasdaq-100 fund (QQQ) is down 10.8% over 13 weeks and 3.5% higher than a year ago."
    ]
   },
   {
@@ -11632,10 +11632,10 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 3,
+    "count": 6,
     "baseline": 7.5,
-    "ratio": 0.4,
-    "label": "quieter than usual"
+    "ratio": 0.8,
+    "label": "about normal"
    },
    "weeks": [
     [
@@ -11724,7 +11724,7 @@
     ],
     [
      "2026-11-29",
-     3
+     6
     ]
    ],
    "stories": [
@@ -11756,20 +11756,20 @@
      "extreme": true
     },
     {
-     "date": "2026-11-23",
+     "date": "2026-11-24",
      "outlet": "TradingView",
-     "title": "Hedge funds short single stocks at fastest weekly pace since 2022 - Goldman",
-     "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNaHYwb2FUcmpxUWRGSGVLc0Z3YUlyZS1WWV9Ha0R5Z1BwZndQcW4yMWFHVG5zcTlOekNYR3dMTC1JcWJXSHAzclEwdWJQeXdPVzBRNHV4ODd2b0tpVHgzTzRwdnR1RHJBWWR4MkJDMVVsdnJMOXp3RWpaazBOUjJWUGFOSnJ0dFZZcVhmeE8tbVhwbExHX1lkTUVoVXhiV0pjSW9YcUREdVYxWGwzWXlvVk1hNXpGU19MUTN5LXhwckFXQTRCQXpzTUgxZmpsZ1lWNFE?oc=5",
-     "banks": "Goldman Sachs",
+     "title": "Morgan Stanley Says Hedge Funds See Trouble Ahead",
+     "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNTjJNWEh3SkhoYXlXR282RFRqQ1BrN0hNU2UzcjFQTnQyclRkZ2NPNUp0YmlLb2kzSTZwVk5oRlZVdGlBNzZuc1hGdFFpX2kzSGFqTXIzTDBwRy1pRDJXS2dmbkhhN1hXNDhud1FNdG9vV0RuX0R5WlFrVHFnR3UtZW1mMllKek5JOHVFaEtjcU9Gb3JHbE9uZUlMUTJHTkhhSnE2V2t5Uy1wWk5RZnc?oc=5",
+     "banks": "Morgan Stanley",
      "direction": "",
      "extreme": false
     },
     {
-     "date": "2026-11-23",
-     "outlet": "The Dark Side Of The Boom",
-     "title": "Morgan Stanley's Nick Savone: Pain \u2014 Hedge Funds Near COVID Lows as Wall Street Confronts a Growth Scare",
-     "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxObDdrX3VPeGJUNzIwX0RFTWpuaE52MllIeDZFUU9WSDg0bGE2SV85aF9lWW9lSHhUUnpHbWtKVkZaUlAzZXMwYU9pQ3laaDVXVkdTTnBYRXdYUmtBTDNmYkxxNTF2QnRLaG4zS3hOb1padml0RHQ2N1VPcGRLQl9DUjN3?oc=5",
-     "banks": "Morgan Stanley",
+     "date": "2026-11-24",
+     "outlet": "Seeking Alpha",
+     "title": "The 50 stocks that matter most to hedge funds - Goldman",
+     "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNSmZaUlhxVXFraVN4amttYmdXMWQzQzlGMGozS2ltcGIyYjdBNkhlbFNXSFYxQ1Z6dmlEdXlod1hELUUxM3NwNUFPbTNpazgyTkxiTDEtNWtNMlY5NmJKUkI3MGtGT19GNldEbi04YXdNVmdGYkc2bDNOUmtvQmhJU00xYTBvUGdHN1dtVGNCTlhOOHBVdXc?oc=5",
+     "banks": "Goldman Sachs",
      "direction": "",
      "extreme": false
     }
@@ -11805,7 +11805,7 @@
     }
    ],
    "takeaway": [
-    "3 distinct positioning stories this week: quieter than usual (a usual week has 7.5).",
+    "6 distinct positioning stories this week: about normal (a usual week has 7.5).",
     "Record-type wording in the last two weeks: \"Global Equity Hedge Funds Stage Sharpest De-Risking in a Decade; Morgan Stanley, Goldman Sachs, JPMorgan Split on Outlook\" (finance.biggo.com, 2026-11-11)."
    ]
   },
