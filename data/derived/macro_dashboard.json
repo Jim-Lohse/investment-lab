@@ -11632,9 +11632,9 @@
    "explainer": "Big banks' prime-brokerage desks lend to hedge funds and see their trades. Their notes go to clients first and reach Reuters, the FT, Barron's and others days later. This strip counts those stories and shows the newest; it measures how much the press is talking about positioning, not the positions themselves.",
    "items": [],
    "loudness": {
-    "count": 6,
+    "count": 7,
     "baseline": 7.5,
-    "ratio": 0.8,
+    "ratio": 0.93,
     "label": "about normal"
    },
    "weeks": [
@@ -11724,7 +11724,7 @@
     ],
     [
      "2026-11-29",
-     6
+     7
     ]
    ],
    "stories": [
@@ -11812,7 +11812,7 @@
     }
    ],
    "takeaway": [
-    "6 distinct positioning stories this week: about normal (a usual week has 7.5).",
+    "7 distinct positioning stories this week: about normal (a usual week has 7.5).",
     "Record-type wording in the last two weeks: \"Hedge funds cut leverage at fastest pace since 2020 amid tech selloff\" (Beinsure, 2026-11-18)."
    ]
   },
