@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-25",
+ "generated": "2026-11-26",
  "headlines": [
   "The 2-year yield is 4.61% and is up 27 bp over 13 weeks; the 10-year is 4.85% and is up 12 bp.",
   "The 10-year pays 0.24 percentage points more than the 2-year, so the curve is not inverted; it has been positive since September 2024.",
@@ -5183,18 +5183,18 @@
     {
      "name": "Gold held by GLD",
      "unit": "tonnes",
-     "as_of": "2026-11-24",
-     "value": 1027.31,
+     "as_of": "2026-11-25",
+     "value": 1027.88,
      "note": "Money into or out of GLD, measured in gold held. Tested: money moving in or out tends to keep moving the same way for weeks.",
      "since": "2004-11-19",
      "rank_pct": 70,
      "changes": {
-      "4w": -1.38,
-      "13w": -1.44,
-      "52w": -1.73
+      "4w": -1.32,
+      "13w": -1.39,
+      "52w": -1.68
      },
      "change_kind": "pct",
-     "move4_rank_pct": 38,
+     "move4_rank_pct": 37,
      "chart": [
       [
        "2023-12-08",
@@ -5818,7 +5818,7 @@
       ],
       [
        "2026-11-27",
-       1027.31
+       1027.88
       ]
      ]
     },
@@ -6467,7 +6467,7 @@
    ],
    "takeaway": [
     "Gold fund (GLD) is down 19.9% over 13 weeks and 15.6% lower than a year ago. Its latest 4-week move is larger than 90% of past 4-week moves, which is unusually large.",
-    "Gold held by GLD is down 1.4% over 4 weeks: money flowing out."
+    "Gold held by GLD is down 1.3% over 4 weeks: money flowing out."
    ]
   },
   {
@@ -7890,7 +7890,7 @@
       ],
       [
        "2024-06-07",
-       518.7
+       518.69
       ],
       [
        "2024-06-14",
@@ -8030,7 +8030,7 @@
       ],
       [
        "2025-02-07",
-       589.2
+       589.19
       ],
       [
        "2025-02-14",
@@ -11795,6 +11795,20 @@
      "kind": "expiry",
      "label": "Quarterly options and futures expiry: stock-index contracts expire together, which can swing prices and trading volume",
      "basis": "third Friday of March, June, September, December"
+    },
+    {
+     "start": "2026-12-24",
+     "end": "2026-12-31",
+     "kind": "rebalance",
+     "label": "Quarter-end rebalancing window: pension and index funds reset their stock and bond mix, and banks publish estimates of the buying or selling this forces (larger at quarter-end)",
+     "basis": "last 5 trading days of the month"
+    },
+    {
+     "start": "2026-12-24",
+     "end": "2026-12-24",
+     "kind": "short_interest",
+     "label": "Estimated: FINRA short interest published (shares sold short as of 2026-12-15)",
+     "basis": "estimate, 7 business days after settlement; FINRA's calendar governs"
     }
    ],
    "takeaway": [
