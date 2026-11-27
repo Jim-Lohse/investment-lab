@@ -1,6 +1,6 @@
 # Demand-signal snapshot: Taiwan monthly revenue + Korea exports + Japan + U.S. trade
 
-_Generated 2026-11-26 by `signals/compute_signals.py`._
+_Generated 2026-11-27 by `signals/compute_signals.py`._
 _Derived data; the underlying records in `data/` are the source of truth._
 
 ## Taiwan monthly revenue — 2026-10
@@ -58,53 +58,53 @@ _YoY in yen is what MOF publishes. YoY in USD restates the same series at the re
 
 | Period | Window | Source | Item | JPY m | YoY % (yen) | YoY % (USD) | FX pt | YoY % (MOF) |
 |---|---|---|---|---:|---:|---:|---:|---:|
-| 2026-10 | D10 | press_release | BAL:Grand Total | -339857 | -37.84 | -41.02 | 3.18 | -41.10 |
-| 2026-10 | D10 | press_release | E:Grand Total | 3822613 | 30.62 | 23.94 | 6.68 | 30.70 |
-| 2026-10 | D10 | press_release | I:Grand Total | 4162470 | 19.84 | 13.72 | 6.12 | 18.90 |
 | 2026-10 | D20 | press_release | BAL:Grand Total | -810433 | 163.44 | 150.85 | 12.59 | 274.10 |
 | 2026-10 | D20 | press_release | E:Grand Total | 7314664 | 26.44 | 20.39 | 6.05 | 23.50 |
 | 2026-10 | D20 | press_release | I:Grand Total | 8125097 | 33.36 | 26.98 | 6.38 | 32.40 |
-| 2026-10 | MONTH | press_release | BAL:Grand Total | -476516 | 110.78 | 102.15 | 8.63 | 57.80 |
-| 2026-10 | MONTH | press_release | E:(IC) | 708153 | 50.24 | 44.09 | 6.15 | 50.20 |
-| 2026-10 | MONTH | press_release | E:ELECTRICAL MEASURING | 236462 | 31.30 | 25.93 | 5.37 | 31.30 |
-| 2026-10 | MONTH | press_release | E:Grand Total | 11768784 | 20.51 | 15.57 | 4.94 | 20.50 |
-| 2026-10 | MONTH | press_release | E:SCIENTIFIC, OPTICAL INST | 268260 | 20.97 | 16.01 | 4.96 | 21 |
-| 2026-10 | MONTH | press_release | E:SEMICON MACHINERY ETC | 544156 | 49.68 | 43.55 | 6.13 | 49.70 |
-| 2026-10 | MONTH | press_release | E:SEMICONDUCTORS ETC | 929569 | 49.68 | 43.55 | 6.13 | 49.70 |
-| 2026-10 | MONTH | press_release | E:TELEPHONY, TELEGRAPHY | 38695 | 43.41 | 37.54 | 5.87 | 43.40 |
-| 2026-10 | MONTH | press_release | I:(IC) | 521590 | 67.57 | 60.71 | 6.86 | 67.50 |
-| 2026-10 | MONTH | press_release | I:ELECTRICAL MEASURING | 113266 | 7.75 | 3.34 | 4.41 | 7.70 |
-| 2026-10 | MONTH | press_release | I:Grand Total | 12245300 | 22.55 | 17.53 | 5.02 | 21.60 |
-| 2026-10 | MONTH | press_release | I:SCIENTIFIC, OPTICAL INST | 244270 | 10.99 | 6.44 | 4.55 | 10.80 |
-| 2026-10 | MONTH | press_release | I:SEMICONDUCTORS ETC | 580326 | 60.03 | 53.48 | 6.55 | 60 |
-| 2026-10 | MONTH | press_release | I:TELEPHONY, TELEGRAPHY | 546548 | -10.04 | -13.72 | 3.68 | -10 |
-| 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:半導体等製造装置 | 553333 | 43.95 | 36.16 | 7.79 |  |
-| 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:半導体等電子部品 | 933636 | 49.43 | 41.35 | 8.08 |  |
-| 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:科学光学機器 | 242605 | 11.60 | 5.56 | 6.04 |  |
-| 2026-09 | MONTH | timeseries:world_exports_by_commodity | E:総額 | 10953854 | 16.47 | 10.17 | 6.30 |  |
-| 2026-09 | MONTH | timeseries:world_imports_by_commodity | I:半導体等電子部品 | 605250 | 51.44 | 43.25 | 8.19 |  |
-| 2026-09 | MONTH | timeseries:world_imports_by_commodity | I:科学光学機器 | 223883 | 1.90 | -3.62 | 5.52 |  |
-| 2026-09 | MONTH | timeseries:world_imports_by_commodity | I:総額 | 11510333 | 18.88 | 12.44 | 6.44 |  |
-| 2026-09 | MONTH | estat_hs:DETAILED | E:HS280461 | 3344 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:DETAILED | E:HS3818 | 66958 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:DETAILED | E:HS8486 | 553333 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:DETAILED | E:HS8517 | 27639 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:DETAILED | E:HS8541 | 143284 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:DETAILED | E:HS8542 | 786883 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:DETAILED | E:HS854470 | 5491 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:DETAILED | E:HS9001 | 39733 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:DETAILED | E:HS9013 | 9722 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:PROV9 | I:HS280461 | 6459 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:PROV9 | I:HS3818 | 18714 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:PROV9 | I:HS8486 | 107524 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:PROV9 | I:HS8517 | 484916 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:PROV9 | I:HS8541 | 48895 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:PROV9 | I:HS8542 | 554179 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:PROV9 | I:HS854470 | 2642 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:PROV9 | I:HS9001 | 35065 |  |  |  |  |
-| 2026-09 | MONTH | estat_hs:PROV9 | I:HS9013 | 12610 |  |  |  |  |
+| 2026-10 | MONTH | press_release | BAL:Grand Total | -480722 | 112.64 | 103.94 | 8.70 | 59.20 |
+| 2026-10 | MONTH | press_release | E:(IC) | 708150 | 50.24 | 44.09 | 6.15 | 50.20 |
+| 2026-10 | MONTH | press_release | E:ELECTRICAL MEASURING | 236451 | 31.30 | 25.92 | 5.38 | 31.30 |
+| 2026-10 | MONTH | press_release | E:Grand Total | 11765501 | 20.47 | 15.54 | 4.93 | 20.50 |
+| 2026-10 | MONTH | press_release | E:SCIENTIFIC, OPTICAL INST | 268287 | 20.98 | 16.03 | 4.95 | 21 |
+| 2026-10 | MONTH | press_release | E:SEMICON MACHINERY ETC | 544155 | 49.68 | 43.55 | 6.13 | 49.70 |
+| 2026-10 | MONTH | press_release | E:SEMICONDUCTORS ETC | 929565 | 49.68 | 43.55 | 6.13 | 49.70 |
+| 2026-10 | MONTH | press_release | E:TELEPHONY, TELEGRAPHY | 38697 | 43.42 | 37.55 | 5.87 | 43.40 |
+| 2026-10 | MONTH | press_release | I:(IC) | 521594 | 67.57 | 60.71 | 6.86 | 67.50 |
+| 2026-10 | MONTH | press_release | I:ELECTRICAL MEASURING | 113291 | 7.78 | 3.36 | 4.42 | 7.70 |
+| 2026-10 | MONTH | press_release | I:Grand Total | 12246223 | 22.56 | 17.54 | 5.02 | 21.60 |
+| 2026-10 | MONTH | press_release | I:SCIENTIFIC, OPTICAL INST | 244310 | 11.00 | 6.46 | 4.54 | 10.80 |
+| 2026-10 | MONTH | press_release | I:SEMICONDUCTORS ETC | 580332 | 60.03 | 53.48 | 6.55 | 60 |
+| 2026-10 | MONTH | press_release | I:TELEPHONY, TELEGRAPHY | 546552 | -10.04 | -13.72 | 3.68 | -10 |
+| 2026-11 | D10 | press_release | BAL:Grand Total | -541506 | 371.32 | 357.95 | 13.37 | 273.70 |
+| 2026-11 | D10 | press_release | E:Grand Total | 3418332 | 20.05 | 16.64 | 3.41 | 20.20 |
+| 2026-11 | D10 | press_release | I:Grand Total | 3959838 | 33.67 | 29.88 | 3.79 | 32.40 |
+| 2026-10 | MONTH | timeseries:world_exports_by_commodity | E:半導体等製造装置 | 544155 | 49.68 | 43.55 | 6.13 |  |
+| 2026-10 | MONTH | timeseries:world_exports_by_commodity | E:半導体等電子部品 | 929565 | 49.68 | 43.55 | 6.13 |  |
+| 2026-10 | MONTH | timeseries:world_exports_by_commodity | E:科学光学機器 | 268287 | 20.98 | 16.03 | 4.95 |  |
+| 2026-10 | MONTH | timeseries:world_exports_by_commodity | E:総額 | 11765501 | 20.47 | 15.54 | 4.93 |  |
+| 2026-10 | MONTH | timeseries:world_imports_by_commodity | I:半導体等電子部品 | 580332 | 60.03 | 53.47 | 6.56 |  |
+| 2026-10 | MONTH | timeseries:world_imports_by_commodity | I:科学光学機器 | 244310 | 10.85 | 6.31 | 4.54 |  |
+| 2026-10 | MONTH | timeseries:world_imports_by_commodity | I:総額 | 12246223 | 22.35 | 17.34 | 5.01 |  |
+| 2026-10 | MONTH | estat_hs:DETAILED | E:HS280461 | 3735 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:DETAILED | E:HS3818 | 75518 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:DETAILED | E:HS8486 | 544155 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:DETAILED | E:HS8517 | 32259 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:DETAILED | E:HS8541 | 155440 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:DETAILED | E:HS8542 | 770772 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:DETAILED | E:HS854470 | 12484 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:DETAILED | E:HS9001 | 36357 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:DETAILED | E:HS9013 | 11445 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:PROV9 | I:HS280461 | 17724 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:PROV9 | I:HS3818 | 17808 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:PROV9 | I:HS8486 | 110287 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:PROV9 | I:HS8517 | 521406 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:PROV9 | I:HS8541 | 50980 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:PROV9 | I:HS8542 | 526290 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:PROV9 | I:HS854470 | 3964 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:PROV9 | I:HS9001 | 34295 |  |  |  |  |
+| 2026-10 | MONTH | estat_hs:PROV9 | I:HS9013 | 14495 |  |  |  |  |
 
-_Reference rate, newest window stored: 158.16 yen per USD (2026-10)._
+_Reference rate, newest window stored: 158.19 yen per USD (2026-11)._
 
 ## U.S. trade by HTS code (Census) — demand side
 
