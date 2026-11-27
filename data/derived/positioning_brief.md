@@ -1,6 +1,6 @@
 # Positioning brief, 2026-11-27 (U.S. Eastern)
 
-Stories counted: 137 (of 682 rows collected; the rest failed the relevance filter). This week (from 2026-11-23): 7 distinct stories; usual week (median of up to 12 earlier weeks): 7.5; reading: about normal.
+Stories counted: 138 (of 685 rows collected; the rest failed the relevance filter). This week (from 2026-11-23): 8 distinct stories; usual week (median of up to 12 earlier weeks): 7.5; reading: about normal.
 
 | Search | This week | Usual week |
 |---|---|---|
@@ -8,7 +8,7 @@ Stories counted: 137 (of 682 rows collected; the rest failed the relevance filte
 | Reuters HEDGE FLOW column | 0 | 0.0 |
 | Goldman Hedge Fund Trend Monitor and VIP basket | 1 | 0.0 |
 | Morgan Stanley prime brokerage (MSPB) | 0 | 0.0 |
-| Weekly prime-desk leverage notes | 5 | 5.5 |
+| Weekly prime-desk leverage notes | 6 | 5.5 |
 | JPMorgan-sourced hedge fund data | 0 | 0.0 |
 
 ## Stories this week
@@ -19,6 +19,7 @@ Stories counted: 137 (of 682 rows collected; the rest failed the relevance filte
 | 2026-11-24 | Seeking Alpha | [The 50 stocks that matter most to hedge funds - Goldman](https://news.google.com/rss/articles/CBMilgFBVV95cUxNSmZaUlhxVXFraVN4amttYmdXMWQzQzlGMGozS2ltcGIyYjdBNkhlbFNXSFYxQ1Z6dmlEdXlod1hELUUxM3NwNUFPbTNpazgyTkxiTDEtNWtNMlY5NmJKUkI3MGtGT19GNldEbi04YXdNVmdGYkc2bDNOUmtvQmhJU00xYTBvUGdHN1dtVGNCTlhOOHBVdXc?oc=5) | Goldman Sachs | - | - |
 | 2026-11-23 | TradingView | [Hedge funds short single stocks at fastest weekly pace since 2022 - Goldman](https://news.google.com/rss/articles/CBMi0gFBVV95cUxNaHYwb2FUcmpxUWRGSGVLc0Z3YUlyZS1WWV9Ha0R5Z1BwZndQcW4yMWFHVG5zcTlOekNYR3dMTC1JcWJXSHAzclEwdWJQeXdPVzBRNHV4ODd2b0tpVHgzTzRwdnR1RHJBWWR4MkJDMVVsdnJMOXp3RWpaazBOUjJWUGFOSnJ0dFZZcVhmeE8tbVhwbExHX1lkTUVoVXhiV0pjSW9YcUREdVYxWGwzWXlvVk1hNXpGU19MUTN5LXhwckFXQTRCQXpzTUgxZmpsZ1lWNFE?oc=5) | Goldman Sachs | - | - |
 | 2026-11-23 | The Dark Side Of The Boom | [Morgan Stanley's Nick Savone: Pain — Hedge Funds Near COVID Lows as Wall Street Confronts a Growth Scare](https://news.google.com/rss/articles/CBMiggFBVV95cUxObDdrX3VPeGJUNzIwX0RFTWpuaE52MllIeDZFUU9WSDg0bGE2SV85aF9lWW9lSHhUUnpHbWtKVkZaUlAzZXMwYU9pQ3laaDVXVkdTTnBYRXdYUmtBTDNmYkxxNTF2QnRLaG4zS3hOb1padml0RHQ2N1VPcGRLQl9DUjN3?oc=5) | Morgan Stanley | - | - |
+| 2026-11-26 | Startup Fortune | [Leopold Aschenbrenner's AI Hedge Fund Lost 65% as Leverage Backfired in Q3](https://news.google.com/rss/articles/CBMiogFBVV95cUxQOTBRZWN2blp0cjJzLVROMW96a01WRURyRTVQekdUeTNGRm5keXFxWWJnb19hd01YV2pYUWktVFlGcGZ3ZE81a0diMGppcUtmTUdFU3YtcDJ1bG9tTzZaSWhscXZwb2FKbHFNRnJ5Z2F4bFVVX28xaU14Z1JJcS1uUkMteWM4LXFuUkJmeGVuREZjY1F5c0o1Q2lKS1pDUnhJTWc?oc=5) | - | - | - |
 | 2026-11-25 | The Dark Side Of The Boom | [GS : The Positioning Reset Creates More Favourable Asymmetry — But This Isn't Capitulation](https://news.google.com/rss/articles/CBMihAFBVV95cUxOa2VfR29FSFVvNThTVS1IQ0tPMzdJNEVOMkd4MlJIaXJTZDhNdmJxanA2NjBXdUtWZE0wZEkyaElIVWQ0NGFiOTctb2FydGVFS0ZGRGdwaWd0MGdRbXJZTmVRYzIzY0FvV2RzTV9TU3VscG1fLTBkYTQ5Sk9TbzVaUzN6b1A?oc=5) | - | - | - |
 | 2026-11-24 | Seeking Alpha | [Hedge funds are positioned for an earnings slowdown Wall Street doesn’t see](https://news.google.com/rss/articles/CBMisgFBVV95cUxQWlFnTmxSZUFRcTFqWG1hNmlQeWRPcG45RFUzYXRmZ05SdS1HbUVqX212bjhidlBsekRMVFViVE1FbWgteS04bU9nTm1vREdid0F0WnBKZm5VZmc3NGNvSzdkSVZzSWF3aTZoZWlQYlA0NFZDUXdieUVsYU81a3E0dWR3N2I4dDNjTHRkSW1uenBUQ0dWVFNwU0VDRU11ZERFZDdyZnZfSjIwaVZNUnYzcElB?oc=5) | - | - | - |
 | 2026-11-23 | The Dark Side Of The Boom | [Shorting the Dip — Hedge Funds Take Aim at US Financials](https://news.google.com/rss/articles/CBMihwFBVV95cUxPczVnQlRmYjBXdXRZaExzRVdER1VDbEUtX2R6OFpwamNlTjVENmZyTk13NkRxUHYxMTJxU1B4cHVsZHNrY0EyZ1FfUzF3dGhrSl9SOGpIaDZtc3lXX0J1eXBVUEJFQlo2OTRZX2g1M0RGNWVrcmF5QjJQLXJseWpZdUFnNmlaWFk?oc=5) | - | - | - |
